@@ -1,152 +1,134 @@
-/*
- * MIT License
- *
- * Copyright (c) 2020 Ridanisaurus
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package com.ridanisaurus.emendatusenigmatica;
 
-import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.DataGeneratorFactory;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EEPackFinder;
-import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
-import com.ridanisaurus.emendatusenigmatica.loader.deposit.EEDeposits;
-import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
-import com.ridanisaurus.emendatusenigmatica.util.Reference;
-import com.ridanisaurus.emendatusenigmatica.world.gen.feature.rule.MultiStrataRuleTest;
+import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.PackRepository;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoader;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/mods.toml file
-@Mod(Reference.MOD_ID)
-public class EmendatusEnigmatica {
-    // Directly reference a log4j logger.
-    public static final Logger LOGGER = LogManager.getLogger();
-    private static DataGenerator generator;
-    private static boolean hasGenerated = false;
+// The value here should match an entry in the META-INF/neoforge.mods.toml file
+@Mod(EmendatusEnigmatica.MODID)
+public class EmendatusEnigmatica
+{
+    // Define mod id in a common place for everything to reference
+    public static final String MODID = "emendatusenigmatica";
+    // Directly reference a slf4j logger
+    private static final Logger LOGGER = LogUtils.getLogger();
+    // Create a Deferred Register to hold Blocks which will all be registered under the "emendatusenigmatica" namespace
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+    // Create a Deferred Register to hold Items which will all be registered under the "emendatusenigmatica" namespace
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "emendatusenigmatica" namespace
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    private static EmendatusEnigmatica instance;
+    // Creates a new Block with the id "emendatusenigmatica:example_block", combining the namespace and path
+    public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", BlockBehaviour.Properties.of().mapColor(MapColor.STONE));
+    // Creates a new BlockItem with the id "emendatusenigmatica:example_block", combining the namespace and path
+    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
 
-    public static EmendatusEnigmatica getInstance() {
-        return instance;
+    // Creates a new food item with the id "emendatusenigmatica:example_id", nutrition 1 and saturation 2
+    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
+            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+
+    // Creates a creative tab with the id "emendatusenigmatica:example_tab" for the example item, that is placed after the combat tab
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.emendatusenigmatica"))
+            .withTabsBefore(CreativeModeTabs.COMBAT)
+            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .displayItems((parameters, output) -> {
+                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+            }).build());
+
+    // The constructor for the mod class is the first code that is run when your mod is loaded.
+    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
+    public EmendatusEnigmatica(IEventBus modEventBus, ModContainer modContainer)
+    {
+        // Register the commonSetup method for modloading
+        modEventBus.addListener(this::commonSetup);
+
+        // Register the Deferred Register to the mod event bus so blocks get registered
+        BLOCKS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so items get registered
+        ITEMS.register(modEventBus);
+        // Register the Deferred Register to the mod event bus so tabs get registered
+        CREATIVE_MODE_TABS.register(modEventBus);
+
+        // Register ourselves for server and other game events we are interested in.
+        // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
+        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+        NeoForge.EVENT_BUS.register(this);
+
+        // Register the item to a creative tab
+        modEventBus.addListener(this::addCreative);
+
+        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
-    private final EELoader loader;
-    private final EEDeposits deposits;
+    private void commonSetup(final FMLCommonSetupEvent event)
+    {
+        // Some common setup code
+        LOGGER.info("HELLO FROM COMMON SETUP");
 
-    public EmendatusEnigmatica() {
-        EmendatusEnigmatica.instance = this;
-        EEConfig.registerClient();
-        EEConfig.setupCommon();
+        if (Config.logDirtBlock)
+            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
 
-        // Register Deferred Registers and populate their tables once the mod is done constructing
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+        LOGGER.info(Config.magicNumberIntroduction + Config.magicNumber);
 
-        DataGeneratorFactory.init();
-
-        this.loader = new EELoader();
-        this.loader.load();
-
-        EERegistrar.finalize(modEventBus);
-//        if (BLOODMAGIC_LOADED) EEBloodMagicRegistrar.finalize(modEventBus);
-
-        this.deposits = new EEDeposits(this.loader);
-        this.deposits.load();
-        this.deposits.setup();
-        this.deposits.finalize(modEventBus);
-
-        modEventBus.addListener(this::commonEvents);
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().getResourcePackRepository().addPackFinder(new EEPackFinder(PackType.CLIENT_RESOURCES)));
-
-        this.loader.finish();
+        Config.items.forEach((item) -> LOGGER.info("ITEM >> {}", item.toString()));
     }
 
-    private void commonEvents(FMLCommonSetupEvent event) {
-        MultiStrataRuleTest.register();
+    // Add the example block item to the building blocks tab
+    private void addCreative(BuildCreativeModeTabContentsEvent event)
+    {
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
+            event.accept(EXAMPLE_BLOCK_ITEM);
     }
 
-    public static final CreativeModeTab TAB = new CreativeModeTab("emendatusenigmatica") {
-        @Override
-        public @NotNull ItemStack makeIcon() {
-            return new ItemStack(EERegistrar.ENIGMATIC_HAMMER.get());
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event)
+    {
+        // Do something when the server starts
+        LOGGER.info("HELLO from server starting");
+    }
+
+    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents
+    {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event)
+        {
+            // Some client setup code
+            LOGGER.info("HELLO FROM CLIENT SETUP");
+            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
-    };
-
-    private static void registerDataGen() {
-        generator = DataGeneratorFactory.createEEDataGenerator();
-
-        EmendatusEnigmatica.getInstance().getLoader().datagen(generator);
-    }
-
-    public static void generate()  {
-        if (!hasGenerated) {
-            try {
-                if(generator == null) registerDataGen();
-                if (!ModLoader.isLoadingStateValid()) {
-                    LOGGER.error("Loading state is invalid! Aborting running Data Generation to avoid even more issues.");
-                    return;
-                }
-                generator.run();
-            } catch (Throwable e) {
-                LOGGER.error("Exception caught while running data generation!", e);
-                if (ModLoader.isLoadingStateValid()) throw new RuntimeException(e);
-                LOGGER.error("It was probably caused by another mod crashing before Data Generation, as LoadingState is already invalid!");
-                return;
-            }
-            hasGenerated = true;
-        }
-    }
-
-    public static void injectDatapackFinder(PackRepository resourcePacks) {
-       DistExecutor.<Boolean>unsafeRunForDist(() -> () -> {
-            if (resourcePacks != Minecraft.getInstance().getResourcePackRepository()) {
-                resourcePacks.addPackFinder(new EEPackFinder(PackType.CLIENT_RESOURCES));
-                EmendatusEnigmatica.LOGGER.info("Injecting data pack finder.");
-            }
-            return false;
-        }, () -> () -> {
-            resourcePacks.addPackFinder(new EEPackFinder(PackType.SERVER_DATA));
-            EmendatusEnigmatica.LOGGER.info("Injecting server data pack finder.");
-            return false;
-        });
-    }
-
-    public EELoader getLoader() {
-        return loader;
     }
 }

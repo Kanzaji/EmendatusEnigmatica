@@ -1,13 +1,40 @@
 pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        maven { url = 'https://maven.neoforged.net/releases' }
+    plugins {
+        // Versions: https://projects.neoforged.net/neoforged/ModDevGradle
+        id 'net.neoforged.moddev' version '0.1.105'
+        id 'net.neoforged.moddev.repositories' version '0.1.112'
     }
 }
 
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+    id 'net.neoforged.moddev.repositories'
+}
+
+dependencyResolutionManagement {
+    // Avoid mistakes when subprojects declare repositories that override these.
+    // Always declare them here.
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+    rulesMode = RulesMode.FAIL_ON_PROJECT_RULES
+    repositories {
+        // EMI
+        maven { name = "TerraformersMC"; url = "https://maven.terraformersmc.com/" }
+        // Mod Maven
+        maven { url 'https://modmaven.dev/' }
+        // Curse Maven
+        maven {
+            url = "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+        // Blame Jared
+        maven { url 'https://maven.blamejared.com' }
+        // SAPS
+        maven { url "https://maven.saps.dev/releases/" }
+        // LOCAL MAVEN
+        mavenLocal()
+    }
 }
 
 def addons = [

@@ -1,30 +1,10 @@
 plugins {
-    id 'java-library'
-    id 'eclipse'
-    id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.150'
+    id 'net.neoforged.moddev'
 }
 
 version = mod_version
 group = mod_group_id
-
-repositories {
-    // EMI
-    maven { name = "TerraformersMC"; url = "https://maven.terraformersmc.com/" }
-    // Sponge
-    maven { url 'https://repo.spongepowered.org/maven/' }
-    // Mod Maven
-    maven { url 'https://modmaven.dev/' }
-    // Curse Maven
-    maven { url = "https://www.cursemaven.com" }
-    // Blame Jared
-    maven { url 'https://maven.blamejared.com' }
-    // SAPS
-    maven { url "https://maven.saps.dev/releases/" }
-    // LOCAL MAVEN
-    mavenLocal()
-}
 
 base {
     archivesName = mod_id
@@ -32,52 +12,56 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-//minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
+neoForge {
+    version = neo_version
 
-// Default run configurations.
-// These can be tweaked, removed, or duplicated as needed.
-runs {
-    // applies to all the run configs below
-    configureEach {
-        // Recommended logging data for a userdev environment
-        // The markers can be added/remove as needed separated by commas.
-        // "SCAN": For mods scan.
-        // "REGISTRIES": For firing of registry events.
-        // "REGISTRYDUMP": For getting the contents of all registries.
-        systemProperty 'forge.logging.markers', 'REGISTRIES'
+    mods {
+        emendatusenmigmatica {
+            modSourceSets = [sourceSets.main]
+        }
 
-        // Recommended logging level for the console
-        // You can set various levels here.
-        // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-        systemProperty 'forge.logging.console.level', 'debug'
-
-        modSource project.sourceSets.main
+        // Create a mod grouping the sources of each subproject such that when the IDE includes them it works
+        subprojects.forEach { subproject ->
+            create(subproject.name) {
+                modSourceSets = [subproject.sourceSets.main]
+            }
+        }
     }
 
-    client {
-        // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
+    runs {
+        // applies to all the run configs below
+        configureEach {
+        }
 
-    server {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
-    }
+        client {
+            client()
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        }
 
-    // This run config launches GameTestServer and runs all registered gametests, then exits.
-    // By default, the server will crash when no gametests are provided.
-    // The gametest system is also enabled by default for other run configs under the /test command.
-    gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-    }
+        server {
+            server()
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            programArgument '--nogui'
+        }
 
-    data {
-        // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
-        // workingDirectory project.file('run-data')
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            type = "gameTestServer"
+            gameDirectory = project.file("build/gametest")
+            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        }
 
-        // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        data {
+            data()
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
     }
 }
 
@@ -102,34 +86,12 @@ def dependencyMap = [
 ]
 
 subprojects {
-    apply plugin: 'java-library'
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
     apply plugin: 'maven-publish'
-    apply plugin: 'net.neoforged.gradle.userdev'
+    apply plugin: 'net.neoforged.moddev'
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-    repositories {
-        // EMI
-        maven { name = "TerraformersMC"; url = "https://maven.terraformersmc.com/" }
-        // Sponge
-        maven { url 'https://repo.spongepowered.org/maven/' }
-        // Mod Maven
-        maven { url 'https://modmaven.dev/' }
-        // Curse Maven
-        maven { url = "https://www.cursemaven.com" }
-        // Blame Jared
-        maven { url 'https://maven.blamejared.com' }
-        // SAPS
-        maven { url "https://maven.saps.dev/releases/" }
-        // LOCAL MAVEN
-        mavenLocal()
-    }
-
     dependencies {
-        implementation "net.neoforged:neoforge:${neo_version}"
-
         // EMI for NeoForge
         compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21:api"
         runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21"
@@ -137,6 +99,10 @@ subprojects {
         dependencyMap[project.name.substring(0, project.name.indexOf(" "))].forEach {
             implementation it
         }
+    }
+
+    neoForge {
+        version = neo_version
     }
 
     sourceSets {
@@ -152,14 +118,6 @@ subprojects {
 }
 
 dependencies {
-    // Specify the version of Minecraft to use.
-    // Depending on the plugin applied there are several options. We will assume you applied the userdev plugin as shown above.
-    // The group for userdev is net.neoforge, the module name is neoforge, and the version is the same as the neoforge version.
-    // You can however also use the vanilla plugin (net.neoforged.gradle.vanilla) to use a version of Minecraft without the neoforge loader.
-    // And its provides the option to then use net.minecraft as the group, and one of; client, server or joined as the module name, plus the game version as version.
-    // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
-    implementation "net.neoforged:neoforge:${neo_version}"
-
     // EMI for NeoForge
     compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21"
@@ -169,6 +127,7 @@ dependencies {
     if (world_stripper_version != "null") runtimeOnly "curse.maven:world-stripper-250603:${world_stripper_version}"
     if (the_one_probe_version != "null") runtimeOnly "curse.maven:the-one-probe-245211:${the_one_probe_version}"
     if (the_undergarden_version != "null") runtimeOnly "curse.maven:the-undergarden-379849:${the_undergarden_version}"
+    if (architectury_version != "null") runtimeOnly "curse.maven:architectury-api-419699:${architectury_version}"
 
     //TODO: Add to proper mods and remove when necessary.
 //    runtimeOnly "curse.maven:curios-309927:${curios_version}"
@@ -195,22 +154,6 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-}
-
-// Manifest Attributes
-jar {
-    manifest {
-        attributes([
-                "MixinConfigs"            : "emendatusenigmatica.mixins.json",
-                "Specification-Title"     : "emendatusenigmatica",
-                "Specification-Vendor"    : "Ridanisaurus",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "Ridanisaurus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

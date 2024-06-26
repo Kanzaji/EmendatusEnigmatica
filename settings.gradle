@@ -34,6 +34,11 @@ dependencyResolutionManagement {
         maven { url "https://maven.saps.dev/releases/" }
         // LOCAL MAVEN
         mavenLocal()
+        // SPONGE
+        maven {
+            name "Sponge"
+            url "https://repo.spongepowered.org/repository/maven-public/"
+        }
     }
 }
 

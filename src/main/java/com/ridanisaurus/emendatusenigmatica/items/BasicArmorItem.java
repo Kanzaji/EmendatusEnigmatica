@@ -22,11 +22,11 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.items;
 
-public class Reference
+// TODO: ArmorTier class unfinished.
+public class BasicArmorItem
+//        extends ArmorItem
 {
-    public static final String MODID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+
 }

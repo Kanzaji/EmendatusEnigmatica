@@ -22,11 +22,42 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.items;
 
-public class Reference
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+public class ItemHammer extends Item
 {
-    public static final String MODID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+    RandomSource random;
+
+    public ItemHammer(Properties properties) {
+        super(new Properties()
+                // "tab" and "defaultDurability" do not exist anymore.
+                .setNoRepair()
+        );
+    }
+
+    /*FIXME: "container.hurt" does not exist anymore.
+    @Override
+    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+        ItemStack container = itemStack.copy();
+        if(container.hurt(1, random, null))
+            return ItemStack.EMPTY;
+         else
+            return container;
+    }
+    */
+
+    @Override
+    public boolean hasCraftingRemainingItem(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public boolean isEnchantable(@NotNull ItemStack stack) {
+        return false;
+    }
 }

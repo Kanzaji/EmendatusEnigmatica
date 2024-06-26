@@ -22,11 +22,25 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.registries;
 
-public class Reference
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+
+//TODO: ResourceLocation is now Final, need solution for original methods.
+public class EETags
 {
-    public static final String MODID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+    public static TagKey<Item> getItemTag(ResourceLocation resourceLocation) {
+        return null;
+    }
+
+    public static TagKey<Block> getBlockTag(ResourceLocation resourceLocation) {
+        return null;
+    }
+
+    public static TagKey<Block> create(String location) {
+        return null;
+    }
 }

@@ -22,11 +22,25 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.items;
 
-public class Reference
+import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+import net.minecraft.world.item.Item;
+
+public class BasicItem extends Item
 {
-    public static final String MODID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+    public final int highlight2;
+    public final int highlight1;
+    public final int base;
+    public final int shadow1;
+    public final int shadow2;
+
+    public BasicItem(MaterialModel material) {
+        super(new Properties());
+        this.highlight2 = material.getColors().getHighlightColor(3);
+        this.highlight1 = material.getColors().getHighlightColor(1);
+        this.base = material.getColors().getMaterialColor();
+        this.shadow1 = material.getColors().getShadowColor(1);
+        this.shadow2 = material.getColors().getShadowColor(2);
+    }
 }

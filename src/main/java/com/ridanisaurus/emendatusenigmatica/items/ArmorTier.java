@@ -22,11 +22,12 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.items;
 
-public class Reference
+import net.minecraft.world.item.ArmorMaterial;
+
+// FIXME: ArmorMaterial is now Final.
+public class ArmorTier
 {
-    public static final String MODID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+
 }

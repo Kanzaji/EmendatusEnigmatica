@@ -1,6 +1,7 @@
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
+//    id 'org.spongepowered.mixin'
 }
 
 version = mod_version
@@ -133,6 +134,11 @@ dependencies {
 //    runtimeOnly "curse.maven:curios-309927:${curios_version}"
 //    runtimeOnly "curse.maven:patchouli-306770:${patchouli_version}"
 //    runtimeOnly "curse.maven:immersive-engineering-231951:3963698"
+
+    /* Mixin */
+    implementation 'org.spongepowered:mixin:0.8.5'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
 
     // Addons
     subprojects.forEach {

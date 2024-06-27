@@ -1,39 +1,27 @@
 package com.ridanisaurus.emendatusenigmatica.plugin;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.JsonOps;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.api.IEmendatusPlugin;
 import com.ridanisaurus.emendatusenigmatica.api.annotation.EmendatusPluginReference;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidatorLogger;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.compat.CompatModel;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.neoforged.fml.loading.FMLPaths;
-import org.jetbrains.annotations.NotNull;
 //import com.ridanisaurus.emendatusenigmatica.datagen.*;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 //This plugin will be always first
 @EmendatusPluginReference(modid = Reference.MOD_ID, name = "config")
 public class DefaultConfigPlugin implements IEmendatusPlugin {
-    public static final List<String> MATERIAL_IDS = new ArrayList<>();
-    public static final List<String> STRATA_IDS = new ArrayList<>();
-    public static final List<MaterialModel> MATERIALS = new ArrayList<>();
-//    Not used anywhere, commented to reduce memory usage a bit.
+    //    Not used anywhere, commented to reduce memory usage a bit.
+//    public static final List<MaterialModel> MATERIALS = new ArrayList<>();
 //    public static final List<StrataModel> STRATA = new ArrayList<>();
 
     /**
@@ -42,105 +30,7 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
      */
     @Override
     public void load(EmendatusDataRegistry registry) {
-        // Set the path to the defined folder
-        Path configDir = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/");
-
-        // Check if the folder exists
-        if (!configDir.toFile().exists() && configDir.toFile().mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/");
-
-        File strataDir = configDir.resolve("strata/").toFile();
-        if (!strataDir.exists() && strataDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/strata/");
-
-        File materialDir = configDir.resolve("material/").toFile();
-        if (!materialDir.exists() && materialDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/material/");
-
-        File compatDir = configDir.resolve("compat/").toFile();
-        if (!compatDir.exists() && compatDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/compat/");
-
-        registerStrata(strataDir, registry);
-        registerMaterials(materialDir, registry);
-        registerCompat(compatDir, registry);
-    }
-
-    private void registerStrata(@NotNull File strataDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> strataDefinition = FileHelper.loadJsonsWithPaths(strataDir.toPath());
-        Validator validator = new Validator("Main Validator");
-        ValidatorLogger LOGGER = Validator.LOGGER;
-
-        LOGGER.info("Validating and registering data for: Strata");
-        strataDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, StrataModel.validators)) {
-                if (!LOGGER.shouldLog) return;
-                LOGGER.printSpacer(2);
-                LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                return;
-            }
-
-            Optional<Pair<StrataModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(StrataModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            StrataModel strataModel = result.get().getFirst();
-            registry.registerStrata(strataModel);
-//            STRATA.add(strataModel);
-            STRATA_IDS.add(strataModel.getId());
-        });
-    }
-
-    private void registerMaterials(@NotNull File materialDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> materialDefinition = FileHelper.loadJsonsWithPaths(materialDir.toPath());
-        Validator validator = new Validator("Main Validator");
-        ValidatorLogger LOGGER = Validator.LOGGER;
-
-        LOGGER.info("Validating and registering data for: Material");
-        materialDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, MaterialModel.validators)) {
-                if (!LOGGER.shouldLog) return;
-                LOGGER.printSpacer(2);
-                LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                return;
-            }
-
-            Optional<Pair<MaterialModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(MaterialModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            MaterialModel materialModel = result.get().getFirst();
-            registry.getMaterialOrRegister(materialModel.getId(), materialModel);
-            MATERIALS.add(materialModel);
-            MATERIAL_IDS.add(materialModel.getId());
-        });
-    }
-
-    private void registerCompat(@NotNull File compatDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> compatDefinition = FileHelper.loadJsonsWithPaths(compatDir.toPath());
-        Validator validator = new Validator("Main Validator");
-        ValidatorLogger LOGGER = Validator.LOGGER;
-
-        LOGGER.info("Validating and registering data for: Compatibility");
-        compatDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, CompatModel.validators)) {
-                if (LOGGER.shouldLog) {
-                    LOGGER.printSpacer(2);
-                    LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                }
-                return;
-            }
-
-            Optional<Pair<CompatModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(CompatModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            CompatModel compatModel = result.get().getFirst();
-            registry.registerCompat(compatModel);
-        });
-        LOGGER.restartSpacer();
-        LOGGER.info("Finished validation and registration of data files!");
-        LOGGER.printSpacer(0);
-    }
-
-    private void registerDeposits() {
-        //TODO: Figure out how to move deposit generation here, so other addon can add deposits :D?
+        DefaultLoader.load(registry);
     }
 
     @Override

@@ -22,25 +22,10 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.test;
 
-import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import net.minecraft.world.item.Item;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
-public class BasicItem extends Item
-{
-    public final int highlight2;
-    public final int highlight1;
-    public final int base;
-    public final int shadow1;
-    public final int shadow2;
-
-    public BasicItem(MaterialModel material) {
-        super(new Properties());
-        this.highlight2 = material.getColors().getHighlightColor(3);
-        this.highlight1 = material.getColors().getHighlightColor(1);
-        this.base = material.getColors().getMaterialColor();
-        this.shadow1 = material.getColors().getShadowColor(1);
-        this.shadow2 = material.getColors().getShadowColor(2);
-    }
-}
+import javax.annotation.ParametersAreNonnullByDefault;

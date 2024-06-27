@@ -24,76 +24,94 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.parser.model;
 
+import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.Validator;
 
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
-public class MaterialCompatModel
-{
-    public static final Codec<MaterialCompatModel> CODEC = RecordCodecBuilder.create(x -> x.group(
-            Codec.BOOL.optionalFieldOf("create").forGetter(i -> Optional.of(i.create)),
-            Codec.BOOL.optionalFieldOf("thermal").forGetter(i -> Optional.of(i.thermal)),
-            Codec.BOOL.optionalFieldOf("mekanism").forGetter(i -> Optional.of(i.mekanism)),
-            Codec.BOOL.optionalFieldOf("ars_nouveau").forGetter(i -> Optional.of(i.ars_nouveau)),
-            Codec.BOOL.optionalFieldOf("blood_magic").forGetter(i -> Optional.of(i.blood_magic)),
-            Codec.BOOL.optionalFieldOf("occultism").forGetter(i -> Optional.of(i.occultism))
-    ).apply(x, (create, thermal, mekanism, ars_nouveau, blood_magic, occultism) -> new MaterialCompatModel(
-            create.orElse(true),
-            thermal.orElse(true),
-            mekanism.orElse(true),
-            ars_nouveau.orElse(true),
-            blood_magic.orElse(true),
-            occultism.orElse(true)
-    )));
+public class MaterialCompatModel {
+	public static final Codec<MaterialCompatModel> CODEC = RecordCodecBuilder.create(x -> x.group(
+			Codec.BOOL.optionalFieldOf("create").forGetter(i -> Optional.of(i.create)),
+			Codec.BOOL.optionalFieldOf("thermal").forGetter(i -> Optional.of(i.thermal)),
+			Codec.BOOL.optionalFieldOf("mekanism").forGetter(i -> Optional.of(i.mekanism)),
+			Codec.BOOL.optionalFieldOf("ars_nouveau").forGetter(i -> Optional.of(i.ars_nouveau)),
+			Codec.BOOL.optionalFieldOf("blood_magic").forGetter(i -> Optional.of(i.blood_magic)),
+			Codec.BOOL.optionalFieldOf("occultism").forGetter(i -> Optional.of(i.occultism))
+	).apply(x, (create, thermal, mekanism, ars_nouveau, blood_magic, occultism) -> new MaterialCompatModel(
+			create.orElse(true),
+			thermal.orElse(true),
+			mekanism.orElse(true),
+			ars_nouveau.orElse(true),
+			blood_magic.orElse(true),
+			occultism.orElse(true)
+	)));
 
-    private final boolean create;
-    private final boolean thermal;
-    private final boolean mekanism;
-    private final boolean ars_nouveau;
-    private final boolean blood_magic;
-    private final boolean occultism;
+	private final boolean create;
+	private final boolean thermal;
+	private final boolean mekanism;
+	private final boolean ars_nouveau;
+	private final boolean blood_magic;
+	private final boolean occultism;
 
-    public MaterialCompatModel(boolean create, boolean thermal, boolean mekanism, boolean ars_nouveau, boolean blood_magic, boolean occultism) {
-        this.create = create;
-        this.thermal = thermal;
-        this.mekanism = mekanism;
-        this.ars_nouveau = ars_nouveau;
-        this.blood_magic = blood_magic;
-        this.occultism = occultism;
-    }
+	/**
+	 * Holds verifying functions for each field.
+	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
+	 * Adding suffix _rg will request the original object instead of just the value of the field.
+	 */
+	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
+	static {
+		validators.put("create", new Validator("create").REQUIRES_BOOLEAN);
+		validators.put("thermal", new Validator("thermal").REQUIRES_BOOLEAN);
+		validators.put("mekanism", new Validator("mekanism").REQUIRES_BOOLEAN);
+		validators.put("ars_nouveau", new Validator("ars_nouveau").REQUIRES_BOOLEAN);
+		validators.put("occultism", new Validator("occultism").REQUIRES_BOOLEAN);
+	}
 
-    // Might need to be False during alpha.
-    public MaterialCompatModel() {
-        this.create = true;
-        this.thermal = true;
-        this.mekanism = true;
-        this.ars_nouveau = true;
-        this.blood_magic = true;
-        this.occultism = true;
-    }
+	public MaterialCompatModel(boolean create, boolean thermal, boolean mekanism, boolean ars_nouveau, boolean blood_magic, boolean occultism) {
+		this.create = create;
+		this.thermal = thermal;
+		this.mekanism = mekanism;
+		this.ars_nouveau = ars_nouveau;
+		this.blood_magic = blood_magic;
+		this.occultism = occultism;
+	}
 
-    public boolean getCreateCompat() {
-        return create;
-    }
+	public MaterialCompatModel() {
+		this.create = true;
+		this.thermal = true;
+		this.mekanism = true;
+		this.ars_nouveau = true;
+		this.blood_magic = true;
+		this.occultism = true;
+	}
 
-    public boolean getThermalCompat() {
-        return thermal;
-    }
+	public boolean getCreateCompat() {
+		return create;
+	}
 
-    public boolean getMeknaismCompat() {
-        return mekanism;
-    }
+	public boolean getThermalCompat() {
+		return thermal;
+	}
 
-    public boolean getANCompat() {
-        return ars_nouveau;
-    }
+	public boolean getMeknaismCompat() {
+		return mekanism;
+	}
 
-    public boolean getBMCompat() {
-        return blood_magic;
-    }
+	public boolean getANCompat() {
+		return ars_nouveau;
+	}
 
-    public boolean getOccultismCompat() {
-        return occultism;
-    }
+	public boolean getBMCompat() {
+		return blood_magic;
+	}
+
+	public boolean getOccultismCompat() {
+		return occultism;
+	}
 }

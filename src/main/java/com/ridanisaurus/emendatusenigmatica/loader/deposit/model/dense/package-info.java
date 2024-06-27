@@ -22,14 +22,10 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+package com.ridanisaurus.emendatusenigmatica.loader.deposit.model.dense;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
-public class Reference
-{
-    public static final String MOD_ID = "emendatusenigmatica";
-    public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
-    public static final ResourceLocation AIR_RS = ResourceLocation.parse("minecraft:air");
-}
+import javax.annotation.ParametersAreNonnullByDefault;

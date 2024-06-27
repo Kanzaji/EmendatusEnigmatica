@@ -24,48 +24,66 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.parser.model;
 
+import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.Validator;
 
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
-public class ToolModel
-{
-    public static final Codec<ToolModel> CODEC = RecordCodecBuilder.create(x -> x.group(
-            Codec.FLOAT.optionalFieldOf("damage").forGetter(i -> Optional.of(i.damage)),
-            Codec.FLOAT.optionalFieldOf("speed").forGetter(i -> Optional.of(i.speed)),
-            Codec.INT.optionalFieldOf("durability").forGetter(i -> Optional.of(i.durability))
-    ).apply(x, (damage, speed, durability) -> new ToolModel(
-            damage.orElse(0.0f),
-            speed.orElse(0.0f),
-            durability.orElse(1)
-    )));
+public class ToolModel {
+	public static final Codec<ToolModel> CODEC = RecordCodecBuilder.create(x -> x.group(
+			Codec.FLOAT.optionalFieldOf("damage").forGetter(i -> Optional.of(i.damage)),
+			Codec.FLOAT.optionalFieldOf("speed").forGetter(i -> Optional.of(i.speed)),
+			Codec.INT.optionalFieldOf("durability").forGetter(i -> Optional.of(i.durability))
+	).apply(x, (damage, speed, durability) -> new ToolModel(
+			damage.orElse(0.0f),
+			speed.orElse(0.0f),
+			durability.orElse(1)
+	)));
 
-    private final float damage;
-    private final float speed;
-    private final int durability;
+	private final float damage;
+	private final float speed;
+	private final int durability;
 
-    public ToolModel(float damage, float speed, int durability) {
-        this.damage = damage;
-        this.speed = speed;
-        this.durability = durability;
-    }
+	/**
+	 * Holds verifying functions for each field.
+	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
+	 * Adding suffix _rg will request the original object instead of just the value of the field.
+	 */
+	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-    public ToolModel() {
-        this.damage = 0.0f;
-        this.speed = 0.0f;
-        this.durability = 1;
-    }
+	static {
+		validators.put("damage", new Validator("damage").REQUIRES_FLOAT);
+		validators.put("speed", new Validator("speed").REQUIRES_FLOAT);
+		validators.put("durability", new Validator("durability").REQUIRES_INT);
+	}
 
-    public float getDamage() {
-        return damage;
-    }
+	public ToolModel(float damage, float speed, int durability) {
+		this.damage = damage;
+		this.speed = speed;
+		this.durability = durability;
+	}
 
-    public float getSpeed() {
-        return speed;
-    }
+	public ToolModel() {
+		this.damage = 0.0f;
+		this.speed = 0.0f;
+		this.durability = 1;
+	}
 
-    public int getDurability() {
-        return durability;
-    }
+	public float getDamage() {
+		return damage;
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public int getDurability() {
+		return durability;
+	}
 }

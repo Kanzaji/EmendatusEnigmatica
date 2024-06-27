@@ -24,39 +24,56 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.parser.model;
 
+import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.Validator;
 
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
-public class ArmorModel
-{
-    public static final Codec<ArmorModel> CODEC = RecordCodecBuilder.create(x -> x.group(
-            Codec.INT.optionalFieldOf("protection").forGetter(i -> Optional.of(i.protection)),
-            Codec.INT.optionalFieldOf("durability").forGetter(i -> Optional.of(i.durability))
-    ).apply(x, (protection, durability) -> new ArmorModel(
-            protection.orElse(0),
-            durability.orElse(0)
-    )));
+public class ArmorModel {
+	public static final Codec<ArmorModel> CODEC = RecordCodecBuilder.create(x -> x.group(
+			Codec.INT.optionalFieldOf("protection").forGetter(i -> Optional.of(i.protection)),
+			Codec.INT.optionalFieldOf("durability").forGetter(i -> Optional.of(i.durability))
+	).apply(x, (protection, durability) -> new ArmorModel(
+			protection.orElse(0),
+			durability.orElse(1)
+	)));
 
-    private final int protection;
-    private final int durability;
+	private final int protection;
+	private final int durability;
 
-    public ArmorModel(int protection, int durability) {
-        this.protection = protection;
-        this.durability = durability;
-    }
+	/**
+	 * Holds verifying functions for each field.
+	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
+	 * Adding suffix _rg will request the original object instead of just the value of the field.
+	 */
+	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-    public ArmorModel() {
-        this.protection = 0;
-        this.durability = 1;
-    }
+	static {
+		validators.put("protection", new Validator("protection").REQUIRES_INT);
+		validators.put("durability", new Validator("durability").REQUIRES_INT);
+	}
 
-    public int getProtection() {
-        return this.protection;
-    }
+	public ArmorModel(int protection, int durability) {
+		this.protection = protection;
+		this.durability = durability;
+	}
 
-    public int getDurability() {
-        return this.durability;
-    }
+	public ArmorModel() {
+		this.protection = 0;
+		this.durability = 1;
+	}
+
+	public int getProtection() {
+		return protection;
+	}
+
+	public int getDurability() {
+		return durability;
+	}
 }

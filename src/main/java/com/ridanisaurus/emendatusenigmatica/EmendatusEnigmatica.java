@@ -2,6 +2,7 @@ package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
+import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
@@ -30,8 +31,10 @@ public class EmendatusEnigmatica {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
     private static EmendatusEnigmatica instance;
+    private final EELoader loader;
 
     // Creative Tabs Registration
+    //TODO: Find out how to make cycle-through-content icon here. It will be an interesting challenge!
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Reference.MOD_ID);
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS_TAB = CREATIVE_MODE_TABS.register("ee_tools_tab", () -> CreativeModeTab.builder()
         .title(Component.translatable("itemGroup.emendatusenigmatica.tools"))
@@ -50,6 +53,9 @@ public class EmendatusEnigmatica {
         EEConfig.registerClient(modContainer);
         EEConfig.setupCommon(modContainer);
 
+        this.loader = new EELoader();
+        this.loader.load();
+
         EERegistrar.finalize(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         NeoForge.EVENT_BUS.register(this);
@@ -61,6 +67,10 @@ public class EmendatusEnigmatica {
 
     public static EmendatusEnigmatica getInstance() {
         return instance;
+    }
+
+    public EELoader getLoader() {
+        return loader;
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {}

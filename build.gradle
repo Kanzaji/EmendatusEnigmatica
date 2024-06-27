@@ -137,15 +137,12 @@ dependencies {
 //    runtimeOnly "curse.maven:patchouli-306770:${patchouli_version}"
 //    runtimeOnly "curse.maven:immersive-engineering-231951:3963698"
 
-    /* Mixin */
+    // Mixin
     implementation 'org.spongepowered:mixin:0.8.5'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-
     // Addons
-    subprojects.forEach {
-        runtimeOnly it
-    }
+    subprojects.forEach { runtimeOnly it }
 
     // Examples from the default build.gradle for NeoForge
     // Example mod dependency using a mod jar from ./libs with a flat dir repository

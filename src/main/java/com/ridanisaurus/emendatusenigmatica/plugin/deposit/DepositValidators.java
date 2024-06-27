@@ -31,7 +31,7 @@ import static com.ridanisaurus.emendatusenigmatica.util.validation.Validator.LOG
  * @see DepositValidators#get(JsonElement)
  * @see DepositValidators#getMaxYLevelValidation
  */
-// I have no clue where getMaxYLevelValidation went lol - Kanz
+// I have no clue where getMaxYLevelValidation went - Kanz
 public class DepositValidators {
     private static final EmendatusDataRegistry registry = EmendatusEnigmatica.getInstance().getLoader().getDataRegistry();
     private static final Map<String, Map<String, BiFunction<JsonElement, Path, Boolean>>> validators = new HashMap<>();

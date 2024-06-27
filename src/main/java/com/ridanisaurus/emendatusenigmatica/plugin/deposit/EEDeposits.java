@@ -36,6 +36,9 @@ public class EEDeposits {
 		this.loader = loader;
 	}
 
+	//TODO: Rework setup method as DataGenerator.
+	// This is the actual place where features are generated, so processors are most likely also @Deprecated.
+
 	//	public void setup() {
 //		for (IDepositProcessor activeProcessor : ACTIVE_PROCESSORS) {
 //			if(activeProcessor.getType().equals(DepositType.VANILLA.getType())) {

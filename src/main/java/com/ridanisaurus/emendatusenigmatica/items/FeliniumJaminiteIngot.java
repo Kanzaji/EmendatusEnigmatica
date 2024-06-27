@@ -27,20 +27,22 @@ package com.ridanisaurus.emendatusenigmatica.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class FeliniumJaminiteIngot extends Item
 {
-    public FeliniumJaminiteIngot(Properties properties) {
+    public FeliniumJaminiteIngot(ResourceLocation key) {
         super(new Properties());
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         if(Screen.hasShiftDown()) {
             tooltipComponents.add(Component.literal("This item is cosmetic, and rewarded as a render on your player's model if you are one of my Patreons.").withStyle(ChatFormatting.DARK_AQUA));
             tooltipComponents.add(Component.literal("You can show/hide this reward from the config file without needing to restart the game.").withStyle(ChatFormatting.DARK_AQUA));

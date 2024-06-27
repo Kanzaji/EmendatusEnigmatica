@@ -26,14 +26,17 @@ package com.ridanisaurus.emendatusenigmatica.registries;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
+import com.ridanisaurus.emendatusenigmatica.items.FeliniumJaminiteIngot;
+import com.ridanisaurus.emendatusenigmatica.items.ItemHammer;
 import com.ridanisaurus.emendatusenigmatica.items.PaxelItem;
+import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -46,10 +49,15 @@ import java.util.function.Supplier;
 
 public class EERegistrar
 {
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(EmendatusEnigmatica.MODID);
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(EmendatusEnigmatica.MODID);
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, EmendatusEnigmatica.MODID);
-    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, EmendatusEnigmatica.MODID);
+    // Registries
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Reference.MOD_ID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Reference.MOD_ID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Reference.MOD_ID);
+    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, Reference.MOD_ID);
+
+    // Existing items.
+    public static final DeferredItem<Item> ENIGMATIC_HAMMER = ITEMS.register("enigmatic_hammer", ItemHammer::new);
+    public static final DeferredItem<Item> FELINIUM_JAMINITE = ITEMS.register("felinium_jaminite_ingot", FeliniumJaminiteIngot::new);
 
     // Ore Blocks
     public static Table<String, String, DeferredBlock<Block>> oreBlockTable = HashBasedTable.create();
@@ -130,13 +138,20 @@ public class EERegistrar
     public static Map<String, Supplier<LiquidBlock>> fluidBlockMap = new HashMap<>();
     public static Map<String, DeferredItem<Item>> fluidBucketMap = new HashMap<>();
 
-    // TODO: Make a replacement for ResourceLocation Fluid textures.
-
     public static Supplier<FluidType> fluidType;
     public static Supplier<FlowingFluid> fluidSource;
     public static Supplier<FlowingFluid> fluidFlowing;
     public static Supplier<LiquidBlock> fluidBlock;
     public static Supplier<Item> fluidBucket;
+
+    public static void finalize(IEventBus eventBus) {
+        ITEMS.register(eventBus);
+        BLOCKS.register(eventBus);
+        FLUID_TYPES.register(eventBus);
+        FLUIDS.register(eventBus);
+    }
+
+    // TODO: Make a replacement for ResourceLocation Fluid textures.
 
     //TODO: UNFINISHED
 }

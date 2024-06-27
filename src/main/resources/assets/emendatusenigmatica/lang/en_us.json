@@ -1,5 +1,6 @@
 {
-  "itemGroup.emendatusenigmatica": "Emendatus Enigmatica",
+  "itemGroup.emendatusenigmatica.tools": "Emendatus Enigmatica: Tools and Armor",
+  "itemGroup.emendatusenigmatica.resources": "Emendatus Enigmatica: Resources",
   "item.emendatusenigmatica.enigmatic_hammer": "Enigmatic Hammer",
   "item.emendatusenigmatica.felinium_jaminite_ingot": "Felinium Jaminite Ingot"
 }

@@ -24,35 +24,29 @@
 
 package com.ridanisaurus.emendatusenigmatica.items;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemHammer extends Item
-{
-    RandomSource random;
-
-    public ItemHammer(Properties properties) {
+public class ItemHammer extends Item {
+    public ItemHammer(ResourceLocation key) {
         super(new Properties()
-                // "tab" and "defaultDurability" do not exist anymore.
-                .setNoRepair()
+            .durability(128)
+            .setNoRepair()
         );
     }
 
-    /*FIXME: "container.hurt" does not exist anymore.
     @Override
-    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+    public @NotNull ItemStack getCraftingRemainingItem(ItemStack itemStack) {
         ItemStack container = itemStack.copy();
-        if(container.hurt(1, random, null))
-            return ItemStack.EMPTY;
-         else
-            return container;
+        container.hurtAndBreak(1, null, null, (t) -> {});
+        return container;
     }
-    */
 
     @Override
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
+    public boolean hasCraftingRemainingItem(@NotNull ItemStack stack) {
         return true;
     }
 

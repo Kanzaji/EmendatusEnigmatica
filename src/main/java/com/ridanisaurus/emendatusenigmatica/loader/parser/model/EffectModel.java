@@ -64,13 +64,6 @@ public class EffectModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	static {
-		validators.put("effect", new Validator("effect").getRequiredResourceIDValidation(false));
-		validators.put("level", new Validator("level").REQUIRES_INT);
-		validators.put("showIcon", new Validator("showIcon").REQUIRES_BOOLEAN);
-		validators.put("showParticles", new Validator("showParticles").REQUIRES_BOOLEAN);
-	}
-
 	public EffectModel(String effect, int level, boolean showIcon, boolean showParticles) {
 		this.effect = effect;
 		this.level = level;
@@ -102,5 +95,12 @@ public class EffectModel {
 
 	public boolean isShowParticles() {
 		return showParticles;
+	}
+
+	static {
+		validators.put("effect", new Validator("effect").getRequiredResourceIDValidation(false));
+		validators.put("level", new Validator("level").REQUIRES_INT);
+		validators.put("showIcon", new Validator("showIcon").REQUIRES_BOOLEAN);
+		validators.put("showParticles", new Validator("showParticles").REQUIRES_BOOLEAN);
 	}
 }

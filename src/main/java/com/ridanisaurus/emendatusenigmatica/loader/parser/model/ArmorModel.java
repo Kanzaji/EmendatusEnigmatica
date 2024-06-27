@@ -54,11 +54,6 @@ public class ArmorModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	static {
-		validators.put("protection", new Validator("protection").REQUIRES_INT);
-		validators.put("durability", new Validator("durability").REQUIRES_INT);
-	}
-
 	public ArmorModel(int protection, int durability) {
 		this.protection = protection;
 		this.durability = durability;
@@ -75,5 +70,10 @@ public class ArmorModel {
 
 	public int getDurability() {
 		return durability;
+	}
+
+	static {
+		validators.put("protection", new Validator("protection").REQUIRES_INT);
+		validators.put("durability", new Validator("durability").REQUIRES_INT);
 	}
 }

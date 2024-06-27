@@ -95,6 +95,99 @@ public class MaterialModel {
 	 * Adding suffix _rg will request the original object instead of just the value of the field.
 	 */
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
+
+	public MaterialModel(String id, String source, String localizedName, boolean disableDefaultOre, List<String> processedTypes, List<String> strata,
+	                     MaterialPropertiesModel properties, MaterialGasPropertiesModel gas, MaterialOreDropModel oreDrop, MaterialCompatModel compat, MaterialColorsModel colors, MaterialToolsModel tools, MaterialArmorModel armor) {
+		this.id = id;
+		this.source = source;
+		this.localizedName = localizedName;
+		this.disableDefaultOre = disableDefaultOre;
+		this.processedTypes = processedTypes;
+		this.strata = strata;
+		this.properties = properties;
+		this.gas = gas;
+		this.oreDrop = oreDrop;
+		this.compat = compat;
+		this.colors = colors;
+		this.tools = tools;
+		this.armor = armor;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public boolean isModded() {
+		return !getSource().equals("vanilla");
+	}
+
+	public boolean isVanilla() {
+		return getSource().equals("vanilla");
+	}
+
+	public String getLocalizedName() {
+		return localizedName;
+	}
+
+	public boolean getDisableDefaultOre() {
+		return disableDefaultOre;
+	}
+
+	public List<String> getProcessedTypes() {
+		return processedTypes;
+	}
+
+	public List<String> getStrata() {
+		return strata;
+	}
+
+	public MaterialPropertiesModel getProperties() {
+		return properties;
+	}
+
+	public MaterialGasPropertiesModel getGas() {
+		return gas;
+	}
+
+	public MaterialOreDropModel getOreDrop() {
+		return oreDrop;
+	}
+
+	public MaterialCompatModel getCompat() {
+		return compat;
+	}
+
+	public MaterialColorsModel getColors() {
+		return colors;
+	}
+
+	public MaterialToolsModel getTools() {
+		return tools;
+	}
+
+	public MaterialArmorModel getArmor() {
+		return armor;
+	}
+
+	public ItemLike getOreDefaultDrop() {
+		if (processedTypes.contains("ore")) {
+			if (properties.getMaterialType().equals("gem")) {
+				return processedTypes.contains("gem") ? EERegistrar.gemMap.get(id).get() : oreDrop.getDefaultItemDropAsItem();
+			} else {
+				return processedTypes.contains("raw") ? EERegistrar.rawMap.get(id).get() : oreDrop.getDefaultItemDropAsItem();
+			}
+		} else {
+			//TODO: Test if works as intended.
+			return BuiltInRegistries.ITEM.get(Reference.AIR_RS);
+			// Old Code:
+//			return ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air"));
+		}
+	}
+
 	static {
 		validators.put("id", 			new Validator("id")			.getIDValidation(DefaultConfigPlugin.MATERIAL_IDS));
 		validators.put("source",		new Validator("source")		.getRequiredAcceptsOnlyValidation(List.of("vanilla", "modded"), false));
@@ -289,97 +382,5 @@ public class MaterialModel {
 
 			return gasValidator.validateObject(valueJson, path, MaterialGasPropertiesModel.validators);
 		});
-	}
-
-	public MaterialModel(String id, String source, String localizedName, boolean disableDefaultOre, List<String> processedTypes, List<String> strata,
-	                     MaterialPropertiesModel properties, MaterialGasPropertiesModel gas, MaterialOreDropModel oreDrop, MaterialCompatModel compat, MaterialColorsModel colors, MaterialToolsModel tools, MaterialArmorModel armor) {
-		this.id = id;
-		this.source = source;
-		this.localizedName = localizedName;
-		this.disableDefaultOre = disableDefaultOre;
-		this.processedTypes = processedTypes;
-		this.strata = strata;
-		this.properties = properties;
-		this.gas = gas;
-		this.oreDrop = oreDrop;
-		this.compat = compat;
-		this.colors = colors;
-		this.tools = tools;
-		this.armor = armor;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public boolean isModded() {
-		return !getSource().equals("vanilla");
-	}
-
-	public boolean isVanilla() {
-		return getSource().equals("vanilla");
-	}
-
-	public String getLocalizedName() {
-		return localizedName;
-	}
-
-	public boolean getDisableDefaultOre() {
-		return disableDefaultOre;
-	}
-
-	public List<String> getProcessedTypes() {
-		return processedTypes;
-	}
-
-	public List<String> getStrata() {
-		return strata;
-	}
-
-	public MaterialPropertiesModel getProperties() {
-		return properties;
-	}
-
-	public MaterialGasPropertiesModel getGas() {
-		return gas;
-	}
-
-	public MaterialOreDropModel getOreDrop() {
-		return oreDrop;
-	}
-
-	public MaterialCompatModel getCompat() {
-		return compat;
-	}
-
-	public MaterialColorsModel getColors() {
-		return colors;
-	}
-
-	public MaterialToolsModel getTools() {
-		return tools;
-	}
-
-	public MaterialArmorModel getArmor() {
-		return armor;
-	}
-
-	public ItemLike getOreDefaultDrop() {
-		if (processedTypes.contains("ore")) {
-			if (properties.getMaterialType().equals("gem")) {
-				return processedTypes.contains("gem") ? EERegistrar.gemMap.get(id).get() : oreDrop.getDefaultItemDropAsItem();
-			} else {
-				return processedTypes.contains("raw") ? EERegistrar.rawMap.get(id).get() : oreDrop.getDefaultItemDropAsItem();
-			}
-		} else {
-			//TODO: Test if works as intended.
-			return BuiltInRegistries.ITEM.get(Reference.AIR_RS);
-			// Old Code:
-//			return ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air"));
-		}
 	}
 }

@@ -1,7 +1,7 @@
 package com.ridanisaurus.emendatusenigmatica.api;
 
 import com.google.common.collect.ImmutableList;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.CompatModel;
+import com.ridanisaurus.emendatusenigmatica.loader.parser.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
 import org.jetbrains.annotations.Nullable;

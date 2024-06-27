@@ -67,23 +67,6 @@ public class StrataModel {
 	 * Adding suffix _rg will request the original object instead of just the value of the field.
 	 */
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
-	static {
-		validators.put("id", 			new Validator("id").getIDValidation(DefaultConfigPlugin.STRATA_IDS));
-		validators.put("baseTexture", 	new Validator("baseTexture").getRequiredResourceIDValidation(false));
-		validators.put("suffix", 		new Validator("suffix").getRequiredNonEmptyValidation(false));
-		validators.put("fillerType", 	new Validator("fillerType").getRequiredResourceIDValidation(false));
-		validators.put("localizedName", new Validator("localizedName").getRequiredNonEmptyValidation(false));
-		validators.put("hardness", 		new Validator("hardness").getRange(0, Integer.MAX_VALUE, false));
-		validators.put("resistance", 	new Validator("resistance").getRange(0, Integer.MAX_VALUE, false));
-		validators.put("sampleStrata", 	new Validator("sampleStrata").REQUIRES_BOOLEAN);
-		validators.put("harvestTool", 	new Validator("harvestTool").getAcceptsOnlyValidation(List.of(
-				"pickaxe",
-				"axe",
-				"hoe",
-				"shovel"
-		), false));
-	}
-
 	private final String id;
 	private final ResourceLocation baseTexture;
 	private final String suffix;
@@ -140,5 +123,22 @@ public class StrataModel {
 
 	public boolean getSampleStrata() {
 		return sampleStrata;
+	}
+
+	static {
+		validators.put("id", 			new Validator("id").getIDValidation(DefaultConfigPlugin.STRATA_IDS));
+		validators.put("baseTexture", 	new Validator("baseTexture").getRequiredResourceIDValidation(false));
+		validators.put("suffix", 		new Validator("suffix").getRequiredNonEmptyValidation(false));
+		validators.put("fillerType", 	new Validator("fillerType").getRequiredResourceIDValidation(false));
+		validators.put("localizedName", new Validator("localizedName").getRequiredNonEmptyValidation(false));
+		validators.put("hardness", 		new Validator("hardness").getRange(0, Integer.MAX_VALUE, false));
+		validators.put("resistance", 	new Validator("resistance").getRange(0, Integer.MAX_VALUE, false));
+		validators.put("sampleStrata", 	new Validator("sampleStrata").REQUIRES_BOOLEAN);
+		validators.put("harvestTool", 	new Validator("harvestTool").getAcceptsOnlyValidation(List.of(
+				"pickaxe",
+				"axe",
+				"hoe",
+				"shovel"
+		), false));
 	}
 }

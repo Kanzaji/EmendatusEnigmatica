@@ -65,13 +65,6 @@ public class MaterialCompatModel {
 	 * Adding suffix _rg will request the original object instead of just the value of the field.
 	 */
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
-	static {
-		validators.put("create", new Validator("create").REQUIRES_BOOLEAN);
-		validators.put("thermal", new Validator("thermal").REQUIRES_BOOLEAN);
-		validators.put("mekanism", new Validator("mekanism").REQUIRES_BOOLEAN);
-		validators.put("ars_nouveau", new Validator("ars_nouveau").REQUIRES_BOOLEAN);
-		validators.put("occultism", new Validator("occultism").REQUIRES_BOOLEAN);
-	}
 
 	public MaterialCompatModel(boolean create, boolean thermal, boolean mekanism, boolean ars_nouveau, boolean blood_magic, boolean occultism) {
 		this.create = create;
@@ -113,5 +106,13 @@ public class MaterialCompatModel {
 
 	public boolean getOccultismCompat() {
 		return occultism;
+	}
+
+	static {
+		validators.put("create", new Validator("create").REQUIRES_BOOLEAN);
+		validators.put("thermal", new Validator("thermal").REQUIRES_BOOLEAN);
+		validators.put("mekanism", new Validator("mekanism").REQUIRES_BOOLEAN);
+		validators.put("ars_nouveau", new Validator("ars_nouveau").REQUIRES_BOOLEAN);
+		validators.put("occultism", new Validator("occultism").REQUIRES_BOOLEAN);
 	}
 }

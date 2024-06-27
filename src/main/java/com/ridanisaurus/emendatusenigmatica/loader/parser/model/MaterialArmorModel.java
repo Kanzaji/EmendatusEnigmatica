@@ -86,44 +86,6 @@ public class MaterialArmorModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	static {
-		validators.put("setArmor", new Validator("setArmor").REQUIRES_BOOLEAN);
-		validators.put("setName", new Validator("setName").getNonEmptyValidation(false));
-		validators.put("setDesc", new Validator("setDesc").getNonEmptyValidation(false));
-		validators.put("toughness", new Validator("toughness").REQUIRES_FLOAT);
-		validators.put("enchantability", new Validator("enchantability").REQUIRES_INT);
-		validators.put("knockback", new Validator("knockback").REQUIRES_FLOAT);
-		validators.put("effects", new Validator("effects").getObjectValidation(EffectModel.validators, true));
-
-		TriFunction<Validator, JsonElement, Path, Boolean> armorValidator = (validator, element, path) -> {
-			if (!validator.assertParentObject(element, path)) return false;
-			String armorPiece = validator.getName();
-			JsonObject obj = element.getAsJsonObject();
-			boolean required = false;
-
-			if (!Validator.checkForTEMP(obj, path, false)) {
-				LOGGER.error("Parent object is missing while validating \"%s\" in file \"%s\". Something is not right.".formatted(armorPiece, Validator.obfuscatePath(path)));
-			} else {
-				required = obj.get("TEMP").getAsJsonObject().get(armorPiece).getAsBoolean();
-			}
-
-			JsonElement valueJson = obj.get(armorPiece);
-
-			if (!required) {
-				if (Objects.isNull(valueJson)) return true;
-				LOGGER.warn("\"%s\" should not be present when it's missing from \"processedTypes\" in file \"%s\".".formatted(armorPiece, Validator.obfuscatePath(path)));
-			}
-
-			return validator.getRequiredObjectValidation(ArmorModel.validators, false).apply(valueJson, path);
-		};
-
-		validators.put("helmet_rg",   	(element, path) -> armorValidator.apply(new Validator("helmet"), element, path));
-		validators.put("chestplate_rg", (element, path) -> armorValidator.apply(new Validator("chestplate"), element, path));
-		validators.put("leggings_rg",   (element, path) -> armorValidator.apply(new Validator("leggings"), element, path));
-		validators.put("boots_rg",  	(element, path) -> armorValidator.apply(new Validator("boots"), element, path));
-		validators.put("shield_rg",     (element, path) -> armorValidator.apply(new Validator("shield"), element, path));
-	}
-
 	public MaterialArmorModel(boolean setArmor, List<EffectModel> effects, String setName, String setDesc,
 	                          float toughness, float knockback, int enchantability,
 	                          ArmorModel helmet, ArmorModel chestplate, ArmorModel leggings, ArmorModel boots, ArmorModel shield) {
@@ -201,5 +163,43 @@ public class MaterialArmorModel {
 
 	public ArmorModel getShield() {
 		return shield;
+	}
+
+	static {
+		validators.put("setArmor", new Validator("setArmor").REQUIRES_BOOLEAN);
+		validators.put("setName", new Validator("setName").getNonEmptyValidation(false));
+		validators.put("setDesc", new Validator("setDesc").getNonEmptyValidation(false));
+		validators.put("toughness", new Validator("toughness").REQUIRES_FLOAT);
+		validators.put("enchantability", new Validator("enchantability").REQUIRES_INT);
+		validators.put("knockback", new Validator("knockback").REQUIRES_FLOAT);
+		validators.put("effects", new Validator("effects").getObjectValidation(EffectModel.validators, true));
+
+		TriFunction<Validator, JsonElement, Path, Boolean> armorValidator = (validator, element, path) -> {
+			if (!validator.assertParentObject(element, path)) return false;
+			String armorPiece = validator.getName();
+			JsonObject obj = element.getAsJsonObject();
+			boolean required = false;
+
+			if (!Validator.checkForTEMP(obj, path, false)) {
+				LOGGER.error("Parent object is missing while validating \"%s\" in file \"%s\". Something is not right.".formatted(armorPiece, Validator.obfuscatePath(path)));
+			} else {
+				required = obj.get("TEMP").getAsJsonObject().get(armorPiece).getAsBoolean();
+			}
+
+			JsonElement valueJson = obj.get(armorPiece);
+
+			if (!required) {
+				if (Objects.isNull(valueJson)) return true;
+				LOGGER.warn("\"%s\" should not be present when it's missing from \"processedTypes\" in file \"%s\".".formatted(armorPiece, Validator.obfuscatePath(path)));
+			}
+
+			return validator.getRequiredObjectValidation(ArmorModel.validators, false).apply(valueJson, path);
+		};
+
+		validators.put("helmet_rg",   	(element, path) -> armorValidator.apply(new Validator("helmet"), element, path));
+		validators.put("chestplate_rg", (element, path) -> armorValidator.apply(new Validator("chestplate"), element, path));
+		validators.put("leggings_rg",   (element, path) -> armorValidator.apply(new Validator("leggings"), element, path));
+		validators.put("boots_rg",  	(element, path) -> armorValidator.apply(new Validator("boots"), element, path));
+		validators.put("shield_rg",     (element, path) -> armorValidator.apply(new Validator("shield"), element, path));
 	}
 }

@@ -22,68 +22,55 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.parser.model;
+package com.ridanisaurus.emendatusenigmatica.loader.parser.model.compat;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
 
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
 
-public class ToolModel {
-	public static final Codec<ToolModel> CODEC = RecordCodecBuilder.create(x -> x.group(
-			Codec.FLOAT.optionalFieldOf("damage").forGetter(i -> Optional.of(i.damage)),
-			Codec.FLOAT.optionalFieldOf("speed").forGetter(i -> Optional.of(i.speed)),
-			Codec.INT.optionalFieldOf("durability").forGetter(i -> Optional.of(i.durability))
-	).apply(x, (damage, speed, durability) -> new ToolModel(
-			damage.orElse(0.0f),
-			speed.orElse(0.0f),
-			durability.orElse(1)
-	)));
+import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
 
-	private final float damage;
-	private final float speed;
-	private final int durability;
+public class CompatModel {
+	public static final Codec<CompatModel> CODEC = RecordCodecBuilder.create(x -> x.group(
+			Codec.STRING.fieldOf("id").forGetter(i -> i.id),
+			Codec.list(CompatRecipesModel.CODEC).fieldOf("recipes").forGetter(i -> i.recipes)
+	).apply(x, CompatModel::new));
+	private final String id;
+	private final List<CompatRecipesModel> recipes;
 
 	/**
 	 * Holds verifying functions for each field.
 	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
 	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
+	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	public ToolModel(float damage, float speed, int durability) {
-		this.damage = damage;
-		this.speed = speed;
-		this.durability = durability;
+	public CompatModel(String id, List<CompatRecipesModel> recipes) {
+		this.id = id;
+		this.recipes = recipes;
 	}
 
-	public ToolModel() {
-		this.damage = 0.0f;
-		this.speed = 0.0f;
-		this.durability = 1;
+	public CompatModel() {
+		this.id = "";
+		this.recipes = List.of();
 	}
 
-	public float getDamage() {
-		return damage;
+	public final String getId() {
+		return id;
 	}
 
-	public float getSpeed() {
-		return speed;
-	}
-
-	public int getDurability() {
-		return durability;
+	public final List<CompatRecipesModel> getRecipes() {
+		return recipes;
 	}
 
 	static {
-		validators.put("damage", new Validator("damage").REQUIRES_FLOAT);
-		validators.put("speed", new Validator("speed").REQUIRES_FLOAT);
-		validators.put("durability", new Validator("durability").REQUIRES_INT);
+		validators.put("id", new Validator("id").getRequiredRegisteredIDValidation(DefaultConfigPlugin.MATERIAL_IDS, "Material Registry", false));
+		validators.put("recipes", new Validator("recipes").getRequiredObjectValidation(CompatRecipesModel.validators, true));
 	}
 }

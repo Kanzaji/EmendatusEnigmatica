@@ -67,6 +67,43 @@ public class MaterialOreDropModel {
 	 */
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
+	public MaterialOreDropModel(String drop, int min, int max, boolean uniformCount) {
+		this.drop = drop;
+		this.min = min;
+		this.max = max;
+		this.uniformCount = uniformCount;
+	}
+
+	public MaterialOreDropModel() {
+		this.drop = "";
+		this.min = 1;
+		this.max = 1;
+		this.uniformCount = false;
+	}
+
+	public String getDrop() {
+		return drop;
+	}
+
+	public int getMin() {
+		return min;
+	}
+
+	public int getMax() {
+		return max;
+	}
+
+	public boolean isUniformCount() {
+		return uniformCount;
+	}
+
+	public ItemLike getDefaultItemDropAsItem() {
+		//TODO: Test if works as intended.
+		return BuiltInRegistries.ITEM.get(ResourceLocation.parse(drop));
+		// Old Code:
+//		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(drop));
+	}
+
 	static {
 		Validator dropValidator = new Validator("drop");
 		validators.put("drop_rg", (element, path) -> {
@@ -108,42 +145,5 @@ public class MaterialOreDropModel {
 		});
 
 		validators.put("uniformCount", new Validator("uniformCount").REQUIRES_BOOLEAN);
-	}
-
-	public MaterialOreDropModel(String drop, int min, int max, boolean uniformCount) {
-		this.drop = drop;
-		this.min = min;
-		this.max = max;
-		this.uniformCount = uniformCount;
-	}
-
-	public MaterialOreDropModel() {
-		this.drop = "";
-		this.min = 1;
-		this.max = 1;
-		this.uniformCount = false;
-	}
-
-	public String getDrop() {
-		return drop;
-	}
-
-	public int getMin() {
-		return min;
-	}
-
-	public int getMax() {
-		return max;
-	}
-
-	public boolean isUniformCount() {
-		return uniformCount;
-	}
-
-	public ItemLike getDefaultItemDropAsItem() {
-		//TODO: Test if works as intended.
-		return BuiltInRegistries.ITEM.get(ResourceLocation.parse(drop));
-		// Old Code:
-//		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(drop));
 	}
 }

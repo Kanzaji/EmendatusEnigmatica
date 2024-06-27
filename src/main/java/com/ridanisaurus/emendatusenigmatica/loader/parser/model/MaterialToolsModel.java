@@ -82,43 +82,6 @@ public class MaterialToolsModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	static {
-		validators.put("attackDamage", new Validator("attackDamage").getRequiredRange(0, Integer.MAX_VALUE, false));
-		validators.put("level", new Validator("level").getRequiredRange(0, Integer.MAX_VALUE, false));
-		validators.put("enchantability", new Validator("enchantability").getRequiredRange(0, Integer.MAX_VALUE, false));
-		validators.put("efficiency", new Validator("efficiency").getRequiredRange(0, Integer.MAX_VALUE, false));
-
-		TriFunction<Validator, JsonElement, Path, Boolean> toolValidator = (validator, element, path) -> {
-			if (!validator.assertParentObject(element, path)) return false;
-			String tool = validator.getName();
-			JsonObject obj = element.getAsJsonObject();
-			boolean required = false;
-
-			if (!Validator.checkForTEMP(obj, path, false)) {
-				LOGGER.error("Parent object is missing while validating \"%s\" in file \"%s\". Something is not right.".formatted(tool, Validator.obfuscatePath(path)));
-			} else {
-				required = obj.get("TEMP").getAsJsonObject().get(tool).getAsBoolean();
-			}
-
-			JsonElement valueJson = obj.get(tool);
-
-			if (!required) {
-				if (Objects.isNull(valueJson)) return true;
-				LOGGER.warn("\"%s\" should not be present when it's missing from \"processedTypes\" in file \"%s\".".formatted(tool, Validator.obfuscatePath(path)));
-				return validator.validateObject(valueJson, path, ToolModel.validators);
-			}
-
-			return validator.getRequiredObjectValidation(ToolModel.validators, false).apply(valueJson, path);
-		};
-
-		validators.put("sword_rg",   (element, path) -> toolValidator.apply(new Validator("sword"), element, path));
-		validators.put("pickaxe_rg", (element, path) -> toolValidator.apply(new Validator("pickaxe"), element, path));
-		validators.put("axe_rg",     (element, path) -> toolValidator.apply(new Validator("axe"), element, path));
-		validators.put("shovel_rg",  (element, path) -> toolValidator.apply(new Validator("shovel"), element, path));
-		validators.put("hoe_rg",     (element, path) -> toolValidator.apply(new Validator("hoe"), element, path));
-		validators.put("paxel_rg",   (element, path) -> toolValidator.apply(new Validator("paxel"), element, path));
-	}
-
 	public MaterialToolsModel(float attackDamage, int level, int enchantability, float efficiency, ToolModel sword, ToolModel pickaxe, ToolModel axe, ToolModel shovel, ToolModel hoe, ToolModel paxel) {
 		this.attackDamage = attackDamage;
 		this.level = level;
@@ -183,5 +146,42 @@ public class MaterialToolsModel {
 
 	public ToolModel getPaxel() {
 		return paxel;
+	}
+
+	static {
+		validators.put("attackDamage", new Validator("attackDamage").getRequiredRange(0, Integer.MAX_VALUE, false));
+		validators.put("level", new Validator("level").getRequiredRange(0, Integer.MAX_VALUE, false));
+		validators.put("enchantability", new Validator("enchantability").getRequiredRange(0, Integer.MAX_VALUE, false));
+		validators.put("efficiency", new Validator("efficiency").getRequiredRange(0, Integer.MAX_VALUE, false));
+
+		TriFunction<Validator, JsonElement, Path, Boolean> toolValidator = (validator, element, path) -> {
+			if (!validator.assertParentObject(element, path)) return false;
+			String tool = validator.getName();
+			JsonObject obj = element.getAsJsonObject();
+			boolean required = false;
+
+			if (!Validator.checkForTEMP(obj, path, false)) {
+				LOGGER.error("Parent object is missing while validating \"%s\" in file \"%s\". Something is not right.".formatted(tool, Validator.obfuscatePath(path)));
+			} else {
+				required = obj.get("TEMP").getAsJsonObject().get(tool).getAsBoolean();
+			}
+
+			JsonElement valueJson = obj.get(tool);
+
+			if (!required) {
+				if (Objects.isNull(valueJson)) return true;
+				LOGGER.warn("\"%s\" should not be present when it's missing from \"processedTypes\" in file \"%s\".".formatted(tool, Validator.obfuscatePath(path)));
+				return validator.validateObject(valueJson, path, ToolModel.validators);
+			}
+
+			return validator.getRequiredObjectValidation(ToolModel.validators, false).apply(valueJson, path);
+		};
+
+		validators.put("sword_rg",   (element, path) -> toolValidator.apply(new Validator("sword"), element, path));
+		validators.put("pickaxe_rg", (element, path) -> toolValidator.apply(new Validator("pickaxe"), element, path));
+		validators.put("axe_rg",     (element, path) -> toolValidator.apply(new Validator("axe"), element, path));
+		validators.put("shovel_rg",  (element, path) -> toolValidator.apply(new Validator("shovel"), element, path));
+		validators.put("hoe_rg",     (element, path) -> toolValidator.apply(new Validator("hoe"), element, path));
+		validators.put("paxel_rg",   (element, path) -> toolValidator.apply(new Validator("paxel"), element, path));
 	}
 }

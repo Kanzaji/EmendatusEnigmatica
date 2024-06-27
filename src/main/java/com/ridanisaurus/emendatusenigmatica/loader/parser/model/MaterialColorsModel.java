@@ -73,6 +73,50 @@ public class MaterialColorsModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
+	public MaterialColorsModel(@Nullable String fluidColor, @Nullable String gasColor, @Nullable String particlesColor, @Nullable String materialColor, @Nullable String oxidizationColor) {
+		this.fluidColor = fluidColor;
+		this.gasColor = gasColor;
+		this.particlesColor = particlesColor;
+		this.materialColor = materialColor;
+		this.oxidizationColor = oxidizationColor;
+	}
+
+	public MaterialColorsModel() {
+		this.fluidColor = null;
+		this.gasColor = null;
+		this.particlesColor = null;
+		this.materialColor = null;
+		this.oxidizationColor = null;
+	}
+
+	public int getMaterialColor() {
+		return materialColor != null ? ColorHelper.HEXtoDEC(materialColor) : -1;
+	}
+
+	public int getHighlightColor(int factor) {
+		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, true)) : -1;
+	}
+
+	public int getShadowColor(int factor) {
+		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, false)) : -1;
+	}
+
+	public int getOxidizationColor() {
+		return oxidizationColor != null ? ColorHelper.HEXtoDEC(oxidizationColor) : -1;
+	}
+
+	public int getFluidColor() {
+		return fluidColor != null ? ColorHelper.HEXtoDEC(fluidColor) : -1;
+	}
+
+	public int getGasColor() {
+		return gasColor != null ? ColorHelper.HEXtoDEC(gasColor) : -1;
+	}
+
+	public int getParticlesColor() {
+		return particlesColor != null ? ColorHelper.HEXtoDEC(particlesColor) : -1;
+	}
+
 	static {
 		validators.put("fluidColor", new Validator("fluidColor").getHexColorValidation(false));
 		validators.put("materialColor", new Validator("materialColor").getHexColorValidation(false));
@@ -86,8 +130,8 @@ public class MaterialColorsModel {
 			Runnable warnValidation = () -> {
 				if (!Validator.checkForTEMP(obj, path, false)) {
 					LOGGER.warn(
-						"Parent data is missing while verifying \"%s\" in file \"%s\", something is not right."
-						.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
+							"Parent data is missing while verifying \"%s\" in file \"%s\", something is not right."
+									.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
 					);
 					return;
 				}
@@ -106,11 +150,11 @@ public class MaterialColorsModel {
 				boolean gas	   = types.contains(new JsonPrimitive("gas"));
 				if (!(infuse || slurry || gas) && Objects.nonNull(valueJson)) {
 					LOGGER.warn("\"%s\" should not be present when \"infuse_type\", \"slurry\" or \"gas\" are not present in \"processedTypes\" in file \"%s\"."
-						.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
+							.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
 					);
 				} else if (Objects.isNull(valueJson)) {
 					LOGGER.warn("\"%s\" should be set when \"infuse_type\", \"slurry\" or \"gas\" are present in \"processedTypes\" in file \"%s\"."
-						.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
+							.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
 					);
 				}
 			};
@@ -162,49 +206,5 @@ public class MaterialColorsModel {
 
 		validators.put("particlesColor_rg", (element, path) -> validationFunction.apply(new Validator("particlesColor"), "hasParticles", element, path));
 		validators.put("oxidizationColor_rg", (element, path) -> validationFunction.apply(new Validator("oxidizationColor"), "hasOxidization", element, path));
-	}
-
-	public MaterialColorsModel(@Nullable String fluidColor, @Nullable String gasColor, @Nullable String particlesColor, @Nullable String materialColor, @Nullable String oxidizationColor) {
-		this.fluidColor = fluidColor;
-		this.gasColor = gasColor;
-		this.particlesColor = particlesColor;
-		this.materialColor = materialColor;
-		this.oxidizationColor = oxidizationColor;
-	}
-
-	public MaterialColorsModel() {
-		this.fluidColor = null;
-		this.gasColor = null;
-		this.particlesColor = null;
-		this.materialColor = null;
-		this.oxidizationColor = null;
-	}
-
-	public int getMaterialColor() {
-		return materialColor != null ? ColorHelper.HEXtoDEC(materialColor) : -1;
-	}
-
-	public int getHighlightColor(int factor) {
-		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, true)) : -1;
-	}
-
-	public int getShadowColor(int factor) {
-		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, false)) : -1;
-	}
-
-	public int getOxidizationColor() {
-		return oxidizationColor != null ? ColorHelper.HEXtoDEC(oxidizationColor) : -1;
-	}
-
-	public int getFluidColor() {
-		return fluidColor != null ? ColorHelper.HEXtoDEC(fluidColor) : -1;
-	}
-
-	public int getGasColor() {
-		return gasColor != null ? ColorHelper.HEXtoDEC(gasColor) : -1;
-	}
-
-	public int getParticlesColor() {
-		return particlesColor != null ? ColorHelper.HEXtoDEC(particlesColor) : -1;
 	}
 }

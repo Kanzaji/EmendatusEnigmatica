@@ -1001,7 +1001,7 @@ public class Validator {
     /**
      * Used as a cache of ConfigDir, instead of calling get each time obfuscatePath executes.
      */
-    private static Path CONFIGDIR = null;
+    private static Path CONFIG_DIR = null;
     /**
      * Used to cut off part of the path that is not in minecraft directory.<br><br>
      * Input: <br>
@@ -1012,7 +1012,7 @@ public class Validator {
      * @return String with an obfuscated path.
      */
     public static String obfuscatePath(Path path) {
-        if (Objects.isNull(CONFIGDIR)) CONFIGDIR = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/");
-        return CONFIGDIR.relativize(path).toString();
+        if (Objects.isNull(CONFIG_DIR)) CONFIG_DIR = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/");
+        return CONFIG_DIR.relativize(path).toString();
     }
 }

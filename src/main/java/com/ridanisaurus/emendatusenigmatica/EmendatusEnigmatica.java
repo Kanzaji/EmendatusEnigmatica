@@ -1,6 +1,7 @@
 package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
+import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +28,8 @@ import org.slf4j.Logger;
 @Mod(Reference.MOD_ID)
 public class EmendatusEnigmatica {
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
+    private static EmendatusEnigmatica instance;
 
     // Creative Tabs Registration
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Reference.MOD_ID);
@@ -44,7 +46,9 @@ public class EmendatusEnigmatica {
     );
 
     public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) {
-        modEventBus.addListener(this::commonSetup);
+        instance = this;
+        EEConfig.registerClient(modContainer);
+        EEConfig.setupCommon(modContainer);
 
         EERegistrar.finalize(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
@@ -52,6 +56,11 @@ public class EmendatusEnigmatica {
 
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::commonSetup);
+    }
+
+    public static EmendatusEnigmatica getInstance() {
+        return instance;
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {}

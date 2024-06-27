@@ -6,13 +6,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 public class CompatRecipesModel {
     public static final Codec<CompatRecipesModel> CODEC = RecordCodecBuilder.create(x -> x.group(

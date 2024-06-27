@@ -1,10 +1,9 @@
-package com.ridanisaurus.emendatusenigmatica.loader.deposit.model;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
 import com.ridanisaurus.emendatusenigmatica.loader.deposit.EEDeposits;
 import com.ridanisaurus.emendatusenigmatica.loader.deposit.model.dense.DenseDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.loader.deposit.model.dike.DikeDepositConfigModel;
@@ -22,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 /**
  * Class used to manage validators for each deposit type, and as a utility class for DepositValidators,

@@ -3,8 +3,8 @@ package com.ridanisaurus.emendatusenigmatica.loader.deposit.model.vanilla;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
-import com.ridanisaurus.emendatusenigmatica.loader.deposit.model.DepositValidators;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.DepositValidators;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
 import org.jetbrains.annotations.Nullable;
 

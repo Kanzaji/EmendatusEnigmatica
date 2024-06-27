@@ -4,13 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 public class CompatValuesModel {
     public static final Codec<CompatValuesModel> CODEC = RecordCodecBuilder.create(x -> x.group(

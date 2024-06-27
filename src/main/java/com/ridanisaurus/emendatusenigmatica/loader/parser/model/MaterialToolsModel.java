@@ -28,7 +28,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 import org.apache.commons.lang3.function.TriFunction;
 
 import java.nio.file.Path;
@@ -38,7 +38,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 public class MaterialToolsModel {
 	public static final Codec<MaterialToolsModel> CODEC = RecordCodecBuilder.create(x -> x.group(

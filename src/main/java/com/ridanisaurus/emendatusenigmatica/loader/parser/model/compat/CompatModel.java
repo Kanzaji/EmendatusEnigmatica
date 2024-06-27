@@ -25,17 +25,14 @@
 package com.ridanisaurus.emendatusenigmatica.loader.parser.model.compat;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
 
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
-
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
 
 public class CompatModel {
 	public static final Codec<CompatModel> CODEC = RecordCodecBuilder.create(x -> x.group(

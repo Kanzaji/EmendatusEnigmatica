@@ -31,7 +31,7 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -42,7 +42,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 public class MaterialModel {
 	public static final Codec<MaterialModel> CODEC = RecordCodecBuilder.create(x -> x.group(

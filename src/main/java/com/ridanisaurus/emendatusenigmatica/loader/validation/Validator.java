@@ -1,4 +1,4 @@
-package com.ridanisaurus.emendatusenigmatica.loader;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

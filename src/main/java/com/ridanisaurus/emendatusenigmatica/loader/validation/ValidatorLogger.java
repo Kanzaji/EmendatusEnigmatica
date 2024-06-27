@@ -1,4 +1,4 @@
-package com.ridanisaurus.emendatusenigmatica.loader;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import org.slf4j.Logger;

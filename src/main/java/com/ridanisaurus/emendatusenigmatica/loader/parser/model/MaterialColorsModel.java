@@ -30,7 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.Validator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +42,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static com.ridanisaurus.emendatusenigmatica.loader.Validator.LOGGER;
+import static com.ridanisaurus.emendatusenigmatica.loader.validation.Validator.LOGGER;
 
 public class MaterialColorsModel {
 	// TODO 3.0: Change gasColor to chemicalColor

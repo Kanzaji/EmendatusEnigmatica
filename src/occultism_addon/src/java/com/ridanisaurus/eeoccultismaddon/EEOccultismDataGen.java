@@ -8,8 +8,8 @@ package com.ridanisaurus.eeoccultismaddon;
 //import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 //import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 //import com.ridanisaurus.emendatusenigmatica.util.Reference;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.data.DataGenerator;
+//import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.function.Consumer;

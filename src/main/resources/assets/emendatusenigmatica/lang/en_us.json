@@ -2,5 +2,7 @@
   "itemGroup.emendatusenigmatica.tools": "Emendatus Enigmatica: Tools and Armor",
   "itemGroup.emendatusenigmatica.resources": "Emendatus Enigmatica: Resources",
   "item.emendatusenigmatica.enigmatic_hammer": "Enigmatic Hammer",
-  "item.emendatusenigmatica.felinium_jaminite_ingot": "Felinium Jaminite Ingot"
+  "item.emendatusenigmatica.felinium_jaminite_ingot": "Felinium Jaminite Ingot",
+  "resourcepack.emendatusenigmatica.title": "EE: Generated Resource Pack",
+  "resourcepack.emendatusenigmatica.desc": "Used by EE to provide textures for blocks and items."
 }

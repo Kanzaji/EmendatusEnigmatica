@@ -22,10 +22,26 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.datagen.base;
 
-// FIXME: ArmorMaterial is now Final.
-public class ArmorTier
-{
+import net.minecraft.SharedConstants;
+import net.minecraft.data.DataGenerator;
+import net.neoforged.fml.loading.FMLPaths;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+
+public class DataGeneratorFactory {
+
+    public static Path ROOT_PATH;
+
+    public static void init() {
+        ROOT_PATH = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/default");
+    }
+
+    @Contract(" -> new")
+    public static @NotNull DataGenerator createEEDataGenerator() {
+        return new DataGenerator(ROOT_PATH, SharedConstants.getCurrentVersion(), true);
+    }
 }

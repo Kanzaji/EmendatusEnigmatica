@@ -11,9 +11,6 @@ package com.ridanisaurus.eeoccultismaddon;
 //import net.minecraft.data.DataGenerator;
 //import net.minecraft.resources.ResourceLocation;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 public class EEOccultismDataGen {
 //	public static class Recipes extends EERecipeProvider {
 //

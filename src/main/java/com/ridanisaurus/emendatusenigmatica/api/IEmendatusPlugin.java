@@ -19,7 +19,7 @@ public interface IEmendatusPlugin {
 
     /**
      * Method used to register minecraft objects like items or blocks
-     *
+     * <p>
      * You will only need to register objects if you are adding new types that aren't supported by EE
      * @param materialModels A list of all the available materials
      */
@@ -27,7 +27,7 @@ public interface IEmendatusPlugin {
 
     /**
      * Method used to register dynamic datagens
-     *
+     * <p>
      * This will not run at your typical datagen time, this datagen are executed at runtime and automatically injected into the game but they function the same as normal datagen
      * @param generator
      * @param registry

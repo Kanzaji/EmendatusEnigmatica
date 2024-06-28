@@ -42,7 +42,7 @@ public class FileHelper {
 		Map<Path, JsonObject> results = new HashMap<>();
 		dir = dir.toAbsolutePath();
 		if (Files.notExists(dir) || !Files.isDirectory(dir)) {
-			EmendatusEnigmatica.LOGGER.error("Provided path to load jsons from (" + dir + ") doesn't exist.");
+            EmendatusEnigmatica.LOGGER.error("Provided path to load jsons from ({}) doesn't exist.", dir);
 			return results;
 		}
 
@@ -55,11 +55,11 @@ public class FileHelper {
 					}
 					if (file.getFileName().toString().endsWith(".json")) results.put(file, JsonParser.parseReader(Files.newBufferedReader(file)).getAsJsonObject());
 				} catch (Exception e) {
-					EmendatusEnigmatica.LOGGER.error("Failed parsing json file at " +file.toAbsolutePath() + ".", e);
+                    EmendatusEnigmatica.LOGGER.error("Failed parsing json file at {}.", file.toAbsolutePath(), e);
 				}
 			});
 		} catch (Exception ex) {
-			EmendatusEnigmatica.LOGGER.error("Failed opening provided path (" + dir + ") from which json files were meant to be loaded.", ex);
+            EmendatusEnigmatica.LOGGER.error("Failed opening provided path ({}) from which json files were meant to be loaded.", dir, ex);
 		}
 		return results;
 	}

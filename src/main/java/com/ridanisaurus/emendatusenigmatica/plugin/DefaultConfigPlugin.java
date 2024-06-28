@@ -1,20 +1,14 @@
 package com.ridanisaurus.emendatusenigmatica.plugin;
 
-import com.google.gson.JsonObject;
-import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.api.IEmendatusPlugin;
 import com.ridanisaurus.emendatusenigmatica.api.annotation.EmendatusPluginReference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
-import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
-import net.neoforged.fml.loading.FMLPaths;
 //import com.ridanisaurus.emendatusenigmatica.datagen.*;
 
-import java.io.File;
-import java.nio.file.Path;
 import java.util.*;
 
 //This plugin will be always first

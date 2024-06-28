@@ -28,7 +28,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -46,6 +45,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.ItemAbilities;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -58,13 +58,13 @@ public class PaxelItem extends DiggerItem
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility toolAction) {
         return toolAction == PAXEL_DIG || ItemAbilities.DEFAULT_AXE_ACTIONS.contains(toolAction)
                 || ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) || ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext ctx) {
+    public @NotNull InteractionResult useOn(UseOnContext ctx) {
         Level level = ctx.getLevel();
         BlockPos blockPos = ctx.getClickedPos();
         Player player = ctx.getPlayer();
@@ -88,7 +88,7 @@ public class PaxelItem extends DiggerItem
                 CampfireBlock.dowse(player, level, blockPos, blockState);
                 resultToSet = blockState.setValue(CampfireBlock.LIT, false);
             }
-            if(resultToSet == null) {
+            if (resultToSet == null) {
                 return InteractionResult.PASS;
             }
         }

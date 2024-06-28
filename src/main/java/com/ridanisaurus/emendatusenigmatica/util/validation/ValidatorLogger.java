@@ -75,10 +75,10 @@ public class ValidatorLogger {
             spacerPrinted = true;
         }
         switch (level) {
-            case 1 -> logger.warn(" " + msg);
+            case 1 -> logger.warn(" {}", msg);
             case 2 -> logger.error(msg);
             case -1 -> logger.debug(msg);
-            default -> logger.info(" " + msg);
+            default -> logger.info(" {}", msg);
         }
     }
     public void restartSpacer() {

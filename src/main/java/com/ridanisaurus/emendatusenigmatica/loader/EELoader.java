@@ -51,7 +51,7 @@ public class EELoader {
     /**
      * Scans for classes that have the annotation {@link EmendatusPluginReference} and implements the class {@link IEmendatusPlugin} and
      * creates an instance for those classes.
-     *
+     * <p>
      * If the class is {@link DefaultConfigPlugin} goes at the start of the list as it has priority.
      */
     private void scanForClasses(){

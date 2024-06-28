@@ -859,7 +859,7 @@ public class Validator {
 
         Consumer<JsonObject> addTemp = jsonObject -> {
             checkForTEMP(jsonObject, path, true);
-            jsonObject.add("TEMP", tempObject.deepCopy());;
+            jsonObject.add("TEMP", tempObject.deepCopy());
         };
 
         AtomicBoolean validation = new AtomicBoolean(true);

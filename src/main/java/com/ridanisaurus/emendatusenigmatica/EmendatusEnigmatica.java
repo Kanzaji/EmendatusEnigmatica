@@ -2,24 +2,20 @@ package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
+import com.ridanisaurus.emendatusenigmatica.datagen.base.DataGeneratorFactory;
+import com.ridanisaurus.emendatusenigmatica.datagen.base.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
@@ -53,16 +49,17 @@ public class EmendatusEnigmatica {
         EEConfig.registerClient(modContainer);
         EEConfig.setupCommon(modContainer);
 
+        DataGeneratorFactory.init();
+
         this.loader = new EELoader();
         this.loader.load();
 
         EERegistrar.finalize(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
-        NeoForge.EVENT_BUS.register(this);
 
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
-        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::injectDatapackFinder);
     }
 
     public static EmendatusEnigmatica getInstance() {
@@ -73,19 +70,11 @@ public class EmendatusEnigmatica {
         return loader;
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {}
-
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         // Will probably be used to register stuff from the registries after generation.
     }
 
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {}
-
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = Reference.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {}
+    public void injectDatapackFinder(@NotNull AddPackFindersEvent event) {
+        event.addRepositorySource(new EEPackFinder(event.getPackType()));
     }
 }

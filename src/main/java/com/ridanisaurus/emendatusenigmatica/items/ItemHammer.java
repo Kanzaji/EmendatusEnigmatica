@@ -25,7 +25,6 @@
 package com.ridanisaurus.emendatusenigmatica.items;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;

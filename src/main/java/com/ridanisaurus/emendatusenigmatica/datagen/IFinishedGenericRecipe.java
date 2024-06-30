@@ -22,26 +22,28 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen.base;
+package com.ridanisaurus.emendatusenigmatica.datagen;
 
-import net.minecraft.SharedConstants;
-import net.minecraft.data.DataGenerator;
-import net.neoforged.fml.loading.FMLPaths;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.JsonObject;
+import net.minecraft.resources.ResourceLocation;
 
-import java.nio.file.Path;
+public interface IFinishedGenericRecipe {
+	void serializeRecipeData(JsonObject recipeJSON);
 
-public class DataGeneratorFactory {
+	default JsonObject serializeRecipe() {
+		JsonObject jsonobject = new JsonObject();
 
-    public static Path ROOT_PATH;
+		this.serializeRecipeData(jsonobject);
+		return jsonobject;
+	}
 
-    public static void init() {
-        ROOT_PATH = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/default");
-    }
+	ResourceLocation getId();
 
-    @Contract(" -> new")
-    public static @NotNull DataGenerator createEEDataGenerator() {
-        return new DataGenerator(ROOT_PATH, SharedConstants.getCurrentVersion(), true);
-    }
+	String getType();
+
+//	@Nullable
+//	JsonObject serializeAdvancement();
+//
+//	@Nullable
+//	ResourceLocation getAdvancementId();
 }

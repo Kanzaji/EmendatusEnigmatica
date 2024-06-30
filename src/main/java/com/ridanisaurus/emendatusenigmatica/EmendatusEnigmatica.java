@@ -2,8 +2,8 @@ package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.DataGeneratorFactory;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EEPackFinder;
+import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
+import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -13,7 +13,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;

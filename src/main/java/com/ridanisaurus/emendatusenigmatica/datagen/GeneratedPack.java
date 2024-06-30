@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen.base;
+package com.ridanisaurus.emendatusenigmatica.datagen;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -92,6 +92,7 @@ public class GeneratedPack implements PackResources {
         return locationInfo;
     }
 
+    //TODO: Test if some mod (like apotheosis) lists all of the resources with a filter, this doesn't cause issues (like it used to in 1.19.2)
     private void getChildResourceLocations(ResourceOutput rsOut, int depth, Path current, String currentRLNS, String currentRLPath) {
         if (!Files.exists(current) || !Files.isDirectory(current)) return;
         try (Stream<Path> list = Files.list(current)) {

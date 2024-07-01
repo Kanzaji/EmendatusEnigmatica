@@ -1,5 +1,6 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.provider.sub;
 
+import com.machinezoo.noexception.throwing.ThrowingBiConsumer;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -28,41 +29,66 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
-//TODO: Create wrappers of vanilla methods for generating loot table builders.
-// All of those are protected, so those are unfortunately necessary.
-// Also find a way to get instance of this class as it's needed to add loot tables >.>
 public class EEBlockLootSubProvider extends BlockLootSubProvider {
-    protected final Map<Block, LootTable.Builder> blockLootTable = new HashMap<>();
+    private static final Map<Block, BiConsumer<EEBlockLootSubProvider, Block>> blockLootTable = new HashMap<>();
 
     public EEBlockLootSubProvider(HolderLookup.Provider providers) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), providers);
-    }
+	}
 
     @Override
     protected void generate() {
-		this.blockLootTable.forEach(this::add);
+		blockLootTable.forEach((block, consumer) -> consumer.accept(this, block));
+		// Everything generated, holding loot table generators is useless.
+		blockLootTable.clear();
     }
 
-	protected @NotNull LootTable.Builder selfDrop(Block block) {
-		return LootTable.lootTable().withPool(LootPool.lootPool()
+	public static void selfDrop(Block block) {
+		blockLootTable.put(block, EEBlockLootSubProvider::addSelfDrop);
+	}
+
+	public static void dropWithSilkTouch(@NotNull Block block) {
+		blockLootTable.put(block, EEBlockLootSubProvider::addDropWithSilkTouch);
+	}
+
+	public static void dropCluster(Block block, @NotNull Item item, float min, float max) {
+		blockLootTable.put(block, (instance, bl) -> instance.addDropCluster(bl, item, min, max));
+	}
+
+	public static void oreDrop(Block block, @NotNull Item item) {
+		blockLootTable.put(block, (instance, bl) -> instance.addOreDrop(bl, item));
+	}
+
+	public static void oreCountDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
+		blockLootTable.put(block, (instance, bl) -> instance.addOreCountDrop(bl, item, range));
+	}
+
+	public static void oreUniformedDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
+		blockLootTable.put(block, (instance, bl) -> instance.addOreUniformedDrop(bl, item, range));
+	}
+
+	private void addSelfDrop(Block block) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1))
             .add(LootItem.lootTableItem(block))
             .when(ExplosionCondition.survivesExplosion())
 		);
+		add(block, table);
 	}
 
-    // Replaced by vanilla createSilkTouchOnlyTable(Block)
-//	protected @NotNull LootTable.Builder dropWhenSilkTouch(Block block) {
-//		return LootTable.lootTable().withPool(LootPool.lootPool()
-//				.setRolls(ConstantValue.exactly(1))
-//                .when(hasSilkTouch())
-//				.add(LootItem.lootTableItem(block).apply(ApplyExplosionDecay.explosionDecay()))
-//		);
-//	}
+	private void addDropWithSilkTouch(@NotNull Block block) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1))
+                .when(hasSilkTouch())
+				.add(LootItem.lootTableItem(block).apply(ApplyExplosionDecay.explosionDecay()))
+		);
+		add(block, table);
+	}
 
-	protected @NotNull LootTable.Builder dropWhenSilkTouchWithSetCount(Block block, @NotNull Item item, float min, float max) {
-		return LootTable.lootTable().withPool(LootPool.lootPool()
+	private void addDropCluster(Block block, @NotNull Item item, float min, float max) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1.0F))
             .when(hasSilkTouch())
             .add(LootItem.lootTableItem(block)
@@ -74,20 +100,22 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
                 )
             )
 		);
+		add(block, table);
 	}
 
-	protected @NotNull LootTable.Builder oreDrop(Block block, @NotNull Item item) {
-		return LootTable.lootTable().withPool(LootPool.lootPool()
+	private void addOreDrop(Block block, @NotNull Item item) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1))
             .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
                 .apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
                 .apply(ApplyExplosionDecay.explosionDecay())
             ))
 		);
+		add(block, table);
 	}
 
-	protected @NotNull LootTable.Builder oreCountDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
-		return LootTable.lootTable().withPool(LootPool.lootPool()
+	private void addOreCountDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1.0F))
             .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
                 .apply(SetItemCountFunction.setCount(range))
@@ -95,10 +123,11 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
                 .apply(ApplyExplosionDecay.explosionDecay())
             ))
 		);
+		add(block, table);
 	}
 
-	protected @NotNull LootTable.Builder oreUniformedDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
-		return LootTable.lootTable().withPool(LootPool.lootPool()
+	private void addOreUniformedDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
+		var table = LootTable.lootTable().withPool(LootPool.lootPool()
             .setRolls(ConstantValue.exactly(1.0F))
             .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
                 .apply(SetItemCountFunction.setCount(range))
@@ -106,9 +135,10 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
                 .apply(ApplyExplosionDecay.explosionDecay())
             ))
 		);
+		add(block, table);
 	}
 
-    protected final @NotNull Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
+    private @NotNull Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
         return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
     }
 }

@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+//TODO: Create wrappers of vanilla methods for generating loot table builders.
+// All of those are protected, so those are unfortunately necessary.
+// Also find a way to get instance of this class as it's needed to add loot tables >.>
 public class EEBlockLootSubProvider extends BlockLootSubProvider {
     protected final Map<Block, LootTable.Builder> blockLootTable = new HashMap<>();
 

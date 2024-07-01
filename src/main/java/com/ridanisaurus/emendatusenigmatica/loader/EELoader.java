@@ -82,11 +82,11 @@ public class EELoader {
 		this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.registerMinecraft(this.dataRegistry.getMaterials(), this.dataRegistry.getStrata()));
     }
 
-    public void datagen(DataGenerator dataGenerator){
+    public void datagen(DataGenerator dataGenerator) {
         this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.registerDynamicDataGen(dataGenerator, this.dataRegistry));
     }
 
-    public void finish(){
+    public void finish() {
         this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.finish(this.dataRegistry));
     }
 

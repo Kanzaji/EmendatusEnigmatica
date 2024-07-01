@@ -26,11 +26,11 @@ package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.google.common.collect.Lists;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EETagProvider;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.IFinishedGenericJSON;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.TagBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.builder.TagBuilder;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
@@ -99,13 +99,13 @@ public class BlockHarvestTagsGen {
 				}
 				for (StrataModel strata : registry.getStrata()) {
 					if (processedType.contains("ore")) {
-						ResourceLocation ore = new ResourceLocation("minecraft:stone");
+						ResourceLocation ore = ResourceLocation.parse("minecraft:stone");
 						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
 							ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
 						}
 						harvestLevelSwitch(material, ore);
 						if (processedType.contains("sample")) {
-							ResourceLocation sample = new ResourceLocation("minecraft:stone");
+							ResourceLocation sample = ResourceLocation.parse("minecraft:stone");
 							if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
 								sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
 							}
@@ -114,11 +114,11 @@ public class BlockHarvestTagsGen {
 					}
 				}
 			}
-			if (!woodTool.isEmpty()) new TagBuilder().tags(woodTool).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/needs_wood_tool"));
-			if (!stoneTool.isEmpty()) new TagBuilder().tags(stoneTool).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/needs_stone_tool"));
-			if (!ironTool.isEmpty()) new TagBuilder().tags(ironTool).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/needs_iron_tool"));
-			if (!diamondTool.isEmpty()) new TagBuilder().tags(diamondTool).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/needs_diamond_tool"));
-			if (!netheriteTool.isEmpty()) new TagBuilder().tags(netheriteTool).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/needs_netherite_tool"));
+			if (!woodTool.isEmpty()) new TagBuilder().tags(woodTool).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/needs_wood_tool"));
+			if (!stoneTool.isEmpty()) new TagBuilder().tags(stoneTool).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/needs_stone_tool"));
+			if (!ironTool.isEmpty()) new TagBuilder().tags(ironTool).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/needs_iron_tool"));
+			if (!diamondTool.isEmpty()) new TagBuilder().tags(diamondTool).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/needs_diamond_tool"));
+			if (!netheriteTool.isEmpty()) new TagBuilder().tags(netheriteTool).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/needs_netherite_tool"));
 		}
 
 		private void harvestLevelSwitch(MaterialModel material, ResourceLocation loc) {
@@ -196,7 +196,7 @@ public class BlockHarvestTagsGen {
 				}
 				for (StrataModel strata : registry.getStrata()) {
 					if(processedType.contains("ore")) {
-//						ResourceLocation ore = new ResourceLocation("minecraft:stone");
+//						ResourceLocation ore = ResourceLocation.parse("minecraft:stone");
 						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
 							ResourceLocation ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
 							switch (strata.getHarvestTool()) {
@@ -209,7 +209,7 @@ public class BlockHarvestTagsGen {
 						}
 
 						if(processedType.contains("sample")) {
-//							ResourceLocation sample = new ResourceLocation("minecraft:stone");
+//							ResourceLocation sample = ResourceLocation.parse("minecraft:stone");
 							if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
 								ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
 								switch (strata.getHarvestTool()) {
@@ -224,14 +224,14 @@ public class BlockHarvestTagsGen {
 					}
 				}
 			}
-			if (!shovel.isEmpty()) new TagBuilder().tags(shovel).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/mineable/shovel"));
-			if (!hoe.isEmpty()) new TagBuilder().tags(hoe).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/mineable/hoe"));
-			if (!axe.isEmpty()) new TagBuilder().tags(axe).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/mineable/axe"));
-			if (!pickaxe.isEmpty()) new TagBuilder().tags(pickaxe).save(consumer, new ResourceLocation(Reference.MINECRAFT, "/blocks/mineable/pickaxe"));
+			if (!shovel.isEmpty()) new TagBuilder().tags(shovel).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/mineable/shovel"));
+			if (!hoe.isEmpty()) new TagBuilder().tags(hoe).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/mineable/hoe"));
+			if (!axe.isEmpty()) new TagBuilder().tags(axe).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/mineable/axe"));
+			if (!pickaxe.isEmpty()) new TagBuilder().tags(pickaxe).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MINECRAFT, "/blocks/mineable/pickaxe"));
 			paxel.add("#minecraft:mineable/axe");
 			paxel.add("#minecraft:mineable/pickaxe");
 			paxel.add("#minecraft:mineable/shovel");
-			new TagBuilder().tags(paxel).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/mineable/paxel"));
+			new TagBuilder().tags(paxel).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/mineable/paxel"));
 		}
 
 		@Override

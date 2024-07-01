@@ -8,6 +8,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
@@ -20,6 +21,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.io.IOException;
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Reference.MOD_ID)
 public class EmendatusEnigmatica {
@@ -27,6 +30,7 @@ public class EmendatusEnigmatica {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static EmendatusEnigmatica instance;
     private final EELoader loader;
+    private final DataGenerator generator;
 
     // Creative Tabs Registration
     //TODO: Find out how to make cycle-through-content icon here. It will be an interesting challenge!
@@ -43,12 +47,13 @@ public class EmendatusEnigmatica {
         .displayItems((parameters, output) -> output.accept(EERegistrar.FELINIUM_JAMINITE)).build()
     );
 
-    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) {
+    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) throws IOException {
         instance = this;
         EEConfig.registerClient(modContainer);
         EEConfig.setupCommon(modContainer);
 
         DataGeneratorFactory.init();
+        this.generator = DataGeneratorFactory.createEEDataGenerator();
 
         this.loader = new EELoader();
         this.loader.load();
@@ -56,9 +61,13 @@ public class EmendatusEnigmatica {
         EERegistrar.finalize(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
+        this.loader.datagen(this.generator);
+        generator.run();
+
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::injectDatapackFinder);
+        this.loader.finish();
     }
 
     public static EmendatusEnigmatica getInstance() {

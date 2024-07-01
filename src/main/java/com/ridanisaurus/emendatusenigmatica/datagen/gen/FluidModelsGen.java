@@ -25,8 +25,10 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.*;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.datagen.builder.FluidModelBuilder;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EEBlockModelProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -48,8 +50,11 @@ public class FluidModelsGen extends EEBlockModelProvider {
 			List<String> processedType = material.getProcessedTypes();
 			// Fluids
 			if (processedType.contains("fluid")) {
-				new FluidModelBuilder().textures(new FluidModelBuilder.objectBuilder(false).particle(new ResourceLocation(Reference.MOD_ID, "fluids/fluid_still").toString()))
-						.save(consumer, new ResourceLocation(Reference.MOD_ID, material.getId()));
+				new FluidModelBuilder()
+                    .textures(new FluidModelBuilder
+                        .objectBuilder(false)
+                        .particle(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_still").toString())
+                    ).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId()));
 			}
 		}
 	}

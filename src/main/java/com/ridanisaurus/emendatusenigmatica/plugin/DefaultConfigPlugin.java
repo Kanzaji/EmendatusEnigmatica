@@ -7,7 +7,7 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
-//import com.ridanisaurus.emendatusenigmatica.datagen.*;
+import com.ridanisaurus.emendatusenigmatica.datagen.gen.*;
 
 import java.util.*;
 
@@ -133,20 +133,16 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
 
     @Override
     public void registerDynamicDataGen(DataGenerator generator, EmendatusDataRegistry registry) {
-        //FIXME: Rework this method when Data generation is ported.
-
-//        generator.addProvider(true, new BlockStatesGen(generator, registry));
-//        generator.addProvider(true, new BlockModelsGen(generator, registry));
-//        generator.addProvider(true, new ItemModelsGen(generator, registry));
-//        generator.addProvider(true, new FluidModelsGen(generator, registry));
-//        generator.addProvider(true, new LangGen(generator, registry));
-////        if (EmendatusEnigmatica.BLOODMAGIC_LOADED) generator.addProvider(true, new BloodMagicDataGen.BloodMagicItemModels(generator, registry));
-//
-//        generator.addProvider(true, new BlockTagsGen(generator, registry));
-//        generator.addProvider(true, new ItemTagsGen(generator, registry));
-//        generator.addProvider(true, new FluidTagsGen(generator, registry));
-//        generator.addProvider(true, new BlockHarvestTagsGen.BlockHarvestLevelTagsGen(generator, registry));
-//        generator.addProvider(true, new BlockHarvestTagsGen.BlockHarvestToolTagsGen(generator, registry));
+        generator.addProvider(true, new BlockStatesGen(generator, registry));
+        generator.addProvider(true, new BlockModelsGen(generator, registry));
+        generator.addProvider(true, new ItemModelsGen(generator, registry));
+        generator.addProvider(true, new FluidModelsGen(generator, registry));
+        generator.addProvider(true, new LangGen(generator, registry));
+        generator.addProvider(true, new BlockTagsGen(generator, registry));
+        generator.addProvider(true, new ItemTagsGen(generator, registry));
+        generator.addProvider(true, new FluidTagsGen(generator, registry));
+        generator.addProvider(true, new BlockHarvestTagsGen.BlockHarvestLevelTagsGen(generator, registry));
+        generator.addProvider(true, new BlockHarvestTagsGen.BlockHarvestToolTagsGen(generator, registry));
 //        generator.addProvider(true, new RecipesGen(generator, registry));
 //        generator.addProvider(true, new LootTablesGen(generator, registry));
 //        generator.addProvider(true, new OreFeatureDataGen(generator, registry));

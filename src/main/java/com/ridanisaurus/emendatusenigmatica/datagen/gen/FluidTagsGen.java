@@ -25,10 +25,10 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EETagProvider;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.IFinishedGenericJSON;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.TagBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
+import com.ridanisaurus.emendatusenigmatica.datagen.builder.TagBuilder;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
@@ -51,9 +51,10 @@ public class FluidTagsGen extends EETagProvider {
 		for (MaterialModel material : registry.getMaterials()) {
 			List<String> processedType = material.getProcessedTypes();
 			if (processedType.contains("fluid")) {
-				ResourceLocation fluidSource = EERegistrar.fluidSourceMap.get(material.getId()).getId();
-				ResourceLocation fluidFlowing = EERegistrar.fluidFlowingMap.get(material.getId()).getId();
-				new TagBuilder().tag(fluidSource.toString()).tag(fluidFlowing.toString()).save(consumer, new ResourceLocation(Reference.FORGE, "/fluids/" + material.getId()));
+				//FIXME: getID is missing apparently?
+//				ResourceLocation fluidSource = EERegistrar.fluidSourceMap.get(material.getId()).get().getId();
+//				ResourceLocation fluidFlowing = EERegistrar.fluidFlowingMap.get(material.getId()).getId();
+//				new TagBuilder().tag(fluidSource.toString()).tag(fluidFlowing.toString()).save(consumer, new ResourceLocation(Reference.NEOFORGE, "/fluids/" + material.getId()));
 			}
 		}
 	}

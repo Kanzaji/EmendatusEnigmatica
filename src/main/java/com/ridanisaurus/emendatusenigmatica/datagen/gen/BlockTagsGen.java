@@ -26,11 +26,11 @@ package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.google.common.collect.Lists;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EETagProvider;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.IFinishedGenericJSON;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.TagBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.datagen.builder.TagBuilder;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
@@ -63,13 +63,13 @@ public class BlockTagsGen extends EETagProvider {
 			if (processedType.contains("storage_block")) {
 				ResourceLocation block = EERegistrar.storageBlockMap.get(material.getId()).getId();
 				if (!forgeBlocks.contains("#forge:storage_blocks/" + material.getId())) forgeBlocks.add("#forge:storage_blocks/" + material.getId());
-				new TagBuilder().tag(block.toString()).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/storage_blocks/" + material.getId()));
+				new TagBuilder().tag(block.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/storage_blocks/" + material.getId()));
 			}
 			// Raw Materials
 			if (processedType.contains("raw")) {
 				ResourceLocation raw = EERegistrar.rawBlockMap.get(material.getId()).getId();
 				if (!forgeBlocks.contains("#forge:storage_blocks/raw_" + material.getId())) forgeBlocks.add("#forge:storage_blocks/raw_" + material.getId());
-				new TagBuilder().tag(raw.toString()).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/storage_blocks/raw_" + material.getId()));
+				new TagBuilder().tag(raw.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/storage_blocks/raw_" + material.getId()));
 			}
 			// Ores
 			for (StrataModel strata : registry.getStrata()) {
@@ -93,11 +93,11 @@ public class BlockTagsGen extends EETagProvider {
 			}
 
 		}
-		if (!oresPerMaterial.isEmpty()) oresPerMaterial.forEach((material, oreList) -> new TagBuilder().tags(oreList).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/ores/" + material)));
-		if (!oresInGround.isEmpty()) oresInGround.forEach((strataPrefix, oreType) -> new TagBuilder().tags(oreType).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/ores_in_ground/" + strataPrefix)));
+		if (!oresPerMaterial.isEmpty()) oresPerMaterial.forEach((material, oreList) -> new TagBuilder().tags(oreList).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/ores/" + material)));
+		if (!oresInGround.isEmpty()) oresInGround.forEach((strataPrefix, oreType) -> new TagBuilder().tags(oreType).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/ores_in_ground/" + strataPrefix)));
 
-		if (!forgeBlocks.isEmpty()) new TagBuilder().tags(forgeBlocks).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/storage_blocks"));
-		if (!forgeOres.isEmpty()) new TagBuilder().tags(forgeOres).save(consumer, new ResourceLocation(Reference.FORGE, "/blocks/ores"));
+		if (!forgeBlocks.isEmpty()) new TagBuilder().tags(forgeBlocks).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/storage_blocks"));
+		if (!forgeOres.isEmpty()) new TagBuilder().tags(forgeOres).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.NEOFORGE, "/blocks/ores"));
 	}
 
 	@Override

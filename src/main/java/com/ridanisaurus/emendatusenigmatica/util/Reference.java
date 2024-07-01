@@ -28,8 +28,9 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Reference
 {
+    public static final String NEOFORGE = "neoforge";
     public static final String MOD_ID = "emendatusenigmatica";
     public static final String NAME = "Emendatus Enigmatica";
-    public static final String MC = "minecraft";
+    public static final String MINECRAFT = "minecraft";
     public static final ResourceLocation AIR_RS = ResourceLocation.parse("minecraft:air");
 }

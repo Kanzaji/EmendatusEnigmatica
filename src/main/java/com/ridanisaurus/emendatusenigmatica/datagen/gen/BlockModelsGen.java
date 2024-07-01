@@ -25,11 +25,11 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.BlockModelBuilder;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.EEBlockModelProvider;
-import com.ridanisaurus.emendatusenigmatica.datagen.base.IFinishedGenericJSON;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.datagen.builder.BlockModelBuilder;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EEBlockModelProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -388,9 +388,9 @@ public class BlockModelsGen extends EEBlockModelProvider {
 	private void oxidizationBlock(Consumer<IFinishedGenericJSON> consumer, String base, String age, String type, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.setLoader("forge:composite")
-				.texture("particle",  new ResourceLocation(Reference.MOD_ID, base))
+				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
-						.texture("base",  new ResourceLocation(Reference.MOD_ID, base))
+						.texture("base",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -400,7 +400,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture(age, new ResourceLocation(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
+						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -409,19 +409,19 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.end()
 						.renderType("translucent")
 				)
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	private void oxidizationTintBlock(Consumer<IFinishedGenericJSON> consumer, String highlight2, String highlight1, String base, String shadow1, String shadow2, String age, String type, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.setLoader("forge:composite")
-				.texture("particle",  new ResourceLocation(Reference.MOD_ID, base))
+				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.child("cutout", new BlockModelBuilder("minecraft:block/block")
-						.texture("highlight2", new ResourceLocation(Reference.MOD_ID, highlight2))
-						.texture("highlight1", new ResourceLocation(Reference.MOD_ID, highlight1))
-						.texture("base", new ResourceLocation(Reference.MOD_ID, base))
-						.texture("shadow1", new ResourceLocation(Reference.MOD_ID, shadow1))
-						.texture("shadow2", new ResourceLocation(Reference.MOD_ID, shadow2))
+						.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
+						.texture("highlight1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight1))
+						.texture("base", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+						.texture("shadow1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow1))
+						.texture("shadow2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow2))
 						.element()
 						.cube("#highlight2")
 						.allFaces((d, u) -> u.tintindex(0))
@@ -445,7 +445,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("cutout")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture(age, new ResourceLocation(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
+						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -454,49 +454,49 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.end()
 						.renderType("translucent")
 				)
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	private void clusterBlock(Consumer<IFinishedGenericJSON> consumer, String base, String path) {
 		new BlockModelBuilder("minecraft:block/cross")
-				.texture("cross",  new ResourceLocation(Reference.MOD_ID, base))
-				.texture("particle",  new ResourceLocation(Reference.MOD_ID, base))
+				.texture("cross",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.renderType("cutout")
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	private void clusterTintBlock(Consumer<IFinishedGenericJSON> consumer, String highlight2, String highlight1, String base, String shadow1, String shadow2, String path) {
 		new BlockModelBuilder("emendatusenigmatica:block/bud")
 				.renderType("cutout")
-				.texture("highlight2", new ResourceLocation(Reference.MOD_ID, highlight2))
-				.texture("highlight1", new ResourceLocation(Reference.MOD_ID, highlight1))
-				.texture("base", new ResourceLocation(Reference.MOD_ID, base))
-				.texture("shadow1", new ResourceLocation(Reference.MOD_ID, shadow1))
-				.texture("shadow2", new ResourceLocation(Reference.MOD_ID, shadow2))
-				.texture("particle", new ResourceLocation(Reference.MOD_ID, base))
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
+				.texture("highlight1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight1))
+				.texture("base", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+				.texture("shadow1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow1))
+				.texture("shadow2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow2))
+				.texture("particle", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	private void storageBlock(Consumer<IFinishedGenericJSON> consumer, String base, String path) {
 		new BlockModelBuilder("minecraft:block/block")
-				.texture("base",  new ResourceLocation(Reference.MOD_ID, base))
-				.texture("particle",  new ResourceLocation(Reference.MOD_ID, base))
+				.texture("base",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.element()
 				.cube("#base")
 				.allFaces((d, u) -> u.tintindex(-1))
 				.end()
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	private void storageTintBlock(Consumer<IFinishedGenericJSON> consumer, String highlight2, String highlight1, String base, String shadow1, String shadow2, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.renderType("cutout")
-				.texture("highlight2", new ResourceLocation(Reference.MOD_ID, highlight2))
-				.texture("highlight1", new ResourceLocation(Reference.MOD_ID, highlight1))
-				.texture("base", new ResourceLocation(Reference.MOD_ID, base))
-				.texture("shadow1", new ResourceLocation(Reference.MOD_ID, shadow1))
-				.texture("shadow2", new ResourceLocation(Reference.MOD_ID, shadow2))
-				.texture("particle", new ResourceLocation(Reference.MOD_ID, base))
+				.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
+				.texture("highlight1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight1))
+				.texture("base", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+				.texture("shadow1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow1))
+				.texture("shadow2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow2))
+				.texture("particle", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.element()
 				.cube("#highlight2")
 				.allFaces((d, u) -> u.tintindex(0))
@@ -517,7 +517,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 				.cube("#shadow2")
 				.allFaces((d, u) -> u.tintindex(4))
 				.end()
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	public void oreBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String overlayTexture, String path) {
@@ -535,7 +535,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture("overlay", new ResourceLocation(Reference.MOD_ID, overlayTexture))
+						.texture("overlay", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, overlayTexture))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -543,7 +543,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.allFaces((dir, uv) -> uv.tintindex(-1))
 						.end()
 						.renderType("translucent")
-				).save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	public void oreEmissiveBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String overlayTexture, String path) {
@@ -561,7 +561,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture("overlay", new ResourceLocation(Reference.MOD_ID, overlayTexture))
+						.texture("overlay", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, overlayTexture))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -569,7 +569,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.allFaces((dir, uv) -> uv.tintindex(-1).emissive())
 						.end()
 						.renderType("translucent")
-				).save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	public void oreTintBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String highlight2, String highlight1, String base, String shadow1, String shadow2, String drop, String path) {
@@ -587,11 +587,11 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("cutout", new BlockModelBuilder("minecraft:block/block")
-						.texture("highlight2", new ResourceLocation(Reference.MOD_ID, highlight2))
-						.texture("highlight1", new ResourceLocation(Reference.MOD_ID, highlight1))
-						.texture("base", new ResourceLocation(Reference.MOD_ID, base))
-						.texture("shadow1", new ResourceLocation(Reference.MOD_ID, shadow1))
-						.texture("shadow2", new ResourceLocation(Reference.MOD_ID, shadow2))
+						.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
+						.texture("highlight1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight1))
+						.texture("base", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+						.texture("shadow1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow1))
+						.texture("shadow2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow2))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -625,7 +625,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("cutout")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture("drop", new ResourceLocation(Reference.MOD_ID, drop))
+						.texture("drop", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, drop))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -634,7 +634,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.end()
 						.renderType("translucent")
 				)
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	public void oreEmissiveTintBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String highlight2, String highlight1, String base, String shadow1, String shadow2, String drop, String path) {
@@ -652,11 +652,11 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("cutout", new BlockModelBuilder("minecraft:block/block")
-						.texture("highlight2", new ResourceLocation(Reference.MOD_ID, highlight2))
-						.texture("highlight1", new ResourceLocation(Reference.MOD_ID, highlight1))
-						.texture("base", new ResourceLocation(Reference.MOD_ID, base))
-						.texture("shadow1", new ResourceLocation(Reference.MOD_ID, shadow1))
-						.texture("shadow2", new ResourceLocation(Reference.MOD_ID, shadow2))
+						.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
+						.texture("highlight1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight1))
+						.texture("base", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
+						.texture("shadow1", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow1))
+						.texture("shadow2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, shadow2))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -690,7 +690,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("cutout")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture("drop", new ResourceLocation(Reference.MOD_ID, drop))
+						.texture("drop", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, drop))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -699,7 +699,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.end()
 						.renderType("translucent")
 				)
-				.save(consumer, new ResourceLocation(Reference.MOD_ID, path));
+				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
 	public static String getOreModelName(StrataModel stratum, MaterialModel material) {

@@ -80,7 +80,7 @@ public class EEVirtualPackHandler implements PackResources {
     @Override
     public IoSupplier<InputStream> getResource(@NotNull PackType type, @NotNull ResourceLocation location) {
         Path resolved = path.resolve(getFullPath(type, location));
-        if (!Files.exists(resolved)) throw new RuntimeException(new FileNotFoundException("Resource does not exist!"));
+        if (!Files.exists(resolved)) throw new RuntimeException(new FileNotFoundException("Resource does not exist! File: " + location));
         return IoSupplier.create(resolved);
     }
 

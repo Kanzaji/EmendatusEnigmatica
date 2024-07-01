@@ -1,6 +1,5 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.provider.sub;
 
-import com.machinezoo.noexception.throwing.ThrowingBiConsumer;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -31,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+//TODO: The best option would be to integrate com.ridanisaurus.emendatusenigmatica.datagen.gen.LootTablesGen in here.
 public class EEBlockLootSubProvider extends BlockLootSubProvider {
 	private static final Map<Block, BiConsumer<EEBlockLootSubProvider, Block>> blockLootTable = new HashMap<>();
 

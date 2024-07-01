@@ -32,18 +32,18 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class EEBlockLootSubProvider extends BlockLootSubProvider {
-    private static final Map<Block, BiConsumer<EEBlockLootSubProvider, Block>> blockLootTable = new HashMap<>();
+	private static final Map<Block, BiConsumer<EEBlockLootSubProvider, Block>> blockLootTable = new HashMap<>();
 
-    public EEBlockLootSubProvider(HolderLookup.Provider providers) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), providers);
+	public EEBlockLootSubProvider(HolderLookup.Provider providers) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), providers);
 	}
 
-    @Override
-    protected void generate() {
+	@Override
+	protected void generate() {
 		blockLootTable.forEach((block, consumer) -> consumer.accept(this, block));
 		// Everything generated, holding loot table generators is useless.
 		blockLootTable.clear();
-    }
+	}
 
 	public static void selfDrop(Block block) {
 		blockLootTable.put(block, EEBlockLootSubProvider::addSelfDrop);
@@ -71,74 +71,74 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
 
 	private void addSelfDrop(Block block) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-            .setRolls(ConstantValue.exactly(1))
-            .add(LootItem.lootTableItem(block))
-            .when(ExplosionCondition.survivesExplosion())
+			.setRolls(ConstantValue.exactly(1))
+			.add(LootItem.lootTableItem(block))
+			.when(ExplosionCondition.survivesExplosion())
 		);
 		add(block, table);
 	}
 
 	private void addDropWithSilkTouch(@NotNull Block block) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-				.setRolls(ConstantValue.exactly(1))
-                .when(hasSilkTouch())
-				.add(LootItem.lootTableItem(block).apply(ApplyExplosionDecay.explosionDecay()))
+			.setRolls(ConstantValue.exactly(1))
+			.when(hasSilkTouch())
+			.add(LootItem.lootTableItem(block).apply(ApplyExplosionDecay.explosionDecay()))
 		);
 		add(block, table);
 	}
 
 	private void addDropCluster(Block block, @NotNull Item item, float min, float max) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-            .setRolls(ConstantValue.exactly(1.0F))
-            .when(hasSilkTouch())
-            .add(LootItem.lootTableItem(block)
-                .otherwise(LootItem.lootTableItem(item.asItem())
-                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(max)))
-                    .apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
-                    .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
-                    .otherwise(LootItem.lootTableItem(item.asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(min))))
-                )
-            )
+			.setRolls(ConstantValue.exactly(1.0F))
+			.when(hasSilkTouch())
+			.add(LootItem.lootTableItem(block)
+				.otherwise(LootItem.lootTableItem(item.asItem())
+					.apply(SetItemCountFunction.setCount(ConstantValue.exactly(max)))
+					.apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
+					.when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
+					.otherwise(LootItem.lootTableItem(item.asItem()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(min))))
+				)
+			)
 		);
 		add(block, table);
 	}
 
 	private void addOreDrop(Block block, @NotNull Item item) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-            .setRolls(ConstantValue.exactly(1))
-            .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
-                .apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
-                .apply(ApplyExplosionDecay.explosionDecay())
-            ))
+			.setRolls(ConstantValue.exactly(1))
+			.add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
+				.apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
+				.apply(ApplyExplosionDecay.explosionDecay())
+			))
 		);
 		add(block, table);
 	}
 
 	private void addOreCountDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-            .setRolls(ConstantValue.exactly(1.0F))
-            .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
-                .apply(SetItemCountFunction.setCount(range))
-                .apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
-                .apply(ApplyExplosionDecay.explosionDecay())
-            ))
+			.setRolls(ConstantValue.exactly(1.0F))
+			.add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
+				.apply(SetItemCountFunction.setCount(range))
+				.apply(ApplyBonusCount.addOreBonusCount(getEnchantment(Enchantments.FORTUNE)))
+				.apply(ApplyExplosionDecay.explosionDecay())
+			))
 		);
 		add(block, table);
 	}
 
 	private void addOreUniformedDrop(Block block, @NotNull ItemLike item, UniformGenerator range) {
 		var table = LootTable.lootTable().withPool(LootPool.lootPool()
-            .setRolls(ConstantValue.exactly(1.0F))
-            .add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
-                .apply(SetItemCountFunction.setCount(range))
-                .apply(ApplyBonusCount.addUniformBonusCount(getEnchantment(Enchantments.FORTUNE)))
-                .apply(ApplyExplosionDecay.explosionDecay())
-            ))
+			.setRolls(ConstantValue.exactly(1.0F))
+			.add(LootItem.lootTableItem(block).when(hasSilkTouch()).otherwise(LootItem.lootTableItem(item.asItem())
+				.apply(SetItemCountFunction.setCount(range))
+				.apply(ApplyBonusCount.addUniformBonusCount(getEnchantment(Enchantments.FORTUNE)))
+				.apply(ApplyExplosionDecay.explosionDecay())
+			))
 		);
 		add(block, table);
 	}
 
-    private @NotNull Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
-        return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
-    }
+	private @NotNull Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
+		return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
+	}
 }

@@ -45,6 +45,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -61,31 +63,16 @@ public class EETagProvider implements DataProvider {
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput directoryCache) {
 		Path path = this.generator.getPackOutput().getOutputFolder();
 		Set<ResourceLocation> set = Sets.newHashSet();
+		List<CompletableFuture<?>> cs = new ArrayList<>();
 		buildTags((consumer) -> {
-			if (!set.add(consumer.getId())) {
-				throw new IllegalStateException("Duplicate JSON " + consumer.getId());
-			} else {
-				try {
-					saveJSON(directoryCache, consumer.serializeJSON(), path.resolve("data/" + consumer.getId().getNamespace() + "/tags/" + consumer.getId().getPath() + ".json"));
-				} catch (IOException e) {
-					logger.error("Exception caught while saving JSON Files!", e);
-				}
-			}
+			if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate JSON " + consumer.getId());
+			cs.add(DataProvider.saveStable(
+				directoryCache,
+				consumer.serializeJSON(),
+				path.resolve("data/" + consumer.getId().getNamespace() + "/tags/" + consumer.getId().getPath() + ".json")
+			));
 		});
-		return CompletableFuture.allOf();
-	}
-
-	private static void saveJSON(@NotNull CachedOutput directoryCache, JsonObject recipeJson, Path recipePath) throws IOException {
-		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-		//TODO: Make sure changing the hashing algorithm didn't break things. Murmur3 is apparently way faster than SHA-1 (which is deprecated) and 256
-		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.murmur3_128(), bytearrayoutputstream);
-		Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
-		JsonWriter jsonwriter = new JsonWriter(writer);
-		jsonwriter.setSerializeNulls(false);
-		jsonwriter.setIndent("  ");
-		GsonHelper.writeValue(jsonwriter, recipeJson, KEY_COMPARATOR);
-		jsonwriter.close();
-		directoryCache.writeIfNeeded(recipePath, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
+		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
 	protected void buildTags(Consumer<IFinishedGenericJSON> consumer) {

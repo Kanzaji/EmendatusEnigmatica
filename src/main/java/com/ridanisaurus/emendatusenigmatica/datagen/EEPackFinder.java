@@ -52,7 +52,7 @@ public class EEPackFinder implements RepositorySource {
 	@Override
 	public void loadPacks(@NotNull Consumer<Pack> onLoad) {
 		Path rootPath = DataGeneratorFactory.ROOT_PATH;
-		this.pack = new GeneratedPack(rootPath, type);
+		if (this.pack == null) this.pack = new GeneratedPack(rootPath, type);
 
 		onLoad.accept(new Pack(
 			pack.location(),

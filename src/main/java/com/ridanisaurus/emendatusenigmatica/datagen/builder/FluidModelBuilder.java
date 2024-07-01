@@ -53,8 +53,8 @@ public class FluidModelBuilder {
 	}
 
 	public static class objectBuilder {
-		private List<JsonObject> jsonObject = new ArrayList<>();
-		private boolean forceArray;
+		private final List<JsonObject> jsonObject = new ArrayList<>();
+		private final boolean forceArray;
 
 		public objectBuilder(boolean forceArray) {
 			this.forceArray = forceArray;
@@ -86,7 +86,7 @@ public class FluidModelBuilder {
 		}
 	}
 
-	public class Result implements IFinishedGenericJSON {
+	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
 		private final Map<String, objectBuilder> fieldValueJson;
 

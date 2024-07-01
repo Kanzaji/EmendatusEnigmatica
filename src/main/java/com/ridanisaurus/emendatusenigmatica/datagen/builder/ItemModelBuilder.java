@@ -30,6 +30,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -42,10 +43,10 @@ public class ItemModelBuilder {
 
 	private final String parent;
 	private final Map<String, String> textures = Maps.newLinkedHashMap();
+	private final List<OverrideBuilder> overrides = new ArrayList<>();
 	private boolean applyTint = false;
 	private String fluid;
 	private String loader;
-	private List<OverrideBuilder> overrides = new ArrayList<>();
 
 	public ItemModelBuilder(String parent) {
 		this.parent = parent;
@@ -82,7 +83,7 @@ public class ItemModelBuilder {
 		return overrides.get(index);
 	}
 
-	public void save(Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
 		consumer.accept(new Result(jsonResourceLocation, this.parent, this.textures, this.applyTint, this.fluid, this.loader, this.overrides));
 	}
 
@@ -113,7 +114,7 @@ public class ItemModelBuilder {
 		}
 	}
 
-	public class Result implements IFinishedGenericJSON {
+	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
 		private final String parent;
 		private final Map<String, String> textures;

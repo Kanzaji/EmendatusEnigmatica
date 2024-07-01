@@ -51,6 +51,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -67,56 +69,29 @@ public class EERecipeProvider implements DataProvider {
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput directoryCache) {
 		Path path = this.generator.getPackOutput().getOutputFolder();
 		Set<ResourceLocation> set = Sets.newHashSet();
+		List<CompletableFuture<?>> cs = new ArrayList<>();
 		buildRecipes((consumer) -> {
-			if (!set.add(consumer.getId())) {
-				throw new IllegalStateException("Duplicate recipe " + consumer.getId());
-			} else {
-				try {
-					saveRecipe(directoryCache, consumer.serializeRecipe(), path.resolve("data/" + consumer.getId().getNamespace() + "/recipes/" + consumer.getId().getPath() + ".json"));
-				} catch (IOException e) {
-					logger.error("Exception caught while saving JSON Files!", e);
-				}
-//				JsonObject jsonobject = consumer.serializeAdvancement();
-//				if (jsonobject != null) {
-//					try {
-//						saveAdvancement(directoryCache, jsonobject, path.resolve("data/" + consumer.getId().getNamespace() + "/advancements/" + consumer.getAdvancementId().getPath() + ".json"));
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//				}
+			if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate recipe " + consumer.getId());
+			cs.add(DataProvider.saveStable(
+				directoryCache,
+				consumer.serializeRecipe(),
+				path.resolve("data/" + consumer.getId().getNamespace() + "/recipes/" + consumer.getId().getPath() + ".json")
+			));
 
-			}
+//			JsonObject jsonobject = consumer.serializeAdvancement();
+//			if (jsonobject != null) {
+//				cs.add(DataProvider.saveStable(
+//					directoryCache,
+//					jsonobject,
+//					path.resolve("data/" + consumer.getId().getNamespace() + "/advancements/" + consumer.getAdvancementId().getPath() + ".json")
+//				));
+//			}
 		});
+
 		//FIXME: SerializeToJson doesn't exist on Advancement anymore.
 //		if (this.getClass() == EERecipeProvider.class) //Forge: Subclasses don't need this.
 //			saveAdvancement(directoryCache, Advancement.Builder.advancement().addCriterion("impossible", CriteriaTriggers.IMPOSSIBLE.createCriterion(new ImpossibleTrigger.TriggerInstance())).serializeToJson(), path.resolve("data/minecraft/advancements/recipes/root.json"));
-		return CompletableFuture.allOf();
-	}
-
-	private static void saveRecipe(@NotNull CachedOutput directoryCache, JsonObject recipeJson, Path recipePath) throws IOException {
-		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-		//TODO: Make sure changing the hashing algorithm didn't break things. Murmur3 is apparently way faster than SHA-1 (which is deprecated) and 256
-		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.murmur3_128(), bytearrayoutputstream);
-		Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
-		JsonWriter jsonwriter = new JsonWriter(writer);
-		jsonwriter.setSerializeNulls(false);
-		jsonwriter.setIndent("  ");
-		GsonHelper.writeValue(jsonwriter, recipeJson, KEY_COMPARATOR);
-		jsonwriter.close();
-		directoryCache.writeIfNeeded(recipePath, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
-	}
-
-	protected void saveAdvancement(@NotNull CachedOutput directoryCache, JsonObject recipeJson, Path recipePath) throws IOException {
-		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-		//TODO: Make sure changing the hashing algorithm didn't break things. Murmur3 is apparently way faster than SHA-1 (which is deprecated) and 256
-		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.murmur3_128(), bytearrayoutputstream);
-		Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
-		JsonWriter jsonwriter = new JsonWriter(writer);
-		jsonwriter.setSerializeNulls(false);
-		jsonwriter.setIndent("  ");
-		GsonHelper.writeValue(jsonwriter, recipeJson, KEY_COMPARATOR);
-		jsonwriter.close();
-		directoryCache.writeIfNeeded(recipePath, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
+		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
 	protected static @NotNull Criterion<EnterBlockTrigger.TriggerInstance> insideOf(Block block) {

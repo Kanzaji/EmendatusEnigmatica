@@ -89,7 +89,7 @@ public class BlockStateBuilder {
 		}
 	}
 
-	public class Result implements IFinishedGenericJSON {
+	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
 		private final Map<String, VariantBuilder> variants;
 

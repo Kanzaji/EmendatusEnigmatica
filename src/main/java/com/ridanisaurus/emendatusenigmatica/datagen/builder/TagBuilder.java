@@ -29,6 +29,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -49,11 +50,11 @@ public class TagBuilder {
 		return this;
 	}
 
-	public void save(Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
 		consumer.accept(new Result(jsonResourceLocation, this.tags));
 	}
 
-	public class Result implements IFinishedGenericJSON {
+	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
 		private final List<String> tags;
 
@@ -63,7 +64,7 @@ public class TagBuilder {
 		}
 
 		public void serializeJSONData(JsonObject recipeJson) {
-			if (this.tags.size() > 0) {
+			if (!this.tags.isEmpty()) {
 				JsonArray jsonarray = new JsonArray();
 				for (String b : this.tags) {
 					jsonarray.add(b);

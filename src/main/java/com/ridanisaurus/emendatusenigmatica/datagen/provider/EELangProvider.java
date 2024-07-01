@@ -59,6 +59,8 @@ public abstract class EELangProvider implements DataProvider {
 
 	protected abstract void addTranslations();
 
+	//TODO: Figure out why in this case we are using DataProvider.saveStable() instead of the custom saveJSON()?
+	// Possibly move that to unified class?
 	@Override
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput) {
 		addTranslations();
@@ -72,7 +74,7 @@ public abstract class EELangProvider implements DataProvider {
 		return "Languages: " + locale;
 	}
 
-	private CompletableFuture<?> save(CachedOutput cache, Map<String, String> data, Path target) {
+	private @NotNull CompletableFuture<?> save(CachedOutput cache, @NotNull Map<String, String> data, Path target) {
 		JsonObject json = new JsonObject();
 		for (Map.Entry<String, String> pair : data.entrySet()) {
 			json.addProperty(pair.getKey(), pair.getValue());
@@ -81,52 +83,52 @@ public abstract class EELangProvider implements DataProvider {
 		return DataProvider.saveStable(cache, json, target);
 	}
 
-	public void addBlock(Supplier<? extends Block> key, String name) {
+	public void addBlock(@NotNull Supplier<? extends Block> key, String name) {
 		add(key.get(), name);
 	}
 
-	public void add(Block key, String name) {
+	public void add(@NotNull Block key, String name) {
 		add(key.getDescriptionId(), name);
 	}
 
-	public void addItem(Supplier<? extends Item> key, String name) {
+	public void addItem(@NotNull Supplier<? extends Item> key, String name) {
 		add(key.get(), name);
 	}
 
-	public void add(Item key, String name) {
+	public void add(@NotNull Item key, String name) {
 		add(key.getDescriptionId(), name);
 	}
 
-	public void addItemStack(Supplier<ItemStack> key, String name) {
+	public void addItemStack(@NotNull Supplier<ItemStack> key, String name) {
 		add(key.get(), name);
 	}
 
-	public void add(ItemStack key, String name) {
+	public void add(@NotNull ItemStack key, String name) {
 		add(key.getDescriptionId(), name);
 	}
 
-	public void addEnchantment(Supplier<? extends Enchantment> key, String name) {
+	public void addEnchantment(@NotNull Supplier<? extends Enchantment> key, String name) {
 		add(key.get(), name);
 	}
 
 	//TODO: Test if new description getter works as intended.
-	public void add(Enchantment key, String name) {
+	public void add(@NotNull Enchantment key, String name) {
 		add(key.description().getString(), name);
 	}
 
-	public void addEffect(Supplier<? extends MobEffect> key, String name) {
+	public void addEffect(@NotNull Supplier<? extends MobEffect> key, String name) {
 		add(key.get(), name);
 	}
 
-	public void add(MobEffect key, String name) {
+	public void add(@NotNull MobEffect key, String name) {
 		add(key.getDescriptionId(), name);
 	}
 
-	public void addEntityType(Supplier<? extends EntityType<?>> key, String name) {
+	public void addEntityType(@NotNull Supplier<? extends EntityType<?>> key, String name) {
 		add(key.get(), name);
 	}
 
-	public void add(EntityType<?> key, String name) {
+	public void add(@NotNull EntityType<?> key, String name) {
 		add(key.getDescriptionId(), name);
 	}
 

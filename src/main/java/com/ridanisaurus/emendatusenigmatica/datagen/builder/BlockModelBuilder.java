@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -60,7 +62,7 @@ public class BlockModelBuilder {
 		return this;
 	}
 
-	public BlockModelBuilder texture(String key, String texture) {
+	public BlockModelBuilder texture(String key, @NotNull String texture) {
 		if (texture.charAt(0) == '#') {
 			this.textures.put(key, texture);
 			return self();
@@ -75,7 +77,7 @@ public class BlockModelBuilder {
 		}
 	}
 
-	public BlockModelBuilder texture(String key, ResourceLocation texture) {
+	public BlockModelBuilder texture(String key, @NotNull ResourceLocation texture) {
 		this.textures.put(key, texture.toString());
 		return self();
 	}
@@ -84,7 +86,7 @@ public class BlockModelBuilder {
 		return renderType(ResourceLocation.parse(renderType));
 	}
 
-	public BlockModelBuilder renderType(ResourceLocation renderType) {
+	public BlockModelBuilder renderType(@NotNull ResourceLocation renderType) {
 		this.renderType = renderType.toString();
 		return self();
 	}
@@ -95,14 +97,14 @@ public class BlockModelBuilder {
 		return ret;
 	}
 
-	private String serializeLocOrKey(String tex) {
+	private @NotNull String serializeLocOrKey(@NotNull String tex) {
 		if (tex.charAt(0) == '#') {
 			return tex;
 		}
 		return ResourceLocation.parse(tex).toString();
 	}
 
-	private JsonArray serializeVector3f(Vector3f vec) {
+	private @NotNull JsonArray serializeVector3f(@NotNull Vector3f vec) {
 		JsonArray ret = new JsonArray();
 		ret.add(serializeFloat(vec.x()));
 		ret.add(serializeFloat(vec.y()));
@@ -117,7 +119,7 @@ public class BlockModelBuilder {
 		return f;
 	}
 
-	public void save(Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
 		consumer.accept(new Result(jsonResourceLocation, this.parent, this.customLoader, this.elements, this.textures, this.renderType, this.childModels, this.itemRenderOrder));
 	}
 
@@ -171,7 +173,8 @@ public class BlockModelBuilder {
 			return faces(addTexture(texture).andThen((dir, f) -> f.cullface(dir)));
 		}
 
-		private BiConsumer<Direction, FaceBuilder> addTexture(String texture) {
+		@Contract(pure = true)
+		private @NotNull BiConsumer<Direction, FaceBuilder> addTexture(String texture) {
 			return ($, f) -> f.texture(texture);
 		}
 
@@ -247,7 +250,7 @@ public class BlockModelBuilder {
 			public ElementBuilder end() { return ElementBuilder.this; }
 		}
 
-		public class BlockElementFace {
+		public static class BlockElementFace {
 			public static final int NO_TINT = -1;
 			public final Direction cullForDirection;
 			public final int tintIndex;
@@ -266,7 +269,7 @@ public class BlockModelBuilder {
 			}
 		}
 
-		public class BlockElement {
+		public static class BlockElement {
 			private static final boolean DEFAULT_RESCALE = false;
 			private static final float MIN_EXTENT = -16.0F;
 			private static final float MAX_EXTENT = 32.0F;
@@ -293,7 +296,7 @@ public class BlockModelBuilder {
 
 			}
 
-			public float[] uvsByFace(Direction direction) {
+			public float[] uvsByFace(@NotNull Direction direction) {
 				switch (direction) {
 					case DOWN:
 						return new float[]{this.from.x(), 16.0F - this.to.z(), this.to.x(), 16.0F - this.from.z()};
@@ -312,7 +315,7 @@ public class BlockModelBuilder {
 			}
 		}
 
-		public class BlockElementRotation {
+		public static class BlockElementRotation {
 			public final Vector3f origin;
 			public final Direction.Axis axis;
 			public final float angle;
@@ -326,7 +329,7 @@ public class BlockModelBuilder {
 			}
 		}
 
-		public class BlockFaceUV {
+		public static class BlockFaceUV {
 			public float[] uvs;
 			public final int rotation;
 
@@ -364,7 +367,7 @@ public class BlockModelBuilder {
 		return this;
 	}
 
-	public BlockModelBuilder itemRenderOrder(String... names){
+	public BlockModelBuilder itemRenderOrder(String @NotNull ... names){
 		for (String name : names)
 			if (!childModels.containsKey(name))
 				throw new IllegalArgumentException("names contains \"" + name + "\", which is not a child of this model");
@@ -373,7 +376,7 @@ public class BlockModelBuilder {
 		return this;
 	}
 
-	public JsonObject toJson(JsonObject baseJson) {
+	public JsonObject toJson(@NotNull JsonObject baseJson) {
 		baseJson.addProperty("parent", this.parent);
 		if (this.renderType != null) {
 			baseJson.addProperty("render_type", this.renderType);

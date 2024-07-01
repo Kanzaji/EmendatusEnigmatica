@@ -39,12 +39,16 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.crypto.Data;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -57,36 +61,20 @@ public class EEBlockModelProvider implements DataProvider {
 		this.generator = gen;
 	}
 
-	//TODO: Make this run as a completable future, as DataProvider.saveStable()
 	@Override
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput directoryCache) {
 		Path path = this.generator.getPackOutput().getOutputFolder();
 		Set<ResourceLocation> set = Sets.newHashSet();
+		List<CompletableFuture<?>> cs = new ArrayList<>();
 		buildBlockModel((consumer) -> {
-			if (!set.add(consumer.getId())) {
-				throw new IllegalStateException("Duplicate JSON " + consumer.getId());
-			} else {
-				try {
-					saveJSON(directoryCache, consumer.serializeJSON(), path.resolve("assets/" + consumer.getId().getNamespace() + "/models/block/" + consumer.getId().getPath() + ".json"));
-				} catch (IOException e) {
-					logger.error("Exception caught while saving JSON Files!", e);
-				}
-			}
+			if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate JSON " + consumer.getId());
+			cs.add(DataProvider.saveStable(
+				directoryCache,
+				consumer.serializeJSON(),
+				path.resolve("assets/" + consumer.getId().getNamespace() + "/models/block/" + consumer.getId().getPath() + ".json")
+			));
 		});
-		return CompletableFuture.allOf();
-	}
-
-	private static void saveJSON(CachedOutput directoryCache, JsonObject blockJson, Path path) throws IOException {
-		ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-		//TODO: Make sure changing the hashing algorithm didn't break things. Murmur3 is apparently way faster than SHA-1 (which is deprecated) and 256
-		HashingOutputStream hashingoutputstream = new HashingOutputStream(Hashing.murmur3_128(), bytearrayoutputstream);
-		Writer writer = new OutputStreamWriter(hashingoutputstream, StandardCharsets.UTF_8);
-		JsonWriter jsonwriter = new JsonWriter(writer);
-		jsonwriter.setSerializeNulls(false);
-		jsonwriter.setIndent("  ");
-		GsonHelper.writeValue(jsonwriter, blockJson, KEY_COMPARATOR);
-		jsonwriter.close();
-		directoryCache.writeIfNeeded(path, bytearrayoutputstream.toByteArray(), hashingoutputstream.hash());
+		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
 	protected void buildBlockModel(Consumer<IFinishedGenericJSON> consumer) {

@@ -69,7 +69,7 @@ public class FeatureBuilder {
 		consumer.accept(new Result(jsonResourceLocation, this.type, this.biomes, this.features, this.step));
 	}
 
-	public class Result implements IFinishedGenericJSON {
+	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
 		private final String type;
 		private final List<String> biomes;

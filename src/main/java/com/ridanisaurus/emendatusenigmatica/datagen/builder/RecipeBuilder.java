@@ -37,6 +37,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +118,7 @@ public class RecipeBuilder {
 		}
 	}
 
-	public RecipeBuilder addOutput(Consumer<JsonItemBuilder> output) {
+	public RecipeBuilder addOutput(@NotNull Consumer<JsonItemBuilder> output) {
 		output.accept(this.result);
 		return this;
 	}
@@ -141,21 +143,23 @@ public class RecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<IFinishedGenericRecipe> consumer, ResourceLocation recipeResourceLocation) {
+	public void save(@NotNull Consumer<IFinishedGenericRecipe> consumer, ResourceLocation recipeResourceLocation) {
 		consumer.accept(new Result(recipeResourceLocation, this.resultName, this.result, this.group == null ? "" : this.group, this.type,
-				this.fieldValueString, this.fieldValueInt, this.fieldValueFloat, this.fieldValueBoolean, this.fieldValueItem, this.fieldValueJson));
+                this.fieldValueString, this.fieldValueInt, this.fieldValueFloat, this.fieldValueBoolean, this.fieldValueItem, this.fieldValueJson));
 	}
 
 	public static class JsonItemBuilder {
 
-		private List<JsonObject> outputs = new ArrayList<>();
+		private final List<JsonObject> outputs = new ArrayList<>();
 		private boolean forceArray;
 
 		public JsonItemBuilder(boolean forceArray) {
 			this.forceArray = forceArray;
 		}
 
-		public JsonItemBuilder addOutput(Pair<String, Object>... elements) {
+		@Contract("_ -> this")
+		@SafeVarargs
+        public final JsonItemBuilder addOutput(Pair<String, Object> @NotNull ... elements) {
 			JsonObject object = new JsonObject();
 			for (Pair<String, Object> element : elements) {
 				if (element.getValue() instanceof Number) {
@@ -178,7 +182,8 @@ public class RecipeBuilder {
 			return this;
 		}
 
-		private static JsonObject parsePair(Pair<String, Object>... elements) {
+		@SafeVarargs
+        private static @NotNull JsonObject parsePair(Pair<String, Object> @NotNull ... elements) {
 			JsonObject object = new JsonObject();
 			for (Pair<String, Object> element : elements) {
 				if (element.getValue() instanceof Number) {
@@ -197,32 +202,32 @@ public class RecipeBuilder {
 			return object;
 		}
 
-		public JsonItemBuilder objectWithChance(String key, ItemLike itemProvider, int count, double chance) {
+		public JsonItemBuilder objectWithChance(String key, @NotNull ItemLike itemProvider, int count, double chance) {
 			return addOutput(Pair.of(key, Pair.of("item", BuiltInRegistries.ITEM.getKey(itemProvider.asItem()).toString())),
 					Pair.of("count", count),
 					Pair.of("chance", chance)
 			);
 		}
 
-		public JsonItemBuilder stackWithChance(ItemLike itemProvider, int count, double chance) {
+		public JsonItemBuilder stackWithChance(@NotNull ItemLike itemProvider, int count, double chance) {
 			return addOutput(Pair.of("item", BuiltInRegistries.ITEM.getKey(itemProvider.asItem()).toString()),
 					Pair.of("count", count),
 					Pair.of("chance", chance)
 			);
 		}
 
-		public JsonItemBuilder stackWithCount(ItemLike itemProvider, int count) {
+		public JsonItemBuilder stackWithCount(@NotNull ItemLike itemProvider, int count) {
 			return addOutput(Pair.of("item", BuiltInRegistries.ITEM.getKey(itemProvider.asItem()).toString()),
 					Pair.of("count", count));
 		}
 
-		public JsonItemBuilder stackWithoutCount(ItemLike itemProvider, float chance) {
+		public JsonItemBuilder stackWithoutCount(@NotNull ItemLike itemProvider, float chance) {
 			return addOutput(Pair.of("item", BuiltInRegistries.ITEM.getKey(itemProvider.asItem()).toString()),
 					Pair.of("chance", chance)
 			);
 		}
 
-		public JsonItemBuilder stacks(List<CompatIOModel> ioList) {
+		public JsonItemBuilder stacks(@NotNull List<CompatIOModel> ioList) {
 			for (CompatIOModel io : ioList) {
 				String item = io.getItem();
 				int count = io.getCount();
@@ -234,7 +239,7 @@ public class RecipeBuilder {
 			return this;
 		}
 
-		public JsonItemBuilder stacksWithCombinedChance(List<CompatIOModel> ioList) {
+		public JsonItemBuilder stacksWithCombinedChance(@NotNull List<CompatIOModel> ioList) {
 			for (CompatIOModel io : ioList) {
 				String item = io.getItem();
 				int count = io.getCount();
@@ -246,7 +251,7 @@ public class RecipeBuilder {
 			return this;
 		}
 
-		public JsonItemBuilder stacksWithCount(List<CompatIOModel> ioList) {
+		public JsonItemBuilder stacksWithCount(@NotNull List<CompatIOModel> ioList) {
 			for (CompatIOModel io : ioList) {
 				String item = io.getItem();
 				int count = io.getCount();
@@ -257,23 +262,23 @@ public class RecipeBuilder {
 			return this;
 		}
 
-		public JsonItemBuilder stack(ItemLike itemProvider) {
+		public JsonItemBuilder stack(@NotNull ItemLike itemProvider) {
 			return addOutput(Pair.of("item", BuiltInRegistries.ITEM.getKey(itemProvider.asItem()).toString()));
 		}
 
-		public JsonItemBuilder tagWithChance(TagKey<Item> itemTag, int count, double chance) {
+		public JsonItemBuilder tagWithChance(@NotNull TagKey<Item> itemTag, int count, double chance) {
 			return addOutput(Pair.of("tag", itemTag.location().getNamespace() + ":" + itemTag.location().getPath()),
 					Pair.of("count", count),
 					Pair.of("chance", chance)
 			);
 		}
 
-		public JsonItemBuilder tagWithCount(TagKey<Item> itemTag, int count) {
+		public JsonItemBuilder tagWithCount(@NotNull TagKey<Item> itemTag, int count) {
 			return addOutput(Pair.of("tag", itemTag.location().getNamespace() + ":" + itemTag.location().getPath()),
 					Pair.of("count", count));
 		}
 
-		public JsonItemBuilder tag(TagKey<Item> itemTag) {
+		public JsonItemBuilder tag(@NotNull TagKey<Item> itemTag) {
 			return addOutput(Pair.of("tag", itemTag.location().getNamespace() + ":" + itemTag.location().getPath()));
 		}
 
@@ -291,7 +296,7 @@ public class RecipeBuilder {
 		}
 	}
 
-	public class Result implements IFinishedGenericRecipe {
+	public static class Result implements IFinishedGenericRecipe {
 		private final ResourceLocation id;
 		private final JsonItemBuilder result;
 		private final String resultName;

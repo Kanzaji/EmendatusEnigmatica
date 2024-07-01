@@ -1,15 +1,11 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.provider.sub;
 
-import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -23,15 +19,12 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -43,29 +36,9 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), providers);
     }
 
-	//TODO: Finish Json generation
     @Override
     protected void generate() {
-		Map<ResourceLocation, LootTable> tables = new HashMap<>();
-		for (Map.Entry<Block, LootTable.Builder> entry : this.blockLootTable.entrySet()) {
-			tables.put(
-				entry.getKey().getLootTable().registry(),
-				entry.getValue().setParamSet(LootContextParamSets.BLOCK).build()
-			);
-		}
-		this.writeTables(cache, tables);
-    }
-
-    private void writeTables(CachedOutput cache, @NotNull Map<ResourceLocation, LootTable> tables) {
-        Path outputFolder = this.generator.getPackOutput().getOutputFolder();
-        tables.forEach((key, lootTable) -> {
-            Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
-            try {
-                DataProvider.saveStable(cache, LootTable.serialize(lootTable), path);
-            } catch (IOException e) {
-                EmendatusEnigmatica.LOGGER.error("Couldn't write loot table {}", path, e);
-            }
-        });
+		this.blockLootTable.forEach(this::add);
     }
 
 	protected @NotNull LootTable.Builder selfDrop(Block block) {
@@ -132,7 +105,7 @@ public class EEBlockLootSubProvider extends BlockLootSubProvider {
 		);
 	}
 
-    protected final Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
+    protected final @NotNull Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> key) {
         return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
     }
 }

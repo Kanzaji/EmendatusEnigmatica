@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen;
+package com.ridanisaurus.emendatusenigmatica.loader;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -47,19 +48,20 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class GeneratedPack implements PackResources {
-    private static final Logger logger = LoggerFactory.getLogger("EE: Resource Pack Handler");
+public class EEVirtualPackHandler implements PackResources {
+    private final Logger logger;
     private final Path path;
     private final PackLocationInfo locationInfo;
 
-    public GeneratedPack(Path path, PackType type) {
+    public EEVirtualPackHandler(Path path, PackType type) {
         this.path = path;
         this.locationInfo = new PackLocationInfo(
-            "ee_virtual_pack_" + ((type == PackType.CLIENT_RESOURCES)? "client": "server"),
+            "EE Virtual " + ((type == PackType.CLIENT_RESOURCES)? "Resource Pack": "Data Pack"),
             Component.translatable("resourcepack.emendatusenigmatica.title"),
             PackSource.DEFAULT,
             Optional.empty()
         );
+        this.logger = LoggerFactory.getLogger(locationInfo.id() + " Handler");
     }
 
     private static @NotNull String getFullPath(@NotNull PackType type, @NotNull ResourceLocation location) {
@@ -78,7 +80,7 @@ public class GeneratedPack implements PackResources {
     @Override
     public IoSupplier<InputStream> getResource(@NotNull PackType type, @NotNull ResourceLocation location) {
         Path resolved = path.resolve(getFullPath(type, location));
-        if (!Files.exists(resolved)) throw new RuntimeException(new IOException("Resource does not exist"));
+        if (!Files.exists(resolved)) throw new RuntimeException(new FileNotFoundException("Resource does not exist!"));
         return IoSupplier.create(resolved);
     }
 
@@ -105,7 +107,7 @@ public class GeneratedPack implements PackResources {
                 }
             }
         } catch (IOException e) {
-            logger.error("Exception caught while iterating generated ResourcePack folder!", e);
+            logger.error("Exception caught while iterating generated resource folder!", e);
         }
     }
 
@@ -115,7 +117,7 @@ public class GeneratedPack implements PackResources {
         try (Stream<Path> list = Files.list(path.resolve(type.getDirectory()))) {
             for (Path resultingPath : list.toList()) result.add(resultingPath.getFileName().toString());
         } catch (IOException e) {
-            logger.error("Exception caught while iterating generated ResourcePack folder!", e);
+            logger.error("Exception caught while iterating generated resource folder!", e);
         }
         return result;
     }

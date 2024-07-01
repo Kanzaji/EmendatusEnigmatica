@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen;
 
+import com.ridanisaurus.emendatusenigmatica.loader.EEVirtualPackHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
@@ -42,7 +43,7 @@ import java.util.function.Consumer;
 public class EEPackFinder implements RepositorySource {
 
 	private final PackType type;
-	private GeneratedPack pack;
+	private EEVirtualPackHandler pack;
 
 	public EEPackFinder(PackType type) {
 		this.type = type;
@@ -52,7 +53,7 @@ public class EEPackFinder implements RepositorySource {
 	@Override
 	public void loadPacks(@NotNull Consumer<Pack> onLoad) {
 		Path rootPath = DataGeneratorFactory.ROOT_PATH;
-		if (this.pack == null) this.pack = new GeneratedPack(rootPath, type);
+		if (this.pack == null) this.pack = new EEVirtualPackHandler(rootPath, type);
 
 		onLoad.accept(new Pack(
 			pack.location(),

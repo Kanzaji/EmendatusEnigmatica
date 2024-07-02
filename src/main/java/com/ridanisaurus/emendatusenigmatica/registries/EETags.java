@@ -38,40 +38,40 @@ import java.util.function.Function;
 
 public class EETags {
     public static final Function<String, TagKey<Item>> MATERIAL_INGOT = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "ingots/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "ingots/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_NUGGET = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "nuggets/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "nuggets/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_STORAGE_BLOCK = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "storage_blocks/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "storage_blocks/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_GEM = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "gems/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "gems/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_DUST = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "dusts/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "dusts/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_GEAR = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "gears/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "gears/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_PLATE = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "plates/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "plates/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_ROD = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "rods/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "rods/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_ORE = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "ores/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "ores/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_RAW = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "raw_materials/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "raw_materials/" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_RAW_STORAGE_BLOCK = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "storage_blocks/raw_" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "storage_blocks/raw_" + material));
 
     public static final Function<String, TagKey<Item>> MATERIAL_FLUID = material ->
-        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "molten/" + material));
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, "molten/" + material));
 
     public static final TagKey<Block> MINEABLE_WITH_PAXEL = create("mineable/paxel");
 
@@ -86,6 +86,6 @@ public class EETags {
     }
 
     public static TagKey<Block> create(String location) {
-        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, location));
+        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(Reference.COMMON, location));
     }
 }

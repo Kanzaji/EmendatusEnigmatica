@@ -53,7 +53,7 @@ public class FluidTagsGen extends EETagProvider {
 			if (processedType.contains("fluid")) {
 				//FIXME: getID is missing apparently?
 //				ResourceLocation fluidSource = EERegistrar.fluidSourceMap.get(material.getId()).get().getId();
-//				ResourceLocation fluidFlowing = EERegistrar.fluidFlowingMap.get(material.getId()).getId();
+//				ResourceLocation fluidFlowing = EERegistrar.fluidFlowingMap.get(material.getId()).get().getId();
 //				new TagBuilder().tag(fluidSource.toString()).tag(fluidFlowing.toString()).save(consumer, new ResourceLocation(Reference.NEOFORGE, "/fluids/" + material.getId()));
 			}
 		}

@@ -25,7 +25,7 @@
 //package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 //
 //import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-//import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+//import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 //import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 //import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 //import com.ridanisaurus.emendatusenigmatica.util.Reference;

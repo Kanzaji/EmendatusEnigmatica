@@ -26,7 +26,7 @@
 //
 //import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 //import com.ridanisaurus.emendatusenigmatica.datagen.base.EELootProvider;
-//import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+//import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 //import com.ridanisaurus.emendatusenigmatica.loader.parser.model.StrataModel;
 //import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 //import net.minecraft.data.DataGenerator;

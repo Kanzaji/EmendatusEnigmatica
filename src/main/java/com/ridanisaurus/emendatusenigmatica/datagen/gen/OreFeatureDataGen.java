@@ -31,7 +31,7 @@
 //import com.ridanisaurus.emendatusenigmatica.loader.deposit.EEDeposits;
 //import com.ridanisaurus.emendatusenigmatica.loader.deposit.IDepositProcessor;
 //import com.ridanisaurus.emendatusenigmatica.loader.deposit.model.common.CommonDepositModelBase;
-//import com.ridanisaurus.emendatusenigmatica.loader.parser.model.MaterialModel;
+//import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 //import com.ridanisaurus.emendatusenigmatica.util.Reference;
 //import net.minecraft.data.DataGenerator;
 //import net.minecraft.resources.ResourceLocation;

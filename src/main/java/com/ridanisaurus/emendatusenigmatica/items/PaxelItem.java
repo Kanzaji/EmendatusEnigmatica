@@ -71,39 +71,32 @@ public class PaxelItem extends DiggerItem
         BlockState blockState = level.getBlockState(blockPos);
         BlockState resultToSet = useAsAxe(blockState, ctx);
 
-        if(resultToSet != null) {
-            if(ctx.getClickedFace() == Direction.DOWN) {
-                return InteractionResult.PASS;
-            }
+        if (resultToSet == null) {
+            //We cannot strip the item that was right-clicked, so attempt to use the paxel as a shovel
+            if (ctx.getClickedFace() == Direction.DOWN) return InteractionResult.PASS;
 
             BlockState foundResult = blockState.getToolModifiedState(ctx, ItemAbilities.SHOVEL_FLATTEN, false);
 
-            if(foundResult != null && level.isEmptyBlock(blockPos.above())) {
+            if (foundResult != null && level.isEmptyBlock(blockPos.above())) {
+                //We can flatten the item as a shovel
                 level.playSound(player, blockPos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
                 resultToSet = foundResult;
-            } else if(blockState.getBlock() instanceof CampfireBlock && blockState.getValue(CampfireBlock.LIT)) {
-                if(!level.isClientSide) {
-                    level.levelEvent(null, LevelEvent.SOUND_EXTINGUISH_FIRE, blockPos, 0);
-                }
+            } else if (blockState.getBlock() instanceof CampfireBlock && blockState.getValue(CampfireBlock.LIT)) {
+                //We can use the paxel as a shovel to extinguish a campfire
+                if (!level.isClientSide) level.levelEvent(null, LevelEvent.SOUND_EXTINGUISH_FIRE, blockPos, 0);
                 CampfireBlock.dowse(player, level, blockPos, blockState);
                 resultToSet = blockState.setValue(CampfireBlock.LIT, false);
             }
-            if (resultToSet == null) {
-                return InteractionResult.PASS;
-            }
+            if (resultToSet == null) return InteractionResult.PASS;
         }
 
-        if(!level.isClientSide) {
+        if (!level.isClientSide) {
             ItemStack stack = ctx.getItemInHand();
-            if(player instanceof ServerPlayer serverPlayer) {
-                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, blockPos, stack);
-            }
+            if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, blockPos, stack);
             level.setBlock(blockPos, resultToSet, Block.UPDATE_ALL_IMMEDIATE);
-            if(player != null) {
+            if (player != null) {
                 EquipmentSlot slot = stack.getEquipmentSlot();
-                if(slot != null) {
-                    stack.hurtAndBreak(1, player, slot);
-                }
+                if (slot != null) stack.hurtAndBreak(1, player, slot);
             }
         }
 
@@ -117,14 +110,14 @@ public class PaxelItem extends DiggerItem
         Player player = ctx.getPlayer();
         BlockState resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_SCRAPE, false);
 
-        if(resultToSet != null) {
+        if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             return resultToSet;
         }
 
         resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_SCRAPE, false);
 
-        if(resultToSet != null) {
+        if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.levelEvent(player, LevelEvent.PARTICLES_SCRAPE, blockpos, 0);
             return resultToSet;
@@ -132,7 +125,7 @@ public class PaxelItem extends DiggerItem
 
         resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_WAX_OFF, false);
 
-        if(resultToSet != null) {
+        if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.levelEvent(player, LevelEvent.PARTICLES_WAX_OFF, blockpos, 0);
             return resultToSet;

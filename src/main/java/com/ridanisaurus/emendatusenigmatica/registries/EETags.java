@@ -28,46 +28,62 @@ import com.mojang.datafixers.util.Pair;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Function;
 
-public class EETags
-{
-    public static final Function<String, TagKey<Item>> MATERIAL_INGOT = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_NUGGET = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "nuggets/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_STORAGE_BLOCK = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_GEM = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "gems/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_DUST = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "dusts/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_GEAR = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "gears/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_PLATE = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "plates/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_ROD = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "rods/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_ORE = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "ores/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_RAW = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "raw_materials/" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_RAW_STORAGE_BLOCK = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_" + material));
-    public static final Function<String, TagKey<Item>> MATERIAL_FLUID = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "molten/" + material));
+public class EETags {
+    public static final Function<String, TagKey<Item>> MATERIAL_INGOT = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "ingots/" + material));
 
-    public static final Function<String, TagKey<Item>> MATERIAL_NONE = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", material));
+    public static final Function<String, TagKey<Item>> MATERIAL_NUGGET = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "nuggets/" + material));
 
-    public static final TagKey<Block> MINEABLE_WITH_PAXEL = create("mineable/paxel");
+    public static final Function<String, TagKey<Item>> MATERIAL_STORAGE_BLOCK = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "storage_blocks/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_GEM = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "gems/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_DUST = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "dusts/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_GEAR = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "gears/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_PLATE = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "plates/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_ROD = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "rods/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_ORE = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "ores/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_RAW = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "raw_materials/" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_RAW_STORAGE_BLOCK = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "storage_blocks/raw_" + material));
+
+    public static final Function<String, TagKey<Item>> MATERIAL_FLUID = material ->
+        getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "molten/" + material));
 
     public static TagKey<Item> getItemTag(ResourceLocation resourceLocation) {
         return BuiltInRegistries.ITEM.getTags().filter(pair -> pair.getFirst().location().equals(resourceLocation))
-                .map(Pair::getFirst).findFirst().orElse(BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, resourceLocation)).key());
+            .map(Pair::getFirst).findFirst().orElse(BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, resourceLocation)).key());
     }
 
     public static TagKey<Block> getBlockTag(ResourceLocation resourceLocation) {
         return BuiltInRegistries.BLOCK.getTags().filter(pair -> pair.getFirst().location().equals(resourceLocation))
-                .map(Pair::getFirst).findFirst().orElse(BuiltInRegistries.BLOCK.getOrCreateTag(TagKey.create(Registries.BLOCK, resourceLocation)).key());
+            .map(Pair::getFirst).findFirst().orElse(BuiltInRegistries.BLOCK.getOrCreateTag(TagKey.create(Registries.BLOCK, resourceLocation)).key());
     }
 
     public static TagKey<Block> create(String location) {
-        return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", location));
+        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, location));
     }
 }

@@ -32,5 +32,6 @@ public class Reference
     public static final String MOD_ID = "emendatusenigmatica";
     public static final String NAME = "Emendatus Enigmatica";
     public static final String MINECRAFT = "minecraft";
+    public static final String C_TAG = "c";
     public static final ResourceLocation AIR_RS = ResourceLocation.parse("minecraft:air");
 }

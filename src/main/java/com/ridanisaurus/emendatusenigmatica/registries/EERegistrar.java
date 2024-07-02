@@ -31,6 +31,7 @@ import com.ridanisaurus.emendatusenigmatica.items.ItemHammer;
 import com.ridanisaurus.emendatusenigmatica.items.PaxelItem;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -151,7 +152,15 @@ public class EERegistrar
         FLUIDS.register(eventBus);
     }
 
-    // TODO: Make a replacement for ResourceLocation Fluid textures.
+    public static final ResourceLocation FLUID_STILL_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_still");
+    public static final ResourceLocation FLUID_FLOWING_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_flow");
+    public static final ResourceLocation FLUID_OVERLAY_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_overlay");
 
-    //TODO: UNFINISHED
+    public static Supplier<FluidType> fluidType;
+    public static Supplier<FlowingFluid> fluidSource;
+    public static Supplier<FlowingFluid> fluidFlowing;
+    public static Supplier<LiquidBlock> fluidBlock;
+    public static DeferredItem<Item> fluidBucket;
+
+    // TODO: Add all the functions for registering things.
 }

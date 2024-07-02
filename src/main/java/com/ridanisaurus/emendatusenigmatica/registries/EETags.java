@@ -38,7 +38,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Function;
 
-//TODO: ResourceLocation is now Final, need solution for original methods.
 public class EETags
 {
     public static final Function<String, TagKey<Item>> MATERIAL_INGOT = material -> getItemTag(ResourceLocation.fromNamespaceAndPath("c", "ingots/" + material));

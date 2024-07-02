@@ -79,6 +79,7 @@ public class EmendatusEnigmatica {
         return loader;
     }
 
+    //FIXME: Move running data generator to possibly AddPackFindersEvent, or when EEVirtualPackHandler is created.
     private boolean generated = false;
     private void runGeneration(FMLCommonSetupEvent event) {
         try {

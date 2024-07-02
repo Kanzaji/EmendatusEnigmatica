@@ -77,144 +77,144 @@ public class BlockModelsGen extends EEBlockModelProvider {
 					if (material.getProperties().getMaterialType().equals("gem")) {
 						if (material.getProperties().hasOxidization()) {
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"exposed",
 									"gem",
 									"exposed_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"weathered",
 									"gem",
 									"weathered_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"oxidized",
 									"gem",
 									"oxidized_" + material.getId());
 							storageTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"waxed_" + material.getId() + "_block");
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"exposed",
 									"gem",
 									"waxed_exposed_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"weathered",
 									"gem",
 									"waxed_weathered_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/gem/00",
-									"blocks/templates/block/gem/01",
-									"blocks/templates/block/gem/02",
-									"blocks/templates/block/gem/03",
-									"blocks/templates/block/gem/04",
+									"block/templates/block/gem/00",
+									"block/templates/block/gem/01",
+									"block/templates/block/gem/02",
+									"block/templates/block/gem/03",
+									"block/templates/block/gem/04",
 									"oxidized",
 									"gem",
 									"waxed_oxidized_" + material.getId());
 						}
 						storageTintBlock(consumer,
-								"blocks/templates/block/gem/00",
-								"blocks/templates/block/gem/01",
-								"blocks/templates/block/gem/02",
-								"blocks/templates/block/gem/03",
-								"blocks/templates/block/gem/04",
+								"block/templates/block/gem/00",
+								"block/templates/block/gem/01",
+								"block/templates/block/gem/02",
+								"block/templates/block/gem/03",
+								"block/templates/block/gem/04",
 								material.getId() + "_block");
 					} else {
 						if (material.getProperties().hasOxidization()) {
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"exposed",
 									"metal",
 									"exposed_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"weathered",
 									"metal",
 									"weathered_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"oxidized",
 									"metal",
 									"oxidized_" + material.getId());
 							storageTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"waxed_" + material.getId() + "_block");
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"exposed",
 									"metal",
 									"waxed_exposed_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"weathered",
 									"metal",
 									"waxed_weathered_" + material.getId());
 							oxidizationTintBlock(consumer,
-									"blocks/templates/block/metal/00",
-									"blocks/templates/block/metal/01",
-									"blocks/templates/block/metal/02",
-									"blocks/templates/block/metal/03",
-									"blocks/templates/block/metal/04",
+									"block/templates/block/metal/00",
+									"block/templates/block/metal/01",
+									"block/templates/block/metal/02",
+									"block/templates/block/metal/03",
+									"block/templates/block/metal/04",
 									"oxidized",
 									"metal",
 									"waxed_oxidized_" + material.getId());
 						}
 						storageTintBlock(consumer,
-								"blocks/templates/block/metal/00",
-								"blocks/templates/block/metal/01",
-								"blocks/templates/block/metal/02",
-								"blocks/templates/block/metal/03",
-								"blocks/templates/block/metal/04",
+								"block/templates/block/metal/00",
+								"block/templates/block/metal/01",
+								"block/templates/block/metal/02",
+								"block/templates/block/metal/03",
+								"block/templates/block/metal/04",
 								material.getId() + "_block");
 					}
 				}
@@ -234,53 +234,53 @@ public class BlockModelsGen extends EEBlockModelProvider {
 				} else {
 					// Cluster Shard Block
 					storageTintBlock(consumer,
-							"blocks/templates/clusters/block/00",
-							"blocks/templates/clusters/block/01",
-							"blocks/templates/clusters/block/02",
-							"blocks/templates/clusters/block/03",
-							"blocks/templates/clusters/block/04",
+							"block/templates/clusters/block/00",
+							"block/templates/clusters/block/01",
+							"block/templates/clusters/block/02",
+							"block/templates/clusters/block/03",
+							"block/templates/clusters/block/04",
 							material.getId() + "_cluster_shard_block"
 					);
 					// Budding Block
 					storageTintBlock(consumer,
-							"blocks/templates/clusters/budding/00",
-							"blocks/templates/clusters/budding/01",
-							"blocks/templates/clusters/budding/02",
-							"blocks/templates/clusters/budding/03",
-							"blocks/templates/clusters/budding/04",
+							"block/templates/clusters/budding/00",
+							"block/templates/clusters/budding/01",
+							"block/templates/clusters/budding/02",
+							"block/templates/clusters/budding/03",
+							"block/templates/clusters/budding/04",
 							"budding_" + material.getId()
 					);
 					// Clusters
 					clusterTintBlock(consumer,
-							"blocks/templates/clusters/small_bud/00",
-							"blocks/templates/clusters/small_bud/01",
-							"blocks/templates/clusters/small_bud/02",
-							"blocks/templates/clusters/small_bud/03",
-							"blocks/templates/clusters/small_bud/04",
+							"block/templates/clusters/small_bud/00",
+							"block/templates/clusters/small_bud/01",
+							"block/templates/clusters/small_bud/02",
+							"block/templates/clusters/small_bud/03",
+							"block/templates/clusters/small_bud/04",
 							"small_" + material.getId() + "_bud"
 					);
 					clusterTintBlock(consumer,
-							"blocks/templates/clusters/medium_bud/00",
-							"blocks/templates/clusters/medium_bud/01",
-							"blocks/templates/clusters/medium_bud/02",
-							"blocks/templates/clusters/medium_bud/03",
-							"blocks/templates/clusters/medium_bud/04",
+							"block/templates/clusters/medium_bud/00",
+							"block/templates/clusters/medium_bud/01",
+							"block/templates/clusters/medium_bud/02",
+							"block/templates/clusters/medium_bud/03",
+							"block/templates/clusters/medium_bud/04",
 							"medium_" + material.getId() + "_bud"
 					);
 					clusterTintBlock(consumer,
-							"blocks/templates/clusters/large_bud/00",
-							"blocks/templates/clusters/large_bud/01",
-							"blocks/templates/clusters/large_bud/02",
-							"blocks/templates/clusters/large_bud/03",
-							"blocks/templates/clusters/large_bud/04",
+							"block/templates/clusters/large_bud/00",
+							"block/templates/clusters/large_bud/01",
+							"block/templates/clusters/large_bud/02",
+							"block/templates/clusters/large_bud/03",
+							"block/templates/clusters/large_bud/04",
 							"large_" + material.getId() + "_bud"
 					);
 					clusterTintBlock(consumer,
-							"blocks/templates/clusters/cluster/00",
-							"blocks/templates/clusters/cluster/01",
-							"blocks/templates/clusters/cluster/02",
-							"blocks/templates/clusters/cluster/03",
-							"blocks/templates/clusters/cluster/04",
+							"block/templates/clusters/cluster/00",
+							"block/templates/clusters/cluster/01",
+							"block/templates/clusters/cluster/02",
+							"block/templates/clusters/cluster/03",
+							"block/templates/clusters/cluster/04",
 							material.getId() + "_cluster"
 					);
 				}
@@ -291,11 +291,11 @@ public class BlockModelsGen extends EEBlockModelProvider {
 					storageBlock(consumer, "blocks/raw_" + material.getId() + "_block", "raw_" + material.getId() + "_block");
 				} else {
 					storageTintBlock(consumer,
-							"blocks/templates/raw_block/00",
-							"blocks/templates/raw_block/01",
-							"blocks/templates/raw_block/02",
-							"blocks/templates/raw_block/03",
-							"blocks/templates/raw_block/04",
+							"block/templates/raw_block/00",
+							"block/templates/raw_block/01",
+							"block/templates/raw_block/02",
+							"block/templates/raw_block/03",
+							"block/templates/raw_block/04",
 							"raw_" + material.getId() + "_block");
 				}
 			}
@@ -304,49 +304,49 @@ public class BlockModelsGen extends EEBlockModelProvider {
 				if (processedType.contains("ore")) {
 					if (material.getColors().getMaterialColor() == -1) {
 						if (material.getProperties().isEmissive()) {
-							oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "blocks/overlays/" + material.getId(), getOreModelName(stratum, material));
+							oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId(), getOreModelName(stratum, material));
 						} else {
-							oreBlock(consumer, stratum.getBaseTexture().toString(), "blocks/overlays/" + material.getId(), getOreModelName(stratum, material));
+							oreBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId(), getOreModelName(stratum, material));
 						}
 					} else {
 						if (material.getProperties().getMaterialType().equals("gem")) {
 							if (material.getProperties().isEmissive()) {
 								oreEmissiveTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/ore/gem/00",
-										"blocks/templates/ore/gem/01",
-										"blocks/templates/ore/gem/02",
-										"blocks/templates/ore/gem/03",
-										"blocks/templates/ore/gem/04",
-										"blocks/templates/ore/gem/shadow_drop",
+										"block/templates/ore/gem/00",
+										"block/templates/ore/gem/01",
+										"block/templates/ore/gem/02",
+										"block/templates/ore/gem/03",
+										"block/templates/ore/gem/04",
+										"block/templates/ore/gem/shadow_drop",
 										getOreModelName(stratum, material));
 							} else {
 								oreTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/ore/gem/00",
-										"blocks/templates/ore/gem/01",
-										"blocks/templates/ore/gem/02",
-										"blocks/templates/ore/gem/03",
-										"blocks/templates/ore/gem/04",
-										"blocks/templates/ore/gem/shadow_drop",
+										"block/templates/ore/gem/00",
+										"block/templates/ore/gem/01",
+										"block/templates/ore/gem/02",
+										"block/templates/ore/gem/03",
+										"block/templates/ore/gem/04",
+										"block/templates/ore/gem/shadow_drop",
 										getOreModelName(stratum, material));
 							}
 						} else {
 							if (material.getProperties().isEmissive()) {
 								oreEmissiveTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/ore/metal/00",
-										"blocks/templates/ore/metal/01",
-										"blocks/templates/ore/metal/02",
-										"blocks/templates/ore/metal/03",
-										"blocks/templates/ore/metal/04",
-										"blocks/templates/ore/metal/shadow_drop",
+										"block/templates/ore/metal/00",
+										"block/templates/ore/metal/01",
+										"block/templates/ore/metal/02",
+										"block/templates/ore/metal/03",
+										"block/templates/ore/metal/04",
+										"block/templates/ore/metal/shadow_drop",
 										getOreModelName(stratum, material));
 							} else {
 								oreTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/ore/metal/00",
-										"blocks/templates/ore/metal/01",
-										"blocks/templates/ore/metal/02",
-										"blocks/templates/ore/metal/03",
-										"blocks/templates/ore/metal/04",
-										"blocks/templates/ore/metal/shadow_drop",
+										"block/templates/ore/metal/00",
+										"block/templates/ore/metal/01",
+										"block/templates/ore/metal/02",
+										"block/templates/ore/metal/03",
+										"block/templates/ore/metal/04",
+										"block/templates/ore/metal/shadow_drop",
 										getOreModelName(stratum, material));
 							}
 						}
@@ -354,28 +354,28 @@ public class BlockModelsGen extends EEBlockModelProvider {
 					if (processedType.contains("sample")) {
 						if (material.getColors().getMaterialColor() == -1) {
 							if (material.getProperties().isEmissive()) {
-								oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "blocks/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
+								oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
 							} else {
-								oreBlock(consumer, stratum.getBaseTexture().toString(), "blocks/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
+								oreBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
 							}
 						} else {
 							if (material.getProperties().isEmissive()) {
 								oreEmissiveTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/sample/00",
-										"blocks/templates/sample/01",
-										"blocks/templates/sample/02",
-										"blocks/templates/sample//03",
-										"blocks/templates/sample/04",
-										"blocks/templates/sample/shadow_drop",
+										"block/templates/sample/00",
+										"block/templates/sample/01",
+										"block/templates/sample/02",
+										"block/templates/sample//03",
+										"block/templates/sample/04",
+										"block/templates/sample/shadow_drop",
 										getSampleModelName(stratum, material));
 							} else {
 								oreTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"blocks/templates/sample/00",
-										"blocks/templates/sample/01",
-										"blocks/templates/sample/02",
-										"blocks/templates/sample//03",
-										"blocks/templates/sample/04",
-										"blocks/templates/sample/shadow_drop",
+										"block/templates/sample/00",
+										"block/templates/sample/01",
+										"block/templates/sample/02",
+										"block/templates/sample//03",
+										"block/templates/sample/04",
+										"block/templates/sample/shadow_drop",
 										getSampleModelName(stratum, material));
 							}
 						}
@@ -400,7 +400,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("solid")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
+						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/block/" + type + "/oxidization/" + age))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)
@@ -445,7 +445,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						.renderType("cutout")
 				)
 				.child("translucent", new BlockModelBuilder("minecraft:block/block")
-						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/templates/block/" + type + "/oxidization/" + age))
+						.texture(age, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/block/" + type + "/oxidization/" + age))
 						.element()
 						.from(0, 0, 0)
 						.to(16, 16, 16)

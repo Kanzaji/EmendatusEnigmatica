@@ -188,23 +188,23 @@ public class Validator {
             if (!NON_EMPTY.apply(element, path)) return false;
 
             String value = element.getAsString();
-            String[] values = (value + " :").split(":");
+            List<String> values = value.contains(":")? List.of(value.substring(0, value.indexOf(":")), value.substring(value.indexOf(":")+1)): List.of(value);
             boolean validation = true;
-            if (values.length != 2) {
+            if (values.size() != 2 || values.get(1).contains(":")) {
                 LOGGER.error("Provided Resource ID in \"%s\" in file \"%s\" isn't in a proper format! Expected: \"namespace:id\", got: \"%s\".".formatted(name, obfuscatePath(path), value));
                 return false;
             }
-            if (values[0].isBlank()) {
+            if (values.get(0).isBlank()) {
                 LOGGER.error("Provided Resource ID in \"%s\" in file \"%s\" is missing the namespace! Expected: \"namespace:id\", got: \"%s\".".formatted(name, obfuscatePath(path), value));
                 validation = false;
             }
-            if (values[1].isBlank()) {
+            if (values.get(1).isBlank()) {
                 LOGGER.error("Provided Resource ID in \"%s\" in file \"%s\" is missing the id! Expected: \"namespace:id\", got: \"%s\".".formatted(name, obfuscatePath(path), value));
                 validation = false;
             }
             // Only check if the resource location is valid if any above didn't catch issues.
             // Otherwise, this would trigger false errors that might confuse end user.
-            if (validation && (!ResourceLocation.isValidNamespace(values[0]) || !ResourceLocation.isValidPath(values[1]))) {
+            if (validation && (!ResourceLocation.isValidNamespace(values.get(0)) || !ResourceLocation.isValidPath(values.get(1)))) {
                 LOGGER.error("Provided Resource ID in \"%s\" in file \"%s\" contains non [a-z0-9/._-] character, got \"%s\".".formatted(name, obfuscatePath(path), value));
                 validation = false;
             }

@@ -59,8 +59,6 @@ public abstract class EELangProvider implements DataProvider {
 
 	protected abstract void addTranslations();
 
-	//TODO: Figure out why in this case we are using DataProvider.saveStable() instead of the custom saveJSON()?
-	// Possibly move that to unified class?
 	@Override
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput) {
 		addTranslations();

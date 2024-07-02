@@ -14,6 +14,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -62,11 +63,11 @@ public class EmendatusEnigmatica {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         this.loader.datagen(this.generator);
-        generator.run();
 
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
-        modEventBus.addListener(this::injectDatapackFinder);
+        modEventBus.addListener(this::addPackFinder);
+        modEventBus.addListener(this::runGeneration);
         this.loader.finish();
     }
 
@@ -78,11 +79,22 @@ public class EmendatusEnigmatica {
         return loader;
     }
 
+    private boolean generated = false;
+    private void runGeneration(FMLCommonSetupEvent event) {
+        try {
+            if (generated) return;
+            generated = true;
+            this.generator.run();
+        } catch (Exception e) {
+            throw new RuntimeException("Exception caught while running data generation!", e);
+        }
+    }
+
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         // Will probably be used to register stuff from the registries after generation.
     }
 
-    public void injectDatapackFinder(@NotNull AddPackFindersEvent event) {
+    private void addPackFinder(@NotNull AddPackFindersEvent event) {
         event.addRepositorySource(new EEPackFinder(event.getPackType()));
     }
 }

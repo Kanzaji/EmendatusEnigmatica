@@ -387,7 +387,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 
 	private void oxidizationBlock(Consumer<IFinishedGenericJSON> consumer, String base, String age, String type, String path) {
 		new BlockModelBuilder("minecraft:block/block")
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
 						.texture("base",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
@@ -414,7 +414,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 
 	private void oxidizationTintBlock(Consumer<IFinishedGenericJSON> consumer, String highlight2, String highlight1, String base, String shadow1, String shadow2, String age, String type, String path) {
 		new BlockModelBuilder("minecraft:block/block")
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.texture("particle",  ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, base))
 				.child("cutout", new BlockModelBuilder("minecraft:block/block")
 						.texture("highlight2", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, highlight2))
@@ -523,7 +523,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 	public void oreBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String overlayTexture, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.texture("particle", strata)
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
 						.texture("strata", strata)
 						.element()
@@ -549,7 +549,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 	public void oreEmissiveBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String overlayTexture, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.texture("particle", strata)
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
 						.texture("strata", strata)
 						.element()
@@ -575,7 +575,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 	public void oreTintBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String highlight2, String highlight1, String base, String shadow1, String shadow2, String drop, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.texture("particle", strata)
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
 						.texture("strata", strata)
 						.element()
@@ -640,7 +640,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 	public void oreEmissiveTintBlock(Consumer<IFinishedGenericJSON> consumer, String strata, String highlight2, String highlight1, String base, String shadow1, String shadow2, String drop, String path) {
 		new BlockModelBuilder("minecraft:block/block")
 				.texture("particle", strata)
-				.setLoader("forge:composite")
+				.setLoader(Reference.NEOFORGE + ":composite")
 				.child("solid", new BlockModelBuilder("minecraft:block/block")
 						.texture("strata", strata)
 						.element()

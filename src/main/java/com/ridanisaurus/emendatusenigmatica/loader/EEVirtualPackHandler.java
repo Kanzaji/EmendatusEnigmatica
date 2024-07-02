@@ -40,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -73,14 +72,15 @@ public class EEVirtualPackHandler implements PackResources {
         //FIXME No idea how this is supposed to work? For some reason now it accepts multiple inputs but single output? Just ignore all except first element?
         if (fileName.length == 0) return null;
         Path resolved = path.resolve(fileName[0]);
-        if (Files.notExists(resolved)) return null;
+//        if (Files.notExists(resolved)) return null;
         return IoSupplier.create(resolved);
     }
 
     @Override
     public IoSupplier<InputStream> getResource(@NotNull PackType type, @NotNull ResourceLocation location) {
         Path resolved = path.resolve(getFullPath(type, location));
-        if (!Files.exists(resolved)) throw new RuntimeException(new FileNotFoundException("Resource does not exist! File: " + location));
+//        if (Files.notExists(resolved))
+//            throw new RuntimeException(new FileNotFoundException("Resource does not exist! File: " + location));
         return IoSupplier.create(resolved);
     }
 
@@ -96,7 +96,7 @@ public class EEVirtualPackHandler implements PackResources {
 
     //TODO: Test if some mod (like apotheosis) lists all of the resources with a filter, this doesn't cause issues (like it used to in 1.19.2)
     private void getChildResourceLocations(ResourceOutput rsOut, int depth, Path current, String currentRLNS, String currentRLPath) {
-        if (!Files.exists(current) || !Files.isDirectory(current)) return;
+        if (Files.notExists(current) || !Files.isDirectory(current)) return;
         try (Stream<Path> list = Files.list(current)) {
             for (Path child : list.toList()) {
                 if (!Files.isDirectory(child)) {

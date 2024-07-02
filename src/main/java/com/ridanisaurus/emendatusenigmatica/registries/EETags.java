@@ -73,6 +73,8 @@ public class EETags {
     public static final Function<String, TagKey<Item>> MATERIAL_FLUID = material ->
         getItemTag(ResourceLocation.fromNamespaceAndPath(Reference.C_TAG, "molten/" + material));
 
+    public static final TagKey<Block> MINEABLE_WITH_PAXEL = create("mineable/paxel");
+
     public static TagKey<Item> getItemTag(ResourceLocation resourceLocation) {
         return BuiltInRegistries.ITEM.getTags().filter(pair -> pair.getFirst().location().equals(resourceLocation))
             .map(Pair::getFirst).findFirst().orElse(BuiltInRegistries.ITEM.getOrCreateTag(TagKey.create(Registries.ITEM, resourceLocation)).key());

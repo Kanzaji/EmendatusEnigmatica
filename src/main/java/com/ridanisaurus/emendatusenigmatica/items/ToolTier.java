@@ -24,7 +24,9 @@
 
 package com.ridanisaurus.emendatusenigmatica.items;
 
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
@@ -33,39 +35,36 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-//FIXME: Tier interface has changed, some methods are no longer exist.
-public class ToolTier implements Tier
-{
-
-    // Method "getLevel()" no longer exists from Tier.
-    private final int lvl;
-    private final int uses;
+public class ToolTier implements Tier {
+    private final int durability;
     private final float efficiency;
     private final float attackDmg;
     private final int enchantability;
-    // Method "getTag()" no longer exists from Tier.
-    @Nullable
-    private final TagKey<Block> tag;
-    @Nullable
     private final Supplier<Ingredient> repairIngredient;
 
-    public ToolTier(int lvl, int uses, float efficiency, float attackDmg, int enchantability, @Nullable TagKey<Block> tag, @Nullable Supplier<Ingredient> repairIngredient) {
-        this.lvl = lvl;
-        this.uses = uses;
+    public ToolTier(@NotNull MaterialModel material, int durability, TagKey<Item> repairTag) {
+        this(durability, material.getTools().getEfficiency(), material.getTools().getAttackDamage(), material.getTools().getEnchantability(), repairTag);
+    }
+
+    public ToolTier(int durability, float efficiency, float attackDmg, int enchantability, TagKey<Item> repairTag) {
+        this.durability = durability;
         this.efficiency = efficiency;
         this.attackDmg = attackDmg;
         this.enchantability = enchantability;
-        this.tag = tag;
+        this.repairIngredient = () -> Ingredient.of(repairTag);
+    }
+
+    public ToolTier(int durability, float efficiency, float attackDmg, int enchantability, Supplier<Ingredient> repairIngredient) {
+        this.durability = durability;
+        this.efficiency = efficiency;
+        this.attackDmg = attackDmg;
+        this.enchantability = enchantability;
         this.repairIngredient = repairIngredient;
     }
 
-    /*
-    Originally there was a second constructor that got the Tag differently, but it cannot be retrieved from Tier.super.getTag() anymore.
-     */
-
     @Override
     public int getUses() {
-        return this.uses;
+        return this.durability;
     }
 
     @Override
@@ -79,7 +78,7 @@ public class ToolTier implements Tier
     }
 
     @Override
-    public @NotNull TagKey<Block> getIncorrectBlocksForDrops() {
+    public TagKey<Block> getIncorrectBlocksForDrops() {
         return null;
     }
 
@@ -91,11 +90,5 @@ public class ToolTier implements Tier
     @Override
     public @NotNull Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
-    }
-
-    // Unsure what this is for, originally it contained text that looked important for Forge.
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

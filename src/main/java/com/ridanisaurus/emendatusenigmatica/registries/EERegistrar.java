@@ -30,6 +30,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Table;
 import com.ridanisaurus.emendatusenigmatica.blocks.*;
+import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
@@ -38,20 +39,24 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.SoundAction;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -152,7 +157,7 @@ public class EERegistrar
     public static Supplier<FlowingFluid> fluidSource;
     public static Supplier<FlowingFluid> fluidFlowing;
     public static Supplier<LiquidBlock> fluidBlock;
-    public static Supplier<Item> fluidBucket;
+    public static DeferredItem<Item> fluidBucket;
 
     public static final ResourceLocation FLUID_STILL_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_still");
     public static final ResourceLocation FLUID_FLOWING_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_flow");
@@ -510,7 +515,7 @@ public class EERegistrar
         } else {
             repairItem = EETags.MATERIAL_GEM.apply(material.getId());
         }
-        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.HEAD, material.getArmor().getHelmet())));
+//        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.HEAD, material.getArmor().getHelmet())));
     }
 
     // Chestplate
@@ -522,7 +527,7 @@ public class EERegistrar
         } else {
             repairItem = EETags.MATERIAL_GEM.apply(material.getId());
         }
-        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.CHEST, material.getArmor().getChestplate())));
+//        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.CHEST, material.getArmor().getChestplate())));
     }
 
     // Leggings
@@ -534,7 +539,7 @@ public class EERegistrar
         } else {
             repairItem = EETags.MATERIAL_GEM.apply(material.getId());
         }
-        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.LEGS, material.getArmor().getLeggings())));
+//        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.LEGS, material.getArmor().getLeggings())));
     }
 
     // Boots
@@ -546,7 +551,7 @@ public class EERegistrar
         } else {
             repairItem = EETags.MATERIAL_GEM.apply(material.getId());
         }
-        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.FEET, material.getArmor().getBoots())));
+//        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.FEET, material.getArmor().getBoots())));
     }
 
     // Shield
@@ -566,24 +571,24 @@ public class EERegistrar
         fluidType = FLUID_TYPES.register(material.getId(),
             () -> new BasicFluidType(FLUID_STILL_RL, FLUID_FLOWING_RL, FLUID_OVERLAY_RL,
                 material.getColors().getFluidColor(),
-                new Vector3f(Vec3.fromRGB24(material.getColors().getFluidColor())),
+                new Vector3f(Vec3.fromRGB24(material.getColors().getFluidColor()).toVector3f()),
                 fluidTypeProperties(material)));
         fluidSource = FLUIDS.register(material.getId(),
-            () -> new ForgeFlowingFluid.Source(makeProperties(fluidTypeMap.get(material.getId()),
+            () -> new BaseFlowingFluid.Source(makeProperties(fluidTypeMap.get(material.getId()),
                 fluidSourceMap.get(material.getId()),
                 fluidFlowingMap.get(material.getId()),
                 fluidBlockMap.get(material.getId()),
                 fluidBucketMap.get(material.getId()))));
         fluidFlowing = FLUIDS.register("flowing_" + material.getId(),
-            () -> new ForgeFlowingFluid.Flowing(makeProperties(fluidTypeMap.get(material.getId()),
+            () -> new BaseFlowingFluid.Flowing(makeProperties(fluidTypeMap.get(material.getId()),
                 fluidSourceMap.get(material.getId()),
                 fluidFlowingMap.get(material.getId()),
                 fluidBlockMap.get(material.getId()),
                 fluidBucketMap.get(material.getId()))));
         fluidBlock = BLOCKS.register(material.getId(),
-            () -> new LiquidBlock(fluidSourceMap.get(material.getId()), BlockBehaviour.Properties.of(Material.LAVA).noCollission().strength(100.0F).noLootTable()));
+            () -> new LiquidBlock(fluidSourceMap.get(material.getId()).get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noCollission().strength(100.0F).noLootTable()));
         fluidBucket = ITEMS.register(material.getId() + "_bucket",
-            () -> new BucketItem(fluidSourceMap.get(material.getId()), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
+            () -> new BucketItem(fluidSourceMap.get(material.getId()).get(), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 
         fluidTypeMap.put(material.getId(), fluidType);
         fluidSourceMap.put(material.getId(), fluidSource);
@@ -602,14 +607,14 @@ public class EERegistrar
             .rarity(Rarity.COMMON)
             .canDrown(false)
             .canSwim(false)
-            .pathType(BlockPathTypes.LAVA)
+            .pathType(PathType.LAVA)
             .adjacentPathType(null)
             .sound(SoundAction.get("bucket_fill"), SoundEvents.BUCKET_FILL_LAVA)
             .sound(SoundAction.get("bucket_empty"), SoundEvents.BUCKET_EMPTY_LAVA);
     }
 
-    public static ForgeFlowingFluid.Properties makeProperties(Supplier<FluidType> type, Supplier<FlowingFluid> source, Supplier<FlowingFluid> flowing, Supplier<LiquidBlock> block, Supplier<Item> bucket) {
-        return new ForgeFlowingFluid.Properties(type, source, flowing)
+    public static BaseFlowingFluid.Properties makeProperties(Supplier<FluidType> type, Supplier<FlowingFluid> source, Supplier<FlowingFluid> flowing, Supplier<LiquidBlock> block, Supplier<Item> bucket) {
+        return new BaseFlowingFluid.Properties(type, source, flowing)
             .slopeFindDistance(2)
             .levelDecreasePerBlock(2)
             .block(block)

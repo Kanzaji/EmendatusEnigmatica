@@ -28,6 +28,7 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,7 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class ToolTier implements Tier {
+    private final int level;
     private final int durability;
     private final float efficiency;
     private final float attackDmg;
@@ -43,10 +45,11 @@ public class ToolTier implements Tier {
     private final Supplier<Ingredient> repairIngredient;
 
     public ToolTier(@NotNull MaterialModel material, int durability, TagKey<Item> repairTag) {
-        this(durability, material.getTools().getEfficiency(), material.getTools().getAttackDamage(), material.getTools().getEnchantability(), repairTag);
+        this(durability, material.getTools().getLevel(), material.getTools().getEfficiency(), material.getTools().getAttackDamage(), material.getTools().getEnchantability(), repairTag);
     }
 
-    public ToolTier(int durability, float efficiency, float attackDmg, int enchantability, TagKey<Item> repairTag) {
+    public ToolTier(int durability, int level, float efficiency, float attackDmg, int enchantability, TagKey<Item> repairTag) {
+        this.level = level;
         this.durability = durability;
         this.efficiency = efficiency;
         this.attackDmg = attackDmg;
@@ -54,7 +57,8 @@ public class ToolTier implements Tier {
         this.repairIngredient = () -> Ingredient.of(repairTag);
     }
 
-    public ToolTier(int durability, float efficiency, float attackDmg, int enchantability, Supplier<Ingredient> repairIngredient) {
+    public ToolTier(int durability, int level, float efficiency, float attackDmg, int enchantability, Supplier<Ingredient> repairIngredient) {
+        this.level = level;
         this.durability = durability;
         this.efficiency = efficiency;
         this.attackDmg = attackDmg;
@@ -78,8 +82,15 @@ public class ToolTier implements Tier {
     }
 
     @Override
-    public TagKey<Block> getIncorrectBlocksForDrops() {
-        return null;
+    public @NotNull TagKey<Block> getIncorrectBlocksForDrops() {
+        return switch (this.level) {
+            case 0 -> Tiers.WOOD.getIncorrectBlocksForDrops();
+            case 1 -> Tiers.STONE.getIncorrectBlocksForDrops();
+            case 2 -> Tiers.IRON.getIncorrectBlocksForDrops();
+            case 3 -> Tiers.DIAMOND.getIncorrectBlocksForDrops();
+            case 4 -> Tiers.NETHERITE.getIncorrectBlocksForDrops();
+            default -> throw new IllegalStateException("Unexpected value for tool level: " + this.level);
+        };
     }
 
     @Override

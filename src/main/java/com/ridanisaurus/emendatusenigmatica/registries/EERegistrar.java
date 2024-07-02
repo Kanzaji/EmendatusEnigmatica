@@ -29,6 +29,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Table;
+import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.blocks.*;
 import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
@@ -50,6 +51,7 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundAction;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -619,5 +621,50 @@ public class EERegistrar
             .levelDecreasePerBlock(2)
             .block(block)
             .bucket(bucket);
+    }
+
+    public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTab() == EmendatusEnigmatica.TOOLS_TAB.get()) {
+            swordMap.values().forEach(event::accept);
+            pickaxeMap.values().forEach(event::accept);
+            axeMap.values().forEach(event::accept);
+            shovelMap.values().forEach(event::accept);
+            hoeMap.values().forEach(event::accept);
+            paxelMap.values().forEach(event::accept);
+            helmetMap.values().forEach(event::accept);
+            chestplateMap.values().forEach(event::accept);
+            leggingsMap.values().forEach(event::accept);
+            bootsMap.values().forEach(event::accept);
+            shieldMap.values().forEach(event::accept);
+        }
+        if (event.getTab() == EmendatusEnigmatica.RESOURCES_TAB.get()) {
+            oreBlockItemTable.values().forEach(event::accept);
+            oreSampleBlockItemTable.values().forEach(event::accept);
+            storageBlockItemMap.values().forEach(event::accept);
+            exposedBlockItemMap.values().forEach(event::accept);
+            weatheredBlockItemMap.values().forEach(event::accept);
+            oxidizedBlockItemMap.values().forEach(event::accept);
+            waxedStorageBlockItemMap.values().forEach(event::accept);
+            waxedExposedBlockItemMap.values().forEach(event::accept);
+            waxedWeatheredBlockItemMap.values().forEach(event::accept);
+            waxedOxidizedBlockItemMap.values().forEach(event::accept);
+            rawBlockItemMap.values().forEach(event::accept);
+            buddingBlockItemMap.values().forEach(event::accept);
+            smallBudBlockItemMap.values().forEach(event::accept);
+            mediumBudBlockItemMap.values().forEach(event::accept);
+            largeBudBlockItemMap.values().forEach(event::accept);
+            clusterBlockItemMap.values().forEach(event::accept);
+            clusterShardBlockItemMap.values().forEach(event::accept);
+            rawMap.values().forEach(event::accept);
+            ingotMap.values().forEach(event::accept);
+            nuggetMap.values().forEach(event::accept);
+            gemMap.values().forEach(event::accept);
+            dustMap.values().forEach(event::accept);
+            plateMap.values().forEach(event::accept);
+            gearMap.values().forEach(event::accept);
+            rodMap.values().forEach(event::accept);
+            clusterShardMap.values().forEach(event::accept);
+            fluidBucketMap.values().forEach(event::accept);
+        }
     }
 }

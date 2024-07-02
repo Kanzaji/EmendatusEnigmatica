@@ -67,7 +67,6 @@ public class EmendatusEnigmatica {
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::addPackFinder);
-        modEventBus.addListener(this::runGeneration);
         this.loader.finish();
     }
 
@@ -80,8 +79,9 @@ public class EmendatusEnigmatica {
     }
 
     //FIXME: Move running data generator to possibly AddPackFindersEvent, or when EEVirtualPackHandler is created.
+    //TODO: After running generation, add the icon.png for the resource pack into the default folder
     private boolean generated = false;
-    private void runGeneration(FMLCommonSetupEvent event) {
+    private void runGeneration() {
         try {
             if (generated) return;
             generated = true;
@@ -92,10 +92,11 @@ public class EmendatusEnigmatica {
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        // Will probably be used to register stuff from the registries after generation.
+        EERegistrar.registerToCreativeTabs(event);
     }
 
     private void addPackFinder(@NotNull AddPackFindersEvent event) {
         event.addRepositorySource(new EEPackFinder(event.getPackType()));
+        runGeneration();
     }
 }

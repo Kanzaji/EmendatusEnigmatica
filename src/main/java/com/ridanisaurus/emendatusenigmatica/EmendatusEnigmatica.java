@@ -70,7 +70,9 @@ public class EmendatusEnigmatica {
 
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
+        // Virtual ResourcePack
         modEventBus.addListener(this::addPackFinder);
+        // Generator check, we can't launch the game if the generator wasn't executed!
         modEventBus.addListener(this::hasGenerated);
         this.loader.finish();
     }

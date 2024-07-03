@@ -33,6 +33,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +44,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.ItemAbilities;
 import org.jetbrains.annotations.NotNull;
@@ -94,10 +96,8 @@ public class PaxelItem extends DiggerItem
             ItemStack stack = ctx.getItemInHand();
             if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, blockPos, stack);
             level.setBlock(blockPos, resultToSet, Block.UPDATE_ALL_IMMEDIATE);
-            if (player != null) {
-                EquipmentSlot slot = stack.getEquipmentSlot();
-                if (slot != null) stack.hurtAndBreak(1, player, slot);
-            }
+            level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, resultToSet));
+            if (player != null) stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
         }
 
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -108,15 +108,14 @@ public class PaxelItem extends DiggerItem
         Level level = ctx.getLevel();
         BlockPos blockpos = ctx.getClickedPos();
         Player player = ctx.getPlayer();
-        BlockState resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_STRIP, false);
 
+        BlockState resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_STRIP, false);
         if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
             return resultToSet;
         }
 
         resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_SCRAPE, false);
-
         if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.levelEvent(player, LevelEvent.PARTICLES_SCRAPE, blockpos, 0);
@@ -124,7 +123,6 @@ public class PaxelItem extends DiggerItem
         }
 
         resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_WAX_OFF, false);
-
         if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
             level.levelEvent(player, LevelEvent.PARTICLES_WAX_OFF, blockpos, 0);

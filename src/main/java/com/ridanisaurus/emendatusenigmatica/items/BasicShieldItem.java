@@ -19,8 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class BasicShieldItem extends ShieldItem
-{
+public class BasicShieldItem extends ShieldItem {
     public final int highlight2;
     public final int highlight1;
     public final int base;
@@ -29,7 +28,7 @@ public class BasicShieldItem extends ShieldItem
     public final TagKey<Item> repairItem;
     public final MaterialModel material;
 
-    public BasicShieldItem(MaterialModel material, TagKey<Item> repairItem) {
+    public BasicShieldItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
         super(new Properties().durability(material.getArmor().getShield().getDurability()));
         this.highlight2 = material.getColors().getHighlightColor(3);
         this.highlight1 = material.getColors().getHighlightColor(1);
@@ -41,7 +40,7 @@ public class BasicShieldItem extends ShieldItem
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+    public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions()
         {
             @Override
@@ -82,7 +81,7 @@ public class BasicShieldItem extends ShieldItem
             ArmorMaterial.@NotNull Layer layer,
             boolean innerModel
     ) {
-        if(material.getColors().getMaterialColor() == -1) {
+        if (!material.getColors().hasMaterialColor()) {
             return super.getArmorTexture(stack, entity, slot, layer, innerModel);
         } else {
             return ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/empty.png"); //toString no longer needed here.

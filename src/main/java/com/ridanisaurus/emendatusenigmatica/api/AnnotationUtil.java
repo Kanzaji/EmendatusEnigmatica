@@ -30,7 +30,7 @@ public class AnnotationUtil {
                     try {
                         classList.add(Class.forName(allScanDatumAnnotation.memberName()));
                     } catch (ClassNotFoundException e) {
-                        EmendatusEnigmatica.LOGGER.error("Exception while scanning for annotated classes!", e);
+                        EmendatusEnigmatica.logger.error("Exception while scanning for annotated classes!", e);
                     }
                 }
             }

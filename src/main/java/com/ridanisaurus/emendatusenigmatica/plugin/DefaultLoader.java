@@ -37,19 +37,19 @@ public class DefaultLoader {
         Path configDir = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/");
 
         // Check if the folder exists
-        if (!configDir.toFile().exists() && configDir.toFile().mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/");
+        if (!configDir.toFile().exists() && configDir.toFile().mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/");
 
         File strataDir = configDir.resolve("strata/").toFile();
-        if (!strataDir.exists() && strataDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/strata/");
+        if (!strataDir.exists() && strataDir.mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/strata/");
 
         File materialDir = configDir.resolve("material/").toFile();
-        if (!materialDir.exists() && materialDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/material/");
+        if (!materialDir.exists() && materialDir.mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/material/");
 
         File compatDir = configDir.resolve("compat/").toFile();
-        if (!compatDir.exists() && compatDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/compat/");
+        if (!compatDir.exists() && compatDir.mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/compat/");
 
         File depositDir = configDir.resolve("deposit/").toFile();
-        if (!depositDir.exists() && depositDir.mkdirs()) EmendatusEnigmatica.LOGGER.info("Created /config/emendatusenigmatica/deposit/");
+        if (!depositDir.exists() && depositDir.mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/deposit/");
 
         Validator validator = new Validator("Main Validator");
         ValidatorLogger LOGGER = Validator.LOGGER;

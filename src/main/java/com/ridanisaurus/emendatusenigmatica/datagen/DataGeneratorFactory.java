@@ -41,7 +41,7 @@ public class DataGeneratorFactory {
     }
 
     @Contract(" -> new")
-    public static @NotNull DataGenerator createEEDataGenerator() {
-        return new DataGenerator(ROOT_PATH, SharedConstants.getCurrentVersion(), true);
+    public static @NotNull EEDataGenerator createEEDataGenerator() {
+        return new EEDataGenerator(ROOT_PATH, SharedConstants.getCurrentVersion(), true);
     }
 }

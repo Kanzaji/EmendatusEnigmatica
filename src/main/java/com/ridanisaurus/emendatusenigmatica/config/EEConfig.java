@@ -44,7 +44,7 @@ public class EEConfig {
 		Pair<ClientConfig, ModConfigSpec> clientSpecPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		client = clientSpecPair.getLeft();
 		container.registerConfig(ModConfig.Type.CLIENT, clientSpecPair.getRight());
-		EmendatusEnigmatica.LOGGER.info("Emendatus Enigmatica Client Config has been registered.");
+		EmendatusEnigmatica.logger.info("Emendatus Enigmatica Client Config has been registered.");
 	}
 
 	public static void setupCommon(ModContainer container) {
@@ -60,9 +60,9 @@ public class EEConfig {
 				.reader(FMLPaths.CONFIGDIR.get())
 				.apply(new ModConfig(ModConfig.Type.COMMON, commonSpec, container));
 			commonSpec.setConfig(configData);
-			EmendatusEnigmatica.LOGGER.info("EmendatusEnigmatica Common Config has been parsed.");
+			EmendatusEnigmatica.logger.info("EmendatusEnigmatica Common Config has been parsed.");
 		} catch (Exception e) {
-			EmendatusEnigmatica.LOGGER.error("Failed parsing Common config!", e);
+			EmendatusEnigmatica.logger.error("Failed parsing Common config!", e);
 			throw new IllegalStateException("Common Config for EmendatusEnigmatica wasn't possible to parse.", e);
 		}
 	}

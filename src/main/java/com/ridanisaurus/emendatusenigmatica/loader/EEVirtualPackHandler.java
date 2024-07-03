@@ -26,6 +26,7 @@ package com.ridanisaurus.emendatusenigmatica.loader;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;

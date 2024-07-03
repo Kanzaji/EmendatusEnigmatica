@@ -131,6 +131,10 @@ dependencies {
     if (the_one_probe_version != "null") runtimeOnly "curse.maven:the-one-probe-245211:${the_one_probe_version}"
     if (the_undergarden_version != "null") runtimeOnly "curse.maven:the-undergarden-379849:${the_undergarden_version}"
     if (architectury_version != "null") runtimeOnly "curse.maven:architectury-api-419699:${architectury_version}"
+    if (kubejs_version != "null" && rhino_version != "null") {
+        runtimeOnly "curse.maven:kubejs-238086:${kubejs_version}"
+        runtimeOnly "curse.maven:rhino-416294:${rhino_version}"
+    }
 
     //TODO: Add to proper mods and remove when necessary.
 //    runtimeOnly "curse.maven:curios-309927:${curios_version}"

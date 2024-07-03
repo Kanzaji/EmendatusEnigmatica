@@ -108,7 +108,7 @@ public class PaxelItem extends DiggerItem
         Level level = ctx.getLevel();
         BlockPos blockpos = ctx.getClickedPos();
         Player player = ctx.getPlayer();
-        BlockState resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_SCRAPE, false);
+        BlockState resultToSet = state.getToolModifiedState(ctx, ItemAbilities.AXE_STRIP, false);
 
         if (resultToSet != null) {
             level.playSound(player, blockpos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);

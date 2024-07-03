@@ -42,7 +42,7 @@ public class BasicShovelItem extends ShovelItem {
 	}
 
 	public BasicShovelItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getShovel().getDamage(), material.getTools().getShovel().getSpeed())));
+		super(tier, new Properties().durability(tier.getUses()).attributes(createAttributes(tier, material.getTools().getShovel().getDamage(), material.getTools().getShovel().getSpeed())));
 		this.highlight2 = material.getColors().getHighlightColor(3);
 		this.highlight1 = material.getColors().getHighlightColor(1);
 		this.base = material.getColors().getMaterialColor();

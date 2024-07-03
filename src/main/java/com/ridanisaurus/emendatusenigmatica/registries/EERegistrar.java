@@ -174,6 +174,7 @@ public class EERegistrar
         BLOCKS.register(eventBus);
         FLUID_TYPES.register(eventBus);
         FLUIDS.register(eventBus);
+        ARMOR_MATERIALS.register(eventBus);
     }
 
     public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
@@ -531,7 +532,7 @@ public class EERegistrar
 
     // Armor Material
     public static void registerArmorMaterial(MaterialModel material) {
-        armorMaterialsMap.put(material.getId(), ARMOR_MATERIALS.register("", () -> new ArmorMaterial(
+        armorMaterialsMap.put(material.getId(), ARMOR_MATERIALS.register(material.getId() + "_armor_material", () -> new ArmorMaterial(
             Map.of(
                 ArmorItem.Type.HELMET,      material.getArmor().getHelmet().getProtection(),
                 ArmorItem.Type.CHESTPLATE,  material.getArmor().getChestplate().getProtection(),
@@ -551,26 +552,25 @@ public class EERegistrar
     // Helmet
     public static void registerHelmets(MaterialModel material) {
         String itemName = material.getId() + "_helmet";
-        TagKey<Item> repairItem = getRepairItem(material);
-        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.HELMET)));
+        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.HELMET, material.getArmor().getHelmet())));
     }
 
     // Chestplate
     public static void registerChestplates(MaterialModel material) {
         String itemName = material.getId() + "_chestplate";
-        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.CHESTPLATE)));
+        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.CHESTPLATE, material.getArmor().getChestplate())));
     }
 
     // Leggings
     public static void registerLeggings(MaterialModel material) {
         String itemName = material.getId() + "_leggings";
-        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.LEGGINGS)));
+        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.LEGGINGS, material.getArmor().getLeggings())));
     }
 
     // Boots
     public static void registerBoots(MaterialModel material) {
         String itemName = material.getId() + "_boots";
-        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.BOOTS)));
+        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.BOOTS, material.getArmor().getBoots())));
     }
 
     // Shield

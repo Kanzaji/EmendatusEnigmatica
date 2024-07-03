@@ -103,17 +103,25 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
             if (material.getProcessedTypes().contains("paxel")) {
                 EERegistrar.registerPaxels(material);
             }
+            boolean registerArmorMaterial = false;
             if (material.getProcessedTypes().contains("helmet")) {
                 EERegistrar.registerHelmets(material);
+                registerArmorMaterial = true;
             }
             if (material.getProcessedTypes().contains("chestplate")) {
                 EERegistrar.registerChestplates(material);
+                registerArmorMaterial = true;
             }
             if (material.getProcessedTypes().contains("leggings")) {
                 EERegistrar.registerLeggings(material);
+                registerArmorMaterial = true;
             }
             if (material.getProcessedTypes().contains("boots")) {
                 EERegistrar.registerBoots(material);
+                registerArmorMaterial = true;
+            }
+            if (registerArmorMaterial) {
+                EERegistrar.registerArmorMaterial(material);
             }
             if (material.getProcessedTypes().contains("shield")) {
                 EERegistrar.registerShields(material);

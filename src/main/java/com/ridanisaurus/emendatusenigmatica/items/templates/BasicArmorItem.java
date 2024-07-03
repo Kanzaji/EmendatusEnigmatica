@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.EffectModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
@@ -46,7 +47,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-// TODO: ArmorTier class unfinished.
 public class BasicArmorItem extends ArmorItem {
     private final MaterialModel material;
     public final boolean isSet;
@@ -57,8 +57,8 @@ public class BasicArmorItem extends ArmorItem {
     public final int shadow1;
     public final int shadow2;
 
-    public BasicArmorItem(@NotNull MaterialModel material, Type type) {
-        super(EERegistrar.armorMaterialsMap.get(material.getId()), type, new Properties());
+    public BasicArmorItem(@NotNull MaterialModel material, Type type, ArmorModel armor) {
+        super(EERegistrar.armorMaterialsMap.get(material.getId()), type, new Properties().durability(armor.getDurability()));
         this.material = material;
         this.isSet = material.getArmor().isSetArmor();
         this.effects = material.getArmor().getEffects();
@@ -69,13 +69,21 @@ public class BasicArmorItem extends ArmorItem {
         this.shadow2 = material.getColors().getShadowColor(2);
     }
 
+    private int ticker = 0;
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
         if (!(slotId >= Inventory.INVENTORY_SIZE && slotId < Inventory.INVENTORY_SIZE + 4 && entity instanceof Player player)) return;
-        if (isSet && isSetActive(player)) {
-            for (EffectModel effect : effects) {
-                player.addEffect(new MobEffectInstance(effect.getEffect(), 600, effect.getLevel(), true, effect.isShowParticles(), effect.isShowIcon()));
+        if (isSet) {
+            if (ticker < 20) {
+                ticker++;
+                return;
+            }
+            ticker = 0;
+            if (isSetActive(player)) {
+                for (EffectModel effect : effects) {
+                    player.addEffect(new MobEffectInstance(effect.getEffect(), 600, effect.getLevel(), true, effect.isShowParticles(), effect.isShowIcon()));
+                }
             }
         }
     }

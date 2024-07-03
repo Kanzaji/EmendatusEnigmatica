@@ -22,27 +22,29 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.items.PaxelItem;
+import com.ridanisaurus.emendatusenigmatica.items.ToolTier;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
-public class BasicHoeItem extends HoeItem {
+public class BasicPaxelItem extends PaxelItem {
 	public final int highlight2;
 	public final int highlight1;
 	public final int base;
 	public final int shadow1;
 
-	public BasicHoeItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
-		this(material, new ToolTier(material, material.getTools().getHoe().getDurability(), repairItem));
+	public BasicPaxelItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
+		this(material, new ToolTier(material, material.getTools().getPaxel().getDurability(), repairItem));
 	}
 
-	public BasicHoeItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getHoe().getDamage(), material.getTools().getHoe().getSpeed())));
+	public BasicPaxelItem(@NotNull MaterialModel material, Tier tier) {
+		super(tier, EETags.MINEABLE_WITH_PAXEL, new Properties().attributes(createAttributes(tier, material.getTools().getPaxel().getDamage(), material.getTools().getPaxel().getSpeed())));
 		this.highlight2 = material.getColors().getHighlightColor(3);
 		this.highlight1 = material.getColors().getHighlightColor(1);
 		this.base = material.getColors().getMaterialColor();

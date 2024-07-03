@@ -22,23 +22,31 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.items.ToolTier;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tier;
+import org.jetbrains.annotations.NotNull;
 
-public class BasicBurnableItem extends BasicItem {
-	private final int burnTime;
+public class BasicAxeItem extends AxeItem {
+	public final int highlight2;
+	public final int highlight1;
+	public final int base;
+	public final int shadow1;
 
-	public BasicBurnableItem(MaterialModel material, int burnTime) {
-		super(material);
-		this.burnTime = burnTime;
+	public BasicAxeItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
+		this(material, new ToolTier(material, material.getTools().getAxe().getDurability(), repairItem));
 	}
 
-	@Override
-	public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-		return burnTime;
+	public BasicAxeItem(@NotNull MaterialModel material, Tier tier) {
+		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getAxe().getDamage(), material.getTools().getAxe().getSpeed())));
+		this.highlight2 = material.getColors().getHighlightColor(3);
+		this.highlight1 = material.getColors().getHighlightColor(1);
+		this.base = material.getColors().getMaterialColor();
+		this.shadow1 = material.getColors().getShadowColor(1);
 	}
 }

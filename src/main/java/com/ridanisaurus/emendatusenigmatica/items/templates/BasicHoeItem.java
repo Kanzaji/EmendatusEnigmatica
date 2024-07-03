@@ -22,27 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.items.ToolTier;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
-public class BasicPickaxeItem extends PickaxeItem {
+public class BasicHoeItem extends HoeItem {
 	public final int highlight2;
 	public final int highlight1;
 	public final int base;
 	public final int shadow1;
 
-	public BasicPickaxeItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
-		this(material, new ToolTier(material, material.getTools().getPickaxe().getDurability(), repairItem));
+	public BasicHoeItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
+		this(material, new ToolTier(material, material.getTools().getHoe().getDurability(), repairItem));
 	}
 
-	public BasicPickaxeItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getPickaxe().getDamage(), material.getTools().getPickaxe().getSpeed())));
+	public BasicHoeItem(@NotNull MaterialModel material, Tier tier) {
+		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getHoe().getDamage(), material.getTools().getHoe().getSpeed())));
 		this.highlight2 = material.getColors().getHighlightColor(3);
 		this.highlight1 = material.getColors().getHighlightColor(1);
 		this.base = material.getColors().getMaterialColor();

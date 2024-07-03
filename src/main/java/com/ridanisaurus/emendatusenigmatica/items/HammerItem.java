@@ -29,8 +29,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemHammer extends Item {
-    public ItemHammer(ResourceLocation key) {
+public class HammerItem extends Item {
+    public HammerItem(ResourceLocation key) {
         super(new Properties()
             .durability(128)
             .setNoRepair()

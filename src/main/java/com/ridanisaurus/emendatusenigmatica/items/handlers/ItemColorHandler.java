@@ -1,5 +1,6 @@
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.handlers;
 
+import com.ridanisaurus.emendatusenigmatica.items.templates.*;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

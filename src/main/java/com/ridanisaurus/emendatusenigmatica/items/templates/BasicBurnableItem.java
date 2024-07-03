@@ -22,30 +22,23 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ShovelItem;
-import net.minecraft.world.item.Tier;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.Nullable;
 
-public class BasicShovelItem extends ShovelItem {
-	public final int highlight2;
-	public final int highlight1;
-	public final int base;
-	public final int shadow1;
+public class BasicBurnableItem extends BasicItem {
+	private final int burnTime;
 
-	public BasicShovelItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
-		this(material, new ToolTier(material, material.getTools().getShovel().getDurability(), repairItem));
+	public BasicBurnableItem(MaterialModel material, int burnTime) {
+		super(material);
+		this.burnTime = burnTime;
 	}
 
-	public BasicShovelItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getShovel().getDamage(), material.getTools().getShovel().getSpeed())));
-		this.highlight2 = material.getColors().getHighlightColor(3);
-		this.highlight1 = material.getColors().getHighlightColor(1);
-		this.base = material.getColors().getMaterialColor();
-		this.shadow1 = material.getColors().getShadowColor(1);
+	@Override
+	public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+		return burnTime;
 	}
 }

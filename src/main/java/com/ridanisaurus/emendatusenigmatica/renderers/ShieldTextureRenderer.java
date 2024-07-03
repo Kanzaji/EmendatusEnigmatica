@@ -26,8 +26,7 @@ package com.ridanisaurus.emendatusenigmatica.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.ridanisaurus.emendatusenigmatica.items.BasicShieldItem;
-import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
+import com.ridanisaurus.emendatusenigmatica.items.templates.BasicShieldItem;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ShieldModel;
@@ -75,28 +74,35 @@ public class ShieldTextureRenderer extends BlockEntityWithoutLevelRenderer
             if (bsi.getMaterialModel().getColors().getMaterialColor() == -1) {
                 var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/models/armor/" + bsi.getMaterialModel().getId() + "_shield.png");
                 var renderType = RenderType.entityCutoutNoCull(rl);
-                doRender(stack, matrix, renderer, light, overlayLight, shieldModel, renderType);
+                doRender(stack, matrix, renderer, light, overlayLight, shieldModel, 0xFFFFFF, renderType);
             } else {
                 for (int i = 0; i < 5; i++) {
                     var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/shield/0" + i + ".png");
                     var renderType = RenderType.entityCutoutNoCull(rl);
-                    float[] secondary = ColorHelper.INTtoRGB(bsi.getColorForIndex(i));
-                    doRender(stack, matrix, renderer, light, overlayLight, shieldModel, renderType);
+                    doRender(stack, matrix, renderer, light, overlayLight, shieldModel, bsi.getColorForIndex(i), renderType);
                 }
                 var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/shield/wood.png");
                 var renderType = RenderType.entityCutoutNoCull(rl);
-                doRender(stack, matrix, renderer, light, overlayLight, shieldModel, renderType);
+                doRender(stack, matrix, renderer, light, overlayLight, shieldModel, 0xFFFFFF, renderType);
             }
         }
         matrix.popPose();
     }
 
-    private void doRender(@NotNull ItemStack stack, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight, ShieldModel model, RenderType renderType) {
+//    private void doRender(@NotNull ItemStack stack, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight, ShieldModel model, RenderType renderType) {
+//        VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(renderer, renderType, false, stack.hasFoil());
+//        if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null) {
+//            model.handle().render(matrix, vertexConsumer, light, overlayLight);
+//        } else {
+//            model.renderToBuffer(matrix, vertexConsumer, light, overlayLight);
+//        }
+//    }
+    private void doRender(@NotNull ItemStack stack, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight, ShieldModel model, int color, RenderType renderType) {
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(renderer, renderType, false, stack.hasFoil());
         if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null) {
-            model.handle().render(matrix, vertexConsumer, light, overlayLight);
+            model.handle().render(matrix, vertexConsumer, light, overlayLight, color);
         } else {
-            model.renderToBuffer(matrix, vertexConsumer, light, overlayLight);
+            model.renderToBuffer(matrix, vertexConsumer, light, overlayLight, color);
         }
     }
 }

@@ -24,7 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.events;
 
-import com.ridanisaurus.emendatusenigmatica.items.BasicShieldItem;
+import com.ridanisaurus.emendatusenigmatica.items.templates.BasicShieldItem;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.renderers.ShieldTextureRenderer;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;

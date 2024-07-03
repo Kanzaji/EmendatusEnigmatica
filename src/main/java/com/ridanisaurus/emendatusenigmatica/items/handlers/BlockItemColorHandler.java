@@ -1,4 +1,4 @@
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.handlers;
 
 import com.ridanisaurus.emendatusenigmatica.blocks.*;
 import net.minecraft.client.color.item.ItemColor;

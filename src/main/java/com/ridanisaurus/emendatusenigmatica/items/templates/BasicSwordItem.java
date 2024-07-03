@@ -22,27 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.items.ToolTier;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
-public class BasicPaxelItem extends PaxelItem {
+public class BasicSwordItem extends SwordItem {
 	public final int highlight2;
 	public final int highlight1;
 	public final int base;
 	public final int shadow1;
 
-	public BasicPaxelItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
-		this(material, new ToolTier(material, material.getTools().getPaxel().getDurability(), repairItem));
+	public BasicSwordItem(MaterialModel material, TagKey<Item> repairItem) {
+		this(material, new ToolTier(material, material.getTools().getSword().getDurability(), repairItem));
 	}
 
-	public BasicPaxelItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, EETags.MINEABLE_WITH_PAXEL, new Properties().attributes(createAttributes(tier, material.getTools().getPaxel().getDamage(), material.getTools().getPaxel().getSpeed())));
+	public BasicSwordItem(@NotNull MaterialModel material, Tier tier) {
+		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getSword().getDamage(), material.getTools().getSword().getSpeed())));
 		this.highlight2 = material.getColors().getHighlightColor(3);
 		this.highlight1 = material.getColors().getHighlightColor(1);
 		this.base = material.getColors().getMaterialColor();

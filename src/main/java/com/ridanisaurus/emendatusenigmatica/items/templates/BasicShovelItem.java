@@ -22,27 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.items;
+package com.ridanisaurus.emendatusenigmatica.items.templates;
 
+import com.ridanisaurus.emendatusenigmatica.items.ToolTier;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
 import org.jetbrains.annotations.NotNull;
 
-public class BasicSwordItem extends SwordItem {
+public class BasicShovelItem extends ShovelItem {
 	public final int highlight2;
 	public final int highlight1;
 	public final int base;
 	public final int shadow1;
 
-	public BasicSwordItem(MaterialModel material, TagKey<Item> repairItem) {
-		this(material, new ToolTier(material, material.getTools().getSword().getDurability(), repairItem));
+	public BasicShovelItem(@NotNull MaterialModel material, TagKey<Item> repairItem) {
+		this(material, new ToolTier(material, material.getTools().getShovel().getDurability(), repairItem));
 	}
 
-	public BasicSwordItem(@NotNull MaterialModel material, Tier tier) {
-		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getSword().getDamage(), material.getTools().getSword().getSpeed())));
+	public BasicShovelItem(@NotNull MaterialModel material, Tier tier) {
+		super(tier, new Properties().attributes(createAttributes(tier, material.getTools().getShovel().getDamage(), material.getTools().getShovel().getSpeed())));
 		this.highlight2 = material.getColors().getHighlightColor(3);
 		this.highlight1 = material.getColors().getHighlightColor(1);
 		this.base = material.getColors().getMaterialColor();

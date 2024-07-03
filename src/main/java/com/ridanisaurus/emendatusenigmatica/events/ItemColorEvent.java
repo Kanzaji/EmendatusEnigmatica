@@ -25,7 +25,9 @@
 package com.ridanisaurus.emendatusenigmatica.events;
 
 import com.ridanisaurus.emendatusenigmatica.blocks.BasicStorageBlockItem;
-import com.ridanisaurus.emendatusenigmatica.items.*;
+import com.ridanisaurus.emendatusenigmatica.items.templates.*;
+import com.ridanisaurus.emendatusenigmatica.items.handlers.BlockItemColorHandler;
+import com.ridanisaurus.emendatusenigmatica.items.handlers.ItemColorHandler;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.world.item.BlockItem;

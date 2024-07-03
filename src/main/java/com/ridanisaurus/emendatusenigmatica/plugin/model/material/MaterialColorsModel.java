@@ -90,31 +90,51 @@ public class MaterialColorsModel {
 	}
 
 	public int getMaterialColor() {
-		return materialColor != null ? ColorHelper.HEXtoDEC(materialColor) : -1;
+		return hasMaterialColor() ? ColorHelper.HEXtoDEC(materialColor) : -1;
 	}
 
 	public int getHighlightColor(int factor) {
-		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, true)) : -1;
+		return hasMaterialColor() ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, true)) : -1;
 	}
 
 	public int getShadowColor(int factor) {
-		return materialColor != null ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, false)) : -1;
+		return hasMaterialColor() ? ColorHelper.HEXtoDEC(ColorHelper.hueShift(materialColor, factor, false)) : -1;
 	}
 
 	public int getOxidizationColor() {
-		return oxidizationColor != null ? ColorHelper.HEXtoDEC(oxidizationColor) : -1;
+		return hasOxidizationColor() ? ColorHelper.HEXtoDEC(oxidizationColor) : -1;
 	}
 
 	public int getFluidColor() {
-		return fluidColor != null ? ColorHelper.HEXtoDEC(fluidColor) : -1;
+		return hasFluidColor() ? ColorHelper.HEXtoDEC(fluidColor) : -1;
 	}
 
 	public int getGasColor() {
-		return gasColor != null ? ColorHelper.HEXtoDEC(gasColor) : -1;
+		return hasGasColor() ? ColorHelper.HEXtoDEC(gasColor) : -1;
 	}
 
 	public int getParticlesColor() {
-		return particlesColor != null ? ColorHelper.HEXtoDEC(particlesColor) : -1;
+		return hasParticlesColor() ? ColorHelper.HEXtoDEC(particlesColor) : -1;
+	}
+
+	public boolean hasMaterialColor() {
+		return materialColor != null;
+	}
+
+	public boolean hasOxidizationColor() {
+		return oxidizationColor != null;
+	}
+
+	public boolean hasFluidColor() {
+		return fluidColor != null;
+	}
+
+	public boolean hasGasColor() {
+		return gasColor != null;
+	}
+
+	public boolean hasParticlesColor() {
+		return particlesColor != null;
 	}
 
 	static {

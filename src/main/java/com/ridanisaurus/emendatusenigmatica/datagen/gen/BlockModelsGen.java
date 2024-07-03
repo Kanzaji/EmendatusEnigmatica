@@ -51,7 +51,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 			List<String> processedType = material.getProcessedTypes();
 			// Storage Blocks
 			if (processedType.contains("storage_block")) {
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 
 					if (material.getProperties().hasOxidization()) {
 						if (material.getProperties().getMaterialType().equals("gem")) {
@@ -221,7 +221,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 			}
 			// Shard Blocks
 			if (processedType.contains("cluster")) {
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					// Cluster Shard Block
 					storageBlock(consumer, "blocks/" + material.getId() + "_cluster_shard_block", material.getId() + "_cluster_shard_block");
 					// Budding Block
@@ -287,7 +287,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 			}
 			// Raw Storage Blocks
 			if (processedType.contains("raw")) {
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					storageBlock(consumer, "blocks/raw_" + material.getId() + "_block", "raw_" + material.getId() + "_block");
 				} else {
 					storageTintBlock(consumer,
@@ -302,7 +302,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 			// Ores
 			for (StrataModel stratum : registry.getStrata()) {
 				if (processedType.contains("ore")) {
-					if (material.getColors().getMaterialColor() == -1) {
+					if (!material.getColors().hasMaterialColor()) {
 						if (material.getProperties().isEmissive()) {
 							oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId(), getOreModelName(stratum, material));
 						} else {
@@ -352,7 +352,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 						}
 					}
 					if (processedType.contains("sample")) {
-						if (material.getColors().getMaterialColor() == -1) {
+						if (!material.getColors().hasMaterialColor()) {
 							if (material.getProperties().isEmissive()) {
 								oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
 							} else {

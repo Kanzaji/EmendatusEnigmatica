@@ -78,7 +78,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				new ItemModelBuilder(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/budding_" + material.getId()).toString())
 						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "budding_" + material.getId()));
 				ItemModelBuilder smallBudBuilder = new ItemModelBuilder("emendatusenigmatica:item/bud");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					smallBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/small_" + material.getId() + "_bud").toString());
 				} else {
 					smallBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/clusters/small_bud/00").toString())
@@ -89,7 +89,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				smallBudBuilder.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "small_" + material.getId() + "_bud"));
 				ItemModelBuilder mediumBudBuilder = new ItemModelBuilder("emendatusenigmatica:item/bud");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					mediumBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/medium_" + material.getId() + "_bud").toString());
 				} else {
 					mediumBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/clusters/medium_bud/00").toString())
@@ -100,7 +100,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				mediumBudBuilder.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "medium_" + material.getId() + "_bud"));
 				ItemModelBuilder largeBudBuilder = new ItemModelBuilder("emendatusenigmatica:item/bud");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					largeBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/large_" + material.getId() + "_bud").toString());
 				} else {
 					largeBudBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/clusters/large_bud/00").toString())
@@ -111,7 +111,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				largeBudBuilder.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "large_" + material.getId() + "_bud"));
 				ItemModelBuilder clusterBuilder = new ItemModelBuilder("emendatusenigmatica:item/bud");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					clusterBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "blocks/" + material.getId() + "_cluster").toString());
 				} else {
 					clusterBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/templates/clusters/cluster/00").toString())
@@ -122,7 +122,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				clusterBuilder.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_cluster"));
 				ItemModelBuilder clusterShardBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					clusterShardBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_cluster_shard").toString());
 				} else {
 					clusterShardBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/cluster_shard/00").toString())
@@ -136,7 +136,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Ingots
 			if (processedType.contains("ingot")) {
 				ItemModelBuilder ingotBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					ingotBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_ingot").toString());
 				} else {
 					ingotBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/ingot/00").toString())
@@ -150,7 +150,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Nuggets
 			if (processedType.contains("nugget")) {
 				ItemModelBuilder nuggetBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					nuggetBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_nugget").toString());
 				} else {
 					nuggetBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/nugget/00").toString())
@@ -164,7 +164,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Gems
 			if (processedType.contains("gem")) {
 				ItemModelBuilder gemBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					gemBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_gem").toString());
 				} else {
 					gemBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/gem/template_" + material.getProperties().getGemTexture() + "/00").toString())
@@ -178,7 +178,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Dusts
 			if (processedType.contains("dust")) {
 				ItemModelBuilder dustBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					dustBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_dust").toString());
 				} else {
 					dustBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/dust/00").toString())
@@ -192,7 +192,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Plates
 			if (processedType.contains("plate")) {
 				ItemModelBuilder plateBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					plateBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_plate").toString());
 				} else {
 					plateBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/plate/00").toString())
@@ -206,7 +206,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Gears
 			if (processedType.contains("gear")) {
 				ItemModelBuilder gearBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					gearBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_gear").toString());
 				} else {
 					gearBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/gear/00").toString())
@@ -220,7 +220,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Rods
 			if (processedType.contains("rod")) {
 				ItemModelBuilder rodBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					rodBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_rod").toString());
 				} else {
 					rodBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/rod/00").toString())
@@ -234,7 +234,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Raw Materials
 			if (processedType.contains("raw")) {
 				ItemModelBuilder rawBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					rawBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/raw_" + material.getId()).toString());
 				} else {
 					rawBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/raw/00").toString())
@@ -251,7 +251,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Swords
 			if (processedType.contains("sword")) {
 				ItemModelBuilder swordBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					swordBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_sword").toString());
 				} else {
 					swordBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/sword/00").toString())
@@ -265,7 +265,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Pickaxes
 			if (processedType.contains("pickaxe")) {
 				ItemModelBuilder pickaxeBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					pickaxeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_pickaxe").toString());
 				} else {
 					pickaxeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/pickaxe/00").toString())
@@ -279,7 +279,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Axes
 			if (processedType.contains("axe")) {
 				ItemModelBuilder axeBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					axeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_axe").toString());
 				} else {
 					axeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/axe/00").toString())
@@ -294,7 +294,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Shovels
 			if (processedType.contains("shovel")) {
 				ItemModelBuilder shovelBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					shovelBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_shovel").toString());
 				} else {
 					shovelBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/shovel/00").toString())
@@ -308,7 +308,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Hoes
 			if (processedType.contains("hoe")) {
 				ItemModelBuilder hoeBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					hoeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_hoe").toString());
 				} else {
 					hoeBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/hoe/00").toString())
@@ -322,7 +322,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Paxels
 			if (processedType.contains("paxel")) {
 				ItemModelBuilder paxelBuilder = new ItemModelBuilder("minecraft:item/handheld");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					paxelBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_paxel").toString());
 				} else {
 					paxelBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/paxel/00").toString())
@@ -336,7 +336,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Helmet
 			if (processedType.contains("helmet")) {
 				ItemModelBuilder helmetBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					helmetBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_helmet").toString());
 				} else {
 					helmetBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/helmet/00").toString())
@@ -350,7 +350,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Chestplate
 			if (processedType.contains("chestplate")) {
 				ItemModelBuilder chestplateBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					chestplateBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_chestplate").toString());
 				} else {
 					chestplateBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/chestplate/00").toString())
@@ -364,7 +364,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Leggings
 			if (processedType.contains("leggings")) {
 				ItemModelBuilder leggingsBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					leggingsBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_leggings").toString());
 				} else {
 					leggingsBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/leggings/00").toString())
@@ -378,7 +378,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 			// Boots
 			if (processedType.contains("boots")) {
 				ItemModelBuilder bootsBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (material.getColors().getMaterialColor() == -1) {
+				if (!material.getColors().hasMaterialColor()) {
 					bootsBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/" + material.getId() + "_boots").toString());
 				} else {
 					bootsBuilder.texture("layer0", ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "item/templates/boots/00").toString())

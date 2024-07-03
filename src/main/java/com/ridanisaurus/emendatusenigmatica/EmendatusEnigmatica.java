@@ -7,6 +7,7 @@ import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
+import com.ridanisaurus.emendatusenigmatica.tabs.EECreativeTab;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -34,19 +35,22 @@ public class EmendatusEnigmatica {
     private final EEDataGenerator generator;
 
     // Creative Tabs Registration
-    //TODO: Find out how to make cycle-through-content icon here. It will be an interesting challenge!
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Reference.MOD_ID);
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS_TAB = CREATIVE_MODE_TABS.register("ee_tools_tab", () -> CreativeModeTab.builder()
-        .title(Component.translatable("itemGroup.emendatusenigmatica.tools"))
-        .icon(() -> EERegistrar.ENIGMATIC_HAMMER.get().getDefaultInstance())
-        .displayItems((parameters, output) -> output.accept(EERegistrar.ENIGMATIC_HAMMER)).build()
-    );
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> RESOURCES_TAB = CREATIVE_MODE_TABS.register("ee_resources_tab", () -> CreativeModeTab.builder()
-        .title(Component.translatable("itemGroup.emendatusenigmatica.resources"))
-        .withTabsBefore(TOOLS_TAB.getId())
-        .icon(() -> EERegistrar.FELINIUM_JAMINITE.get().getDefaultInstance())
-        .displayItems((parameters, output) -> output.accept(EERegistrar.FELINIUM_JAMINITE)).build()
-    );
+    public static final DeferredHolder<CreativeModeTab, EECreativeTab> TOOLS_TAB = CREATIVE_MODE_TABS.register("ee_tools_tab", () -> new EECreativeTab(
+        CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.emendatusenigmatica.tools"))
+            // Fallback
+            .icon(() -> EERegistrar.ENIGMATIC_HAMMER.get().getDefaultInstance())
+            .displayItems((parameters, output) -> output.accept(EERegistrar.ENIGMATIC_HAMMER))
+    ));
+    public static final DeferredHolder<CreativeModeTab, EECreativeTab> RESOURCES_TAB = CREATIVE_MODE_TABS.register("ee_resources_tab", () -> new EECreativeTab(
+        CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.emendatusenigmatica.resources"))
+            .withTabsBefore(TOOLS_TAB.getId())
+            // Fallback
+            .icon(() -> EERegistrar.FELINIUM_JAMINITE.get().getDefaultInstance())
+            .displayItems((parameters, output) -> output.accept(EERegistrar.FELINIUM_JAMINITE))
+    ));
 
     public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) throws IOException {
         instance = this;

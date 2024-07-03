@@ -61,12 +61,12 @@ public class ShieldTextureRenderer extends BlockEntityWithoutLevelRenderer
 
     @Override
     public void renderByItem(
-            ItemStack stack,
-            @NotNull ItemDisplayContext displayContext,
-            PoseStack matrix,
-            @NotNull MultiBufferSource renderer,
-            int light,
-            int overlayLight
+        @NotNull ItemStack stack,
+        @NotNull ItemDisplayContext displayContext,
+        @NotNull PoseStack matrix,
+        @NotNull MultiBufferSource renderer,
+        int light,
+        int overlayLight
     ) {
         matrix.pushPose();
         matrix.scale(1.0F, -1.0F, -1.0F);
@@ -91,7 +91,7 @@ public class ShieldTextureRenderer extends BlockEntityWithoutLevelRenderer
         matrix.popPose();
     }
 
-    private void doRender(ItemStack stack, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight, ShieldModel model, RenderType renderType) {
+    private void doRender(@NotNull ItemStack stack, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight, ShieldModel model, RenderType renderType) {
         VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(renderer, renderType, false, stack.hasFoil());
         if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null) {
             model.handle().render(matrix, vertexConsumer, light, overlayLight);

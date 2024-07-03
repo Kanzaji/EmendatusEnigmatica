@@ -28,9 +28,11 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.nio.file.Path;
@@ -78,9 +80,9 @@ public class EffectModel {
 		this.showParticles = true;
 	}
 
-	public @Nullable MobEffect getEffect() {
+	public @NotNull Holder<MobEffect> getEffect() {
 		//TODO: Test if this works as intended.
-		return BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effect));
+		return BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effect)).orElseThrow(() -> new IllegalArgumentException("Effect under id: " + effect + " doesn't exist!"));
 		// Old code:
 //		return ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effect));
 	}

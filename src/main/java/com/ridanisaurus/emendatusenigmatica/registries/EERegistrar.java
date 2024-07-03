@@ -41,6 +41,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -54,13 +55,11 @@ import net.neoforged.neoforge.common.SoundAction;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.*;
 import org.joml.Vector3f;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -71,6 +70,7 @@ public class EERegistrar
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Reference.MOD_ID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Reference.MOD_ID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, Reference.MOD_ID);
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, Reference.MOD_ID);
 
     // Existing items.
     public static final DeferredItem<Item> ENIGMATIC_HAMMER = ITEMS.register("enigmatic_hammer", ItemHammer::new);
@@ -147,6 +147,8 @@ public class EERegistrar
     public static Map<String, DeferredItem<ArmorItem>> leggingsMap = new HashMap<>();
     public static Map<String, DeferredItem<ArmorItem>> bootsMap = new HashMap<>();
     public static Map<String, DeferredItem<ShieldItem>> shieldMap = new HashMap<>();
+    // Armor Materials
+    public static Map<String, DeferredHolder<ArmorMaterial, ArmorMaterial>> armorMaterialsMap = new HashMap<>();
 
     // Fluids
     public static Map<String, Supplier<FluidType>> fluidTypeMap = new HashMap<>();
@@ -165,11 +167,57 @@ public class EERegistrar
     public static final ResourceLocation FLUID_FLOWING_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_flow");
     public static final ResourceLocation FLUID_OVERLAY_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_overlay");
 
+    // Finalization
     public static void finalize(IEventBus eventBus) {
         ITEMS.register(eventBus);
         BLOCKS.register(eventBus);
         FLUID_TYPES.register(eventBus);
         FLUIDS.register(eventBus);
+    }
+
+    public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTab() == EmendatusEnigmatica.TOOLS_TAB.get()) {
+            swordMap.values().forEach(event::accept);
+            pickaxeMap.values().forEach(event::accept);
+            axeMap.values().forEach(event::accept);
+            shovelMap.values().forEach(event::accept);
+            hoeMap.values().forEach(event::accept);
+            paxelMap.values().forEach(event::accept);
+            helmetMap.values().forEach(event::accept);
+            chestplateMap.values().forEach(event::accept);
+            leggingsMap.values().forEach(event::accept);
+            bootsMap.values().forEach(event::accept);
+            shieldMap.values().forEach(event::accept);
+        }
+        if (event.getTab() == EmendatusEnigmatica.RESOURCES_TAB.get()) {
+            oreBlockItemTable.values().forEach(event::accept);
+            oreSampleBlockItemTable.values().forEach(event::accept);
+            storageBlockItemMap.values().forEach(event::accept);
+            exposedBlockItemMap.values().forEach(event::accept);
+            weatheredBlockItemMap.values().forEach(event::accept);
+            oxidizedBlockItemMap.values().forEach(event::accept);
+            waxedStorageBlockItemMap.values().forEach(event::accept);
+            waxedExposedBlockItemMap.values().forEach(event::accept);
+            waxedWeatheredBlockItemMap.values().forEach(event::accept);
+            waxedOxidizedBlockItemMap.values().forEach(event::accept);
+            rawBlockItemMap.values().forEach(event::accept);
+            buddingBlockItemMap.values().forEach(event::accept);
+            smallBudBlockItemMap.values().forEach(event::accept);
+            mediumBudBlockItemMap.values().forEach(event::accept);
+            largeBudBlockItemMap.values().forEach(event::accept);
+            clusterBlockItemMap.values().forEach(event::accept);
+            clusterShardBlockItemMap.values().forEach(event::accept);
+            rawMap.values().forEach(event::accept);
+            ingotMap.values().forEach(event::accept);
+            nuggetMap.values().forEach(event::accept);
+            gemMap.values().forEach(event::accept);
+            dustMap.values().forEach(event::accept);
+            plateMap.values().forEach(event::accept);
+            gearMap.values().forEach(event::accept);
+            rodMap.values().forEach(event::accept);
+            clusterShardMap.values().forEach(event::accept);
+            fluidBucketMap.values().forEach(event::accept);
+        }
     }
 
     // Registration Methods
@@ -439,132 +487,95 @@ public class EERegistrar
     // Swords
     public static void registerSwords(MaterialModel material) {
         String itemName = material.getId() + "_sword";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         swordMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicSwordItem(material, repairItem)));
     }
 
     // Pickaxes
     public static void registerPickaxes(MaterialModel material) {
         String itemName = material.getId() + "_pickaxe";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         pickaxeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicPickaxeItem(material, repairItem)));
     }
 
     // Axes
     public static void registerAxes(MaterialModel material) {
         String itemName = material.getId() + "_axe";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         axeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicAxeItem(material, repairItem)));
     }
 
     // Shovels
     public static void registerShovels(MaterialModel material) {
         String itemName = material.getId() + "_shovel";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         shovelMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicShovelItem(material, repairItem)));
     }
 
     // Hoes
     public static void registerHoes(MaterialModel material) {
         String itemName = material.getId() + "_hoe";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         hoeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicHoeItem(material, repairItem)));
     }
 
     // Paxels
     public static void registerPaxels(MaterialModel material) {
         String itemName = material.getId() + "_paxel";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         paxelMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicPaxelItem(material, repairItem)));
+    }
+
+    // Armor
+
+    // Armor Material
+    public static void registerArmorMaterial(MaterialModel material) {
+        armorMaterialsMap.put(material.getId(), ARMOR_MATERIALS.register("", () -> new ArmorMaterial(
+            Map.of(
+                ArmorItem.Type.HELMET,      material.getArmor().getHelmet().getProtection(),
+                ArmorItem.Type.CHESTPLATE,  material.getArmor().getChestplate().getProtection(),
+                ArmorItem.Type.LEGGINGS,    material.getArmor().getLeggings().getProtection(),
+                ArmorItem.Type.BOOTS,       material.getArmor().getBoots().getProtection()
+            ),
+            material.getArmor().getEnchantability(),
+            SoundEvents.ARMOR_EQUIP_DIAMOND,
+            () -> Ingredient.of(getRepairItem(material)),
+            //TODO: Make sure this can be empty list lol
+            List.of(),
+            material.getArmor().getToughness(),
+            material.getArmor().getKnockback()
+        )));
     }
 
     // Helmet
     public static void registerHelmets(MaterialModel material) {
         String itemName = material.getId() + "_helmet";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
-//        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.HEAD, material.getArmor().getHelmet())));
+        TagKey<Item> repairItem = getRepairItem(material);
+        helmetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.HELMET)));
     }
 
     // Chestplate
     public static void registerChestplates(MaterialModel material) {
         String itemName = material.getId() + "_chestplate";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
-//        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.CHEST, material.getArmor().getChestplate())));
+        chestplateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.CHESTPLATE)));
     }
 
     // Leggings
     public static void registerLeggings(MaterialModel material) {
         String itemName = material.getId() + "_leggings";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
-//        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.LEGS, material.getArmor().getLeggings())));
+        leggingsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.LEGGINGS)));
     }
 
     // Boots
     public static void registerBoots(MaterialModel material) {
         String itemName = material.getId() + "_boots";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
-//        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, repairItem, EquipmentSlot.FEET, material.getArmor().getBoots())));
+        bootsMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicArmorItem(material, ArmorItem.Type.BOOTS)));
     }
 
     // Shield
     public static void registerShields(MaterialModel material) {
         String itemName = material.getId() + "_shield";
-        TagKey<Item> repairItem;
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            repairItem = EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
-            repairItem = EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        TagKey<Item> repairItem = getRepairItem(material);
         shieldMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicShieldItem(material, repairItem)));
     }
 
@@ -599,6 +610,15 @@ public class EERegistrar
         fluidBucketMap.put(material.getId(), fluidBucket);
     }
 
+    // Utility
+    private static TagKey<Item> getRepairItem(MaterialModel material) {
+        if (material.getProperties().getMaterialType().equals("metal")) {
+            return EETags.MATERIAL_INGOT.apply(material.getId());
+        } else {
+            return EETags.MATERIAL_GEM.apply(material.getId());
+        }
+    }
+
     private static FluidType.Properties fluidTypeProperties(MaterialModel material) {
         return FluidType.Properties.create()
             .descriptionId("fluid.emendatusenigmatica." + material.getId())
@@ -621,50 +641,5 @@ public class EERegistrar
             .levelDecreasePerBlock(2)
             .block(block)
             .bucket(bucket);
-    }
-
-    public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() == EmendatusEnigmatica.TOOLS_TAB.get()) {
-            swordMap.values().forEach(event::accept);
-            pickaxeMap.values().forEach(event::accept);
-            axeMap.values().forEach(event::accept);
-            shovelMap.values().forEach(event::accept);
-            hoeMap.values().forEach(event::accept);
-            paxelMap.values().forEach(event::accept);
-            helmetMap.values().forEach(event::accept);
-            chestplateMap.values().forEach(event::accept);
-            leggingsMap.values().forEach(event::accept);
-            bootsMap.values().forEach(event::accept);
-            shieldMap.values().forEach(event::accept);
-        }
-        if (event.getTab() == EmendatusEnigmatica.RESOURCES_TAB.get()) {
-            oreBlockItemTable.values().forEach(event::accept);
-            oreSampleBlockItemTable.values().forEach(event::accept);
-            storageBlockItemMap.values().forEach(event::accept);
-            exposedBlockItemMap.values().forEach(event::accept);
-            weatheredBlockItemMap.values().forEach(event::accept);
-            oxidizedBlockItemMap.values().forEach(event::accept);
-            waxedStorageBlockItemMap.values().forEach(event::accept);
-            waxedExposedBlockItemMap.values().forEach(event::accept);
-            waxedWeatheredBlockItemMap.values().forEach(event::accept);
-            waxedOxidizedBlockItemMap.values().forEach(event::accept);
-            rawBlockItemMap.values().forEach(event::accept);
-            buddingBlockItemMap.values().forEach(event::accept);
-            smallBudBlockItemMap.values().forEach(event::accept);
-            mediumBudBlockItemMap.values().forEach(event::accept);
-            largeBudBlockItemMap.values().forEach(event::accept);
-            clusterBlockItemMap.values().forEach(event::accept);
-            clusterShardBlockItemMap.values().forEach(event::accept);
-            rawMap.values().forEach(event::accept);
-            ingotMap.values().forEach(event::accept);
-            nuggetMap.values().forEach(event::accept);
-            gemMap.values().forEach(event::accept);
-            dustMap.values().forEach(event::accept);
-            plateMap.values().forEach(event::accept);
-            gearMap.values().forEach(event::accept);
-            rodMap.values().forEach(event::accept);
-            clusterShardMap.values().forEach(event::accept);
-            fluidBucketMap.values().forEach(event::accept);
-        }
     }
 }

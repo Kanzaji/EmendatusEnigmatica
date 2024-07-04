@@ -21,7 +21,7 @@ public class ValidatorLogger {
     public ValidatorLogger(Logger logger) {
         Objects.requireNonNull(logger, "Can't create logger wrapper from Null logger!");
         this.logger = logger;
-        shouldLog = EEConfig.common.logConfigErrors.get();
+        shouldLog = EEConfig.startup.logConfigErrors.get();
     }
 
     /**

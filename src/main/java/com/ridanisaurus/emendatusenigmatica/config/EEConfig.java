@@ -24,56 +24,45 @@
 
 package com.ridanisaurus.emendatusenigmatica.config;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.fml.config.ConfigFileTypeHandler;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 
 public class EEConfig {
 	public static ClientConfig client;
-	public static CommonConfig common;
+	private static ModConfigSpec clientSpec;
+	public static StartupConfig startup;
+	private static ModConfigSpec startupSpec;
 
-	public static void registerClient(ModContainer container) {
+	public static void registerClient(@NotNull ModContainer container) {
 		Pair<ClientConfig, ModConfigSpec> clientSpecPair = new ModConfigSpec.Builder().configure(ClientConfig::new);
 		client = clientSpecPair.getLeft();
-		container.registerConfig(ModConfig.Type.CLIENT, clientSpecPair.getRight());
+		clientSpec = clientSpecPair.getRight();
+		container.registerConfig(ModConfig.Type.CLIENT, clientSpec);
 		EmendatusEnigmatica.logger.info("Emendatus Enigmatica Client Config has been registered.");
 	}
 
-	public static void setupCommon(ModContainer container) {
-		Pair<CommonConfig, ModConfigSpec> commonSpecPair = new ModConfigSpec.Builder().configure(CommonConfig::new);
-		common = commonSpecPair.getLeft();
-		ModConfigSpec commonSpec = commonSpecPair.getRight();
-
-		try {
-			// Even tho this uses ModConfig object,
-			// which will be tracked for changes,
-			// there are no listeners for this config, so it's going to be fine.
-			CommentedFileConfig configData = new ConfigFileTypeHandler()
-				.reader(FMLPaths.CONFIGDIR.get())
-				.apply(new ModConfig(ModConfig.Type.COMMON, commonSpec, container));
-			commonSpec.setConfig(configData);
-			EmendatusEnigmatica.logger.info("EmendatusEnigmatica Common Config has been parsed.");
-		} catch (Exception e) {
-			EmendatusEnigmatica.logger.error("Failed parsing Common config!", e);
-			throw new IllegalStateException("Common Config for EmendatusEnigmatica wasn't possible to parse.", e);
-		}
+	public static void setupStartup(@NotNull ModContainer container) {
+		Pair<StartupConfig, ModConfigSpec> startupSpecPair = new ModConfigSpec.Builder().configure(StartupConfig::new);
+		startup = startupSpecPair.getLeft();
+		startupSpec = startupSpecPair.getRight();
+		container.registerConfig(ModConfig.Type.STARTUP, startupSpec);
+		EmendatusEnigmatica.logger.info("Emendatus Enigmatica Startup Config has been registered.");
 	}
 
-	public static class CommonConfig {
+	public static class StartupConfig {
 		public final ModConfigSpec.BooleanValue logConfigErrors;
-		CommonConfig(ModConfigSpec.@NotNull Builder builder) {
+		StartupConfig(ModConfigSpec.@NotNull Builder builder) {
 			builder.push("Debug");
 			logConfigErrors = builder
-					.comment("Whether EmendatusEnigmatica should log warnings and errors generated on the configuration parsing.")
-					.translation(Reference.MOD_ID + ".config.common.log_errors")
+					.comment("Whether Emendatus Enigmatica should log warnings and errors generated on the configuration parsing.")
+					.translation(Reference.MOD_ID + ".config.startup.log_errors")
 					.define("logConfigErrors", true);
 			builder.pop();
 		}
@@ -81,12 +70,19 @@ public class EEConfig {
 
 	public static class ClientConfig {
 		public final ModConfigSpec.BooleanValue showPatreonReward;
+		public final ModConfigSpec.BooleanValue oldSchoolGlint;
 		ClientConfig(ModConfigSpec.@NotNull Builder builder) {
 			builder.push("Patreon Reward");
 			showPatreonReward = builder
 					.comment("Whether the Patreon Reward should appear floating over the player's head")
 					.translation(Reference.MOD_ID + ".config.client.show_reward")
 					.define("showReward", true);
+			builder.pop();
+			builder.push("Rendering");
+			oldSchoolGlint = builder
+				.comment("Allows for bringing back the old strength of glint for the Emendatus Enigmatica armor.\nNote that this option doesn't affect vanilla armor rendering!")
+				.translation(Reference.MOD_ID + ".config.client.old_glint")
+				.define("oldSchoolGlint", false);
 			builder.pop();
 		}
 	}

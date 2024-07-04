@@ -4,5 +4,16 @@
   "item.emendatusenigmatica.enigmatic_hammer": "Enigmatic Hammer",
   "item.emendatusenigmatica.felinium_jaminite_ingot": "Felinium Jaminite Ingot",
   "resourcepack.emendatusenigmatica.title": "EE: Generated Resource Pack",
-  "resourcepack.emendatusenigmatica.desc": "Used by EE to provide textures for blocks and items."
+  "resourcepack.emendatusenigmatica.desc": "Used by EE to provide textures for blocks and items.",
+  "screen.emendatusenigmatica.config.title": "Emendatus Enigmatica Configuration",
+  "screen.emendatusenigmatica.config.enabled": "Enabled",
+  "screen.emendatusenigmatica.config.disabled": "Disabled",
+  "screen.emendatusenigmatica.config.client.title": "Client Configuration",
+  "screen.emendatusenigmatica.config.client.patreon.text": "Show Patreon Reward",
+  "screen.emendatusenigmatica.config.client.patreon.tip": "When enabled, renders the Token of Appreciation above heads of the EE Patreons.",
+  "screen.emendatusenigmatica.config.client.glint.text": "Increase Armor Glint Strength",
+  "screen.emendatusenigmatica.config.client.glint.tip": "When enabled, returns to the old strength of Glint on armor.",
+  "screen.emendatusenigmatica.config.validation.title": "Validation Configuration",
+  "screen.emendatusenigmatica.config.validation.log_errors.text": "Log warnings and errors from Data Validation",
+  "screen.emendatusenigmatica.config.validation.log_errors.tip": "When enabled, logs warnings and errors returned from the data validation. Has only effect on boot."
 }

@@ -1,6 +1,7 @@
 package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
+import com.ridanisaurus.emendatusenigmatica.config.ConfigMenu;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
@@ -14,8 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -55,7 +58,7 @@ public class EmendatusEnigmatica {
     public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) throws IOException {
         instance = this;
         EEConfig.registerClient(modContainer);
-        EEConfig.setupCommon(modContainer);
+        EEConfig.setupStartup(modContainer);
 
         DataGeneratorFactory.init();
         this.generator = DataGeneratorFactory.createEEDataGenerator();
@@ -74,6 +77,8 @@ public class EmendatusEnigmatica {
         modEventBus.addListener(this::addPackFinder);
         // Generator check, we can't launch the game if the generator wasn't executed!
         modEventBus.addListener(this::hasGenerated);
+        // Config screen
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, (client, last) -> new ConfigMenu(last));
         this.loader.finish();
     }
 

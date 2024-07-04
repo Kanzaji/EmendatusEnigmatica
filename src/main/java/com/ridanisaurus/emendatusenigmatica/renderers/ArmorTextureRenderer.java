@@ -2,6 +2,7 @@ package com.ridanisaurus.emendatusenigmatica.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.events.ArmorTextureEvent;
 import com.ridanisaurus.emendatusenigmatica.items.templates.BasicArmorItem;
 import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
@@ -62,16 +63,16 @@ public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidMode
             model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.setModelSlotVisible(model, slot);
             Model model1 = ClientHooks.getArmorModel(entity, stack, slot, model);
-            boolean glint = stack.hasFoil();
+            boolean glint = EEConfig.client.oldSchoolGlint.get() && stack.hasFoil();
 
             // secondary texture layer in all slots
 //            float[] secondary = decomposeColorF(armor.getColorForIndex(colorIndex));
-            this.doRender(matrixStack, buffer, light, glint, model1, armor.getColorForIndex(colorIndex), slot, renderType);
+            this.doRender(matrixStack, buffer, light, glint, model1, armor.getColorForIndex(colorIndex), renderType);
         }
     }
 
-    private void doRender(PoseStack matrixStack, MultiBufferSource buffer, int light, boolean glint, @NotNull Model model, int color, EquipmentSlot slot, RenderType renderType) {
-        VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, renderType, false);
+    private void doRender(PoseStack matrixStack, MultiBufferSource buffer, int light, boolean glint, @NotNull Model model, int color, RenderType renderType) {
+        VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(buffer, renderType, glint);
         model.renderToBuffer(matrixStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, color);
     }
 

@@ -57,7 +57,7 @@ public class BasicArmorItem extends ArmorItem {
     public final int shadow1;
     public final int shadow2;
 
-    public BasicArmorItem(@NotNull MaterialModel material, Type type, ArmorModel armor) {
+    public BasicArmorItem(@NotNull MaterialModel material, Type type, @NotNull ArmorModel armor) {
         super(EERegistrar.armorMaterialsMap.get(material.getId()), type, new Properties().durability(armor.getDurability()));
         this.material = material;
         this.isSet = material.getArmor().isSetArmor();
@@ -90,36 +90,35 @@ public class BasicArmorItem extends ArmorItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> components, @NotNull TooltipFlag tooltipFlag) {
+        //TODO: Add possibility to translate this.
         super.appendHoverText(stack, context, components, tooltipFlag);
         Player player = Minecraft.getInstance().player;
         if (player != null && isSet) {
             ItemStack[] setPieces = getSet();
-            components.add(Component.literal(this.material.getArmor().getSetName())
-                .append(" (" + getPiecesEquipped(player) + "/" + setPieces.length + ") ").withStyle(ChatFormatting.AQUA));
+            components.add(Component.literal(this.material.getArmor().getSetName()).append(" (" + getPiecesEquipped(player) + "/" + setPieces.length + ") ").withStyle(ChatFormatting.AQUA));
             if (!Screen.hasShiftDown()) {
                 components.add(Component.literal("Press [SHIFT] for more info").withStyle(ChatFormatting.DARK_GRAY));
+                return;
             }
-            if (Screen.hasShiftDown()) {
-                //FIXME: Make sure this works as intended.
-//                for (int i = 0; i < setPieces.length; i++) {
-//                    components.add(setPieces[i].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, setPieces.length - i - 1)) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
-//                }
-                components.add(setPieces[0].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.HEAD) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
-                components.add(setPieces[1].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.CHEST) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
-                components.add(setPieces[2].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.LEGS) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
-                components.add(setPieces[3].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.FEET) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
-                components.add(Component.literal(" "));
-                components.add(Component.literal(this.material.getArmor().getSetDesc()).withStyle(isSetActive(player) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));
-                components.add(Component.literal(" "));
-                components.add(Component.literal("Effect(s):").withStyle(ChatFormatting.GRAY));
-                for (EffectModel effect : this.effects) {
-                    components.add(Component.literal("- " + effect.getEffect().value().getDisplayName().getString() + " " + RomanNumberHelper.toRoman(effect.getLevel() + 1)).withStyle(isSetActive(player) ? ChatFormatting.BLUE : ChatFormatting.DARK_GRAY));
-                }
+            components.add(setPieces[0].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.HEAD) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
+            components.add(setPieces[1].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.CHEST) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
+            components.add(setPieces[2].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.LEGS) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
+            components.add(setPieces[3].getHoverName().plainCopy().withStyle((hasSetPiece(player, EquipmentSlot.FEET) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY)));
+            components.add(Component.literal(" "));
+            components.add(Component.literal(this.material.getArmor().getSetDesc()).withStyle(isSetActive(player) ? ChatFormatting.GOLD : ChatFormatting.DARK_GRAY));
+            components.add(Component.literal(" "));
+            components.add(Component.literal("Effect" + (this.effects.size() > 1? "s:" : ":")).withStyle(ChatFormatting.GRAY));
+            for (EffectModel effect : this.effects) {
+                components.add(Component.literal(
+                    "- " +
+                    effect.getEffect().value().getDisplayName().getString() +
+                    (effect.getLevel() + 1 > 1? " " + RomanNumberHelper.toRoman(effect.getLevel() + 1): "")
+                ).withStyle(isSetActive(player) ? ChatFormatting.BLUE : ChatFormatting.DARK_GRAY));
             }
         }
     }
 
-    public boolean isSetActive(Player player) {
+    public boolean isSetActive(@NotNull Player player) {
         return player.getItemBySlot(EquipmentSlot.HEAD).getItem() == EERegistrar.helmetMap.get(this.material.getId()).get() &&
             player.getItemBySlot(EquipmentSlot.CHEST).getItem() == EERegistrar.chestplateMap.get(this.material.getId()).get() &&
             player.getItemBySlot(EquipmentSlot.LEGS).getItem() == EERegistrar.leggingsMap.get(this.material.getId()).get() &&
@@ -135,7 +134,7 @@ public class BasicArmorItem extends ArmorItem {
         };
     }
 
-    public boolean hasSetPiece(Player player, EquipmentSlot slot) {
+    public boolean hasSetPiece(Player player, @NotNull EquipmentSlot slot) {
         return switch (slot) {
             case HEAD -> player.getItemBySlot(slot).getItem() == EERegistrar.helmetMap.get(this.material.getId()).get();
             case CHEST -> player.getItemBySlot(slot).getItem() == EERegistrar.chestplateMap.get(this.material.getId()).get();

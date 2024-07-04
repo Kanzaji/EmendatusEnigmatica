@@ -77,8 +77,6 @@ public class PatreonRewardRenderer extends RenderLayer<AbstractClientPlayer, Pla
 			getParentModel().head.translateAndRotate(matrixStack);
 			matrixStack.translate(0, -1, 0);
 			matrixStack.scale(0.30f, -0.30f, -0.30f);
-//			matrixStack.mulPose(Vector3f.YP.rotationDegrees((world.getGameTime() % 360)));
-//			new Vector3f(0, 1.0f, 0).rotateY((world.getGameTime() % 2)*0.01f);
 			matrixStack.mulPose(new Quaternionf(0, 1.0, 0, 0.3f).rotateY((float)((world.getGameTime() % 360)*(Math.PI/180))));
 
 

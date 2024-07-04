@@ -79,7 +79,6 @@ public class PatreonRewardRenderer extends RenderLayer<AbstractClientPlayer, Pla
 			matrixStack.scale(0.30f, -0.30f, -0.30f);
 			matrixStack.mulPose(new Quaternionf(0, 1.0, 0, 0.3f).rotateY((float)((world.getGameTime() % 360)*(Math.PI/180))));
 
-
 			Minecraft.getInstance().getItemRenderer().renderStatic(
 				player,
 				REWARD_MAP.getOrDefault(name, ItemStack.EMPTY),

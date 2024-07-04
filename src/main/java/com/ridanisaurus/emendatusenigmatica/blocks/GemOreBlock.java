@@ -72,14 +72,10 @@ public class GemOreBlock extends DropExperienceBlock implements IColorable {
 		return Component.translatable(localisedName);
 	}
 
-	protected int getExperience(RandomSource rand) {
-		return Mth.nextInt(rand, minExp, maxExp);
-	}
-
 	@Override
 	public int getExpDrop(BlockState state, LevelAccessor level, BlockPos pos, @Nullable BlockEntity blockEntity, @Nullable Entity breaker, ItemStack tool) {
-		//FIXME Probably will require better implementation. Honestly, new Enchantment system is confusing.
-		return EnchantmentHelper.processBlockExperience(level.getServer().overworld(), tool, 1);
+		//Apparently, vanilla calculates Block Experience bonus from Enchantments now.
+		return Mth.nextInt(level.getRandom(), minExp, maxExp);
 	}
 
 	@Override

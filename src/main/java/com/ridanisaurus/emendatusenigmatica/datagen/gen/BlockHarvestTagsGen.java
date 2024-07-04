@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.ridanisaurus.emendatusenigmatica.util.Reference.COMMON;
+import static com.ridanisaurus.emendatusenigmatica.util.Reference.MINECRAFT;
 
 public class BlockHarvestTagsGen {
 
@@ -226,10 +227,10 @@ public class BlockHarvestTagsGen {
 					}
 				}
 			}
-			if (!shovel.isEmpty()) new TagBuilder().tags(shovel).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/mineable/shovel"));
-			if (!hoe.isEmpty()) new TagBuilder().tags(hoe).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/mineable/hoe"));
-			if (!axe.isEmpty()) new TagBuilder().tags(axe).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/mineable/axe"));
-			if (!pickaxe.isEmpty()) new TagBuilder().tags(pickaxe).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/mineable/pickaxe"));
+			if (!shovel.isEmpty()) 	new TagBuilder().tags(shovel)	.save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/shovel"));
+			if (!hoe.isEmpty()) 	new TagBuilder().tags(hoe)		.save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/hoe"));
+			if (!axe.isEmpty()) 	new TagBuilder().tags(axe)		.save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/axe"));
+			if (!pickaxe.isEmpty()) new TagBuilder().tags(pickaxe)	.save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/pickaxe"));
 			paxel.add("#minecraft:mineable/axe");
 			paxel.add("#minecraft:mineable/pickaxe");
 			paxel.add("#minecraft:mineable/shovel");

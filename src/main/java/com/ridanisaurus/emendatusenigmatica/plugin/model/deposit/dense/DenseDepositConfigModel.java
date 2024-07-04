@@ -80,7 +80,7 @@ public class DenseDepositConfigModel {
 		validators.put("placement", 	new Validator("placement").getAcceptsOnlyValidation(List.of("uniform", "triangle"), false));
 		validators.put("rarity", 		new Validator("rarity").getAcceptsOnlyValidation(List.of("common", "rare"), false));
 		validators.put("generateSamples",new Validator("generateSamples").REQUIRES_BOOLEAN);
-		Validator sampleValidator = new Validator("sampleBlocks");
+		Validator sampleValidator = 	new Validator("sampleBlocks");
 		validators.put("sampleBlocks_rg", sampleValidator.getIfOtherFieldSet("generateSamples", sampleValidator.getRequiredObjectValidation(SampleBlockDefinitionModel.validators, true)));
 	}
 

@@ -815,6 +815,19 @@ public class Validator {
         };
     }
 
+    public BiFunction<JsonElement, Path, Boolean> getDeprecated(String replacement, BiFunction<JsonElement, Path, Boolean> validator) {
+        return (element, path) -> {
+            if (validator == null) {
+                LOGGER.error("Field \"%s\" in file \"%s\" is deprecated and replaced by \"%s\"!".formatted(name, Validator.obfuscatePath(path), replacement));
+                return true;
+            }
+            LOGGER.warn("Field \"%s\" in file \"%s\" is deprecated and is going to be removed in future versions. Use \"%s\" instead.".formatted(name, Validator.obfuscatePath(path), replacement));
+            return validator.apply(element, path);
+        };
+    }
+
+    // Utility Methods
+
     /**
      * Utility method for custom validators. Used to check if specified field is set in the provided object.
      * @param fieldName Name of the field to check.

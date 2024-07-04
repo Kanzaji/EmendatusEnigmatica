@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen.gen;
+package com.ridanisaurus.emendatusenigmatica.datagen.gen.item;
 
 import com.google.common.collect.Lists;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;

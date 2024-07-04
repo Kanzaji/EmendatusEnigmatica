@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen.gen;
+package com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.datagen.builder.FluidModelBuilder;

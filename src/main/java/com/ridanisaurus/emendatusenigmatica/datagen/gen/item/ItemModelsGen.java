@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.datagen.gen;
+package com.ridanisaurus.emendatusenigmatica.datagen.gen.item;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.datagen.provider.EEItemModelProvider;
@@ -30,7 +30,6 @@ import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import com.ridanisaurus.emendatusenigmatica.datagen.builder.ItemModelBuilder;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
-import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;

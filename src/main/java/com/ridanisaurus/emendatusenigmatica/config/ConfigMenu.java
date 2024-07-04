@@ -6,7 +6,6 @@ import net.minecraft.client.gui.components.*;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutSettings;
-import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -73,7 +72,7 @@ public class ConfigMenu extends Screen {
         layout.addChild(new StringWidget(title, this.font), currentRow++, 1, 1, 2, LayoutSettings::alignVerticallyMiddle);
     }
 
-    private void addButton(@NotNull GridLayout layout, Component text, Component tooltip, ModConfigSpec.BooleanValue config) {
+    private void addButton(@NotNull GridLayout layout, Component text, Component tooltip, ModConfigSpec.@NotNull BooleanValue config) {
         layout.addChild(new StringWidget(text, this.font), currentRow, 1, LayoutSettings::alignVerticallyMiddle);
         layout.addChild(Button
             .builder(config.get()? ENABLED: DISABLED, (event) -> {

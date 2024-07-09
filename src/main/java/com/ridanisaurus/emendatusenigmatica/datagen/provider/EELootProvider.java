@@ -24,7 +24,8 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen.provider;
 
-import com.ridanisaurus.emendatusenigmatica.datagen.provider.sub.EEBlockLootSubProvider;
+import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
+import com.ridanisaurus.emendatusenigmatica.datagen.gen.block.BlockLootGen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.data.DataGenerator;
@@ -38,19 +39,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 // Credits: AE2 Impl.
-public abstract class EELootProvider extends LootTableProvider {
-	private static final List<SubProviderEntry> SUB_PROVIDERS = List.of(
-		new SubProviderEntry(EEBlockLootSubProvider::new, LootContextParamSets.BLOCK)
+public class EELootProvider extends LootTableProvider {
+	private static final Function<EmendatusDataRegistry, List<SubProviderEntry>> SUB_PROVIDERS = (registry) -> List.of(
+		new SubProviderEntry((provider) -> new BlockLootGen(provider, registry), LootContextParamSets.BLOCK)
 	);
 
-	public EELootProvider(@NotNull DataGenerator gen, CompletableFuture<HolderLookup.Provider> provider) {
-		super(gen.getPackOutput(), Set.of(), SUB_PROVIDERS, provider);
+	public EELootProvider(@NotNull DataGenerator gen, EmendatusDataRegistry registry, CompletableFuture<HolderLookup.Provider> provider) {
+		super(gen.getPackOutput(), Set.of(), SUB_PROVIDERS.apply(registry), provider);
 	}
 
 	@Override
 	protected void validate(@NotNull WritableRegistry<LootTable> writableregistry, @NotNull ValidationContext validationcontext, ProblemReporter.@NotNull Collector collector) {
 		// Do not validate against all registered loot tables
+	}
+
+	@Override
+	public @NotNull String getName() {
+		return "Emendatus Enigmatica Loot Tables";
 	}
 }

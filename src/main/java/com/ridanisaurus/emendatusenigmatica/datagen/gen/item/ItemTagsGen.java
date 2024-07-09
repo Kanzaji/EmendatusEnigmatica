@@ -89,57 +89,57 @@ public class ItemTagsGen extends EETagProvider {
 			List<String> processedType = material.getProcessedTypes();
 			// Storage Blocks
 			if (processedType.contains("storage_block")) {
-				ResourceLocation block = EERegistrar.storageBlockItemMap.get(material.getId()).getId();
+				ResourceLocation block = EERegistrar.storageBlockItemMap.getId(material);
 				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/" + material.getId());
 				new TagBuilder().tag(block.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/storage_blocks/" + material.getId()));
 			}
 			// Ingots
 			if (processedType.contains("ingot")) {
-				ResourceLocation ingot = EERegistrar.ingotMap.get(material.getId()).getId();
+				ResourceLocation ingot = EERegistrar.ingotMap.getId(material);
 				if (!forgeIngots.contains(C_TAG + ":ingots/" + material.getId())) forgeIngots.add(C_TAG + ":ingots/" + material.getId());
 				beaconIngots.add(ingot.toString());
 				new TagBuilder().tag(ingot.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/ingots/" + material.getId()));
 			}
 			// Gems
 			if (processedType.contains("gem")) {
-				ResourceLocation gem = EERegistrar.gemMap.get(material.getId()).getId();
+				ResourceLocation gem = EERegistrar.gemMap.getId(material);
 				if (!forgeGems.contains(C_TAG + ":gems/" + material.getId())) forgeGems.add(C_TAG + ":gems/" + material.getId());
 				new TagBuilder().tag(gem.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/gems/" + material.getId()));
 			}
 			// Nuggets
 			if (processedType.contains("nugget")) {
-				ResourceLocation nugget = EERegistrar.nuggetMap.get(material.getId()).getId();
+				ResourceLocation nugget = EERegistrar.nuggetMap.getId(material);
 				if (!forgeNuggets.contains(C_TAG + ":nuggets/" + material.getId())) forgeNuggets.add(C_TAG + ":nuggets/" + material.getId());
 				new TagBuilder().tag(nugget.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/nuggets/" + material.getId()));
 			}
 			// Dusts
 			if (processedType.contains("dust")) {
-				ResourceLocation dust = EERegistrar.dustMap.get(material.getId()).getId();
+				ResourceLocation dust = EERegistrar.dustMap.getId(material);
 				if (!forgeDusts.contains(C_TAG + ":dusts/" + material.getId())) forgeDusts.add(C_TAG + ":dusts/" + material.getId());
 				new TagBuilder().tag(dust.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/dusts/" + material.getId()));
 			}
 			// Plates
 			if (processedType.contains("plate")) {
-				ResourceLocation plate = EERegistrar.plateMap.get(material.getId()).getId();
+				ResourceLocation plate = EERegistrar.plateMap.getId(material);
 				if (!forgePlates.contains(C_TAG + ":plates/" + material.getId())) forgePlates.add(C_TAG + ":plates/" + material.getId());
 				new TagBuilder().tag(plate.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/plates/" + material.getId()));
 			}
 			// Gears
 			if (processedType.contains("gear")) {
-				ResourceLocation gear = EERegistrar.gearMap.get(material.getId()).getId();
+				ResourceLocation gear = EERegistrar.gearMap.getId(material);
 				if (!forgeGears.contains(C_TAG + ":gears/" + material.getId())) forgeGears.add(C_TAG + ":gears/" + material.getId());
 				new TagBuilder().tag(gear.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/gears/" + material.getId()));
 			}
 			// Rods
 			if (processedType.contains("rod")) {
-				ResourceLocation rod = EERegistrar.rodMap.get(material.getId()).getId();
+				ResourceLocation rod = EERegistrar.rodMap.getId(material);
 				if (!forgeRods.contains(C_TAG + ":rods/" + material.getId())) forgeRods.add(C_TAG + ":rods/" + material.getId());
 				new TagBuilder().tag(rod.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/rods/" + material.getId()));
 			}
 			// Raw Materials
 			if (processedType.contains("raw")) {
-				ResourceLocation raw = EERegistrar.rawMap.get(material.getId()).getId();
-				ResourceLocation rawBlock = EERegistrar.rawBlockItemMap.get(material.getId()).getId();
+				ResourceLocation raw = EERegistrar.rawMap.getId(material);
+				ResourceLocation rawBlock = EERegistrar.rawBlockItemMap.getId(material);
 				if (!forgeRaw.contains(C_TAG + ":raw_materials/" + material.getId())) forgeRaw.add(C_TAG + ":raw_materials/" + material.getId());
 				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/raw_" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/raw_" + material.getId());
 				new TagBuilder().tag(raw.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/raw_materials/" + material.getId()));
@@ -147,65 +147,65 @@ public class ItemTagsGen extends EETagProvider {
 			}
 			// Tools
 			if (processedType.contains("sword")) {
-				ResourceLocation sword = EERegistrar.swordMap.get(material.getId()).getId();
+				ResourceLocation sword = EERegistrar.swordMap.getId(material);
 				if (!forgeSwords.contains(C_TAG + ":tools/swords/" + material.getId())) forgeSwords.add(C_TAG + ":tools/swords/" + material.getId());
 				new TagBuilder().tag(sword.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/swords/" + material.getId()));
 			}
 			if (processedType.contains("pickaxe")) {
-				ResourceLocation pickaxe = EERegistrar.pickaxeMap.get(material.getId()).getId();
+				ResourceLocation pickaxe = EERegistrar.pickaxeMap.getId(material);
 				if (!forgePickaxes.contains(C_TAG + ":tools/pickaxes/" + material.getId())) forgePickaxes.add(C_TAG + ":tools/pickaxes/" + material.getId());
 				new TagBuilder().tag(pickaxe.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/pickaxes/" + material.getId()));
 			}
 			if (processedType.contains("axe")) {
-				ResourceLocation axe = EERegistrar.axeMap.get(material.getId()).getId();
+				ResourceLocation axe = EERegistrar.axeMap.getId(material);
 				if (!forgeAxes.contains(C_TAG + ":tools/axes/" + material.getId())) forgeAxes.add(C_TAG + ":tools/axes/" + material.getId());
 				new TagBuilder().tag(axe.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/axes/" + material.getId()));
 			}
 			if (processedType.contains("shovel")) {
-				ResourceLocation shovel = EERegistrar.shovelMap.get(material.getId()).getId();
+				ResourceLocation shovel = EERegistrar.shovelMap.getId(material);
 				if (!forgeShovels.contains(C_TAG + ":tools/shovels/" + material.getId())) forgeShovels.add(C_TAG + ":tools/shovels/" + material.getId());
 				new TagBuilder().tag(shovel.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/shovels/" + material.getId()));
 			}
 			if (processedType.contains("hoe")) {
-				ResourceLocation hoe = EERegistrar.hoeMap.get(material.getId()).getId();
+				ResourceLocation hoe = EERegistrar.hoeMap.getId(material);
 				if (!forgeHoes.contains(C_TAG + ":tools/hoes/" + material.getId())) forgeHoes.add(C_TAG + ":tools/hoes/" + material.getId());
 				new TagBuilder().tag(hoe.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/hoes/" + material.getId()));
 			}
 			if (processedType.contains("paxel")) {
-				ResourceLocation paxel = EERegistrar.paxelMap.get(material.getId()).getId();
+				ResourceLocation paxel = EERegistrar.paxelMap.getId(material);
 				if (!forgeTools.contains(C_TAG + ":tools/paxels")) forgeTools.add(C_TAG + ":tools/paxels");
 				if (!forgePaxels.contains(C_TAG + ":tools/paxels/" + material.getId())) forgePaxels.add(C_TAG + ":tools/paxels/" + material.getId());
 				new TagBuilder().tag(paxel.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/paxels/" + material.getId()));
 			}
 			if (processedType.contains("shield")) {
-				ResourceLocation shield = EERegistrar.shieldMap.get(material.getId()).getId();
+				ResourceLocation shield = EERegistrar.shieldMap.getId(material);
 				if (!forgeShields.contains(C_TAG + ":tools/shields/" + material.getId())) forgeShields.add(C_TAG + ":tools/shields/" + material.getId());
 				new TagBuilder().tag(shield.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/tools/shields/" + material.getId()));
 			}
 			// Armor
 			if (processedType.contains("helmet")) {
-				ResourceLocation helmet = EERegistrar.helmetMap.get(material.getId()).getId();
+				ResourceLocation helmet = EERegistrar.helmetMap.getId(material);
 				if (!forgeHelmets.contains(C_TAG + ":armors/helmets/" + material.getId())) forgeHelmets.add(C_TAG + ":armors/helmets/" + material.getId());
 				new TagBuilder().tag(helmet.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/armors/helmets/" + material.getId()));
 			}
 			if (processedType.contains("chestplate")) {
-				ResourceLocation chestplate = EERegistrar.chestplateMap.get(material.getId()).getId();
+				ResourceLocation chestplate = EERegistrar.chestplateMap.getId(material);
 				if (!forgeChestplates.contains(C_TAG + ":armors/chestplates/" + material.getId())) forgeChestplates.add(C_TAG + ":armors/chestplates/" + material.getId());
 				new TagBuilder().tag(chestplate.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/armors/chestplates/" + material.getId()));
 			}
 			if (processedType.contains("leggings")) {
-				ResourceLocation leggings = EERegistrar.leggingsMap.get(material.getId()).getId();
+				ResourceLocation leggings = EERegistrar.leggingsMap.getId(material);
 				if (!forgeLeggings.contains(C_TAG + ":armors/leggings/" + material.getId())) forgeLeggings.add(C_TAG + ":armors/leggings/" + material.getId());
 				new TagBuilder().tag(leggings.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/armors/leggings/" + material.getId()));
 			}
 			if (processedType.contains("boots")) {
-				ResourceLocation boots = EERegistrar.bootsMap.get(material.getId()).getId();
+				ResourceLocation boots = EERegistrar.bootsMap.getId(material);
 				if (!forgeBoots.contains(C_TAG + ":armors/boots/" + material.getId())) forgeBoots.add(C_TAG + ":armors/boots/" + material.getId());
 				new TagBuilder().tag(boots.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/armors/boots/" + material.getId()));
 			}
 			// Buckets
 			if (processedType.contains("fluid")) {
-				ResourceLocation bucket = EERegistrar.fluidBucketMap.get(material.getId()).getId();
+				ResourceLocation bucket = EERegistrar.fluidBucketMap.getId(material);
 				if (!forgeBuckets.contains(C_TAG + ":buckets/" + material.getId())) forgeBuckets.add(C_TAG + ":buckets/" + material.getId());
 				new TagBuilder().tag(bucket.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/item/buckets/" + material.getId()));
 			}

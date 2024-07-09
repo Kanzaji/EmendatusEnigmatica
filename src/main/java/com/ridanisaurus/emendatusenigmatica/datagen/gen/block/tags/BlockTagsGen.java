@@ -63,14 +63,14 @@ public class BlockTagsGen extends EETagProvider {
 			List<String> processedType = material.getProcessedTypes();
 			// Storage Blocks
 			if (processedType.contains("storage_block")) {
-				ResourceLocation block = EERegistrar.storageBlockMap.get(material.getId()).getId();
+				ResourceLocation block = EERegistrar.storageBlockMap.getId(material);
 				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/" + material.getId());
 				new TagBuilder().tag(block.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/storage_blocks/" + material.getId()));
 			}
 
 			// Raw Materials
 			if (processedType.contains("raw")) {
-				ResourceLocation raw = EERegistrar.rawBlockMap.get(material.getId()).getId();
+				ResourceLocation raw = EERegistrar.rawBlockMap.getId(material);
 				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/raw_" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/raw_" + material.getId());
 				new TagBuilder().tag(raw.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/storage_blocks/raw_" + material.getId()));
 			}
@@ -85,14 +85,15 @@ public class BlockTagsGen extends EETagProvider {
 						oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(ore.toString());
 					}
 
-					if (processedType.contains("sample")) {
-						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-							ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
-							if (!forgeOres.contains(C_TAG + ":ores/" + material.getId())) forgeOres.add(C_TAG + ":ores/" + material.getId());
-							oresPerMaterial.computeIfAbsent(material.getId(), s -> new ArrayList<>()).add(sample.toString());
-							oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(sample.toString());
-						}
-					}
+					//TODO: Rework Sample System
+//					if (processedType.contains("sample")) {
+//						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
+//							ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
+//							if (!forgeOres.contains(C_TAG + ":ores/" + material.getId())) forgeOres.add(C_TAG + ":ores/" + material.getId());
+//							oresPerMaterial.computeIfAbsent(material.getId(), s -> new ArrayList<>()).add(sample.toString());
+//							oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(sample.toString());
+//						}
+//					}
 				}
 			}
 

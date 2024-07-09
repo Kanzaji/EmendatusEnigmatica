@@ -38,28 +38,28 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
             List<String> processedType = material.getProcessedTypes();
 
             if (processedType.contains("storage_block")) {
-                pickaxe.add(EERegistrar.storageBlockMap.get(material.getId()).getId().toString());
+                pickaxe.add(EERegistrar.storageBlockMap.getIdAsString(material));
                 if (material.getProperties().hasOxidization()) {
-                    pickaxe.add(EERegistrar.exposedBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.weatheredBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.oxidizedBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.waxedStorageBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.waxedExposedBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.waxedWeatheredBlockMap.get(material.getId()).getId().toString());
-                    pickaxe.add(EERegistrar.waxedOxidizedBlockMap.get(material.getId()).getId().toString());
+                    pickaxe.add(EERegistrar.exposedBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.weatheredBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.oxidizedBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.waxedStorageBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.waxedExposedBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.waxedWeatheredBlockMap.getIdAsString(material));
+                    pickaxe.add(EERegistrar.waxedOxidizedBlockMap.getIdAsString(material));
                 }
             }
 
             if (processedType.contains("raw"))
-                pickaxe.add(EERegistrar.rawBlockMap.get(material.getId()).getId().toString());
+                pickaxe.add(EERegistrar.rawBlockMap.getIdAsString(material));
 
             if (processedType.contains("cluster")) {
-                pickaxe.add(EERegistrar.buddingBlockMap.get(material.getId()).getId().toString());
-                pickaxe.add(EERegistrar.smallBudBlockMap.get(material.getId()).getId().toString());
-                pickaxe.add(EERegistrar.mediumBudBlockMap.get(material.getId()).getId().toString());
-                pickaxe.add(EERegistrar.largeBudBlockMap.get(material.getId()).getId().toString());
-                pickaxe.add(EERegistrar.clusterBlockMap.get(material.getId()).getId().toString());
-                pickaxe.add(EERegistrar.clusterShardBlockMap.get(material.getId()).getId().toString());
+                pickaxe.add(EERegistrar.buddingBlockMap.getIdAsString(material));
+                pickaxe.add(EERegistrar.smallBudBlockMap.getIdAsString(material));
+                pickaxe.add(EERegistrar.mediumBudBlockMap.getIdAsString(material));
+                pickaxe.add(EERegistrar.largeBudBlockMap.getIdAsString(material));
+                pickaxe.add(EERegistrar.clusterBlockMap.getIdAsString(material));
+                pickaxe.add(EERegistrar.clusterShardBlockMap.getIdAsString(material));
             }
 
             for (StrataModel strata : registry.getStrata()) {
@@ -77,21 +77,21 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
                         }
                     }
 
-                    // TODO: Processed Type "sample" doesn't tho?
-                    if (processedType.contains("sample")) {
-//							ResourceLocation sample = ResourceLocation.parse("minecraft:stone");
-                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-                            ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
-                            switch (strata.getHarvestTool()) {
-                                case "shovel" -> shovel.add(sample.toString());
-                                case "hoe" -> hoe.add(sample.toString());
-                                case "axe" -> axe.add(sample.toString());
-                                case "pickaxe" -> pickaxe.add(sample.toString());
-                                default ->
-                                    throw new IllegalStateException("Harvest tool " + strata.getHarvestTool() + " for " + strata.getId() + " is out of Vanilla tool system bounds, and the tag should be added manually");
-                            }
-                        }
-                    }
+                    // TODO: Rework Sample System
+//                    if (processedType.contains("sample")) {
+////							ResourceLocation sample = ResourceLocation.parse("minecraft:stone");
+//                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
+//                            ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
+//                            switch (strata.getHarvestTool()) {
+//                                case "shovel" -> shovel.add(sample.toString());
+//                                case "hoe" -> hoe.add(sample.toString());
+//                                case "axe" -> axe.add(sample.toString());
+//                                case "pickaxe" -> pickaxe.add(sample.toString());
+//                                default ->
+//                                    throw new IllegalStateException("Harvest tool " + strata.getHarvestTool() + " for " + strata.getId() + " is out of Vanilla tool system bounds, and the tag should be added manually");
+//                            }
+//                        }
+//                    }
                 }
             }
         }

@@ -38,28 +38,28 @@ public class BlockHarvestLevelTagsGen extends EETagProvider {
             List<String> processedType = material.getProcessedTypes();
 
             if (processedType.contains("storage_block")) {
-                harvestLevelSwitch(material, EERegistrar.storageBlockMap.get(material.getId()).getId());
+                harvestLevelSwitch(material, EERegistrar.storageBlockMap.getId(material));
                 if (material.getProperties().hasOxidization()) {
-                    harvestLevelSwitch(material, EERegistrar.exposedBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.weatheredBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.oxidizedBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.waxedStorageBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.waxedExposedBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.waxedWeatheredBlockMap.get(material.getId()).getId());
-                    harvestLevelSwitch(material, EERegistrar.waxedOxidizedBlockMap.get(material.getId()).getId());
+                    harvestLevelSwitch(material, EERegistrar.exposedBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.weatheredBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.oxidizedBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.waxedStorageBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.waxedExposedBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.waxedWeatheredBlockMap.getId(material));
+                    harvestLevelSwitch(material, EERegistrar.waxedOxidizedBlockMap.getId(material));
                 }
             }
 
             if (processedType.contains("raw"))
-                harvestLevelSwitch(material, EERegistrar.rawBlockMap.get(material.getId()).getId());
+                harvestLevelSwitch(material, EERegistrar.rawBlockMap.getId(material));
 
             if (processedType.contains("cluster")) {
-                harvestLevelSwitch(material, EERegistrar.buddingBlockMap.get(material.getId()).getId());
-                harvestLevelSwitch(material, EERegistrar.smallBudBlockMap.get(material.getId()).getId());
-                harvestLevelSwitch(material, EERegistrar.mediumBudBlockMap.get(material.getId()).getId());
-                harvestLevelSwitch(material, EERegistrar.largeBudBlockMap.get(material.getId()).getId());
-                harvestLevelSwitch(material, EERegistrar.clusterBlockMap.get(material.getId()).getId());
-                harvestLevelSwitch(material, EERegistrar.clusterShardBlockMap.get(material.getId()).getId());
+                harvestLevelSwitch(material, EERegistrar.buddingBlockMap.getId(material));
+                harvestLevelSwitch(material, EERegistrar.smallBudBlockMap.getId(material));
+                harvestLevelSwitch(material, EERegistrar.mediumBudBlockMap.getId(material));
+                harvestLevelSwitch(material, EERegistrar.largeBudBlockMap.getId(material));
+                harvestLevelSwitch(material, EERegistrar.clusterBlockMap.getId(material));
+                harvestLevelSwitch(material, EERegistrar.clusterShardBlockMap.getId(material));
             }
 
             for (StrataModel strata : registry.getStrata()) {

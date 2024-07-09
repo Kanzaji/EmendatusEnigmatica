@@ -56,6 +56,11 @@ public class RecipesGen extends RecipeProvider {
 	}
 
 	@Override
+	public @NotNull String getName() {
+		return "Emendatus Enigmatica recipes";
+	}
+
+	@Override
 	protected void buildRecipes(@NotNull RecipeOutput out) {
 		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.ENIGMATIC_HAMMER::get)
 				.pattern(" IN")

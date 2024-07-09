@@ -34,6 +34,8 @@ import com.ridanisaurus.emendatusenigmatica.blocks.*;
 import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
 import com.ridanisaurus.emendatusenigmatica.items.templates.*;
+import com.ridanisaurus.emendatusenigmatica.registries.data.EEBlockMap;
+import com.ridanisaurus.emendatusenigmatica.registries.data.EEItemMap;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
@@ -78,6 +80,7 @@ public class EERegistrar
     public static final DeferredItem<Item> FELINIUM_JAMINITE = ITEMS.register("felinium_jaminite_ingot", FeliniumJaminiteIngot::new);
 
     // Ore Blocks
+    // QoL changes for tables are not possible without AT or custom table impl - Thanks google!
     public static Table<String, String, DeferredBlock<Block>> oreBlockTable = HashBasedTable.create();
     public static Table<String, String, DeferredItem<Item>> oreBlockItemTable = HashBasedTable.create();
 
@@ -86,68 +89,68 @@ public class EERegistrar
     public static Table<String, String, DeferredItem<Item>> oreSampleBlockItemTable = HashBasedTable.create();
 
     // Storage Blocks
-    public static Map<String, DeferredBlock<Block>> storageBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> storageBlockItemMap = new HashMap<>();
+    public static EEBlockMap<Block> storageBlockMap = new EEBlockMap<>();
+    public static EEItemMap<Item> storageBlockItemMap = new EEItemMap<>();
 
     // Weathering Blocks
-    public static Map<String, DeferredBlock<Block>> exposedBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> weatheredBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> oxidizedBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> waxedStorageBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> waxedExposedBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> waxedWeatheredBlockMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> waxedOxidizedBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> exposedBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> weatheredBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> oxidizedBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> waxedStorageBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> waxedExposedBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> waxedWeatheredBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> waxedOxidizedBlockItemMap = new HashMap<>();
+    public static EEBlockMap<Block> exposedBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> weatheredBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> oxidizedBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> waxedStorageBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> waxedExposedBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> waxedWeatheredBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> waxedOxidizedBlockMap = new EEBlockMap<>();
+    public static EEItemMap<Item> exposedBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> weatheredBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> oxidizedBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> waxedStorageBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> waxedExposedBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> waxedWeatheredBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> waxedOxidizedBlockItemMap = new EEItemMap<>();
 
     // Raw Blocks
-    public static Map<String, DeferredBlock<Block>> rawBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> rawBlockItemMap = new HashMap<>();
+    public static EEBlockMap<Block> rawBlockMap = new EEBlockMap<>();
+    public static EEItemMap<Item> rawBlockItemMap = new EEItemMap<>();
 
     // Cluster Blocks
-    public static Map<String, DeferredBlock<Block>> buddingBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> buddingBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> smallBudBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> smallBudBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> mediumBudBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> mediumBudBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> largeBudBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> largeBudBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> clusterBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> clusterBlockItemMap = new HashMap<>();
-    public static Map<String, DeferredBlock<Block>> clusterShardBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> clusterShardBlockItemMap = new HashMap<>();
+    public static EEBlockMap<Block> buddingBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> smallBudBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> mediumBudBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> largeBudBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> clusterBlockMap = new EEBlockMap<>();
+    public static EEBlockMap<Block> clusterShardBlockMap = new EEBlockMap<>();
+    public static EEItemMap<Item> buddingBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> smallBudBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> mediumBudBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> largeBudBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> clusterBlockItemMap = new EEItemMap<>();
+    public static EEItemMap<Item> clusterShardBlockItemMap = new EEItemMap<>();
 
     // Items
-    public static Map<String, DeferredItem<Item>> rawMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> ingotMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> nuggetMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> gemMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> dustMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> plateMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> gearMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> rodMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> clusterShardMap = new HashMap<>();
+    public static EEItemMap<Item> rawMap = new EEItemMap<>();
+    public static EEItemMap<Item> ingotMap = new EEItemMap<>();
+    public static EEItemMap<Item> nuggetMap = new EEItemMap<>();
+    public static EEItemMap<Item> gemMap = new EEItemMap<>();
+    public static EEItemMap<Item> dustMap = new EEItemMap<>();
+    public static EEItemMap<Item> plateMap = new EEItemMap<>();
+    public static EEItemMap<Item> gearMap = new EEItemMap<>();
+    public static EEItemMap<Item> rodMap = new EEItemMap<>();
+    public static EEItemMap<Item> clusterShardMap = new EEItemMap<>();
 
     // Tools
-    public static Map<String, DeferredItem<SwordItem>> swordMap = new HashMap<>();
-    public static Map<String, DeferredItem<PickaxeItem>> pickaxeMap = new HashMap<>();
-    public static Map<String, DeferredItem<AxeItem>> axeMap = new HashMap<>();
-    public static Map<String, DeferredItem<ShovelItem>> shovelMap = new HashMap<>();
-    public static Map<String, DeferredItem<HoeItem>> hoeMap = new HashMap<>();
-    public static Map<String, DeferredItem<PaxelItem>> paxelMap = new HashMap<>();
+    public static EEItemMap<SwordItem> swordMap = new EEItemMap<>();
+    public static EEItemMap<PickaxeItem> pickaxeMap = new EEItemMap<>();
+    public static EEItemMap<AxeItem> axeMap = new EEItemMap<>();
+    public static EEItemMap<ShovelItem> shovelMap = new EEItemMap<>();
+    public static EEItemMap<HoeItem> hoeMap = new EEItemMap<>();
+    public static EEItemMap<PaxelItem> paxelMap = new EEItemMap<>();
 
     // Armor
-    public static Map<String, DeferredItem<ArmorItem>> helmetMap = new HashMap<>();
-    public static Map<String, DeferredItem<ArmorItem>> chestplateMap = new HashMap<>();
-    public static Map<String, DeferredItem<ArmorItem>> leggingsMap = new HashMap<>();
-    public static Map<String, DeferredItem<ArmorItem>> bootsMap = new HashMap<>();
-    public static Map<String, DeferredItem<ShieldItem>> shieldMap = new HashMap<>();
+    public static EEItemMap<ArmorItem> helmetMap = new EEItemMap<>();
+    public static EEItemMap<ArmorItem> chestplateMap = new EEItemMap<>();
+    public static EEItemMap<ArmorItem> leggingsMap = new EEItemMap<>();
+    public static EEItemMap<ArmorItem> bootsMap = new EEItemMap<>();
+    public static EEItemMap<ShieldItem> shieldMap = new EEItemMap<>();
     // Armor Materials
     public static Map<String, DeferredHolder<ArmorMaterial, ArmorMaterial>> armorMaterialsMap = new HashMap<>();
 
@@ -156,7 +159,7 @@ public class EERegistrar
     public static Map<String, Supplier<FlowingFluid>> fluidSourceMap = new HashMap<>();
     public static Map<String, Supplier<FlowingFluid>> fluidFlowingMap = new HashMap<>();
     public static Map<String, Supplier<LiquidBlock>> fluidBlockMap = new HashMap<>();
-    public static Map<String, DeferredItem<Item>> fluidBucketMap = new HashMap<>();
+    public static EEItemMap<Item> fluidBucketMap = new EEItemMap<>();
 
     public static Supplier<FluidType> fluidType;
     public static Supplier<FlowingFluid> fluidSource;
@@ -179,46 +182,46 @@ public class EERegistrar
 
     public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == EmendatusEnigmatica.TOOLS_TAB.get()) {
-            swordMap.values().forEach(event::accept);
-            pickaxeMap.values().forEach(event::accept);
-            axeMap.values().forEach(event::accept);
-            shovelMap.values().forEach(event::accept);
-            hoeMap.values().forEach(event::accept);
-            paxelMap.values().forEach(event::accept);
-            helmetMap.values().forEach(event::accept);
-            chestplateMap.values().forEach(event::accept);
-            leggingsMap.values().forEach(event::accept);
-            bootsMap.values().forEach(event::accept);
-            shieldMap.values().forEach(event::accept);
+            swordMap        .values().forEach(event::accept);
+            pickaxeMap      .values().forEach(event::accept);
+            axeMap          .values().forEach(event::accept);
+            shovelMap       .values().forEach(event::accept);
+            hoeMap          .values().forEach(event::accept);
+            paxelMap        .values().forEach(event::accept);
+            helmetMap       .values().forEach(event::accept);
+            chestplateMap   .values().forEach(event::accept);
+            leggingsMap     .values().forEach(event::accept);
+            bootsMap        .values().forEach(event::accept);
+            shieldMap       .values().forEach(event::accept);
         }
         if (event.getTab() == EmendatusEnigmatica.RESOURCES_TAB.get()) {
-            oreBlockItemTable.values().forEach(event::accept);
-            oreSampleBlockItemTable.values().forEach(event::accept);
-            storageBlockItemMap.values().forEach(event::accept);
-            exposedBlockItemMap.values().forEach(event::accept);
-            weatheredBlockItemMap.values().forEach(event::accept);
-            oxidizedBlockItemMap.values().forEach(event::accept);
-            waxedStorageBlockItemMap.values().forEach(event::accept);
-            waxedExposedBlockItemMap.values().forEach(event::accept);
-            waxedWeatheredBlockItemMap.values().forEach(event::accept);
-            waxedOxidizedBlockItemMap.values().forEach(event::accept);
-            rawBlockItemMap.values().forEach(event::accept);
-            buddingBlockItemMap.values().forEach(event::accept);
-            smallBudBlockItemMap.values().forEach(event::accept);
-            mediumBudBlockItemMap.values().forEach(event::accept);
-            largeBudBlockItemMap.values().forEach(event::accept);
-            clusterBlockItemMap.values().forEach(event::accept);
-            clusterShardBlockItemMap.values().forEach(event::accept);
-            rawMap.values().forEach(event::accept);
-            ingotMap.values().forEach(event::accept);
-            nuggetMap.values().forEach(event::accept);
-            gemMap.values().forEach(event::accept);
-            dustMap.values().forEach(event::accept);
-            plateMap.values().forEach(event::accept);
-            gearMap.values().forEach(event::accept);
-            rodMap.values().forEach(event::accept);
-            clusterShardMap.values().forEach(event::accept);
-            fluidBucketMap.values().forEach(event::accept);
+            oreBlockItemTable           .values().forEach(event::accept);
+            oreSampleBlockItemTable     .values().forEach(event::accept);
+            storageBlockItemMap         .values().forEach(event::accept);
+            exposedBlockItemMap         .values().forEach(event::accept);
+            weatheredBlockItemMap       .values().forEach(event::accept);
+            oxidizedBlockItemMap        .values().forEach(event::accept);
+            waxedStorageBlockItemMap    .values().forEach(event::accept);
+            waxedExposedBlockItemMap    .values().forEach(event::accept);
+            waxedWeatheredBlockItemMap  .values().forEach(event::accept);
+            waxedOxidizedBlockItemMap   .values().forEach(event::accept);
+            rawBlockItemMap             .values().forEach(event::accept);
+            buddingBlockItemMap         .values().forEach(event::accept);
+            smallBudBlockItemMap        .values().forEach(event::accept);
+            mediumBudBlockItemMap       .values().forEach(event::accept);
+            largeBudBlockItemMap        .values().forEach(event::accept);
+            clusterBlockItemMap         .values().forEach(event::accept);
+            clusterShardBlockItemMap    .values().forEach(event::accept);
+            rawMap                      .values().forEach(event::accept);
+            ingotMap                    .values().forEach(event::accept);
+            nuggetMap                   .values().forEach(event::accept);
+            gemMap                      .values().forEach(event::accept);
+            dustMap                     .values().forEach(event::accept);
+            plateMap                    .values().forEach(event::accept);
+            gearMap                     .values().forEach(event::accept);
+            rodMap                      .values().forEach(event::accept);
+            clusterShardMap             .values().forEach(event::accept);
+            fluidBucketMap              .values().forEach(event::accept);
         }
     }
 
@@ -256,67 +259,7 @@ public class EERegistrar
     }
 
     public static void registerStorageBlocks(MaterialModel material) {
-        if (material.getProperties().hasOxidization()) {
-            Supplier<BiMap<Block, Block>> oxidizationBlockMap = Suppliers.memoize(
-                () -> ImmutableBiMap.<Block, Block>builder()
-                    .put(storageBlockMap.get(material.getId()).get(), exposedBlockMap.get(material.getId()).get())
-                    .put(exposedBlockMap.get(material.getId()).get(), weatheredBlockMap.get(material.getId()).get())
-                    .put(weatheredBlockMap.get(material.getId()).get(), oxidizedBlockMap.get(material.getId()).get())
-                    .build()
-            );
-            Supplier<BiMap<Block, Block>> waxableBlockMap = Suppliers.memoize(
-                () -> ImmutableBiMap.<Block, Block>builder()
-                    .put(storageBlockMap.get(material.getId()).get(), waxedStorageBlockMap.get(material.getId()).get())
-                    .put(exposedBlockMap.get(material.getId()).get(), waxedExposedBlockMap.get(material.getId()).get())
-                    .put(weatheredBlockMap.get(material.getId()).get(), waxedWeatheredBlockMap.get(material.getId()).get())
-                    .put(oxidizedBlockMap.get(material.getId()).get(), waxedOxidizedBlockMap.get(material.getId()).get())
-                    .build()
-            );
-            String storageBlockName = material.getId() + "_block";
-            String exposedBlockName = "exposed_" + material.getId();
-            String weatheredBlockName = "weathered_" + material.getId();
-            String oxidizedBlockName = "oxidized_" + material.getId();
-            String waxedStorageBlockName = "waxed_" + material.getId() + "_block";
-            String waxedExposedBlockName = "waxed_exposed_" + material.getId();
-            String waxedWeatheredBlockName = "waxed_weathered_" + material.getId();
-            String waxedOxidizedBlockName = "waxed_oxidized_" + material.getId();
-            DeferredBlock<Block> storageBlock = BLOCKS.register(storageBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.UNAFFECTED, oxidizationBlockMap, waxableBlockMap));
-            DeferredBlock<Block> exposedBlock = BLOCKS.register(exposedBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.EXPOSED, oxidizationBlockMap, waxableBlockMap));
-            DeferredBlock<Block> weatheredBlock = BLOCKS.register(weatheredBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.WEATHERED, oxidizationBlockMap, waxableBlockMap));
-            DeferredBlock<Block> oxidizedBlock = BLOCKS.register(oxidizedBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.OXIDIZED, oxidizationBlockMap, waxableBlockMap));
-            DeferredBlock<Block> waxedStorageBlock = BLOCKS.register(waxedStorageBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
-            DeferredBlock<Block> waxedExposedBlock = BLOCKS.register(waxedExposedBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
-            DeferredBlock<Block> waxedWeatheredBlock = BLOCKS.register(waxedWeatheredBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
-            DeferredBlock<Block> waxedOxidizedBlock = BLOCKS.register(waxedOxidizedBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
-
-            storageBlockMap.put(material.getId(), storageBlock);
-            exposedBlockMap.put(material.getId(), exposedBlock);
-            weatheredBlockMap.put(material.getId(), weatheredBlock);
-            oxidizedBlockMap.put(material.getId(), oxidizedBlock);
-            waxedStorageBlockMap.put(material.getId(), waxedStorageBlock);
-            waxedExposedBlockMap.put(material.getId(), waxedExposedBlock);
-            waxedWeatheredBlockMap.put(material.getId(), waxedWeatheredBlock);
-            waxedOxidizedBlockMap.put(material.getId(), waxedOxidizedBlock);
-            if (material.getProperties().isBurnable()) {
-                storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(),material.getProperties().getBurnTime() * 10)));
-                exposedBlockItemMap.put(material.getId(), ITEMS.register(exposedBlockName, () -> new BasicStorageBlockItem(exposedBlock.get(),material.getProperties().getBurnTime() * 10)));
-                weatheredBlockItemMap.put(material.getId(), ITEMS.register(weatheredBlockName, () -> new BasicStorageBlockItem(weatheredBlock.get(),material.getProperties().getBurnTime() * 10)));
-                oxidizedBlockItemMap.put(material.getId(), ITEMS.register(oxidizedBlockName, () -> new BasicStorageBlockItem(oxidizedBlock.get(),material.getProperties().getBurnTime() * 10)));
-                waxedStorageBlockItemMap.put(material.getId(), ITEMS.register(waxedStorageBlockName, () -> new BasicStorageBlockItem(waxedStorageBlock.get(),material.getProperties().getBurnTime() * 10)));
-                waxedExposedBlockItemMap.put(material.getId(), ITEMS.register(waxedExposedBlockName, () -> new BasicStorageBlockItem(waxedExposedBlock.get(),material.getProperties().getBurnTime() * 10)));
-                waxedWeatheredBlockItemMap.put(material.getId(), ITEMS.register(waxedWeatheredBlockName, () -> new BasicStorageBlockItem(waxedWeatheredBlock.get(),material.getProperties().getBurnTime() * 10)));
-                waxedOxidizedBlockItemMap.put(material.getId(), ITEMS.register(waxedOxidizedBlockName, () -> new BasicStorageBlockItem(waxedOxidizedBlock.get(),material.getProperties().getBurnTime() * 10)));
-            } else {
-                storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(), 0)));
-                exposedBlockItemMap.put(material.getId(), ITEMS.register(exposedBlockName, () -> new BasicStorageBlockItem(exposedBlock.get(), 0)));
-                weatheredBlockItemMap.put(material.getId(), ITEMS.register(weatheredBlockName, () -> new BasicStorageBlockItem(weatheredBlock.get(),0)));
-                oxidizedBlockItemMap.put(material.getId(), ITEMS.register(oxidizedBlockName, () -> new BasicStorageBlockItem(oxidizedBlock.get(),0)));
-                waxedStorageBlockItemMap.put(material.getId(), ITEMS.register(waxedStorageBlockName, () -> new BasicStorageBlockItem(waxedStorageBlock.get(),0)));
-                waxedExposedBlockItemMap.put(material.getId(), ITEMS.register(waxedExposedBlockName, () -> new BasicStorageBlockItem(waxedExposedBlock.get(),0)));
-                waxedWeatheredBlockItemMap.put(material.getId(), ITEMS.register(waxedWeatheredBlockName, () -> new BasicStorageBlockItem(waxedWeatheredBlock.get(),0)));
-                waxedOxidizedBlockItemMap.put(material.getId(), ITEMS.register(waxedOxidizedBlockName, () -> new BasicStorageBlockItem(waxedOxidizedBlock.get(),0)));
-            }
-        } else {
+        if (!material.getProperties().hasOxidization()) {
             String storageBlockName = material.getId() + "_block";
             DeferredBlock<Block> storageBlock = BLOCKS.register(storageBlockName, () -> new BasicStorageBlock(material));
             storageBlockMap.put(material.getId(), storageBlock);
@@ -325,7 +268,59 @@ public class EERegistrar
             } else {
                 storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(), 0)));
             }
+            return;
         }
+
+        Supplier<BiMap<Block, Block>> oxidizationBlockMap = Suppliers.memoize(
+            () -> ImmutableBiMap.<Block, Block>builder()
+                .put(storageBlockMap.get(material.getId()).get(), exposedBlockMap.get(material.getId()).get())
+                .put(exposedBlockMap.get(material.getId()).get(), weatheredBlockMap.get(material.getId()).get())
+                .put(weatheredBlockMap.get(material.getId()).get(), oxidizedBlockMap.get(material.getId()).get())
+                .build()
+        );
+        Supplier<BiMap<Block, Block>> waxableBlockMap = Suppliers.memoize(
+            () -> ImmutableBiMap.<Block, Block>builder()
+                .put(storageBlockMap.get(material.getId()).get(), waxedStorageBlockMap.get(material.getId()).get())
+                .put(exposedBlockMap.get(material.getId()).get(), waxedExposedBlockMap.get(material.getId()).get())
+                .put(weatheredBlockMap.get(material.getId()).get(), waxedWeatheredBlockMap.get(material.getId()).get())
+                .put(oxidizedBlockMap.get(material.getId()).get(), waxedOxidizedBlockMap.get(material.getId()).get())
+                .build()
+        );
+
+        String storageBlockName = material.getId() + "_block";
+        String exposedBlockName = "exposed_" + material.getId();
+        String weatheredBlockName = "weathered_" + material.getId();
+        String oxidizedBlockName = "oxidized_" + material.getId();
+        String waxedStorageBlockName = "waxed_" + material.getId() + "_block";
+        String waxedExposedBlockName = "waxed_exposed_" + material.getId();
+        String waxedWeatheredBlockName = "waxed_weathered_" + material.getId();
+        String waxedOxidizedBlockName = "waxed_oxidized_" + material.getId();
+        DeferredBlock<Block> storageBlock = BLOCKS.register(storageBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.UNAFFECTED, oxidizationBlockMap, waxableBlockMap));
+        DeferredBlock<Block> exposedBlock = BLOCKS.register(exposedBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.EXPOSED, oxidizationBlockMap, waxableBlockMap));
+        DeferredBlock<Block> weatheredBlock = BLOCKS.register(weatheredBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.WEATHERED, oxidizationBlockMap, waxableBlockMap));
+        DeferredBlock<Block> oxidizedBlock = BLOCKS.register(oxidizedBlockName, () -> new BasicWeatheringBlock(material, BasicWeatheringBlock.WeatherState.OXIDIZED, oxidizationBlockMap, waxableBlockMap));
+        DeferredBlock<Block> waxedStorageBlock = BLOCKS.register(waxedStorageBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
+        DeferredBlock<Block> waxedExposedBlock = BLOCKS.register(waxedExposedBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
+        DeferredBlock<Block> waxedWeatheredBlock = BLOCKS.register(waxedWeatheredBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
+        DeferredBlock<Block> waxedOxidizedBlock = BLOCKS.register(waxedOxidizedBlockName, () -> new BasicWaxedBlock(material, waxableBlockMap));
+        storageBlockMap.put(material.getId(), storageBlock);
+        exposedBlockMap.put(material.getId(), exposedBlock);
+        weatheredBlockMap.put(material.getId(), weatheredBlock);
+        oxidizedBlockMap.put(material.getId(), oxidizedBlock);
+        waxedStorageBlockMap.put(material.getId(), waxedStorageBlock);
+        waxedExposedBlockMap.put(material.getId(), waxedExposedBlock);
+        waxedWeatheredBlockMap.put(material.getId(), waxedWeatheredBlock);
+        waxedOxidizedBlockMap.put(material.getId(), waxedOxidizedBlock);
+
+        int burnTime = material.getProperties().isBurnable()? material.getProperties().getBurnTime() * 10: 0;
+        storageBlockItemMap         .put(material.getId(), ITEMS.register(storageBlockName,         () -> new BasicStorageBlockItem(storageBlock.get(), burnTime)));
+        exposedBlockItemMap         .put(material.getId(), ITEMS.register(exposedBlockName,         () -> new BasicStorageBlockItem(exposedBlock.get(), burnTime)));
+        weatheredBlockItemMap       .put(material.getId(), ITEMS.register(weatheredBlockName,       () -> new BasicStorageBlockItem(weatheredBlock.get(), burnTime)));
+        oxidizedBlockItemMap        .put(material.getId(), ITEMS.register(oxidizedBlockName,        () -> new BasicStorageBlockItem(oxidizedBlock.get(), burnTime)));
+        waxedStorageBlockItemMap    .put(material.getId(), ITEMS.register(waxedStorageBlockName,    () -> new BasicStorageBlockItem(waxedStorageBlock.get(), burnTime)));
+        waxedExposedBlockItemMap    .put(material.getId(), ITEMS.register(waxedExposedBlockName,    () -> new BasicStorageBlockItem(waxedExposedBlock.get(), burnTime)));
+        waxedWeatheredBlockItemMap  .put(material.getId(), ITEMS.register(waxedWeatheredBlockName,  () -> new BasicStorageBlockItem(waxedWeatheredBlock.get(), burnTime)));
+        waxedOxidizedBlockItemMap   .put(material.getId(), ITEMS.register(waxedOxidizedBlockName,   () -> new BasicStorageBlockItem(waxedOxidizedBlock.get(), burnTime)));
     }
 
     public static void registerRawBlocks(MaterialModel material) {

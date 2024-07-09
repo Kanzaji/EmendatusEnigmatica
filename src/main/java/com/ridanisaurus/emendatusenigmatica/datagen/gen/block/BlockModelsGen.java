@@ -59,7 +59,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "exposed", "gem", "exposed_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "weathered", "gem", "weathered_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "oxidized", "gem", "oxidized_" + material.getId());
-							storageBlock(consumer, "blocks/" + material.getId() + "_block", "waxed_" + material.getId() + "_block");
+							storageBlock	(consumer, "blocks/" + material.getId() + "_block", "waxed_" + material.getId() + "_block");
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "exposed", "gem", "waxed_exposed_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "weathered", "gem", "waxed_weathered_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "oxidized", "gem", "waxed_oxidized_" + material.getId());
@@ -67,7 +67,7 @@ public class BlockModelsGen extends EEBlockModelProvider {
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "exposed", "metal", "exposed_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "weathered", "metal", "weathered_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "oxidized", "metal", "oxidized_" + material.getId());
-							storageBlock(consumer, "blocks/" + material.getId() + "_block", "waxed_" + material.getId() + "_block");
+							storageBlock	(consumer, "blocks/" + material.getId() + "_block", "waxed_" + material.getId() + "_block");
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "exposed", "metal", "waxed_exposed_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "weathered", "metal", "waxed_weathered_" + material.getId());
 							oxidizationBlock(consumer, "blocks/" + material.getId() + "_block", "oxidized", "metal", "waxed_oxidized_" + material.getId());
@@ -703,11 +703,11 @@ public class BlockModelsGen extends EEBlockModelProvider {
 				.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, path));
 	}
 
-	public static String getOreModelName(StrataModel stratum, MaterialModel material) {
+	public static @NotNull String getOreModelName(@NotNull StrataModel stratum, @NotNull MaterialModel material) {
 		return material.getId() + (!stratum.getId().equals("minecraft_stone") ? "_" + stratum.getSuffix() : "") + "_ore";
 	}
 
-	public static String getSampleModelName(StrataModel stratum, MaterialModel material) {
+	public static @NotNull String getSampleModelName(@NotNull StrataModel stratum, @NotNull MaterialModel material) {
 		return material.getId() + "_" + stratum.getSuffix() + "_ore_sample";
 	}
 

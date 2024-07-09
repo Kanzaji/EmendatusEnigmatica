@@ -11,6 +11,7 @@ import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidTagsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemTagsGen;
+import com.ridanisaurus.emendatusenigmatica.datagen.provider.EELootProvider;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
@@ -43,7 +44,6 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
     @Override
     public void registerMinecraft(List<MaterialModel> materialModels, List<StrataModel> strataModels) {
     //FIXME: Rework this method when Data generation and EERegistrar is ported.
-
         for (StrataModel strata : strataModels) {
             for (MaterialModel material : materialModels) {
                 if (material.getProcessedTypes().contains("ore")) {
@@ -141,14 +141,6 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
             if (material.getProcessedTypes().contains("fluid")) {
                 EERegistrar.registerFluids(material);
             }
-//            if (EmendatusEnigmatica.BLOODMAGIC_LOADED) {
-//                if (material.getProcessedTypes().contains("fragment")) {
-//                    EEBloodMagicRegistrar.registerFragments(material);
-//                }
-//                if (material.getProcessedTypes().contains("gravel")) {
-//                    EEBloodMagicRegistrar.registerGravels(material);
-//                }
-//            }
         }
     }
 
@@ -165,7 +157,7 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
         generator.addProvider(true, new BlockHarvestLevelTagsGen(generator, registry));
         generator.addProvider(true, new BlockHarvestToolTagsGen(generator, registry));
         generator.addProvider(true, new RecipesGen(generator, registry, providers));
-//        generator.addProvider(true, new LootTablesGen(generator, registry));
+        generator.addProvider(true, new EELootProvider(generator, registry, providers));
 //        generator.addProvider(true, new OreFeatureDataGen(generator, registry));
     }
 

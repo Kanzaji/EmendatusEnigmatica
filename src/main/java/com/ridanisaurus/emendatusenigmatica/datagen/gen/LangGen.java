@@ -58,36 +58,36 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append("Block of ");
 				sb.append(material.getLocalizedName());
-				add(EERegistrar.storageBlockMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.storageBlockMap.get(material), sb.toString());
 				if (material.getProperties().hasOxidization()) {
 					StringBuilder sb2 = new StringBuilder();
 					sb2.append("Exposed ");
 					sb2.append(material.getLocalizedName());
-					add(EERegistrar.exposedBlockMap.get(material.getId()).get(), sb2.toString());
+					add(EERegistrar.exposedBlockMap.get(material), sb2.toString());
 					StringBuilder sb3 = new StringBuilder();
 					sb3.append("Weathered ");
 					sb3.append(material.getLocalizedName());
-					add(EERegistrar.weatheredBlockMap.get(material.getId()).get(), sb3.toString());
+					add(EERegistrar.weatheredBlockMap.get(material), sb3.toString());
 					StringBuilder sb4 = new StringBuilder();
 					sb4.append("Oxidized ");
 					sb4.append(material.getLocalizedName());
-					add(EERegistrar.oxidizedBlockMap.get(material.getId()).get(), sb4.toString());
+					add(EERegistrar.oxidizedBlockMap.get(material), sb4.toString());
 					StringBuilder sb5 = new StringBuilder();
 					sb5.append("Waxed Block of ");
 					sb5.append(material.getLocalizedName());
-					add(EERegistrar.waxedStorageBlockMap.get(material.getId()).get(), sb5.toString());
+					add(EERegistrar.waxedStorageBlockMap.get(material), sb5.toString());
 					StringBuilder sb6 = new StringBuilder();
 					sb6.append("Waxed Exposed ");
 					sb6.append(material.getLocalizedName());
-					add(EERegistrar.waxedExposedBlockMap.get(material.getId()).get(), sb6.toString());
+					add(EERegistrar.waxedExposedBlockMap.get(material), sb6.toString());
 					StringBuilder sb7 = new StringBuilder();
 					sb7.append("Waxed Weathered ");
 					sb7.append(material.getLocalizedName());
-					add(EERegistrar.waxedWeatheredBlockMap.get(material.getId()).get(), sb7.toString());
+					add(EERegistrar.waxedWeatheredBlockMap.get(material), sb7.toString());
 					StringBuilder sb8 = new StringBuilder();
 					sb8.append("Waxed Oxidized ");
 					sb8.append(material.getLocalizedName());
-					add(EERegistrar.waxedOxidizedBlockMap.get(material.getId()).get(), sb8.toString());
+					add(EERegistrar.waxedOxidizedBlockMap.get(material), sb8.toString());
 				}
 			}
 
@@ -96,7 +96,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Ingot");
-				add(EERegistrar.ingotMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.ingotMap.get(material), sb.toString());
 			}
 
 			// Gems
@@ -104,7 +104,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Gem");
-				add(EERegistrar.gemMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.gemMap.get(material), sb.toString());
 			}
 
 			// Nuggets
@@ -112,7 +112,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Nugget");
-				add(EERegistrar.nuggetMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.nuggetMap.get(material), sb.toString());
 			}
 
 			// Dusts
@@ -120,7 +120,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Dust");
-				add(EERegistrar.dustMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.dustMap.get(material), sb.toString());
 			}
 
 			// Plates
@@ -128,7 +128,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Plate");
-				add(EERegistrar.plateMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.plateMap.get(material), sb.toString());
 			}
 
 			// Gears
@@ -136,7 +136,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Gear");
-				add(EERegistrar.gearMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.gearMap.get(material), sb.toString());
 			}
 
 			// Rods
@@ -144,7 +144,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Rod");
-				add(EERegistrar.rodMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.rodMap.get(material), sb.toString());
 			}
 
 			// Swords
@@ -152,7 +152,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Sword");
-				add(EERegistrar.swordMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.swordMap.get(material), sb.toString());
 			}
 
 			// Pickaxes
@@ -160,7 +160,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Pickaxe");
-				add(EERegistrar.pickaxeMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.pickaxeMap.get(material), sb.toString());
 			}
 
 			// Axes
@@ -168,7 +168,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Axe");
-				add(EERegistrar.axeMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.axeMap.get(material), sb.toString());
 			}
 
 			// Shovels
@@ -176,7 +176,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Shovel");
-				add(EERegistrar.shovelMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.shovelMap.get(material), sb.toString());
 			}
 
 			// Hoes
@@ -184,7 +184,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Hoe");
-				add(EERegistrar.hoeMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.hoeMap.get(material), sb.toString());
 			}
 
 			// Paxels
@@ -192,7 +192,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Paxel");
-				add(EERegistrar.paxelMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.paxelMap.get(material), sb.toString());
 			}
 
 			// Helmet
@@ -200,7 +200,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Helmet");
-				add(EERegistrar.helmetMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.helmetMap.get(material), sb.toString());
 			}
 
 			// Chestplate
@@ -208,7 +208,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Chestplate");
-				add(EERegistrar.chestplateMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.chestplateMap.get(material), sb.toString());
 			}
 
 			// Leggings
@@ -216,7 +216,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Leggings");
-				add(EERegistrar.leggingsMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.leggingsMap.get(material), sb.toString());
 			}
 
 			// Boots
@@ -224,7 +224,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Boots");
-				add(EERegistrar.bootsMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.bootsMap.get(material), sb.toString());
 			}
 
 			// Shields
@@ -232,7 +232,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Shield");
-				add(EERegistrar.shieldMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.shieldMap.get(material), sb.toString());
 			}
 
 			// Raw
@@ -240,12 +240,12 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append("Raw ");
 				sb.append(material.getLocalizedName());
-				add(EERegistrar.rawMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.rawMap.get(material), sb.toString());
 
 				StringBuilder sb2 = new StringBuilder();
 				sb2.append("Block of Raw ");
 				sb2.append(material.getLocalizedName());
-				add(EERegistrar.rawBlockMap.get(material.getId()).get(), sb2.toString());
+				add(EERegistrar.rawBlockMap.get(material), sb2.toString());
 			}
 
 			// Cluster
@@ -253,41 +253,41 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb = new StringBuilder();
 				sb.append(material.getLocalizedName());
 				sb.append(" Cluster Shard");
-				add(EERegistrar.clusterShardMap.get(material.getId()).get(), sb.toString());
+				add(EERegistrar.clusterShardMap.get(material), sb.toString());
 
 				StringBuilder sb2 = new StringBuilder();
 				sb2.append("Budding ");
 				sb2.append(material.getLocalizedName());
-				add(EERegistrar.buddingBlockMap.get(material.getId()).get(), sb2.toString());
+				add(EERegistrar.buddingBlockMap.get(material), sb2.toString());
 
 				StringBuilder sb3 = new StringBuilder();
 				sb3.append("Small ");
 				sb3.append(material.getLocalizedName());
 				sb3.append(" Bud");
-				add(EERegistrar.smallBudBlockMap.get(material.getId()).get(), sb3.toString());
+				add(EERegistrar.smallBudBlockMap.get(material), sb3.toString());
 
 				StringBuilder sb4 = new StringBuilder();
 				sb4.append("Medium ");
 				sb4.append(material.getLocalizedName());
 				sb4.append(" Bud");
-				add(EERegistrar.mediumBudBlockMap.get(material.getId()).get(), sb4.toString());
+				add(EERegistrar.mediumBudBlockMap.get(material), sb4.toString());
 
 				StringBuilder sb5 = new StringBuilder();
 				sb5.append("Large ");
 				sb5.append(material.getLocalizedName());
 				sb5.append(" Bud");
-				add(EERegistrar.largeBudBlockMap.get(material.getId()).get(), sb5.toString());
+				add(EERegistrar.largeBudBlockMap.get(material), sb5.toString());
 
 				StringBuilder sb6 = new StringBuilder();
 				sb6.append(material.getLocalizedName());
 				sb6.append(" Cluster");
-				add(EERegistrar.clusterBlockMap.get(material.getId()).get(), sb6.toString());
+				add(EERegistrar.clusterBlockMap.get(material), sb6.toString());
 
 				StringBuilder sb7 = new StringBuilder();
 				sb7.append("Block of ");
 				sb7.append(material.getLocalizedName());
 				sb7.append(" Cluster Shard");
-				add(EERegistrar.clusterShardBlockMap.get(material.getId()).get(), sb7.toString());
+				add(EERegistrar.clusterShardBlockMap.get(material), sb7.toString());
 			}
 
 			// Fluids
@@ -299,7 +299,7 @@ public class LangGen extends EELangProvider {
 				StringBuilder sb2 = new StringBuilder();
 				sb2.append(material.getLocalizedName());
 				sb2.append(" Bucket");
-				add(EERegistrar.fluidBucketMap.get(material.getId()).get(), sb2.toString());
+				add(EERegistrar.fluidBucketMap.get(material), sb2.toString());
 			}
 
 //			if (EmendatusEnigmatica.BLOODMAGIC_LOADED) {
@@ -308,14 +308,14 @@ public class LangGen extends EELangProvider {
 //					StringBuilder sb = new StringBuilder();
 //					sb.append(material.getLocalizedName());
 //					sb.append(" Fragment");
-//					add(EEBloodMagicRegistrar.fragmentMap.get(material.getId()).get(), sb.toString());
+//					add(EEBloodMagicRegistrar.fragmentMap.get(material, sb.toString());
 //				}
 //				// Gravel
 //				if (processedType.contains("gravel")) {
 //					StringBuilder sb = new StringBuilder();
 //					sb.append(material.getLocalizedName());
 //					sb.append(" Gravel");
-//					add(EEBloodMagicRegistrar.gravelMap.get(material.getId()).get(), sb.toString());
+//					add(EEBloodMagicRegistrar.gravelMap.get(material, sb.toString());
 //				}
 //			}
 

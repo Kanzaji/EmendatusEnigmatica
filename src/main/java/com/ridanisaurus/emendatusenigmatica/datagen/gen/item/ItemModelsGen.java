@@ -426,11 +426,11 @@ public class ItemModelsGen extends EEItemModelProvider {
 		}
 	}
 
-	public static String getOreModelName(StrataModel stratum, MaterialModel material) {
+	public static @NotNull String getOreModelName(@NotNull StrataModel stratum, @NotNull MaterialModel material) {
 		return material.getId() + (!stratum.getId().equals("minecraft_stone") ? "_" + stratum.getSuffix() : "") + "_ore";
 	}
 
-	public static String getSampleModelName(StrataModel stratum, MaterialModel material) {
+	public static @NotNull String getSampleModelName(@NotNull StrataModel stratum, @NotNull MaterialModel material) {
 		return material.getId() + "_" + stratum.getSuffix() + "_ore_sample";
 	}
 

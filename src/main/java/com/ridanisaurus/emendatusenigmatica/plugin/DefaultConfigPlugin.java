@@ -15,10 +15,14 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
+import net.minecraft.Util;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.*;
+import net.minecraft.data.registries.VanillaRegistries;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 //This plugin will be always first
 @EmendatusPluginReference(modid = Reference.MOD_ID, name = "config")
@@ -149,7 +153,7 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
     }
 
     @Override
-    public void registerDynamicDataGen(DataGenerator generator, EmendatusDataRegistry registry) {
+    public void registerDynamicDataGen(DataGenerator generator, EmendatusDataRegistry registry, CompletableFuture<HolderLookup.Provider> providers) {
         generator.addProvider(true, new BlockStatesGen(generator, registry));
         generator.addProvider(true, new BlockModelsGen(generator, registry));
         generator.addProvider(true, new ItemModelsGen(generator, registry));
@@ -160,14 +164,9 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
         generator.addProvider(true, new FluidTagsGen(generator, registry));
         generator.addProvider(true, new BlockHarvestLevelTagsGen(generator, registry));
         generator.addProvider(true, new BlockHarvestToolTagsGen(generator, registry));
-//        generator.addProvider(true, new RecipesGen(generator, registry));
+        generator.addProvider(true, new RecipesGen(generator, registry, providers));
 //        generator.addProvider(true, new LootTablesGen(generator, registry));
 //        generator.addProvider(true, new OreFeatureDataGen(generator, registry));
-
-//        if (EmendatusEnigmatica.BLOODMAGIC_LOADED) {
-//            generator.addProvider(true, new BloodMagicDataGen.BloodMagicItemTags(generator, registry));
-//            generator.addProvider(true, new BloodMagicDataGen.BloodMagicRecipes(generator, registry));
-//        }
     }
 
     @Override

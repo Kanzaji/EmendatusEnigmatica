@@ -53,8 +53,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class EEBlockModelProvider implements DataProvider {
-	private static final Logger logger = LoggerFactory.getLogger("EE Block Model Provider");
+public abstract class EEBlockModelProvider implements DataProvider {
 	protected final DataGenerator generator;
 
 	public EEBlockModelProvider(DataGenerator gen) {
@@ -77,12 +76,8 @@ public class EEBlockModelProvider implements DataProvider {
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
-	protected void buildBlockModel(Consumer<IFinishedGenericJSON> consumer) {
-		// It's called generic for a reason!
-	}
+	protected abstract void buildBlockModel(Consumer<IFinishedGenericJSON> consumer);
 
 	@Override
-	public String getName() {
-		return null;
-	}
+	public abstract @NotNull String getName();
 }

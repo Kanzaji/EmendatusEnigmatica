@@ -33,6 +33,7 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -434,7 +435,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Emendatus Enigmatica Item Models";
 	}
 }

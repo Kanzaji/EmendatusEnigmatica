@@ -34,6 +34,8 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +106,7 @@ public class BlockTagsGen extends EETagProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Emendatus Enigmatica Block Tags";
 	}
 }

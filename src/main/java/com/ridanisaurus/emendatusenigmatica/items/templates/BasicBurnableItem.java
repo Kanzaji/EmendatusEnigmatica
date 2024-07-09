@@ -27,6 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.items.templates;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BasicBurnableItem extends BasicItem {
@@ -38,7 +39,7 @@ public class BasicBurnableItem extends BasicItem {
 	}
 
 	@Override
-	public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+	public int getBurnTime(@NotNull ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
 		return burnTime;
 	}
 }

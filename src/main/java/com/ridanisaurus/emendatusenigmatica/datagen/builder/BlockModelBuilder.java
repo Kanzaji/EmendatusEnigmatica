@@ -156,8 +156,7 @@ public class BlockModelBuilder {
 		}
 
 		public ElementBuilder faces(BiConsumer<Direction, FaceBuilder> action) {
-			faces.entrySet().stream()
-					.forEach(e -> action.accept(e.getKey(), e.getValue()));
+			faces.forEach(action);
 			return this;
 		}
 
@@ -333,7 +332,7 @@ public class BlockModelBuilder {
 			public float[] uvs;
 			public final int rotation;
 
-			public BlockFaceUV(@Nullable float[] uvs, int rotation) {
+			public BlockFaceUV(float @Nullable [] uvs, int rotation) {
 				this.uvs = uvs;
 				this.rotation = rotation;
 			}

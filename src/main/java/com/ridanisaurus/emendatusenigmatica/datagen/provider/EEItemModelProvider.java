@@ -51,8 +51,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class EEItemModelProvider implements DataProvider {
-	private static final Logger logger = LoggerFactory.getLogger("EE Item Model Provider");
+public abstract class EEItemModelProvider implements DataProvider {
 	protected final DataGenerator generator;
 
 	public EEItemModelProvider(DataGenerator gen) {
@@ -80,7 +79,5 @@ public class EEItemModelProvider implements DataProvider {
 	}
 
 	@Override
-	public String getName() {
-		return null;
-	}
+	public abstract @NotNull String getName();
 }

@@ -45,7 +45,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class EELangProvider implements DataProvider {
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().setLenient().create();
 	private final Map<String, String> data = new TreeMap<>();
 	private final DataGenerator gen;
 	private final String modid;
@@ -60,16 +59,14 @@ public abstract class EELangProvider implements DataProvider {
 	protected abstract void addTranslations();
 
 	@Override
+	public abstract @NotNull String getName();
+
+	@Override
 	public @NotNull CompletableFuture<?> run(@NotNull CachedOutput cachedOutput) {
 		addTranslations();
 		if (!data.isEmpty())
 			return save(cachedOutput, this.data, this.gen.getPackOutput().getOutputFolder().resolve("assets/" + modid + "/lang/" + locale + ".json"));
 		return CompletableFuture.allOf();
-	}
-
-	@Override
-	public @NotNull String getName() {
-		return "Languages: " + locale;
 	}
 
 	private @NotNull CompletableFuture<?> save(CachedOutput cache, @NotNull Map<String, String> data, Path target) {

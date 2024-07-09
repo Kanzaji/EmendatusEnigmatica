@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -59,12 +60,12 @@ public class BasicFluidType extends FluidType
         consumer.accept(new IClientFluidTypeExtensions()
         {
             @Override
-            public ResourceLocation getStillTexture() {
+            public @NotNull ResourceLocation getStillTexture() {
                 return stillTexture;
             }
 
             @Override
-            public ResourceLocation getFlowingTexture() {
+            public @NotNull ResourceLocation getFlowingTexture() {
                 return flowingTexture;
             }
 
@@ -79,12 +80,12 @@ public class BasicFluidType extends FluidType
             }
 
             @Override
-            public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick, @NotNull ClientLevel level, int renderDistance, float darkenWorldAmount, @NotNull Vector3f fluidFogColor) {
                 return fogColor;
             }
 
             @Override
-            public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+            public void modifyFogRender(@NotNull Camera camera, FogRenderer.@NotNull FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, @NotNull FogShape shape) {
                 RenderSystem.setShaderFogStart(1f);
                 RenderSystem.setShaderFogEnd(6f);
             }

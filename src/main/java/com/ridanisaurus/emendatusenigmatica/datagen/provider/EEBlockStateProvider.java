@@ -51,8 +51,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class EEBlockStateProvider implements DataProvider {
-	private static final Logger logger = LoggerFactory.getLogger("EE Block State Provider");
+public abstract class EEBlockStateProvider implements DataProvider {
 	protected final DataGenerator generator;
 
 	public EEBlockStateProvider(DataGenerator gen) {
@@ -75,12 +74,8 @@ public class EEBlockStateProvider implements DataProvider {
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
-	protected void buildBlockState(Consumer<IFinishedGenericJSON> consumer) {
-		// It's called generic for a reason!
-	}
+	protected abstract void buildBlockState(Consumer<IFinishedGenericJSON> consumer);
 
 	@Override
-	public String getName() {
-		return null;
-	}
+	public abstract @NotNull String getName();
 }

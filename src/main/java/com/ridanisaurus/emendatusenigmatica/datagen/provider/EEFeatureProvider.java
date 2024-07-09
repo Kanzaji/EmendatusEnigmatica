@@ -51,8 +51,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class EEFeatureProvider implements DataProvider {
-	private static final Logger logger = LoggerFactory.getLogger("EE Feature Provider");
+public abstract class EEFeatureProvider implements DataProvider {
 	protected final DataGenerator generator;
 
 	public EEFeatureProvider(DataGenerator gen) {
@@ -76,12 +75,8 @@ public class EEFeatureProvider implements DataProvider {
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
-	protected void buildFeatures(Consumer<IFinishedGenericJSON> consumer) {
-		// It's called generic for a reason!
-	}
+	protected abstract void buildFeatures(Consumer<IFinishedGenericJSON> consumer);
 
 	@Override
-	public String getName() {
-		return null;
-	}
+	public abstract @NotNull String getName();
 }

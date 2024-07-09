@@ -10,133 +10,153 @@ public class ItemColorHandler implements ItemColor {
     public int getColor(ItemStack stack, int layer) {
         Item item = stack.getItem();
         if (layer == 0) {
-            if (item instanceof BasicItem){
-                return ((BasicItem) item).highlight2;
-            }
-            if (item instanceof BasicSwordItem){
-                return ((BasicSwordItem) item).highlight2;
-            }
-            if (item instanceof BasicPickaxeItem){
-                return ((BasicPickaxeItem) item).highlight2;
-            }
-            if (item instanceof BasicAxeItem){
-                return ((BasicAxeItem) item).highlight2;
-            }
-            if (item instanceof BasicShovelItem){
-                return ((BasicShovelItem) item).highlight2;
-            }
-            if (item instanceof BasicHoeItem){
-                return ((BasicHoeItem) item).highlight2;
-            }
-            if (item instanceof BasicPaxelItem){
-                return ((BasicPaxelItem) item).highlight2;
-            }
-            if (item instanceof BasicArmorItem){
-                return ((BasicArmorItem) item).highlight2;
+            switch (item) {
+                case BasicItem basicItem -> {
+                    return basicItem.highlight2;
+                }
+                case BasicSwordItem basicSwordItem -> {
+                    return basicSwordItem.highlight2;
+                }
+                case BasicPickaxeItem basicPickaxeItem -> {
+                    return basicPickaxeItem.highlight2;
+                }
+                case BasicAxeItem basicAxeItem -> {
+                    return basicAxeItem.highlight2;
+                }
+                case BasicShovelItem basicShovelItem -> {
+                    return basicShovelItem.highlight2;
+                }
+                case BasicHoeItem basicHoeItem -> {
+                    return basicHoeItem.highlight2;
+                }
+                case BasicPaxelItem basicPaxelItem -> {
+                    return basicPaxelItem.highlight2;
+                }
+                case BasicArmorItem basicArmorItem -> {
+                    return basicArmorItem.highlight2;
+                }
+                default -> {
+                }
             }
         }
         if (layer == 1) {
-            if (item instanceof BasicItem){
-                return ((BasicItem) item).highlight1;
-            }
-            if (item instanceof BasicSwordItem){
-                return ((BasicSwordItem) item).highlight1;
-            }
-            if (item instanceof BasicPickaxeItem){
-                return ((BasicPickaxeItem) item).highlight1;
-            }
-            if (item instanceof BasicAxeItem){
-                return ((BasicAxeItem) item).highlight1;
-            }
-            if (item instanceof BasicShovelItem){
-                return ((BasicShovelItem) item).highlight1;
-            }
-            if (item instanceof BasicHoeItem){
-                return ((BasicHoeItem) item).highlight1;
-            }
-            if (item instanceof BasicPaxelItem){
-                return ((BasicPaxelItem) item).highlight1;
-            }
-            if (item instanceof BasicArmorItem){
-                return ((BasicArmorItem) item).highlight1;
+            switch (item) {
+                case BasicItem basicItem -> {
+                    return basicItem.highlight1;
+                }
+                case BasicSwordItem basicSwordItem -> {
+                    return basicSwordItem.highlight1;
+                }
+                case BasicPickaxeItem basicPickaxeItem -> {
+                    return basicPickaxeItem.highlight1;
+                }
+                case BasicAxeItem basicAxeItem -> {
+                    return basicAxeItem.highlight1;
+                }
+                case BasicShovelItem basicShovelItem -> {
+                    return basicShovelItem.highlight1;
+                }
+                case BasicHoeItem basicHoeItem -> {
+                    return basicHoeItem.highlight1;
+                }
+                case BasicPaxelItem basicPaxelItem -> {
+                    return basicPaxelItem.highlight1;
+                }
+                case BasicArmorItem basicArmorItem -> {
+                    return basicArmorItem.highlight1;
+                }
+                default -> {
+                }
             }
         }
         if (layer == 2) {
-            if (item instanceof BasicItem){
-                return ((BasicItem) item).base;
-            }
-            if (item instanceof BasicSwordItem){
-                return ((BasicSwordItem) item).base;
-            }
-            if (item instanceof BasicPickaxeItem){
-                return ((BasicPickaxeItem) item).base;
-            }
-            if (item instanceof BasicAxeItem){
-                return ((BasicAxeItem) item).base;
-            }
-            if (item instanceof BasicShovelItem){
-                return ((BasicShovelItem) item).base;
-            }
-            if (item instanceof BasicHoeItem){
-                return ((BasicHoeItem) item).base;
-            }
-            if (item instanceof BasicPaxelItem){
-                return ((BasicPaxelItem) item).base;
-            }
-            if (item instanceof BasicArmorItem){
-                return ((BasicArmorItem) item).base;
+            switch (item) {
+                case BasicItem basicItem -> {
+                    return basicItem.base;
+                }
+                case BasicSwordItem basicSwordItem -> {
+                    return basicSwordItem.base;
+                }
+                case BasicPickaxeItem basicPickaxeItem -> {
+                    return basicPickaxeItem.base;
+                }
+                case BasicAxeItem basicAxeItem -> {
+                    return basicAxeItem.base;
+                }
+                case BasicShovelItem basicShovelItem -> {
+                    return basicShovelItem.base;
+                }
+                case BasicHoeItem basicHoeItem -> {
+                    return basicHoeItem.base;
+                }
+                case BasicPaxelItem basicPaxelItem -> {
+                    return basicPaxelItem.base;
+                }
+                case BasicArmorItem basicArmorItem -> {
+                    return basicArmorItem.base;
+                }
+                default -> {
+                }
             }
         }
         if (layer == 3) {
-            if (item instanceof BasicItem){
-                return ((BasicItem) item).shadow1;
-            }
-            if (item instanceof BasicSwordItem){
-                return ((BasicSwordItem) item).shadow1;
-            }
-            if (item instanceof BasicPickaxeItem){
-                return ((BasicPickaxeItem) item).shadow1;
-            }
-            if (item instanceof BasicAxeItem){
-                return ((BasicAxeItem) item).shadow1;
-            }
-            if (item instanceof BasicShovelItem){
-                return ((BasicShovelItem) item).shadow1;
-            }
-            if (item instanceof BasicHoeItem){
-                return ((BasicHoeItem) item).shadow1;
-            }
-            if (item instanceof BasicPaxelItem){
-                return ((BasicPaxelItem) item).shadow1;
-            }
-            if (item instanceof BasicArmorItem){
-                return ((BasicArmorItem) item).shadow1;
+            switch (item) {
+                case BasicItem basicItem -> {
+                    return basicItem.shadow1;
+                }
+                case BasicSwordItem basicSwordItem -> {
+                    return basicSwordItem.shadow1;
+                }
+                case BasicPickaxeItem basicPickaxeItem -> {
+                    return basicPickaxeItem.shadow1;
+                }
+                case BasicAxeItem basicAxeItem -> {
+                    return basicAxeItem.shadow1;
+                }
+                case BasicShovelItem basicShovelItem -> {
+                    return basicShovelItem.shadow1;
+                }
+                case BasicHoeItem basicHoeItem -> {
+                    return basicHoeItem.shadow1;
+                }
+                case BasicPaxelItem basicPaxelItem -> {
+                    return basicPaxelItem.shadow1;
+                }
+                case BasicArmorItem basicArmorItem -> {
+                    return basicArmorItem.shadow1;
+                }
+                default -> {
+                }
             }
         }
         if (layer == 4) {
-            if (item instanceof BasicItem){
-                return ((BasicItem) item).shadow2;
-            }
-            if (item instanceof BasicSwordItem){
-                return -1;
-            }
-            if (item instanceof BasicPickaxeItem){
-                return -1;
-            }
-            if (item instanceof BasicAxeItem){
-                return -1;
-            }
-            if (item instanceof BasicShovelItem){
-                return -1;
-            }
-            if (item instanceof BasicHoeItem){
-                return -1;
-            }
-            if (item instanceof BasicPaxelItem){
-                return -1;
-            }
-            if (item instanceof BasicArmorItem){
-                return ((BasicArmorItem) item).shadow2;
+            switch (item) {
+                case BasicItem basicItem -> {
+                    return basicItem.shadow2;
+                }
+                case BasicSwordItem basicSwordItem -> {
+                    return -1;
+                }
+                case BasicPickaxeItem basicPickaxeItem -> {
+                    return -1;
+                }
+                case BasicAxeItem basicAxeItem -> {
+                    return -1;
+                }
+                case BasicShovelItem basicShovelItem -> {
+                    return -1;
+                }
+                case BasicHoeItem basicHoeItem -> {
+                    return -1;
+                }
+                case BasicPaxelItem basicPaxelItem -> {
+                    return -1;
+                }
+                case BasicArmorItem basicArmorItem -> {
+                    return basicArmorItem.shadow2;
+                }
+                default -> {
+                }
             }
         }
 

@@ -25,12 +25,12 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
-import com.ridanisaurus.emendatusenigmatica.loader.EEVirtualPackHandler;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -44,13 +44,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class RecipesGen extends RecipeProvider {
 
 	private final EmendatusDataRegistry registry;
 
-	public RecipesGen(DataGenerator gen, EmendatusDataRegistry registry) {
-		super(gen); //FIXME: Requires PackOutput
+	public RecipesGen(@NotNull DataGenerator gen, EmendatusDataRegistry registry, CompletableFuture<HolderLookup.Provider> providers) {
+		super(gen.getPackOutput(), providers);
 		this.registry = registry;
 	}
 
@@ -69,9 +70,9 @@ public class RecipesGen extends RecipeProvider {
 
 		for(MaterialModel material : registry.getMaterials()) {
 			List<String> processedType = material.getProcessedTypes();
-			if(material.isModded()) {
-				if(processedType.contains("ingot")) {
-					if(processedType.contains("storage_block")) {
+			if (material.isModded()) {
+				if (processedType.contains("ingot")) {
+					if (processedType.contains("storage_block")) {
 						// Ingot from Block
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.ingotMap.get(material.getId()).get(), 9)
 								.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
@@ -90,7 +91,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_ingot/" + material.getId()));
 
 						// Waxed
-						if(material.getProperties().hasOxidization()) {
+						if (material.getProperties().hasOxidization()) {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.get(material.getId()).get())
 									.requires(EERegistrar.storageBlockItemMap.get(material.getId()).get())
 									.requires(Items.HONEYCOMB)
@@ -121,7 +122,7 @@ public class RecipesGen extends RecipeProvider {
 						}
 					}
 
-					if(processedType.contains("nugget")) {
+					if (processedType.contains("nugget")) {
 						// Ingot from Nugget
 						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.ingotMap.get(material.getId()).get())
 								.define('#', EETags.MATERIAL_NUGGET.apply(material.getId()))
@@ -140,7 +141,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "nugget/from_ingot/" + material.getId()));
 					}
 
-					if(processedType.contains("dust")) {
+					if (processedType.contains("dust")) {
 						// Ingot from Dust
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(material.getId())),
 										RecipeCategory.MISC,
@@ -155,7 +156,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + material.getId()));
 					}
 
-					if(processedType.contains("plate")) {
+					if (processedType.contains("plate")) {
 						// Plate from Ingot
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(material.getId()).get(), 1)
 								.requires(EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -165,7 +166,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_ingot/" + material.getId()));
 					}
 
-					if(processedType.contains("gear")) {
+					if (processedType.contains("gear")) {
 						// Gear from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(material.getId()).get())
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -178,7 +179,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_ingot/" + material.getId()));
 					}
 
-					if(processedType.contains("rod")) {
+					if (processedType.contains("rod")) {
 						// Rod from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(material.getId()).get(), 2)
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -359,9 +360,9 @@ public class RecipesGen extends RecipeProvider {
 				}
 
 				// Gem recipes
-				if(processedType.contains("gem")) {
-					if(processedType.contains("storage_block")) {
-						if(material.getProperties().getBlockRecipeType() == 4) {
+				if (processedType.contains("gem")) {
+					if (processedType.contains("storage_block")) {
+						if (material.getProperties().getBlockRecipeType() == 4) {
 							// Block from Gem x4
 							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material.getId()).get())
 									.define('#', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -379,7 +380,7 @@ public class RecipesGen extends RecipeProvider {
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_block/" + material.getId()));
 						}
 
-						if(material.getProperties().getBlockRecipeType() == 9) {
+						if (material.getProperties().getBlockRecipeType() == 9) {
 							// Block from Gem x9
 							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material.getId()).get())
 									.define('#', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -601,7 +602,7 @@ public class RecipesGen extends RecipeProvider {
 						}
 					}
 
-					if(processedType.contains("raw")) {
+					if (processedType.contains("raw")) {
 						// Raw Block from Raw Material
 						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rawBlockItemMap.get(material.getId()).get())
 								.define('#', EETags.MATERIAL_RAW.apply(material.getId()))
@@ -675,8 +676,8 @@ public class RecipesGen extends RecipeProvider {
 				}
 
 				// Vanilla Compat
-				if(material.isVanilla()) {
-					if(material.getProperties().getMaterialType().equals("gem")) {
+				if (material.isVanilla()) {
+					if (material.getProperties().getMaterialType().equals("gem")) {
 						Map<String, Item> vanillaGems = new HashMap<>();
 						switch (material.getId()) {
 							case "coal" -> vanillaGems.put(material.getId(), Items.COAL);
@@ -887,7 +888,7 @@ public class RecipesGen extends RecipeProvider {
 						}
 					}
 
-					if(material.getProperties().getMaterialType().equals("metal")) {
+					if (material.getProperties().getMaterialType().equals("metal")) {
 						Map<String, Item> vanillaMetals = new HashMap<>();
 
 						switch (material.getId()) {

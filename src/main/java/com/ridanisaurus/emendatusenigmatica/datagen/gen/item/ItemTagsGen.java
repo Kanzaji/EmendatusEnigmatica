@@ -35,6 +35,8 @@ import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -262,7 +264,7 @@ public class ItemTagsGen extends EETagProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Emendatus Enigmatica Item Tags";
 	}
 }

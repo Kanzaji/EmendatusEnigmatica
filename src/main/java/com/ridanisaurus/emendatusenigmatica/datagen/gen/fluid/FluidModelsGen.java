@@ -32,6 +32,7 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -60,7 +61,7 @@ public class FluidModelsGen extends EEBlockModelProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Emendatus Enigmatica Fluid Models";
 	}
 }

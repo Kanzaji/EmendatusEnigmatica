@@ -106,7 +106,7 @@ public class BlockHarvestLevelTagsGen extends EETagProvider {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "Emendatus Enigmatica Block Harvest Level Tags";
     }
 }

@@ -29,6 +29,7 @@ import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.data.DataGenerator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -56,7 +57,7 @@ public class FluidTagsGen extends EETagProvider {
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Emendatus Enigmatica Fluid Tags";
 	}
 }

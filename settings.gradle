@@ -51,7 +51,7 @@ def addons = [
 ]
 
 for (String name : addons) {
-    def fullName = ":ee_" + name.toLowerCase(Locale.ROOT) + "_addon";
+    def fullName = ":ee_" + name.toLowerCase(Locale.ROOT) + "_addon"
     include(fullName)
     def pr = project(fullName)
     pr.setName(name + " Addon")

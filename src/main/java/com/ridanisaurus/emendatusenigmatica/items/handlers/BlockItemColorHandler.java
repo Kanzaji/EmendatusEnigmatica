@@ -5,10 +5,11 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockItemColorHandler implements ItemColor {
     @Override
-    public int getColor(ItemStack stack, int layer) {
+    public int getColor(@NotNull ItemStack stack, int layer) {
         if (layer == 0) {
             if (stack.getItem() instanceof BlockItem) {
                 BlockItem item = (BlockItem) stack.getItem();

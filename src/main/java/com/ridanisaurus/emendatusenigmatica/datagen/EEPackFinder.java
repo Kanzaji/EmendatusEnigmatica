@@ -59,13 +59,13 @@ public class EEPackFinder implements RepositorySource {
 			pack.location(),
 			new Pack.ResourcesSupplier() {
 				@Override
-				public PackResources openPrimary(@NotNull PackLocationInfo location) {
+				public @NotNull PackResources openPrimary(@NotNull PackLocationInfo location) {
 					if (location.id().equals(pack.location().id())) return pack;
 					return null;
 				}
 
 				@Override
-				public PackResources openFull(@NotNull PackLocationInfo location, Pack.@NotNull Metadata metadata) {
+				public @NotNull PackResources openFull(@NotNull PackLocationInfo location, Pack.@NotNull Metadata metadata) {
 					if (location.id().equals(pack.location().id())) return pack;
 					return null;
 				}

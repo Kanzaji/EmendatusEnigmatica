@@ -24,18 +24,22 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader;
 
+import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.api.AnnotationUtil;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.api.IEmendatusPlugin;
 import com.ridanisaurus.emendatusenigmatica.api.annotation.EmendatusPluginReference;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
+import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.registries.VanillaRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class EELoader {
     public static final Logger LOADER_LOGGER = LogManager.getLogger(EELoader.class);
@@ -83,7 +87,9 @@ public class EELoader {
     }
 
     public void datagen(DataGenerator dataGenerator) {
-        this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.registerDynamicDataGen(dataGenerator, this.dataRegistry));
+        this.plugins.forEach(iEmendatusPlugin ->
+            iEmendatusPlugin.registerDynamicDataGen(dataGenerator, this.dataRegistry, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()))
+        );
     }
 
     public void finish() {

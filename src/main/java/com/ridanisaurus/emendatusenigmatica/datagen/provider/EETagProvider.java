@@ -51,8 +51,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class EETagProvider implements DataProvider {
-	private static final Logger logger = LoggerFactory.getLogger("EE Tag Provider");
+public abstract class EETagProvider implements DataProvider {
 	protected final DataGenerator generator;
 
 	public EETagProvider(DataGenerator gen) {
@@ -75,12 +74,8 @@ public class EETagProvider implements DataProvider {
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
-	protected void buildTags(Consumer<IFinishedGenericJSON> consumer) {
-		// It's called generic for a reason!
-	}
+	protected abstract void buildTags(Consumer<IFinishedGenericJSON> consumer);
 
 	@Override
-	public String getName() {
-		return null;
-	}
+	public abstract @NotNull String getName();
 }

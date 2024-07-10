@@ -63,6 +63,8 @@ public class BlockLootGen extends BlockLootSubProvider {
 				this.dropWithSilkTouch(EERegistrar.largeBudBlockMap.get(material));
 				// Cluster
 				this.dropCluster(EERegistrar.clusterBlockMap.get(material), EERegistrar.clusterShardMap.get(material), 2.0f, 4.0f);
+				// Budding
+				this.add(EERegistrar.buddingBlockMap.get(material), noDrop());
 			}
 
 			// Raw Storage Blocks

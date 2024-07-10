@@ -60,7 +60,7 @@ public class BlockLootGen extends BlockLootSubProvider {
 				// Medium Bud
 				this.dropWithSilkTouch(EERegistrar.mediumBudBlockMap.get(material));
 				// Large Bud
-				this.dropWithSilkTouch(EERegistrar.mediumBudBlockMap.get(material));
+				this.dropWithSilkTouch(EERegistrar.largeBudBlockMap.get(material));
 				// Cluster
 				this.dropCluster(EERegistrar.clusterBlockMap.get(material), EERegistrar.clusterShardMap.get(material), 2.0f, 4.0f);
 			}
@@ -80,9 +80,9 @@ public class BlockLootGen extends BlockLootSubProvider {
 				if (!oreDrop.getDrop().isBlank()) {
 					dropItem = oreDrop.getDefaultItemDropAsItem().asItem();
 				} else if (material.getProperties().getMaterialType().equals("metal") && processedType.contains("raw")) {
-					dropItem = EERegistrar.rawMap.get(material.getId()).get();
+					dropItem = EERegistrar.rawMap.get(material);
 				} else if (processedType.contains("gem")) {
-					dropItem = EERegistrar.gemMap.get(material.getId()).get();
+					dropItem = EERegistrar.gemMap.get(material);
 				} else {
 					// Validation shouldn't ever let this happen.
 					throw new IllegalStateException("There is no ore drop, raw nor gem specified for the ore drop!");

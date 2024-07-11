@@ -31,27 +31,43 @@ import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class TagBuilder {
 
-	private final List<String> tags = Lists.newArrayList();
+	private final List<String> tags = new ArrayList<>();
 
 	public TagBuilder() {}
+
+	public TagBuilder(String tag) {
+		this.tags.add(tag);
+	}
+
+	public TagBuilder(Collection<String> tags) {
+		this.tags.addAll(tags);
+	}
 
 	public TagBuilder tag(String tag) {
 		this.tags.add(tag);
 		return this;
 	}
 
-	public TagBuilder tags(List<String> tags) {
+	public TagBuilder tags(Collection<String> tags) {
 		this.tags.addAll(tags);
 		return this;
 	}
 
 	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, ResourceLocation jsonResourceLocation) {
 		consumer.accept(new Result(jsonResourceLocation, this.tags));
+	}
+
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, String resourceLocation) {
+		this.save(consumer, ResourceLocation.parse(resourceLocation));
+	}
+
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, String namespace, String path) {
+		this.save(consumer, ResourceLocation.fromNamespaceAndPath(namespace, path));
 	}
 
 	public static class Result implements IFinishedGenericJSON {

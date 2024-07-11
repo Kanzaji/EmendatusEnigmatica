@@ -16,11 +16,9 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.*;
-import net.minecraft.data.registries.VanillaRegistries;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -148,14 +146,14 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
     public void registerDynamicDataGen(DataGenerator generator, EmendatusDataRegistry registry, CompletableFuture<HolderLookup.Provider> providers) {
         generator.addProvider(true, new BlockStatesGen(generator, registry));
         generator.addProvider(true, new BlockModelsGen(generator, registry));
-        generator.addProvider(true, new ItemModelsGen(generator, registry));
-        generator.addProvider(true, new FluidModelsGen(generator, registry));
-        generator.addProvider(true, new LangGen(generator, registry));
         generator.addProvider(true, new BlockTagsGen(generator, registry));
-        generator.addProvider(true, new ItemTagsGen(generator, registry));
-        generator.addProvider(true, new FluidTagsGen(generator, registry));
         generator.addProvider(true, new BlockHarvestLevelTagsGen(generator, registry));
         generator.addProvider(true, new BlockHarvestToolTagsGen(generator, registry));
+        generator.addProvider(true, new ItemModelsGen(generator, registry));
+        generator.addProvider(true, new ItemTagsGen(generator, registry));
+        generator.addProvider(true, new FluidModelsGen(generator, registry));
+        generator.addProvider(true, new FluidTagsGen(generator, registry));
+        generator.addProvider(true, new LangGen(generator, registry));
         generator.addProvider(true, new RecipesGen(generator, registry, providers));
         generator.addProvider(true, new EELootProvider(generator, registry, providers));
 //        generator.addProvider(true, new OreFeatureDataGen(generator, registry));

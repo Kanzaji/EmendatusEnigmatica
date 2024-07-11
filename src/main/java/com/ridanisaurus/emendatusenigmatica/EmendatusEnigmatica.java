@@ -18,6 +18,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.loading.progress.StartupNotificationManager;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -101,6 +102,7 @@ public class EmendatusEnigmatica {
 
     private void hasGenerated(FMLLoadCompleteEvent event) {
         if (this.generator.hasExecuted()) return;
-        throw new IllegalStateException("Mod loading finished, but EE Data Generation wasn't executed! Something is terribly not right.");
+        StartupNotificationManager.addModMessage("Emendatus Enigmatica - Missing Data Generation!");
+        throw new IllegalStateException("Mod loading finished, but Data Generation wasn't executed!");
     }
 }

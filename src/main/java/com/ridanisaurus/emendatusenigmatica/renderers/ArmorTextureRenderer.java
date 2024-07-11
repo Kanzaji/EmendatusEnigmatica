@@ -22,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.NotNull;
 
-// Credit: PNC:R
 public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidModel<E>> extends RenderLayer<E, M> {
 
     private final HumanoidModel<E> body;
@@ -41,9 +40,8 @@ public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidMode
             renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.CHEST, packedLightIn, body, renderType, i);
             renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.FEET, packedLightIn, body, renderType, i);
             renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.HEAD, packedLightIn, body, renderType, i);
-
-            renderType = RenderType.armorCutoutNoCull(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0" + i + ".png"));
-            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs, renderType, i);
+            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs,
+                RenderType.armorCutoutNoCull(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0" + i + ".png")), i);
         }
     }
 
@@ -52,18 +50,10 @@ public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidMode
         if (stack.getItem() instanceof BasicArmorItem armorItem && armorItem.getEquipmentSlot() == slot && armorItem.getMaterialModel().getColors().getMaterialColor() != -1) {
             this.getParentModel().copyPropertiesTo(p_model);
             this.setModelSlotVisible(p_model, slot);
-            // Both of those work?
             Model model = ClientHooks.getArmorModel(entity, stack, slot, p_model);
-//            Model model = IClientItemExtensions.of(stack).getGenericArmorModel(entity, stack, slot, p_model);
             boolean glint = EEConfig.client.oldSchoolGlint.get() && stack.hasFoil();
 
             this.doRender(matrixStack, buffer, light, glint, model, armorItem.getColorForIndex(colorIndex), renderType);
-
-            //TODO: Add proper Trim Support
-//            ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);
-//            if (armortrim != null) {
-//                this.renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
-//            }
         }
     }
 

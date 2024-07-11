@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.blocks;
 
+import com.ridanisaurus.emendatusenigmatica.blocks.handlers.IColorable;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class SampleOreBlockWithParticles extends Block implements IColorable{
+public class SampleOreBlockWithParticles extends Block implements IColorable {
 	private final String localisedName;
 	private final int particleColor;
 	public final int highlight2;

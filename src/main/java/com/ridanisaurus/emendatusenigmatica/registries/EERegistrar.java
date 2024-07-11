@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Table;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.blocks.*;
+import com.ridanisaurus.emendatusenigmatica.blocks.templates.*;
 import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
 import com.ridanisaurus.emendatusenigmatica.items.templates.*;

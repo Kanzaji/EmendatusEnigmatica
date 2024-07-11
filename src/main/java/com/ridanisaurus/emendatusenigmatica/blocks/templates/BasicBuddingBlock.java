@@ -22,8 +22,9 @@
  *  SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.blocks;
+package com.ridanisaurus.emendatusenigmatica.blocks.templates;
 
+import com.ridanisaurus.emendatusenigmatica.blocks.handlers.IColorable;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

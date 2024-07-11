@@ -24,7 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.events;
 
-import com.ridanisaurus.emendatusenigmatica.blocks.BasicStorageBlockItem;
+import com.ridanisaurus.emendatusenigmatica.blocks.templates.BasicStorageBlockItem;
 import com.ridanisaurus.emendatusenigmatica.items.templates.*;
 import com.ridanisaurus.emendatusenigmatica.items.handlers.BlockItemColorHandler;
 import com.ridanisaurus.emendatusenigmatica.items.handlers.ItemColorHandler;

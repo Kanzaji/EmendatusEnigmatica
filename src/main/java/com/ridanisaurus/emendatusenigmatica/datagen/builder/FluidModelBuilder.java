@@ -31,6 +31,8 @@ import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,28 +41,30 @@ import java.util.function.Consumer;
 
 public class FluidModelBuilder {
 
-	private final Map<String, objectBuilder> textures = Maps.newLinkedHashMap();
+	private final Map<String, ObjectBuilder> textures = Maps.newLinkedHashMap();
 
 	public FluidModelBuilder() {}
 
-	public FluidModelBuilder textures(objectBuilder builder) {
+	public FluidModelBuilder textures(ObjectBuilder builder) {
 		this.textures.put("textures", builder);
 		return this;
 	}
 
-	public void save(Consumer<IFinishedGenericJSON> consumer, ResourceLocation resourceLocation) {
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, ResourceLocation resourceLocation) {
 		consumer.accept(new Result(resourceLocation, this.textures));
 	}
 
-	public static class objectBuilder {
+	public static class ObjectBuilder {
 		private final List<JsonObject> jsonObject = new ArrayList<>();
 		private final boolean forceArray;
 
-		public objectBuilder(boolean forceArray) {
+		public ObjectBuilder(boolean forceArray) {
 			this.forceArray = forceArray;
 		}
 
-		public objectBuilder addObject(Pair<String, Object>... elements) {
+		@Contract("_ -> this")
+		@SafeVarargs
+        public final ObjectBuilder addObject(Pair<String, Object> @NotNull ... elements) {
 			JsonObject object = new JsonObject();
 
 			for (Pair<String, Object> element : elements) {
@@ -72,7 +76,7 @@ public class FluidModelBuilder {
 			return this;
 		}
 
-		public objectBuilder particle(String pairValue) {
+		public ObjectBuilder particle(String pairValue) {
 			return addObject(Pair.of("particle", pairValue));
 		}
 
@@ -82,15 +86,15 @@ public class FluidModelBuilder {
 				jsonObject.forEach(array::add);
 				return array;
 			}
-			return jsonObject.get(0);
+			return jsonObject.getFirst();
 		}
 	}
 
 	public static class Result implements IFinishedGenericJSON {
 		private final ResourceLocation id;
-		private final Map<String, objectBuilder> fieldValueJson;
+		private final Map<String, ObjectBuilder> fieldValueJson;
 
-		public Result(ResourceLocation id, Map<String, objectBuilder> fieldValueJson) {
+		public Result(ResourceLocation id, Map<String, ObjectBuilder> fieldValueJson) {
 			this.id = id;
 			this.fieldValueJson = fieldValueJson;
 		}
@@ -98,7 +102,7 @@ public class FluidModelBuilder {
 		@Override
 		public void serializeJSONData(JsonObject json) {
 			if (!this.fieldValueJson.isEmpty()) {
-				for (Map.Entry<String, objectBuilder> entry : this.fieldValueJson.entrySet()) {
+				for (Map.Entry<String, ObjectBuilder> entry : this.fieldValueJson.entrySet()) {
 					json.add(entry.getKey(), entry.getValue().getOutput());
 				}
 			}

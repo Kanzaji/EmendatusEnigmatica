@@ -52,8 +52,7 @@ public class FluidModelsGen extends EEBlockModelProvider {
 			// Fluids
 			if (processedType.contains("fluid")) {
 				new FluidModelBuilder()
-                    .textures(new FluidModelBuilder
-                        .objectBuilder(false)
+                    .textures(new FluidModelBuilder.ObjectBuilder(false)
                         .particle(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_still").toString())
                     ).save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId()));
 			}

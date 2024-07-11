@@ -1,4 +1,4 @@
-package com.ridanisaurus.emendatusenigmatica.blocks;
+package com.ridanisaurus.emendatusenigmatica.blocks.handlers;
 
 public interface IColorable
 {

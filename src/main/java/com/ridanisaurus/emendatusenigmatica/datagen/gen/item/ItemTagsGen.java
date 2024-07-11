@@ -110,20 +110,20 @@ public class ItemTagsGen extends EETagProvider {
         if (types.contains("sword")) {
             String id = EERegistrar.swordMap.getIdAsString(material);
             addTag(MINECRAFT, "swords", id);
-            addTag(COMMON, "melee_weapon", id);
+            addTag(COMMON, "tools/melee_weapon", id);
         }
 
         if (types.contains("axe")) {
             String id = EERegistrar.axeMap.getIdAsString(material);
             addTag(MINECRAFT, "axes", id);
-            addTag(COMMON, "melee_weapon", id);
+            addTag(COMMON, "tools/melee_weapon", id);
         }
 
         if (types.contains("pickaxe")) {
             String id = EERegistrar.pickaxeMap.getIdAsString(material);
             addTag(MINECRAFT, "pickaxes", id);
             addTag(MINECRAFT, "cluster_max_harvestables", id);
-            addTag(COMMON, "mining_tool", id);
+            addTag(COMMON, "tools/mining_tool", id);
         }
 
         if (types.contains("paxel")) {
@@ -131,8 +131,8 @@ public class ItemTagsGen extends EETagProvider {
             addTag(MINECRAFT, "axes", id);
             addTag(MINECRAFT, "pickaxes", id);
             addTag(MINECRAFT, "cluster_max_harvestables", id);
-            addTag(COMMON, "melee_weapon", id);
-            addTag(COMMON, "mining_tool", id);
+            addTag(COMMON, "tools/melee_weapon", id);
+            addTag(COMMON, "tools/mining_tool", id);
         }
 
         if (types.contains("shield")) {

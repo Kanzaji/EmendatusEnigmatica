@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.NotNull;
@@ -38,37 +37,33 @@ public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidMode
     @Override
     public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull E entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         for (int i = 0; i < 5; i++) {
-            var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_1/0" + i + ".png");
-            var renderType = RenderType.armorCutoutNoCull(rl);
-            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.CHEST, packedLightIn, body,
-                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
-            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.FEET, packedLightIn, body,
-                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
-            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.HEAD, packedLightIn, body,
-                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+            var renderType = RenderType.armorCutoutNoCull(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_1/0" + i + ".png"));
+            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.CHEST, packedLightIn, body, renderType, i);
+            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.FEET, packedLightIn, body, renderType, i);
+            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.HEAD, packedLightIn, body, renderType, i);
 
-            rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0" + i + ".png");
-            renderType = RenderType.armorCutoutNoCull(rl);
-            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs,
-                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+            renderType = RenderType.armorCutoutNoCull(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0" + i + ".png"));
+            renderArmorPiece(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs, renderType, i);
         }
     }
 
-    private void renderSlot(PoseStack matrixStack, MultiBufferSource buffer, @NotNull E entity, EquipmentSlot slot, int light, HumanoidModel<E> model, float partialTicks, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, RenderType renderType, int colorIndex) {
+    private void renderArmorPiece(PoseStack matrixStack, MultiBufferSource buffer, @NotNull E entity, EquipmentSlot slot, int light, HumanoidModel<E> p_model, RenderType renderType, int colorIndex) {
         ItemStack stack = entity.getItemBySlot(slot);
-        if (stack.getItem() instanceof BasicArmorItem armor && armor.getEquipmentSlot() == slot && armor.getMaterialModel().getColors().getMaterialColor() != -1) {
-            //TODO: Find permanent solution, asked on NeoForge server, but I have no idea how long any response will take (if any)
-            if (entity instanceof ArmorStand) netHeadYaw = 0;
-            this.getParentModel().copyPropertiesTo(model);
-            model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-            model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-            this.setModelSlotVisible(model, slot);
-            Model model1 = ClientHooks.getArmorModel(entity, stack, slot, model);
+        if (stack.getItem() instanceof BasicArmorItem armorItem && armorItem.getEquipmentSlot() == slot && armorItem.getMaterialModel().getColors().getMaterialColor() != -1) {
+            this.getParentModel().copyPropertiesTo(p_model);
+            this.setModelSlotVisible(p_model, slot);
+            // Both of those work?
+            Model model = ClientHooks.getArmorModel(entity, stack, slot, p_model);
+//            Model model = IClientItemExtensions.of(stack).getGenericArmorModel(entity, stack, slot, p_model);
             boolean glint = EEConfig.client.oldSchoolGlint.get() && stack.hasFoil();
 
-            // secondary texture layer in all slots
-//            float[] secondary = decomposeColorF(armor.getColorForIndex(colorIndex));
-            this.doRender(matrixStack, buffer, light, glint, model1, armor.getColorForIndex(colorIndex), renderType);
+            this.doRender(matrixStack, buffer, light, glint, model, armorItem.getColorForIndex(colorIndex), renderType);
+
+            //TODO: Add proper Trim Support
+//            ArmorTrim armortrim = itemstack.get(DataComponents.TRIM);
+//            if (armortrim != null) {
+//                this.renderTrim(armoritem.getMaterial(), poseStack, bufferSource, packedLight, armortrim, model, flag);
+//            }
         }
     }
 

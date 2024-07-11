@@ -39,6 +39,7 @@ public class ItemTagsGen extends EETagProvider {
         });
 
         tags.forEach((tag, values) -> new TagBuilder(values).save(consumer, tag));
+        tags.clear();
     }
 
     private void resourceTags(@NotNull MaterialModel material, @NotNull List<String> types) {
@@ -103,15 +104,26 @@ public class ItemTagsGen extends EETagProvider {
     }
 
     private void toolTags(@NotNull MaterialModel material, @NotNull List<String> types) {
-        if (types.contains("sword"))    addTag(MINECRAFT, "swords", EERegistrar.swordMap.getIdAsString(material));
-        if (types.contains("axe"))      addTag(MINECRAFT, "axes", EERegistrar.axeMap.getIdAsString(material));
-        if (types.contains("shovel"))   addTag(MINECRAFT, "shovels", EERegistrar.shovelMap.getIdAsString(material));
-        if (types.contains("hoe"))      addTag(MINECRAFT, "hoes", EERegistrar.hoeMap.getIdAsString(material));
+        if (types.contains("shovel")) addTag(MINECRAFT, "shovels", EERegistrar.shovelMap.getIdAsString(material));
+        if (types.contains("hoe")) addTag(MINECRAFT, "hoes", EERegistrar.hoeMap.getIdAsString(material));
+
+        if (types.contains("sword")) {
+            String id = EERegistrar.swordMap.getIdAsString(material);
+            addTag(MINECRAFT, "swords", id);
+            addTag(COMMON, "melee_weapon", id);
+        }
+
+        if (types.contains("axe")) {
+            String id = EERegistrar.axeMap.getIdAsString(material);
+            addTag(MINECRAFT, "axes", id);
+            addTag(COMMON, "melee_weapon", id);
+        }
 
         if (types.contains("pickaxe")) {
             String id = EERegistrar.pickaxeMap.getIdAsString(material);
             addTag(MINECRAFT, "pickaxes", id);
             addTag(MINECRAFT, "cluster_max_harvestables", id);
+            addTag(COMMON, "mining_tool", id);
         }
 
         if (types.contains("paxel")) {
@@ -119,6 +131,8 @@ public class ItemTagsGen extends EETagProvider {
             addTag(MINECRAFT, "axes", id);
             addTag(MINECRAFT, "pickaxes", id);
             addTag(MINECRAFT, "cluster_max_harvestables", id);
+            addTag(COMMON, "melee_weapon", id);
+            addTag(COMMON, "mining_tool", id);
         }
 
         if (types.contains("shield")) {

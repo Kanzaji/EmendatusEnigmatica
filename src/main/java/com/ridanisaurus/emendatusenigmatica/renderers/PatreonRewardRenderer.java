@@ -66,10 +66,9 @@ public class PatreonRewardRenderer extends RenderLayer<AbstractClientPlayer, Pla
 
 	@Override
 	public void render(@NotNull PoseStack matrixStack, @NotNull MultiBufferSource buffer, int packedLight, @NotNull AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		String name = player.getGameProfile().getName();
-		Level world = player.getCommandSenderWorld();
-
 		if (EEConfig.client.showPatreonReward.get()) {
+			String name = player.getGameProfile().getName();
+			Level world = player.getCommandSenderWorld();
 			matrixStack.pushPose();
 			getParentModel().head.translateAndRotate(matrixStack);
 			matrixStack.translate(0, -1, 0);

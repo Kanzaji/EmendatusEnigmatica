@@ -7,12 +7,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
 public class BlockColorHandler implements BlockColor {
     @Override
-    public int getColor(BlockState state, @Nullable BlockAndTintGetter reader, @Nullable BlockPos pos, int layer) {
+    public int getColor(@NotNull BlockState state, @Nullable BlockAndTintGetter reader, @Nullable BlockPos pos, int layer) {
         Block block = state.getBlock();
         if (block instanceof IColorable colorable) return switch (layer) {
             case 0 -> colorable.getHighlight2();

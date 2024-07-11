@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.events.ArmorTextureEvent;
 import com.ridanisaurus.emendatusenigmatica.items.templates.BasicArmorItem;
-import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
@@ -19,6 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.ClientHooks;
 import org.jetbrains.annotations.NotNull;
@@ -38,26 +38,27 @@ public class ArmorTextureRenderer<E extends LivingEntity, M extends HumanoidMode
     @Override
     public void render(@NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn, @NotNull E entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         for (int i = 0; i < 5; i++) {
-            var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0"+i+ ".png");
-            var renderType = RenderType.armorCutoutNoCull(rl);
-            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs,
-                    partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
-        }
-        for (int i = 0; i < 5; i++) {
-            var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_1/0"+i+ ".png");
+            var rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_1/0" + i + ".png");
             var renderType = RenderType.armorCutoutNoCull(rl);
             renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.CHEST, packedLightIn, body,
-                    partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
             renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.FEET, packedLightIn, body,
-                    partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
             renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.HEAD, packedLightIn, body,
-                    partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
+
+            rl = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/armor/layer_2/0" + i + ".png");
+            renderType = RenderType.armorCutoutNoCull(rl);
+            renderSlot(matrixStackIn, bufferIn, entity, EquipmentSlot.LEGS, packedLightIn, legs,
+                partialTicks, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, renderType, i);
         }
     }
 
     private void renderSlot(PoseStack matrixStack, MultiBufferSource buffer, @NotNull E entity, EquipmentSlot slot, int light, HumanoidModel<E> model, float partialTicks, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, RenderType renderType, int colorIndex) {
         ItemStack stack = entity.getItemBySlot(slot);
         if (stack.getItem() instanceof BasicArmorItem armor && armor.getEquipmentSlot() == slot && armor.getMaterialModel().getColors().getMaterialColor() != -1) {
+            //TODO: Find permanent solution, asked on NeoForge server, but I have no idea how long any response will take (if any)
+            if (entity instanceof ArmorStand) netHeadYaw = 0;
             this.getParentModel().copyPropertiesTo(model);
             model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
             model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

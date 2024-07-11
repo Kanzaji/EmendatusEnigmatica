@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.ridanisaurus.emendatusenigmatica.util.Reference.COMMON;
+import static com.ridanisaurus.emendatusenigmatica.util.Reference.MINECRAFT;
 
 public class BlockHarvestLevelTagsGen extends EETagProvider {
     private static final ResourceLocation STONE = ResourceLocation.parse("minecraft:stone");
@@ -81,16 +82,11 @@ public class BlockHarvestLevelTagsGen extends EETagProvider {
             }
         }
 
-        if (!woodTool.isEmpty())
-            new TagBuilder().tags(woodTool).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/needs_wood_tool"));
-        if (!stoneTool.isEmpty())
-            new TagBuilder().tags(stoneTool).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/needs_stone_tool"));
-        if (!ironTool.isEmpty())
-            new TagBuilder().tags(ironTool).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/needs_iron_tool"));
-        if (!diamondTool.isEmpty())
-            new TagBuilder().tags(diamondTool).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/needs_diamond_tool"));
-        if (!netheriteTool.isEmpty())
-            new TagBuilder().tags(netheriteTool).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/needs_netherite_tool"));
+        if (!woodTool.isEmpty())      new TagBuilder(woodTool)     .save(consumer, MINECRAFT, "/block/needs_wood_tool");
+        if (!stoneTool.isEmpty())     new TagBuilder(stoneTool)    .save(consumer, MINECRAFT, "/block/needs_stone_tool");
+        if (!ironTool.isEmpty())      new TagBuilder(ironTool)     .save(consumer, MINECRAFT, "/block/needs_iron_tool");
+        if (!diamondTool.isEmpty())   new TagBuilder(diamondTool)  .save(consumer, MINECRAFT, "/block/needs_diamond_tool");
+        if (!netheriteTool.isEmpty()) new TagBuilder(netheriteTool).save(consumer, MINECRAFT, "/block/needs_netherite_tool");
     }
 
     private void harvestLevelSwitch(@NotNull MaterialModel material, ResourceLocation loc) {

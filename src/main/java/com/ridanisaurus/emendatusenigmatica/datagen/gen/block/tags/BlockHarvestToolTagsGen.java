@@ -30,7 +30,6 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
     private final List<String> hoe = Lists.newArrayList();
     private final List<String> axe = Lists.newArrayList();
     private final List<String> pickaxe = Lists.newArrayList();
-    private final List<String> paxel = Lists.newArrayList();
 
     @Override
     protected void buildTags(Consumer<IFinishedGenericJSON> consumer) {
@@ -96,22 +95,13 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
             }
         }
 
-        if (!shovel.isEmpty())
-            new TagBuilder().tags(shovel).save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/shovel"));
-        if (!hoe.isEmpty())
-            new TagBuilder().tags(hoe).save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/hoe"));
-        if (!axe.isEmpty())
-            new TagBuilder().tags(axe).save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/axe"));
-        if (!pickaxe.isEmpty())
-            new TagBuilder().tags(pickaxe).save(consumer, ResourceLocation.fromNamespaceAndPath(MINECRAFT, "/block/mineable/pickaxe"));
+        if (!shovel.isEmpty())  new TagBuilder(shovel)  .save(consumer, MINECRAFT, "/block/mineable/shovel");
+        if (!hoe.isEmpty())     new TagBuilder(hoe)     .save(consumer, MINECRAFT, "/block/mineable/hoe");
+        if (!axe.isEmpty())     new TagBuilder(axe)     .save(consumer, MINECRAFT, "/block/mineable/axe");
+        if (!pickaxe.isEmpty()) new TagBuilder(pickaxe) .save(consumer, MINECRAFT, "/block/mineable/pickaxe");
 
         // Paxel is axe / pickaxe / shovel at once, so it's pretty much just three different tags.
-        paxel.addAll(List.of(
-            "#minecraft:mineable/axe",
-            "#minecraft:mineable/pickaxe",
-            "#minecraft:mineable/shovel"
-        ));
-        new TagBuilder().tags(paxel).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/mineable/paxel"));
+        new TagBuilder(List.of("#minecraft:mineable/axe", "#minecraft:mineable/pickaxe", "#minecraft:mineable/shovel")).save(consumer, COMMON, "/block/mineable/paxel");
     }
 
     @Override

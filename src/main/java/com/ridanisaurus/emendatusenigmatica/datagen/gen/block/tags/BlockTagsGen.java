@@ -24,14 +24,14 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen.gen.block.tags;
 
-import com.google.common.collect.Lists;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
+import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import com.ridanisaurus.emendatusenigmatica.datagen.builder.TagBuilder;
 import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
-import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
+import com.ridanisaurus.emendatusenigmatica.registries.data.EEBlockMap;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -42,15 +42,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.ridanisaurus.emendatusenigmatica.util.Reference.COMMON;
-import static com.ridanisaurus.emendatusenigmatica.util.Reference.C_TAG;
+import static com.ridanisaurus.emendatusenigmatica.util.Reference.*;
 
 public class BlockTagsGen extends EETagProvider {
 	private final EmendatusDataRegistry registry;
-	private final List<String> forgeBlocks = Lists.newArrayList();
-	private final List<String> forgeOres = Lists.newArrayList();
-	private final Map<String, List<String>> oresPerMaterial = new HashMap<>();
-	private final Map<String, List<String>> oresInGround = new HashMap<>();
+	private final Map<ResourceLocation, List<String>> tags = new HashMap<>();
 
 	public BlockTagsGen(DataGenerator gen, EmendatusDataRegistry registry) {
 		super(gen);
@@ -60,50 +56,65 @@ public class BlockTagsGen extends EETagProvider {
 	@Override
 	protected void buildTags(Consumer<IFinishedGenericJSON> consumer) {
 		for (MaterialModel material : registry.getMaterials()) {
-			List<String> processedType = material.getProcessedTypes();
-			// Storage Blocks
-			if (processedType.contains("storage_block")) {
-				ResourceLocation block = EERegistrar.storageBlockMap.getId(material);
-				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/" + material.getId());
-				new TagBuilder().tag(block.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/storage_blocks/" + material.getId()));
-			}
+			List<String> types = material.getProcessedTypes();
 
-			// Raw Materials
-			if (processedType.contains("raw")) {
-				ResourceLocation raw = EERegistrar.rawBlockMap.getId(material);
-				if (!forgeBlocks.contains(C_TAG + ":storage_blocks/raw_" + material.getId())) forgeBlocks.add(C_TAG + ":storage_blocks/raw_" + material.getId());
-				new TagBuilder().tag(raw.toString()).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/storage_blocks/raw_" + material.getId()));
+			if (types.contains("storage_block")) addMaterialSpecificTag(COMMON, "storage_blocks", EERegistrar.storageBlockMap, material);
+			if (types.contains("raw")) addMaterialSpecificTag(COMMON, "storage_blocks", EERegistrar.rawBlockMap.getIdAsString(material), "raw_" + material.getId());
+
+			// Buds
+			if (types.contains("cluster")) {
+				addTag(COMMON, "buds", EERegistrar.smallBudBlockMap.getIdAsString(material));
+				addTag(COMMON, "buds", EERegistrar.mediumBudBlockMap.getIdAsString(material));
+				addTag(COMMON, "buds", EERegistrar.largeBudBlockMap.getIdAsString(material));
+				addTag(COMMON, "clusters", EERegistrar.clusterBlockMap.getIdAsString(material));
+				addTag(COMMON, "budding_blocks", EERegistrar.buddingBlockMap.getIdAsString(material));
+				addMaterialSpecificTag(COMMON, "storage_blocks", EERegistrar.clusterShardBlockMap, material);
+
+				addTag(MINECRAFT, "inside_step_sound_blocks", EERegistrar.smallBudBlockMap.getIdAsString(material));
+				addTag(MINECRAFT, "crystal_sound_blocks", EERegistrar.buddingBlockMap.getIdAsString(material));
+				addTag(MINECRAFT, "crystal_sound_blocks", EERegistrar.clusterShardBlockMap.getIdAsString(material));
 			}
 
 			// Ores
+			if (!types.contains("ore")) continue;
+			List<String> strataList = material.getStrata();
 			for (StrataModel strata : registry.getStrata()) {
-				if (processedType.contains("ore")) {
-					if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-						ResourceLocation ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
-						if (!forgeOres.contains(C_TAG + ":ores/" + material.getId())) forgeOres.add(C_TAG + ":ores/" + material.getId());
-						oresPerMaterial.computeIfAbsent(material.getId(), s -> new ArrayList<>()).add(ore.toString());
-						oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(ore.toString());
-					}
+				if (!strataList.isEmpty() && !strataList.contains(strata.getId())) continue;
+				String id = EERegistrar.oreBlockItemTable.get(strata.getId(), material.getId()).getId().toString();
+				addMaterialSpecificTag(COMMON, "ores", id, material);
+				addTag(COMMON, "ores_in_ground/" + strata.getSuffix(), id);
 
-					//TODO: Rework Sample System
-//					if (processedType.contains("sample")) {
-//						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-//							ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
-//							if (!forgeOres.contains(C_TAG + ":ores/" + material.getId())) forgeOres.add(C_TAG + ":ores/" + material.getId());
-//							oresPerMaterial.computeIfAbsent(material.getId(), s -> new ArrayList<>()).add(sample.toString());
-//							oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(sample.toString());
-//						}
+				//TODO: Rework Sample System
+//				if (types.contains("sample")) {
+//					if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
+//						ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
+//						if (!forgeOres.contains(C_TAG + ":ores/" + material.getId())) forgeOres.add(C_TAG + ":ores/" + material.getId());
+//						oresPerMaterial.computeIfAbsent(material.getId(), s -> new ArrayList<>()).add(sample.toString());
+//						oresInGround.computeIfAbsent(strata.getSuffix(), s -> new ArrayList<>()).add(sample.toString());
 //					}
-				}
+//				}
 			}
-
 		}
-		
-		if (!oresPerMaterial.isEmpty()) oresPerMaterial.forEach((material, oreList) -> new TagBuilder().tags(oreList).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/ores/" + material)));
-		if (!oresInGround.isEmpty()) oresInGround.forEach((strataPrefix, oreType) -> new TagBuilder().tags(oreType).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/ores_in_ground/" + strataPrefix)));
 
-		if (!forgeBlocks.isEmpty()) new TagBuilder().tags(forgeBlocks).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/storage_blocks"));
-		if (!forgeOres.isEmpty()) new TagBuilder().tags(forgeOres).save(consumer, ResourceLocation.fromNamespaceAndPath(COMMON, "/block/ores"));
+		tags.forEach((tag, values) -> new TagBuilder(values).save(consumer, tag));
+		tags.clear();
+	}
+
+	private void addMaterialSpecificTag(@NotNull String namespace, @NotNull String tag, @NotNull String blockId, @NotNull MaterialModel material) {
+		addMaterialSpecificTag(namespace, tag, blockId, material.getId());
+	}
+
+	private void addMaterialSpecificTag(@NotNull String namespace, @NotNull String tag, @NotNull EEBlockMap<?> registry, @NotNull MaterialModel material) {
+		addMaterialSpecificTag(namespace, tag, registry.getIdAsString(material), material.getId());
+	}
+
+	private void addMaterialSpecificTag(@NotNull String namespace, @NotNull String tag, @NotNull String blockId, @NotNull String material) {
+		addTag(namespace, tag, blockId);
+		addTag(namespace, tag + "/" + material, blockId);
+	}
+
+	private void addTag(@NotNull String namespace, @NotNull String tag, @NotNull String blockId) {
+		tags.computeIfAbsent(ResourceLocation.fromNamespaceAndPath(namespace, "block/" + tag), (resourceLocation -> new ArrayList<>())).add(blockId);
 	}
 
 	@Override

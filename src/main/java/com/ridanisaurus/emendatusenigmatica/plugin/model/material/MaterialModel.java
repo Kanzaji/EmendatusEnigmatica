@@ -176,9 +176,9 @@ public class MaterialModel {
 	public ItemLike getOreDefaultDrop() {
 		if (processedTypes.contains("ore")) {
 			if (properties.getMaterialType().equals("gem")) {
-				return processedTypes.contains("gem") ? EERegistrar.gemMap.get(id) : oreDrop.getDefaultItemDropAsItem();
+				return processedTypes.contains("gem") ? EERegistrar.gemMap.getValue(id) : oreDrop.getDefaultItemDropAsItem();
 			} else {
-				return processedTypes.contains("raw") ? EERegistrar.rawMap.get(id) : oreDrop.getDefaultItemDropAsItem();
+				return processedTypes.contains("raw") ? EERegistrar.rawMap.getValue(id) : oreDrop.getDefaultItemDropAsItem();
 			}
 		} else {
 			//TODO: Test if works as intended.

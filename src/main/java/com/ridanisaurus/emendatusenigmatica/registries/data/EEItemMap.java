@@ -15,31 +15,21 @@ import java.util.HashMap;
 public class EEItemMap<T extends Item> extends HashMap<String, DeferredItem<T>> {
 
     /**
-     * Used to get the DeferredItem under a specified Material ID.
-     * @param key Material ID under which the required item is stored.
-     * @return DeferredItem associated with the material provided.
-     */
-    public DeferredItem<T> getSupplier(@NotNull String key) {
-        return super.get(key);
-    }
-
-    /**
      * Used to get the DeferredItem of the specified material.
      * @param model MaterialModel of the item.
      * @return DeferredItem associated with the material provided.
      */
-    public DeferredItem<T> getSupplier(@NotNull MaterialModel model) {
-        return this.getSupplier(model.getId());
+    public DeferredItem<T> get(@NotNull MaterialModel model) {
+        return this.get(model.getId());
     }
-
 
     /**
      * Used to get the item under a specified Material ID.
      * @param key Material ID under which the required item is stored.
      * @return Direct Reference to the item associated with the material provided.
      */
-    public T get(@NotNull String key) {
-        return this.getSupplier(key).get();
+    public T getValue(@NotNull String key) {
+        return this.get(key).get();
     }
 
     /**
@@ -47,8 +37,8 @@ public class EEItemMap<T extends Item> extends HashMap<String, DeferredItem<T>> 
      * @param model MaterialModel of the item.
      * @return Direct Reference to the item associated with the material provided.
      */
-    public T get(@NotNull MaterialModel model) {
-        return this.getSupplier(model).get();
+    public T getValue(@NotNull MaterialModel model) {
+        return this.get(model).get();
     }
 
     /**
@@ -57,7 +47,7 @@ public class EEItemMap<T extends Item> extends HashMap<String, DeferredItem<T>> 
      * @return ResourceLocation of the item associated with the material provided.
      */
     public ResourceLocation getId(@NotNull MaterialModel model) {
-        return this.getSupplier(model).getId();
+        return this.get(model).getId();
     }
 
     /**

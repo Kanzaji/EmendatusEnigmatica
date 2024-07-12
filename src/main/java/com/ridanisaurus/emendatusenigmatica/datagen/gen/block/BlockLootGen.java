@@ -49,26 +49,26 @@ public class BlockLootGen extends BlockLootSubProvider {
 			List<String> processedType = material.getProcessedTypes();
 
 			// Storage Blocks
-			if (processedType.contains("storage_block")) this.selfDrop(EERegistrar.storageBlockMap.get(material));
+			if (processedType.contains("storage_block")) this.selfDrop(EERegistrar.storageBlockMap.getValue(material));
 
 			// Clusters
 			if (processedType.contains("cluster")) {
 				// Block
-				this.selfDrop(EERegistrar.clusterShardBlockMap.get(material));
+				this.selfDrop(EERegistrar.clusterShardBlockMap.getValue(material));
 				// Small Bud
-				this.dropWithSilkTouch(EERegistrar.smallBudBlockMap.get(material));
+				this.dropWithSilkTouch(EERegistrar.smallBudBlockMap.getValue(material));
 				// Medium Bud
-				this.dropWithSilkTouch(EERegistrar.mediumBudBlockMap.get(material));
+				this.dropWithSilkTouch(EERegistrar.mediumBudBlockMap.getValue(material));
 				// Large Bud
-				this.dropWithSilkTouch(EERegistrar.largeBudBlockMap.get(material));
+				this.dropWithSilkTouch(EERegistrar.largeBudBlockMap.getValue(material));
 				// Cluster
-				this.dropCluster(EERegistrar.clusterBlockMap.get(material), EERegistrar.clusterShardMap.get(material), 2.0f, 4.0f);
+				this.dropCluster(EERegistrar.clusterBlockMap.getValue(material), EERegistrar.clusterShardMap.getValue(material), 2.0f, 4.0f);
 				// Budding
-				this.add(EERegistrar.buddingBlockMap.get(material), noDrop());
+				this.add(EERegistrar.buddingBlockMap.getValue(material), noDrop());
 			}
 
 			// Raw Storage Blocks
-			if (processedType.contains("raw")) selfDrop(EERegistrar.rawBlockMap.get(material));
+			if (processedType.contains("raw")) selfDrop(EERegistrar.rawBlockMap.getValue(material));
 
 			// Ores
 			if (!processedType.contains("ore")) continue;
@@ -82,9 +82,9 @@ public class BlockLootGen extends BlockLootSubProvider {
 				if (!oreDrop.getDrop().isBlank()) {
 					dropItem = oreDrop.getDefaultItemDropAsItem().asItem();
 				} else if (material.getProperties().getMaterialType().equals("metal") && processedType.contains("raw")) {
-					dropItem = EERegistrar.rawMap.get(material);
+					dropItem = EERegistrar.rawMap.getValue(material);
 				} else if (processedType.contains("gem")) {
-					dropItem = EERegistrar.gemMap.get(material);
+					dropItem = EERegistrar.gemMap.getValue(material);
 				} else {
 					// Validation shouldn't ever let this happen.
 					throw new IllegalStateException("There is no ore drop, raw nor gem specified for the ore drop!");

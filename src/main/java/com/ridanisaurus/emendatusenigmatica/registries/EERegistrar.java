@@ -36,7 +36,7 @@ import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
 import com.ridanisaurus.emendatusenigmatica.items.templates.*;
 import com.ridanisaurus.emendatusenigmatica.registries.data.EEBlockMap;
-import com.ridanisaurus.emendatusenigmatica.registries.data.EEFluidMap;
+import com.ridanisaurus.emendatusenigmatica.registries.data.EEDeferredHolderMap;
 import com.ridanisaurus.emendatusenigmatica.registries.data.EEItemMap;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
@@ -158,21 +158,15 @@ public class EERegistrar
     public static Map<String, DeferredHolder<ArmorMaterial, ArmorMaterial>> armorMaterialsMap = new HashMap<>();
 
     // Fluids
-    public static EEFluidMap<FlowingFluid> fluidSourceMap = new EEFluidMap<>();
-    public static EEFluidMap<FlowingFluid> fluidFlowingMap = new EEFluidMap<>();
-    public static EEItemMap<Item> fluidBucketMap = new EEItemMap<>();
-    public static Map<String, Supplier<FluidType>> fluidTypeMap = new HashMap<>();
-    public static Map<String, Supplier<LiquidBlock>> fluidBlockMap = new HashMap<>();
+    public static EEDeferredHolderMap<Fluid, BaseFlowingFluid.Source> fluidSourceMap = new EEDeferredHolderMap<>();
+    public static EEDeferredHolderMap<Fluid, BaseFlowingFluid.Flowing> fluidFlowingMap = new EEDeferredHolderMap<>();
+    public static EEDeferredHolderMap<Block, LiquidBlock> fluidBlockMap = new EEDeferredHolderMap<>();
+    public static EEDeferredHolderMap<FluidType, BasicFluidType> fluidTypeMap = new EEDeferredHolderMap<>();
+    public static EEItemMap<BucketItem> fluidBucketMap = new EEItemMap<>();
 
-    public static Supplier<FluidType> fluidType;
-    public static Supplier<FlowingFluid> fluidSource;
-    public static Supplier<FlowingFluid> fluidFlowing;
-    public static Supplier<LiquidBlock> fluidBlock;
-    public static DeferredItem<Item> fluidBucket;
-
-    public static final ResourceLocation FLUID_STILL_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_still");
-    public static final ResourceLocation FLUID_FLOWING_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_flow");
-    public static final ResourceLocation FLUID_OVERLAY_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "fluids/fluid_overlay");
+    public static final ResourceLocation FLUID_STILL_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/fluid_still");
+    public static final ResourceLocation FLUID_FLOWING_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/fluid_flow");
+    public static final ResourceLocation FLUID_OVERLAY_RL = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/fluid_overlay");
 
     // Finalization
     public static void finalize(IEventBus eventBus) {
@@ -249,6 +243,7 @@ public class EERegistrar
         oreBlockItemTable.put(strata.getId(), material.getId(), ITEMS.register(oreName, () -> new BlockItem(oreBlock.get(), new Item.Properties())));
     }
 
+    @Deprecated
     public static void registerSample(StrataModel strata, MaterialModel material) {
         //TODO: Rework Sample System
         String oreSampleName = material.getId() + "_" + strata.getSuffix() + "_ore_sample";
@@ -273,17 +268,17 @@ public class EERegistrar
 
         Supplier<BiMap<Block, Block>> oxidizationBlockMap = Suppliers.memoize(
             () -> ImmutableBiMap.<Block, Block>builder()
-                .put(storageBlockMap.get(material), exposedBlockMap.get(material))
-                .put(exposedBlockMap.get(material), weatheredBlockMap.get(material))
-                .put(weatheredBlockMap.get(material), oxidizedBlockMap.get(material))
+                .put(storageBlockMap.getValue(material), exposedBlockMap.getValue(material))
+                .put(exposedBlockMap.getValue(material), weatheredBlockMap.getValue(material))
+                .put(weatheredBlockMap.getValue(material), oxidizedBlockMap.getValue(material))
                 .build()
         );
         Supplier<BiMap<Block, Block>> waxableBlockMap = Suppliers.memoize(
             () -> ImmutableBiMap.<Block, Block>builder()
-                .put(storageBlockMap.get(material), waxedStorageBlockMap.get(material))
-                .put(exposedBlockMap.get(material), waxedExposedBlockMap.get(material))
-                .put(weatheredBlockMap.get(material), waxedWeatheredBlockMap.get(material))
-                .put(oxidizedBlockMap.get(material), waxedOxidizedBlockMap.get(material))
+                .put(storageBlockMap.getValue(material), waxedStorageBlockMap.getValue(material))
+                .put(exposedBlockMap.getValue(material), waxedExposedBlockMap.getValue(material))
+                .put(weatheredBlockMap.getValue(material), waxedWeatheredBlockMap.getValue(material))
+                .put(oxidizedBlockMap.getValue(material), waxedOxidizedBlockMap.getValue(material))
                 .build()
         );
 
@@ -334,10 +329,10 @@ public class EERegistrar
         String buddingBlockName = "budding_" + material.getId();
         DeferredBlock<Block> buddingBlock = BLOCKS.register(buddingBlockName, () ->
             new BasicBuddingBlock(material,
-                smallBudBlockMap.getSupplier(material),
-                mediumBudBlockMap.getSupplier(material),
-                largeBudBlockMap.getSupplier(material),
-                clusterBlockMap.getSupplier(material)
+                smallBudBlockMap.get(material),
+                mediumBudBlockMap.get(material),
+                largeBudBlockMap.get(material),
+                clusterBlockMap.get(material)
         ));
 
         buddingBlockMap.put(material.getId(), buddingBlock);
@@ -446,7 +441,6 @@ public class EERegistrar
     }
 
     // Armor
-
     // Armor Material
     public static void registerArmorMaterial(MaterialModel material) {
         armorMaterialsMap.put(material.getId(), ARMOR_MATERIALS.register(material.getId() + "_armor_material", () -> new ArmorMaterial(
@@ -499,27 +493,41 @@ public class EERegistrar
 
     // Fluids
     public static void registerFluids(MaterialModel material) {
-        fluidType = FLUID_TYPES.register(material.getId(),
-            () -> new BasicFluidType(FLUID_STILL_RL, FLUID_FLOWING_RL, FLUID_OVERLAY_RL,
-                material.getColors().getFluidColor(),
-                new Vector3f(Vec3.fromRGB24(material.getColors().getFluidColor()).toVector3f()),
-                fluidTypeProperties(material)));
-        fluidSource = FLUIDS.register(material.getId(),
-            () -> new BaseFlowingFluid.Source(makeProperties(fluidTypeMap.get(material.getId()),
-                fluidSourceMap.getSupplier(material),
-                fluidFlowingMap.getSupplier(material),
-                fluidBlockMap.get(material.getId()),
-                fluidBucketMap.getSupplier(material))));
-        fluidFlowing = FLUIDS.register("flowing_" + material.getId(),
-            () -> new BaseFlowingFluid.Flowing(makeProperties(fluidTypeMap.get(material.getId()),
-                fluidSourceMap.getSupplier(material),
-                fluidFlowingMap.getSupplier(material),
-                fluidBlockMap.get(material.getId()),
-                fluidBucketMap.getSupplier(material))));
-        fluidBlock = BLOCKS.register(material.getId(),
-            () -> new LiquidBlock(fluidSourceMap.get(material), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noCollission().strength(100.0F).noLootTable()));
-        fluidBucket = ITEMS.register(material.getId() + "_bucket",
-            () -> new BucketItem(fluidSourceMap.get(material), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
+        var fluidType = FLUID_TYPES.register(material.getId(), () -> new BasicFluidType(
+            FLUID_STILL_RL,
+            FLUID_FLOWING_RL,
+            FLUID_OVERLAY_RL,
+            material.getColors().getFluidColor(),
+            new Vector3f(Vec3.fromRGB24(material.getColors().getFluidColor()).toVector3f()),
+            fluidTypeProperties(material)
+        ));
+
+        var fluidSource = FLUIDS.register(material.getId(), () -> new BaseFlowingFluid.Source(makeProperties(
+            fluidTypeMap.get(material),
+            fluidSourceMap.get(material),
+            fluidFlowingMap.get(material),
+            fluidBlockMap.get(material),
+            fluidBucketMap.get(material))
+        ));
+
+        var fluidFlowing = FLUIDS.register("flowing_" + material.getId(), () -> new BaseFlowingFluid.Flowing(makeProperties(
+            fluidTypeMap.get(material),
+            fluidSourceMap.get(material),
+            fluidFlowingMap.get(material),
+            fluidBlockMap.get(material),
+            fluidBucketMap.get(material))
+
+        ));
+
+        var fluidBlock = BLOCKS.register(material.getId(), () -> new LiquidBlock(
+            fluidSourceMap.getValue(material),
+            BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).liquid().noCollission().strength(100.0F).noLootTable()
+        ));
+
+        var fluidBucket = ITEMS.register(material.getId() + "_bucket", () -> new BucketItem(
+            fluidSourceMap.getValue(material),
+            new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)
+        ));
 
         fluidTypeMap.put(material.getId(), fluidType);
         fluidSourceMap.put(material.getId(), fluidSource);
@@ -566,14 +574,20 @@ public class EERegistrar
             .temperature(1300)
             .rarity(Rarity.COMMON)
             .canDrown(false)
-            .canSwim(false)
+            .canSwim(true)
             .pathType(PathType.LAVA)
             .adjacentPathType(null)
             .sound(SoundAction.get("bucket_fill"), SoundEvents.BUCKET_FILL_LAVA)
             .sound(SoundAction.get("bucket_empty"), SoundEvents.BUCKET_EMPTY_LAVA);
     }
 
-    public static BaseFlowingFluid.Properties makeProperties(Supplier<FluidType> type, Supplier<FlowingFluid> source, Supplier<FlowingFluid> flowing, Supplier<LiquidBlock> block, Supplier<Item> bucket) {
+    public static BaseFlowingFluid.Properties makeProperties(
+        DeferredHolder<FluidType, ? extends FluidType> type,
+        DeferredHolder<Fluid, ? extends FlowingFluid> source,
+        DeferredHolder<Fluid, ? extends FlowingFluid> flowing,
+        DeferredHolder<Block, ? extends LiquidBlock> block,
+        DeferredItem<BucketItem> bucket
+    ) {
         return new BaseFlowingFluid.Properties(type, source, flowing)
             .slopeFindDistance(2)
             .levelDecreasePerBlock(2)

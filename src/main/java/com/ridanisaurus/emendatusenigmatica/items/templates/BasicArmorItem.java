@@ -119,27 +119,27 @@ public class BasicArmorItem extends ArmorItem {
     }
 
     public boolean isSetActive(@NotNull Player player) {
-        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() == EERegistrar.helmetMap.get(this.material.getId()).get() &&
-            player.getItemBySlot(EquipmentSlot.CHEST).getItem() == EERegistrar.chestplateMap.get(this.material.getId()).get() &&
-            player.getItemBySlot(EquipmentSlot.LEGS).getItem() == EERegistrar.leggingsMap.get(this.material.getId()).get() &&
-            player.getItemBySlot(EquipmentSlot.FEET).getItem() == EERegistrar.bootsMap.get(this.material.getId()).get();
+        return player.getItemBySlot(EquipmentSlot.HEAD).getItem() == EERegistrar.helmetMap.get(this.material) &&
+            player.getItemBySlot(EquipmentSlot.CHEST).getItem() == EERegistrar.chestplateMap.get(this.material) &&
+            player.getItemBySlot(EquipmentSlot.LEGS).getItem() == EERegistrar.leggingsMap.get(this.material) &&
+            player.getItemBySlot(EquipmentSlot.FEET).getItem() == EERegistrar.bootsMap.get(this.material);
     }
 
     public ItemStack[] getSet() {
         return new ItemStack[]{
-            new ItemStack(EERegistrar.helmetMap.get(this.material.getId()).get()),
-            new ItemStack(EERegistrar.chestplateMap.get(this.material.getId()).get()),
-            new ItemStack(EERegistrar.leggingsMap.get(this.material.getId()).get()),
-            new ItemStack(EERegistrar.bootsMap.get(this.material.getId()).get())
+            new ItemStack(EERegistrar.helmetMap.get(this.material)),
+            new ItemStack(EERegistrar.chestplateMap.get(this.material)),
+            new ItemStack(EERegistrar.leggingsMap.get(this.material)),
+            new ItemStack(EERegistrar.bootsMap.get(this.material))
         };
     }
 
     public boolean hasSetPiece(Player player, @NotNull EquipmentSlot slot) {
         return switch (slot) {
-            case HEAD -> player.getItemBySlot(slot).getItem() == EERegistrar.helmetMap.get(this.material.getId()).get();
-            case CHEST -> player.getItemBySlot(slot).getItem() == EERegistrar.chestplateMap.get(this.material.getId()).get();
-            case LEGS -> player.getItemBySlot(slot).getItem() == EERegistrar.leggingsMap.get(this.material.getId()).get();
-            case FEET -> player.getItemBySlot(slot).getItem() == EERegistrar.bootsMap.get(this.material.getId()).get();
+            case HEAD -> player.getItemBySlot(slot).getItem() == EERegistrar.helmetMap.get(this.material);
+            case CHEST -> player.getItemBySlot(slot).getItem() == EERegistrar.chestplateMap.get(this.material);
+            case LEGS -> player.getItemBySlot(slot).getItem() == EERegistrar.leggingsMap.get(this.material);
+            case FEET -> player.getItemBySlot(slot).getItem() == EERegistrar.bootsMap.get(this.material);
             default -> false;
         };
     }

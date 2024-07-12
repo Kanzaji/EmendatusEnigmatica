@@ -15,30 +15,57 @@ import java.util.HashMap;
 public class EEBlockMap<T extends Block> extends HashMap<String, DeferredBlock<T>> {
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns block.
-     * @param material Material to get the block of.
-     * @return Block associated with the Material provided.
-     * @apiNote If DeferredBlock is required, use normal get() method of HashMap.
+     * Used to get the DeferredBlock under a specified Material ID.
+     * @param key Material ID under which the required block is stored.
+     * @return DeferredBlock associated with the material provided.
      */
-    public T get(@NotNull MaterialModel material) {
-        return this.get(material.getId()).get();
+    public DeferredBlock<T> getSupplier(@NotNull String key) {
+        return super.get(key);
     }
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns the block ID.
-     * @param material Material to get the block ID of.
-     * @return ResourceLocation of the Block associated with the Material provided.
+     * Used to get the DeferredBlock of the specified material.
+     * @param model MaterialModel of the block.
+     * @return DeferredBlock associated with the material provided.
      */
-    public ResourceLocation getId(@NotNull MaterialModel material) {
-        return this.get(material.getId()).getId();
+    public DeferredBlock<T> getSupplier(@NotNull MaterialModel model) {
+        return this.getSupplier(model.getId());
+    }
+
+
+    /**
+     * Used to get the block under a specified Material ID.
+     * @param key Material ID under which the required block is stored.
+     * @return Direct Reference to the block associated with the material provided.
+     */
+    public T get(@NotNull String key) {
+        return this.getSupplier(key).get();
     }
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns the block ID as a string.
-     * @param material Material to get the block id of.
-     * @return String representation of the Block ResourceLocation, associated with the Material provided.
+     * Used to get the block of the specified material.
+     * @param model MaterialModel of the block.
+     * @return Direct Reference to the block associated with the material provided.
      */
-    public String getIdAsString(MaterialModel material) {
-        return this.getId(material).toString();
+    public T get(@NotNull MaterialModel model) {
+        return this.getSupplier(model).get();
+    }
+
+    /**
+     * Used to get the ID of the stored block with use of the material model.
+     * @param model MaterialModel of the block.
+     * @return ResourceLocation of the block associated with the material provided.
+     */
+    public ResourceLocation getId(@NotNull MaterialModel model) {
+        return this.getSupplier(model).getId();
+    }
+
+    /**
+     * Used to get the ID of the stored block with use of the material model.
+     * @param model MaterialModel of the block.
+     * @return String representation of the block ID associated with the material provided.
+     */
+    public String getIdAsString(MaterialModel model) {
+        return this.getId(model).toString();
     }
 }

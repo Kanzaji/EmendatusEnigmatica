@@ -52,9 +52,18 @@ public class ItemModelBuilder {
 		this.parent = parent;
 	}
 
+	public ItemModelBuilder(String parentNamespace, String parentPath) {
+		// Conversion to ResourceLocation acts like a sanity check if the Namespace / Path are correct.
+		this.parent = ResourceLocation.fromNamespaceAndPath(parentNamespace, parentPath).toString();
+	}
+
 	public ItemModelBuilder texture(String textureKey, String textureValue) {
 		this.textures.put(textureKey, textureValue);
 		return this;
+	}
+
+	public ItemModelBuilder texture(String textureKey, String textureNamespace, String texturePath) {
+		return this.texture(textureKey, ResourceLocation.fromNamespaceAndPath(textureNamespace, texturePath).toString());
 	}
 
 	public ItemModelBuilder applyTint(boolean tint){
@@ -87,6 +96,10 @@ public class ItemModelBuilder {
 		consumer.accept(new Result(jsonResourceLocation, this.parent, this.textures, this.applyTint, this.fluid, this.loader, this.overrides));
 	}
 
+	public void save(@NotNull Consumer<IFinishedGenericJSON> consumer, String namespace, String path) {
+		this.save(consumer, ResourceLocation.fromNamespaceAndPath(namespace, path));
+	}
+
 	public class OverrideBuilder {
 
 		private ResourceLocation model;
@@ -97,8 +110,18 @@ public class ItemModelBuilder {
 			return this;
 		}
 
+		public OverrideBuilder model(String namespace, String path) {
+			this.model = ResourceLocation.fromNamespaceAndPath(namespace, path);
+			return this;
+		}
+
 		public OverrideBuilder predicate(ResourceLocation key, float value) {
 			this.predicates.put(key, value);
+			return this;
+		}
+
+		public OverrideBuilder predicate(String namespace, String path, float value) {
+			this.predicates.put(ResourceLocation.fromNamespaceAndPath(namespace, path), value);
 			return this;
 		}
 
@@ -144,6 +167,7 @@ public class ItemModelBuilder {
 				}
 				json.add("textures", texturesObject);
 			}
+			//TODO: Apparently applyTint is not used anymore?
 			if (this.applyTint) {
 				json.addProperty("apply_tint", true);
 			}

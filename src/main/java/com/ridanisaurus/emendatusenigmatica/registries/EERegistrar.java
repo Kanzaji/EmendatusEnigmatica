@@ -36,6 +36,7 @@ import com.ridanisaurus.emendatusenigmatica.fluids.BasicFluidType;
 import com.ridanisaurus.emendatusenigmatica.items.*;
 import com.ridanisaurus.emendatusenigmatica.items.templates.*;
 import com.ridanisaurus.emendatusenigmatica.registries.data.EEBlockMap;
+import com.ridanisaurus.emendatusenigmatica.registries.data.EEFluidMap;
 import com.ridanisaurus.emendatusenigmatica.registries.data.EEItemMap;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
@@ -65,6 +66,7 @@ import org.joml.Vector3f;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class EERegistrar
@@ -156,11 +158,11 @@ public class EERegistrar
     public static Map<String, DeferredHolder<ArmorMaterial, ArmorMaterial>> armorMaterialsMap = new HashMap<>();
 
     // Fluids
-    public static Map<String, Supplier<FluidType>> fluidTypeMap = new HashMap<>();
-    public static Map<String, Supplier<FlowingFluid>> fluidSourceMap = new HashMap<>();
-    public static Map<String, Supplier<FlowingFluid>> fluidFlowingMap = new HashMap<>();
-    public static Map<String, Supplier<LiquidBlock>> fluidBlockMap = new HashMap<>();
+    public static EEFluidMap<FlowingFluid> fluidSourceMap = new EEFluidMap<>();
+    public static EEFluidMap<FlowingFluid> fluidFlowingMap = new EEFluidMap<>();
     public static EEItemMap<Item> fluidBucketMap = new EEItemMap<>();
+    public static Map<String, Supplier<FluidType>> fluidTypeMap = new HashMap<>();
+    public static Map<String, Supplier<LiquidBlock>> fluidBlockMap = new HashMap<>();
 
     public static Supplier<FluidType> fluidType;
     public static Supplier<FlowingFluid> fluidSource;
@@ -248,6 +250,7 @@ public class EERegistrar
     }
 
     public static void registerSample(StrataModel strata, MaterialModel material) {
+        //TODO: Rework Sample System
         String oreSampleName = material.getId() + "_" + strata.getSuffix() + "_ore_sample";
         DeferredBlock<Block> oreSampleBlock;
         if (material.getProperties().getMaterialType().equals("sample") && material.getProperties().hasParticles()) {
@@ -264,27 +267,23 @@ public class EERegistrar
             String storageBlockName = material.getId() + "_block";
             DeferredBlock<Block> storageBlock = BLOCKS.register(storageBlockName, () -> new BasicStorageBlock(material));
             storageBlockMap.put(material.getId(), storageBlock);
-            if (material.getProperties().isBurnable()) {
-                storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(),material.getProperties().getBurnTime() * 10)));
-            } else {
-                storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(), 0)));
-            }
+            storageBlockItemMap.put(material.getId(), ITEMS.register(storageBlockName, () -> new BasicStorageBlockItem(storageBlock.get(), getBurnTime(material, it -> it * 10))));
             return;
         }
 
         Supplier<BiMap<Block, Block>> oxidizationBlockMap = Suppliers.memoize(
             () -> ImmutableBiMap.<Block, Block>builder()
-                .put(storageBlockMap.get(material.getId()).get(), exposedBlockMap.get(material.getId()).get())
-                .put(exposedBlockMap.get(material.getId()).get(), weatheredBlockMap.get(material.getId()).get())
-                .put(weatheredBlockMap.get(material.getId()).get(), oxidizedBlockMap.get(material.getId()).get())
+                .put(storageBlockMap.get(material), exposedBlockMap.get(material))
+                .put(exposedBlockMap.get(material), weatheredBlockMap.get(material))
+                .put(weatheredBlockMap.get(material), oxidizedBlockMap.get(material))
                 .build()
         );
         Supplier<BiMap<Block, Block>> waxableBlockMap = Suppliers.memoize(
             () -> ImmutableBiMap.<Block, Block>builder()
-                .put(storageBlockMap.get(material.getId()).get(), waxedStorageBlockMap.get(material.getId()).get())
-                .put(exposedBlockMap.get(material.getId()).get(), waxedExposedBlockMap.get(material.getId()).get())
-                .put(weatheredBlockMap.get(material.getId()).get(), waxedWeatheredBlockMap.get(material.getId()).get())
-                .put(oxidizedBlockMap.get(material.getId()).get(), waxedOxidizedBlockMap.get(material.getId()).get())
+                .put(storageBlockMap.get(material), waxedStorageBlockMap.get(material))
+                .put(exposedBlockMap.get(material), waxedExposedBlockMap.get(material))
+                .put(weatheredBlockMap.get(material), waxedWeatheredBlockMap.get(material))
+                .put(oxidizedBlockMap.get(material), waxedOxidizedBlockMap.get(material))
                 .build()
         );
 
@@ -313,7 +312,7 @@ public class EERegistrar
         waxedWeatheredBlockMap.put(material.getId(), waxedWeatheredBlock);
         waxedOxidizedBlockMap.put(material.getId(), waxedOxidizedBlock);
 
-        int burnTime = material.getProperties().isBurnable()? material.getProperties().getBurnTime() * 10: 0;
+        int burnTime = getBurnTime(material, it -> it * 10);
         storageBlockItemMap         .put(material.getId(), ITEMS.register(storageBlockName,         () -> new BasicStorageBlockItem(storageBlock.get(), burnTime)));
         exposedBlockItemMap         .put(material.getId(), ITEMS.register(exposedBlockName,         () -> new BasicStorageBlockItem(exposedBlock.get(), burnTime)));
         weatheredBlockItemMap       .put(material.getId(), ITEMS.register(weatheredBlockName,       () -> new BasicStorageBlockItem(weatheredBlock.get(), burnTime)));
@@ -328,200 +327,122 @@ public class EERegistrar
         String rawBlockName = "raw_" + material.getId() + "_block";
         DeferredBlock<Block> rawBlock = BLOCKS.register(rawBlockName, () -> new BasicStorageBlock(material));
         rawBlockMap.put(material.getId(), rawBlock);
-        if (material.getProperties().isBurnable()) {
-            rawBlockItemMap.put(material.getId(), ITEMS.register(rawBlockName, () -> new BasicStorageBlockItem(rawBlock.get(),material.getProperties().getBurnTime() * 10)));
-        } else {
-            rawBlockItemMap.put(material.getId(), ITEMS.register(rawBlockName, () -> new BasicStorageBlockItem(rawBlock.get(), 0)));
-        }
+        rawBlockItemMap.put(material.getId(), ITEMS.register(rawBlockName, () -> new BasicStorageBlockItem(rawBlock.get(),getBurnTime(material, it -> it * 10))));
     }
 
     public static void registerBuddingBlocks(MaterialModel material) {
         String buddingBlockName = "budding_" + material.getId();
-        DeferredBlock<Block> buddingBlock = BLOCKS.register(buddingBlockName, () -> new BasicBuddingBlock(material, smallBudBlockMap.get(material.getId()), mediumBudBlockMap.get(material.getId()), largeBudBlockMap.get(material.getId()), clusterBlockMap.get(material.getId())));
+        DeferredBlock<Block> buddingBlock = BLOCKS.register(buddingBlockName, () ->
+            new BasicBuddingBlock(material,
+                smallBudBlockMap.getSupplier(material),
+                mediumBudBlockMap.getSupplier(material),
+                largeBudBlockMap.getSupplier(material),
+                clusterBlockMap.getSupplier(material)
+        ));
+
         buddingBlockMap.put(material.getId(), buddingBlock);
-        if (material.getProperties().isBurnable()) {
-            buddingBlockItemMap.put(material.getId(), ITEMS.register(buddingBlockName, () -> new BasicStorageBlockItem(buddingBlock.get(),material.getProperties().getBurnTime() * 4)));
-        } else {
-            buddingBlockItemMap.put(material.getId(), ITEMS.register(buddingBlockName, () -> new BasicStorageBlockItem(buddingBlock.get(), 0)));
-        }
+        buddingBlockItemMap.put(material.getId(), ITEMS.register(buddingBlockName, () -> new BasicStorageBlockItem(buddingBlock.get(), getBurnTime(material, it -> it * 4))));
     }
 
     public static void registerSmallBudBlocks(MaterialModel material) {
         String smallBudBlockName = "small_" + material.getId() + "_bud";
         DeferredBlock<Block> smallBudBlock = BLOCKS.register(smallBudBlockName, () -> new BasicClusterBlock(3, 4, 1, material));
         smallBudBlockMap.put(material.getId(), smallBudBlock);
-        if (material.getProperties().isBurnable()) {
-            smallBudBlockItemMap.put(material.getId(), ITEMS.register(smallBudBlockName, () -> new BasicStorageBlockItem(smallBudBlock.get(),material.getProperties().getBurnTime())));
-        } else {
-            smallBudBlockItemMap.put(material.getId(), ITEMS.register(smallBudBlockName, () -> new BasicStorageBlockItem(smallBudBlock.get(), 0)));
-        }
+        smallBudBlockItemMap.put(material.getId(), ITEMS.register(smallBudBlockName, () -> new BasicStorageBlockItem(smallBudBlock.get(), getBurnTime(material))));
     }
 
     public static void registerMediumBudBlocks(MaterialModel material) {
         String mediumBudBlockName = "medium_" + material.getId() + "_bud";
         DeferredBlock<Block> mediumBudBlock = BLOCKS.register(mediumBudBlockName, () -> new BasicClusterBlock(4, 3, 2, material));
         mediumBudBlockMap.put(material.getId(), mediumBudBlock);
-        if (material.getProperties().isBurnable()) {
-            mediumBudBlockItemMap.put(material.getId(), ITEMS.register(mediumBudBlockName, () -> new BasicStorageBlockItem(mediumBudBlock.get(),material.getProperties().getBurnTime())));
-        } else {
-            mediumBudBlockItemMap.put(material.getId(), ITEMS.register(mediumBudBlockName, () -> new BasicStorageBlockItem(mediumBudBlock.get(), 0)));
-        }
+        mediumBudBlockItemMap.put(material.getId(), ITEMS.register(mediumBudBlockName, () -> new BasicStorageBlockItem(mediumBudBlock.get(), getBurnTime(material))));
     }
 
     public static void registerLargeBudBlocks(MaterialModel material) {
         String largeBudBlockName = "large_" + material.getId() + "_bud";
         DeferredBlock<Block> largeBudBlock = BLOCKS.register(largeBudBlockName, () -> new BasicClusterBlock(5, 3, 4, material));
         largeBudBlockMap.put(material.getId(), largeBudBlock);
-        if (material.getProperties().isBurnable()) {
-            largeBudBlockItemMap.put(material.getId(), ITEMS.register(largeBudBlockName, () -> new BasicStorageBlockItem(largeBudBlock.get(),material.getProperties().getBurnTime())));
-        } else {
-            largeBudBlockItemMap.put(material.getId(), ITEMS.register(largeBudBlockName, () -> new BasicStorageBlockItem(largeBudBlock.get(), 0)));
-        }
+        largeBudBlockItemMap.put(material.getId(), ITEMS.register(largeBudBlockName, () -> new BasicStorageBlockItem(largeBudBlock.get(), getBurnTime(material))));
     }
 
     public static void registerClusterBlocks(MaterialModel material) {
         String clusterBlockName = material.getId() + "_cluster";
         DeferredBlock<Block> clusterBlock = BLOCKS.register(clusterBlockName, () -> new BasicClusterBlock(7, 3, 5, material));
         clusterBlockMap.put(material.getId(), clusterBlock);
-        if (material.getProperties().isBurnable()) {
-            clusterBlockItemMap.put(material.getId(), ITEMS.register(clusterBlockName, () -> new BasicStorageBlockItem(clusterBlock.get(),material.getProperties().getBurnTime())));
-        } else {
-            clusterBlockItemMap.put(material.getId(), ITEMS.register(clusterBlockName, () -> new BasicStorageBlockItem(clusterBlock.get(), 0)));
-        }
+        clusterBlockItemMap.put(material.getId(), ITEMS.register(clusterBlockName, () -> new BasicStorageBlockItem(clusterBlock.get(), getBurnTime(material))));
     }
 
     public static void registerClusterShardBlocks(MaterialModel material) {
         String clusterShardBlockName = material.getId() + "_cluster_shard_block";
         DeferredBlock<Block> clusterShardBlock = BLOCKS.register(clusterShardBlockName, () -> new BasicClusterShardBlock(material));
         clusterShardBlockMap.put(material.getId(), clusterShardBlock);
-        if (material.getProperties().isBurnable()) {
-            clusterShardBlockItemMap.put(material.getId(), ITEMS.register(clusterShardBlockName, () -> new BasicStorageBlockItem(clusterShardBlock.get(),material.getProperties().getBurnTime() * 4)));
-        } else {
-            clusterShardBlockItemMap.put(material.getId(), ITEMS.register(clusterShardBlockName, () -> new BasicStorageBlockItem(clusterShardBlock.get(), 0)));
-        }
+        clusterShardBlockItemMap.put(material.getId(), ITEMS.register(clusterShardBlockName, () -> new BasicStorageBlockItem(clusterShardBlock.get(), getBurnTime(material, it -> it * 4))));
     }
 
     public static void registerClusterShards(MaterialModel material) {
-        String itemName = material.getId() + "_cluster_shard";
-        if (material.getProperties().isBurnable()) {
-            clusterShardMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            clusterShardMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(clusterShardMap, material, material.getId() + "_cluster_shard");
     }
 
-    public static void registerRaws(MaterialModel material) {
-        String itemName = "raw_" + material.getId();
-        if (material.getProperties().isBurnable()) {
-            rawMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            rawMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+    public static void registerRaw(MaterialModel material) {
+        registerBurnableItem(rawMap, material, "raw_" + material.getId());
     }
 
     public static void registerIngots(MaterialModel material) {
-        String itemName = material.getId() + "_ingot";
-        if (material.getProperties().isBurnable()) {
-            ingotMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            ingotMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(ingotMap, material, material.getId() + "_ingot");
     }
 
     public static void registerNuggets(MaterialModel material) {
-        String itemName = material.getId() + "_nugget";
-        if (material.getProperties().isBurnable()) {
-            nuggetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime() / 10)));
-        } else {
-            nuggetMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(nuggetMap, material, material.getId() + "_nugget", it -> it / 10);
     }
 
     public static void registerGems(MaterialModel material) {
-        String itemName = material.getId() + "_gem";
-        if (material.getProperties().isBurnable()) {
-            gemMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            gemMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(gemMap, material, material.getId() + "_gem");
     }
 
     public static void registerDusts(MaterialModel material) {
-        String itemName = material.getId() + "_dust";
-        if (material.getProperties().isBurnable()) {
-            dustMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            dustMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(dustMap, material, material.getId() + "_dust");
     }
 
     public static void registerPlates(MaterialModel material) {
-        String itemName = material.getId() + "_plate";
-        if (material.getProperties().isBurnable()) {
-            plateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime())));
-        } else {
-            plateMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(plateMap, material, material.getId() + "_plate");
     }
 
     public static void registerGears(MaterialModel material) {
-        String itemName = material.getId() + "_gear";
-        if (material.getProperties().isBurnable()) {
-            gearMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime() * 4)));
-        } else {
-            gearMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(gearMap, material, material.getId() + "_gear", it -> it * 4);
     }
 
     public static void registerRods(MaterialModel material) {
-        String itemName = material.getId() + "_rod";
-        if (material.getProperties().isBurnable()) {
-            rodMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicBurnableItem(material, material.getProperties().getBurnTime() * 2)));
-        } else {
-            rodMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicItem(material)));
-        }
+        registerBurnableItem(rodMap, material, material.getId() + "_rod", it -> it * 2);
     }
 
     // Swords
     public static void registerSwords(MaterialModel material) {
-        String itemName = material.getId() + "_sword";
-        TagKey<Item> repairItem = getRepairItem(material);
-        swordMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicSwordItem(material, repairItem)));
+        swordMap.put(material.getId(), ITEMS.register(material.getId() + "_sword", () -> new BasicSwordItem(material, getRepairItem(material))));
     }
 
     // Pickaxes
     public static void registerPickaxes(MaterialModel material) {
-        String itemName = material.getId() + "_pickaxe";
-        TagKey<Item> repairItem = getRepairItem(material);
-        pickaxeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicPickaxeItem(material, repairItem)));
+        pickaxeMap.put(material.getId(), ITEMS.register(material.getId() + "_pickaxe", () -> new BasicPickaxeItem(material, getRepairItem(material))));
     }
 
     // Axes
     public static void registerAxes(MaterialModel material) {
-        String itemName = material.getId() + "_axe";
-        TagKey<Item> repairItem = getRepairItem(material);
-        axeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicAxeItem(material, repairItem)));
+        axeMap.put(material.getId(), ITEMS.register(material.getId() + "_axe", () -> new BasicAxeItem(material, getRepairItem(material))));
     }
 
     // Shovels
     public static void registerShovels(MaterialModel material) {
-        String itemName = material.getId() + "_shovel";
-        TagKey<Item> repairItem = getRepairItem(material);
-        shovelMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicShovelItem(material, repairItem)));
+        shovelMap.put(material.getId(), ITEMS.register(material.getId() + "_shovel", () -> new BasicShovelItem(material, getRepairItem(material))));
     }
 
     // Hoes
     public static void registerHoes(MaterialModel material) {
-        String itemName = material.getId() + "_hoe";
-        TagKey<Item> repairItem = getRepairItem(material);
-        hoeMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicHoeItem(material, repairItem)));
+        hoeMap.put(material.getId(), ITEMS.register(material.getId() + "_hoe", () -> new BasicHoeItem(material, getRepairItem(material))));
     }
 
     // Paxels
     public static void registerPaxels(MaterialModel material) {
-        String itemName = material.getId() + "_paxel";
-        TagKey<Item> repairItem = getRepairItem(material);
-        paxelMap.put(material.getId(), ITEMS.register(itemName, () -> new BasicPaxelItem(material, repairItem)));
+        paxelMap.put(material.getId(), ITEMS.register(material.getId() + "_paxel", () -> new BasicPaxelItem(material, getRepairItem(material))));
     }
 
     // Armor
@@ -585,20 +506,20 @@ public class EERegistrar
                 fluidTypeProperties(material)));
         fluidSource = FLUIDS.register(material.getId(),
             () -> new BaseFlowingFluid.Source(makeProperties(fluidTypeMap.get(material.getId()),
-                fluidSourceMap.get(material.getId()),
-                fluidFlowingMap.get(material.getId()),
+                fluidSourceMap.getSupplier(material),
+                fluidFlowingMap.getSupplier(material),
                 fluidBlockMap.get(material.getId()),
-                fluidBucketMap.get(material.getId()))));
+                fluidBucketMap.getSupplier(material))));
         fluidFlowing = FLUIDS.register("flowing_" + material.getId(),
             () -> new BaseFlowingFluid.Flowing(makeProperties(fluidTypeMap.get(material.getId()),
-                fluidSourceMap.get(material.getId()),
-                fluidFlowingMap.get(material.getId()),
+                fluidSourceMap.getSupplier(material),
+                fluidFlowingMap.getSupplier(material),
                 fluidBlockMap.get(material.getId()),
-                fluidBucketMap.get(material.getId()))));
+                fluidBucketMap.getSupplier(material))));
         fluidBlock = BLOCKS.register(material.getId(),
-            () -> new LiquidBlock(fluidSourceMap.get(material.getId()).get(), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noCollission().strength(100.0F).noLootTable()));
+            () -> new LiquidBlock(fluidSourceMap.get(material), BlockBehaviour.Properties.ofFullCopy(Blocks.LAVA).noCollission().strength(100.0F).noLootTable()));
         fluidBucket = ITEMS.register(material.getId() + "_bucket",
-            () -> new BucketItem(fluidSourceMap.get(material.getId()).get(), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
+            () -> new BucketItem(fluidSourceMap.get(material), new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 
         fluidTypeMap.put(material.getId(), fluidType);
         fluidSourceMap.put(material.getId(), fluidSource);
@@ -614,6 +535,26 @@ public class EERegistrar
         } else {
             return EETags.MATERIAL_GEM.apply(material.getId());
         }
+    }
+
+    private static int getBurnTime(MaterialModel model, Function<Integer, Integer> modifier) {
+        return model.getProperties().isBurnable()? modifier.apply(model.getProperties().getBurnTime()): 0;
+    }
+
+    private static int getBurnTime(MaterialModel model) {
+        return getBurnTime(model, it -> it);
+    }
+
+    private static void registerBurnableItem(EEItemMap<Item> map, MaterialModel material, String name, Function<Integer, Integer> modifier) {
+        if (material.getProperties().isBurnable()) {
+            map.put(material.getId(), ITEMS.register(name, () -> new BasicBurnableItem(material, getBurnTime(material, modifier))));
+        } else {
+            map.put(material.getId(), ITEMS.register(name, () -> new BasicItem(material)));
+        }
+    }
+
+    private static void registerBurnableItem(EEItemMap<Item> map, MaterialModel material, String name) {
+        registerBurnableItem(map, material, name, it -> it);
     }
 
     private static FluidType.Properties fluidTypeProperties(MaterialModel material) {

@@ -79,14 +79,14 @@ public class RecipesGen extends RecipeProvider {
 				if (processedType.contains("ingot")) {
 					if (processedType.contains("storage_block")) {
 						// Ingot from Block
-						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.ingotMap.get(material.getId()).get(), 9)
+						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.ingotMap.get(material), 9)
 								.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_block/" + material.getId()));
 
 						// Block from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material))
 								.define('#', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("###")
 								.pattern("###")
@@ -97,29 +97,29 @@ public class RecipesGen extends RecipeProvider {
 
 						// Waxed
 						if (material.getProperties().hasOxidization()) {
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.storageBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.get(material))
+									.requires(EERegistrar.storageBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/" + material.getId() + "_block"));
 
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.exposedBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.get(material))
+									.requires(EERegistrar.exposedBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/exposed_" + material.getId()));
 
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.weatheredBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.get(material))
+									.requires(EERegistrar.weatheredBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/weathered_" + material.getId()));
 
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.oxidizedBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.get(material))
+									.requires(EERegistrar.oxidizedBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
@@ -129,7 +129,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("nugget")) {
 						// Ingot from Nugget
-						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.ingotMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.ingotMap.get(material))
 								.define('#', EETags.MATERIAL_NUGGET.apply(material.getId()))
 								.pattern("###")
 								.pattern("###")
@@ -139,7 +139,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_nugget/" + material.getId()));
 
 						// Nugget from Ingot
-						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.nuggetMap.get(material.getId()).get(), 9)
+						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.nuggetMap.get(material), 9)
 								.requires(EETags.MATERIAL_INGOT.apply(material.getId()))
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
@@ -150,20 +150,20 @@ public class RecipesGen extends RecipeProvider {
 						// Ingot from Dust
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 0.5F, 200)
+										EERegistrar.ingotMap.get(material), 0.5F, 200)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/smelting/" + material.getId()));
 
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_DUST.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 0.5F, 100)
+										EERegistrar.ingotMap.get(material), 0.5F, 100)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + material.getId()));
 					}
 
 					if (processedType.contains("plate")) {
 						// Plate from Ingot
-						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(material.getId()).get(), 1)
+						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(material), 1)
 								.requires(EETags.MATERIAL_INGOT.apply(material.getId()))
 								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -173,7 +173,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("gear")) {
 						// Gear from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('N', Tags.Items.NUGGETS_IRON)
 								.pattern(" I ")
@@ -186,7 +186,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("rod")) {
 						// Rod from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(material.getId()).get(), 2)
+						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(material), 2)
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("I")
 								.pattern("I")
@@ -199,13 +199,13 @@ public class RecipesGen extends RecipeProvider {
 						// Ingot from Smelting Ore
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 1.0F, 200)
+										EERegistrar.ingotMap.get(material), 1.0F, 200)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/smelting/" + material.getId()));
 						// Ingot from Blasting Ore
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 1.0F, 100)
+										EERegistrar.ingotMap.get(material), 1.0F, 100)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + material.getId()));
 					}
@@ -214,20 +214,20 @@ public class RecipesGen extends RecipeProvider {
 						// Ingot from Smelting Raw Material
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_RAW.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 1.0F, 200)
+										EERegistrar.ingotMap.get(material), 1.0F, 200)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_raw/smelting/" + material.getId()));
 						// Ingot from Blasting Raw Material
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_RAW.apply(material.getId())),
 										RecipeCategory.MISC,
-										EERegistrar.ingotMap.get(material.getId()).get(), 1.0F, 100)
+										EERegistrar.ingotMap.get(material), 1.0F, 100)
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_raw/blasting/" + material.getId()));
 					}
 
 					if (processedType.contains("helmet")) {
 						// Helmet from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("III")
 								.pattern("I I")
@@ -238,7 +238,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("chestplate")) {
 						// Chestplate from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("I I")
 								.pattern("III")
@@ -250,7 +250,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("leggings")) {
 						// Leggings from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("III")
 								.pattern("I I")
@@ -262,7 +262,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("boots")) {
 						// Boots from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("I I")
 								.pattern("I I")
@@ -277,7 +277,7 @@ public class RecipesGen extends RecipeProvider {
 						SmithingTransformRecipeBuilder.smithing(
 										Ingredient.of(Items.SHIELD),
 										Ingredient.of(EETags.MATERIAL_INGOT.apply(material.getId())),
-										EERegistrar.shieldMap.get(material.getId()).get())
+										EERegistrar.shieldMap.get(material))
 								.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_ingot/" + material.getId()));
 					}
@@ -285,7 +285,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("sword")) {
 						// Sword from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('#', Items.STICK)
 								.pattern("I")
@@ -298,7 +298,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("pickaxe")) {
 						// Pickaxe from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('#', Items.STICK)
 								.pattern("III")
@@ -311,7 +311,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("axe")) {
 						// Axe from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('#', Items.STICK)
 								.pattern("II")
@@ -324,7 +324,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("shovel")) {
 						// Shovel from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('#', Items.STICK)
 								.pattern("I")
@@ -337,7 +337,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("hoe")) {
 						// Hoe from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.define('#', Items.STICK)
 								.pattern("II")
@@ -350,10 +350,10 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
 						// Paxel from Ingot
-						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(material.getId()).get())
-								.define('P', EERegistrar.pickaxeMap.get(material.getId()).get())
-								.define('A', EERegistrar.axeMap.get(material.getId()).get())
-								.define('S', EERegistrar.shovelMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(material))
+								.define('P', EERegistrar.pickaxeMap.get(material))
+								.define('A', EERegistrar.axeMap.get(material))
+								.define('S', EERegistrar.shovelMap.get(material))
 								.define('#', Items.STICK)
 								.pattern("PAS")
 								.pattern(" # ")
@@ -369,7 +369,7 @@ public class RecipesGen extends RecipeProvider {
 					if (processedType.contains("storage_block")) {
 						if (material.getProperties().getBlockRecipeType() == 4) {
 							// Block from Gem x4
-							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material))
 									.define('#', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("##")
 									.pattern("##")
@@ -378,7 +378,7 @@ public class RecipesGen extends RecipeProvider {
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_gem/" + material.getId()));
 
 							//Gem from Block x4
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.get(material.getId()).get(), 4)
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.get(material), 4)
 									.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
@@ -387,7 +387,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (material.getProperties().getBlockRecipeType() == 9) {
 							// Block from Gem x9
-							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.storageBlockItemMap.get(material))
 									.define('#', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("###")
 									.pattern("###")
@@ -397,7 +397,7 @@ public class RecipesGen extends RecipeProvider {
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_gem/" + material.getId()));
 
 							// Gem from Block x9
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.get(material.getId()).get(), 9)
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.get(material), 9)
 									.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
@@ -406,26 +406,26 @@ public class RecipesGen extends RecipeProvider {
 
 						//Waxed
 						if (material.getProperties().hasOxidization()) {
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.storageBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.get(material))
+									.requires(EERegistrar.storageBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/" + material.getId() + "_block"));
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.exposedBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.get(material))
+									.requires(EERegistrar.exposedBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/exposed_" + material.getId()));
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.weatheredBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.get(material))
+									.requires(EERegistrar.weatheredBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/weathered_" + material.getId()));
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.get(material.getId()).get())
-									.requires(EERegistrar.oxidizedBlockItemMap.get(material.getId()).get())
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.get(material))
+									.requires(EERegistrar.oxidizedBlockItemMap.get(material))
 									.requires(Items.HONEYCOMB)
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
@@ -434,7 +434,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("plate")) {
 							// Plate from Gem
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(material.getId()).get(), 1)
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(material), 1)
 									.requires(EETags.MATERIAL_GEM.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -444,7 +444,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("gear")) {
 							// Gear from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('N', Tags.Items.NUGGETS_IRON)
 									.pattern(" G ")
@@ -457,7 +457,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("rod")) {
 							// Rod from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(material.getId()).get(), 2)
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(material), 2)
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("G")
 									.pattern("G")
@@ -468,7 +468,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("helmet")) {
 							// Helmet from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("GGG")
 									.pattern("G G")
@@ -479,7 +479,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("chestplate")) {
 							// Chestplate from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("G G")
 									.pattern("GGG")
@@ -491,7 +491,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("leggings")) {
 							// Leggings from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("GGG")
 									.pattern("G G")
@@ -503,7 +503,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("boots")) {
 							// Boots from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("G G")
 									.pattern("G G")
@@ -519,7 +519,7 @@ public class RecipesGen extends RecipeProvider {
 							UpgradeRecipeBuilder.smithing(
 											Ingredient.of(Items.SHIELD),
 											Ingredient.of(EETags.MATERIAL_GEM.apply(material.getId())),
-											EERegistrar.shieldMap.get(material.getId()).get())
+											EERegistrar.shieldMap.get(material))
 									.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_gem/" + material.getId()));
 
@@ -528,7 +528,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("sword")) {
 							// Sword from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('#', Items.STICK)
 									.pattern("G")
@@ -541,7 +541,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("pickaxe")) {
 							// Pickaxe from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('#', Items.STICK)
 									.pattern("GGG")
@@ -554,7 +554,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("axe")) {
 							// Axe from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('#', Items.STICK)
 									.pattern("GG")
@@ -567,7 +567,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("shovel")) {
 							// Shovel from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('#', Items.STICK)
 									.pattern("G")
@@ -580,7 +580,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("hoe")) {
 							// Hoe from Gem
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.define('#', Items.STICK)
 									.pattern("GG")
@@ -593,10 +593,10 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
 							// Paxel from Ingot
-							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(material.getId()).get())
-									.define('P', EERegistrar.pickaxeMap.get(material.getId()).get())
-									.define('A', EERegistrar.axeMap.get(material.getId()).get())
-									.define('S', EERegistrar.shovelMap.get(material.getId()).get())
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(material))
+									.define('P', EERegistrar.pickaxeMap.get(material))
+									.define('A', EERegistrar.axeMap.get(material))
+									.define('S', EERegistrar.shovelMap.get(material))
 									.define('#', Items.STICK)
 									.pattern("PAS")
 									.pattern(" # ")
@@ -609,7 +609,7 @@ public class RecipesGen extends RecipeProvider {
 
 					if (processedType.contains("raw")) {
 						// Raw Block from Raw Material
-						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rawBlockItemMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rawBlockItemMap.get(material))
 								.define('#', EETags.MATERIAL_RAW.apply(material.getId()))
 								.pattern("###")
 								.pattern("###")
@@ -619,7 +619,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "raw/block/from_material/" + material.getId()));
 
 						// Raw Material from Raw Block
-						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.rawMap.get(material.getId()).get(), 9)
+						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.rawMap.get(material), 9)
 								.requires(EETags.MATERIAL_RAW_STORAGE_BLOCK.apply(material.getId()))
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
@@ -629,7 +629,7 @@ public class RecipesGen extends RecipeProvider {
 					if (processedType.contains("dust")) {
 						if (processedType.contains("ore")) {
 							// Dust from Ore
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(material.getId()).get(), 1)
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(material), 1)
 									.requires(EETags.MATERIAL_ORE.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -639,7 +639,7 @@ public class RecipesGen extends RecipeProvider {
 
 						if (processedType.contains("raw")) {
 							// Dust from Raw
-							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(material.getId()).get(), 1)
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(material), 1)
 									.requires(EETags.MATERIAL_RAW.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -651,7 +651,7 @@ public class RecipesGen extends RecipeProvider {
 					if (processedType.contains("cluster")) {
 						// Spyglass
 						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.SPYGLASS)
-								.define('#', EERegistrar.clusterShardMap.get(material.getId()).get())
+								.define('#', EERegistrar.clusterShardMap.get(material))
 								.define('X', EETags.MATERIAL_INGOT.apply("copper"))
 								.pattern(" # ")
 								.pattern(" X ")
@@ -662,7 +662,7 @@ public class RecipesGen extends RecipeProvider {
 						// Tinted Glass
 						ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Blocks.TINTED_GLASS, 2)
 								.define('G', Blocks.GLASS)
-								.define('S', EERegistrar.clusterShardMap.get(material.getId()).get())
+								.define('S', EERegistrar.clusterShardMap.get(material))
 								.pattern(" S ")
 								.pattern("SGS")
 								.pattern(" S ")
@@ -670,8 +670,8 @@ public class RecipesGen extends RecipeProvider {
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "tinted_glass/from_shard/" + material.getId()));
 						// Cluster Shard Block
-						ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.clusterShardBlockItemMap.get(material.getId()).get())
-								.define('S', EERegistrar.clusterShardMap.get(material.getId()).get())
+						ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, EERegistrar.clusterShardBlockItemMap.get(material))
+								.define('S', EERegistrar.clusterShardMap.get(material))
 								.pattern("SS")
 								.pattern("SS")
 								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -695,7 +695,7 @@ public class RecipesGen extends RecipeProvider {
 						for (Map.Entry<String, Item> mat : vanillaGems.entrySet()) {
 							if (processedType.contains("plate")) {
 								// Plate
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(mat.getKey()).get(), 1)
+								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(mat.getKey()), 1)
 										.requires(mat.getValue())
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -705,7 +705,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("gear")) {
 								// Gear
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('N', Tags.Items.NUGGETS_IRON)
 										.pattern(" G ")
@@ -718,7 +718,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("rod")) {
 								// Rod
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.pattern("G")
 										.pattern("G")
@@ -729,7 +729,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("dust")) {
 								// Dust from Ore
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()).get(), 1)
+								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -755,7 +755,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("helmet")) {
 								// Helmet from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.pattern("GGG")
 										.pattern("G G")
@@ -766,7 +766,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("chestplate")) {
 								// Chestplate from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.pattern("G G")
 										.pattern("GGG")
@@ -778,7 +778,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("leggings")) {
 								// Leggings from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.pattern("GGG")
 										.pattern("G G")
@@ -790,7 +790,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("boots")) {
 								// Boots from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.pattern("G G")
 										.pattern("G G")
@@ -805,7 +805,7 @@ public class RecipesGen extends RecipeProvider {
 								UpgradeRecipeBuilder.smithing(
 												Ingredient.of(Items.SHIELD),
 												Ingredient.of(mat.getValue()),
-												EERegistrar.shieldMap.get(mat.getKey()).get())
+												EERegistrar.shieldMap.get(mat.getKey()))
 										.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_gem/" + mat.getKey()));
 							}
@@ -813,7 +813,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("sword")) {
 								// Sword from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("G")
@@ -826,7 +826,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("pickaxe")) {
 								// Pickaxe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("GGG")
@@ -839,7 +839,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("axe")) {
 								// Axe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("GG")
@@ -852,7 +852,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("shovel")) {
 								// Shovel from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("G")
@@ -865,7 +865,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("hoe")) {
 								// Hoe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(mat.getKey()))
 										.define('G', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("GG")
@@ -878,10 +878,10 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
 								// Paxel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(mat.getKey()).get())
-										.define('P', EERegistrar.pickaxeMap.get(mat.getKey()).get())
-										.define('A', EERegistrar.axeMap.get(mat.getKey()).get())
-										.define('S', EERegistrar.shovelMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(mat.getKey()))
+										.define('P', EERegistrar.pickaxeMap.get(mat.getKey()))
+										.define('A', EERegistrar.axeMap.get(mat.getKey()))
+										.define('S', EERegistrar.shovelMap.get(mat.getKey()))
 										.define('#', Items.STICK)
 										.pattern("PAS")
 										.pattern(" # ")
@@ -905,7 +905,7 @@ public class RecipesGen extends RecipeProvider {
 						for (Map.Entry<String, Item> mat : vanillaMetals.entrySet()) {
 							if (processedType.contains("plate")) {
 								// Plate
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(mat.getKey()).get(), 1)
+								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.get(mat.getKey()), 1)
 										.requires(mat.getValue())
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -915,7 +915,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("gear")) {
 								// Gear
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('N', Tags.Items.NUGGETS_IRON)
 										.pattern(" I ")
@@ -928,7 +928,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("rod")) {
 								// Rod
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.pattern("I")
 										.pattern("I")
@@ -939,7 +939,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("dust")) {
 								// Dust from Ore
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()).get(), 1)
+								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -947,7 +947,7 @@ public class RecipesGen extends RecipeProvider {
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
 
 								// Dust from Raw
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()).get(), 1)
+								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.get(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_RAW.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
 										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
@@ -987,7 +987,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("helmet")) {
 								// Helmet from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.pattern("III")
 										.pattern("I I")
@@ -998,7 +998,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("chestplate")) {
 								// Chestplate from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.pattern("I I")
 										.pattern("III")
@@ -1010,7 +1010,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("leggings")) {
 								// Leggings from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.pattern("III")
 										.pattern("I I")
@@ -1022,7 +1022,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("boots")) {
 								// Boots from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.pattern("I I")
 										.pattern("I I")
@@ -1037,7 +1037,7 @@ public class RecipesGen extends RecipeProvider {
 								UpgradeRecipeBuilder.smithing(
 												Ingredient.of(Items.SHIELD),
 												Ingredient.of(mat.getValue()),
-												EERegistrar.shieldMap.get(mat.getKey()).get())
+												EERegistrar.shieldMap.get(mat.getKey()))
 										.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_ingot/" + mat.getKey()));
 							}
@@ -1045,7 +1045,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("sword")) {
 								// Sword from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("I")
@@ -1058,7 +1058,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("pickaxe")) {
 								// Pickaxe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("III")
@@ -1071,7 +1071,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("axe")) {
 								// Axe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("II")
@@ -1084,7 +1084,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("shovel")) {
 								// Shovel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("I")
@@ -1097,7 +1097,7 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("hoe")) {
 								// Hoe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.get(mat.getKey()))
 										.define('I', mat.getValue())
 										.define('#', Items.STICK)
 										.pattern("II")
@@ -1110,10 +1110,10 @@ public class RecipesGen extends RecipeProvider {
 
 							if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
 								// Paxel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(mat.getKey()).get())
-										.define('P', EERegistrar.pickaxeMap.get(mat.getKey()).get())
-										.define('A', EERegistrar.axeMap.get(mat.getKey()).get())
-										.define('S', EERegistrar.shovelMap.get(mat.getKey()).get())
+								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.get(mat.getKey()))
+										.define('P', EERegistrar.pickaxeMap.get(mat.getKey()))
+										.define('A', EERegistrar.axeMap.get(mat.getKey()))
+										.define('S', EERegistrar.shovelMap.get(mat.getKey()))
 										.define('#', Items.STICK)
 										.pattern("PAS")
 										.pattern(" # ")

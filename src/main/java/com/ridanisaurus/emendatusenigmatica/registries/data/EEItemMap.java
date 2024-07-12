@@ -15,30 +15,57 @@ import java.util.HashMap;
 public class EEItemMap<T extends Item> extends HashMap<String, DeferredItem<T>> {
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns item.
-     * @param material Material to get the item of.
-     * @return Item associated with the Material provided.
-     * @apiNote If DeferredItem is required, use normal get() method of HashMap.
+     * Used to get the DeferredItem under a specified Material ID.
+     * @param key Material ID under which the required item is stored.
+     * @return DeferredItem associated with the material provided.
      */
-    public T get(MaterialModel material) {
-        return this.get(material.getId()).get();
+    public DeferredItem<T> getSupplier(@NotNull String key) {
+        return super.get(key);
     }
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns the item ID.
-     * @param material Material to get the item ID of.
-     * @return ResourceLocation of the Item associated with the Material provided.
+     * Used to get the DeferredItem of the specified material.
+     * @param model MaterialModel of the item.
+     * @return DeferredItem associated with the material provided.
      */
-    public ResourceLocation getId(@NotNull MaterialModel material) {
-        return this.get(material.getId()).getId();
+    public DeferredItem<T> getSupplier(@NotNull MaterialModel model) {
+        return this.getSupplier(model.getId());
+    }
+
+
+    /**
+     * Used to get the item under a specified Material ID.
+     * @param key Material ID under which the required item is stored.
+     * @return Direct Reference to the item associated with the material provided.
+     */
+    public T get(@NotNull String key) {
+        return this.getSupplier(key).get();
     }
 
     /**
-     * Utility method that wraps around HashMap {@code get()} method that accepts material and returns the item ID as a string.
-     * @param material Material to get the item id of.
-     * @return String representation of the Item ResourceLocation, associated with the Material provided.
+     * Used to get the item of the specified material.
+     * @param model MaterialModel of the item.
+     * @return Direct Reference to the item associated with the material provided.
      */
-    public String getIdAsString(MaterialModel material) {
-        return this.getId(material).toString();
+    public T get(@NotNull MaterialModel model) {
+        return this.getSupplier(model).get();
+    }
+
+    /**
+     * Used to get the ID of the stored item with use of the material model.
+     * @param model MaterialModel of the item.
+     * @return ResourceLocation of the item associated with the material provided.
+     */
+    public ResourceLocation getId(@NotNull MaterialModel model) {
+        return this.getSupplier(model).getId();
+    }
+
+    /**
+     * Used to get the ID of the stored item with use of the material model.
+     * @param model MaterialModel of the item.
+     * @return String representation of the item ID associated with the material provided.
+     */
+    public String getIdAsString(MaterialModel model) {
+        return this.getId(model).toString();
     }
 }

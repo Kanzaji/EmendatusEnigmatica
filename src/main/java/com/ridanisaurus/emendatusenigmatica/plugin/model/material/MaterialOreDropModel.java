@@ -98,10 +98,7 @@ public class MaterialOreDropModel {
 	}
 
 	public ItemLike getDefaultItemDropAsItem() {
-		//TODO: Test if works as intended.
 		return BuiltInRegistries.ITEM.get(ResourceLocation.parse(drop));
-		// Old Code:
-//		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(drop));
 	}
 
 	static {

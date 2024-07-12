@@ -81,10 +81,7 @@ public class EffectModel {
 	}
 
 	public @NotNull Holder<MobEffect> getEffect() {
-		//TODO: Test if this works as intended.
 		return BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effect)).orElseThrow(() -> new IllegalArgumentException("Effect under id: " + effect + " doesn't exist!"));
-		// Old code:
-//		return ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effect));
 	}
 
 	public int getLevel() {

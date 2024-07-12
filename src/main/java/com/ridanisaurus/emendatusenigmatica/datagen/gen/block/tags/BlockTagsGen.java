@@ -84,7 +84,7 @@ public class BlockTagsGen extends EETagProvider {
 				addMaterialSpecificTag(COMMON, "ores", id, material);
 				addTag(COMMON, "ores_in_ground/" + strata.getSuffix(), id);
 
-				//TODO: Rework Sample System
+				//TODO: Rework Sample System.
 //				if (types.contains("sample")) {
 //					if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
 //						ResourceLocation sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();

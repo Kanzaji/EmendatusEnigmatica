@@ -181,10 +181,7 @@ public class MaterialModel {
 				return processedTypes.contains("raw") ? EERegistrar.rawMap.getValue(id) : oreDrop.getDefaultItemDropAsItem();
 			}
 		} else {
-			//TODO: Test if works as intended.
 			return BuiltInRegistries.ITEM.get(Reference.AIR_RS);
-			// Old Code:
-//			return ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft:air"));
 		}
 	}
 

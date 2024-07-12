@@ -76,7 +76,7 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
                         }
                     }
 
-                    // TODO: Rework Sample System
+                    //TODO: Rework Sample System.
 //                    if (processedType.contains("sample")) {
 ////							ResourceLocation sample = ResourceLocation.parse("minecraft:stone");
 //                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {

@@ -55,7 +55,6 @@ public class BasicBuddingBlock extends BuddingAmethystBlock implements IColorabl
 	private final Supplier<Block> cluster;
 
 	public BasicBuddingBlock(MaterialModel material, Supplier<Block> small_bud, Supplier<Block> medium_bud, Supplier<Block> large_bud, Supplier<Block> cluster) {
-		//TODO: Not sure how exactly the properties were being copied in 1.19.2. Another system that was completely reworked :P
 		super(Properties.ofFullCopy(Blocks.BUDDING_AMETHYST)
 				.strength(1.5f, 1.5f)
 				.randomTicks()

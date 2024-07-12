@@ -71,7 +71,7 @@ public class BlockHarvestLevelTagsGen extends EETagProvider {
                         ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
                     harvestLevelSwitch(material, ore);
 
-                    // TODO: Processed Type "sample" doesn't tho?
+                    //TODO: Rework Sample System.
                     if (processedType.contains("sample")) {
                         ResourceLocation sample = STONE;
                         if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId()))

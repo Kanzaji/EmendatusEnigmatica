@@ -42,30 +42,32 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
     @Override
     public void registerMinecraft(List<MaterialModel> materialModels, List<StrataModel> strataModels) {
     //FIXME: Rework this method when Data generation and EERegistrar is ported.
-        for (StrataModel strata : strataModels) {
-            for (MaterialModel material : materialModels) {
-                if (material.getProcessedTypes().contains("ore")) {
-                    if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-                        EERegistrar.registerOre(strata, material);
-                    }
-                    if (material.getProcessedTypes().contains("sample")) {
-                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-                            EERegistrar.registerSample(strata, material);
-                        }
-                    }
-                }
-            }
-        }
-
         for (MaterialModel material : materialModels) {
-            if (material.getProcessedTypes().contains("storage_block")) {
-                EERegistrar.registerStorageBlocks(material);
-            }
-            if (material.getProcessedTypes().contains("raw")) {
+            List<String> types = material.getProcessedTypes();
+            if (types.contains("storage_block")) EERegistrar.registerStorageBlocks(material);
+            if (types.contains("ingot"))    EERegistrar.registerIngots(material);
+            if (types.contains("nugget"))   EERegistrar.registerNuggets(material);
+            if (types.contains("gem"))      EERegistrar.registerGems(material);
+            if (types.contains("dust"))     EERegistrar.registerDusts(material);
+            if (types.contains("plate"))    EERegistrar.registerPlates(material);
+            if (types.contains("gear"))     EERegistrar.registerGears(material);
+            if (types.contains("rod"))      EERegistrar.registerRods(material);
+            if (types.contains("sword"))    EERegistrar.registerSwords(material);
+            if (types.contains("pickaxe"))  EERegistrar.registerPickaxes(material);
+            if (types.contains("axe"))      EERegistrar.registerAxes(material);
+            if (types.contains("shovel")) EERegistrar.registerShovels(material);
+            if (types.contains("hoe")) EERegistrar.registerHoes(material);
+            if (types.contains("paxel")) EERegistrar.registerPaxels(material);
+//            if (types.contains("armor")) EERegistrar.registerArmor(material); //TODO: Uncomment when armor processed type is impl.
+            if (types.contains("shield")) EERegistrar.registerShields(material);
+            if (types.contains("fluid")) EERegistrar.registerFluids(material);
+
+            if (types.contains("raw")) {
                 EERegistrar.registerRaw(material);
                 EERegistrar.registerRawBlocks(material);
             }
-            if (material.getProcessedTypes().contains("cluster")) {
+
+            if (types.contains("cluster")) {
                 EERegistrar.registerSmallBudBlocks(material);
                 EERegistrar.registerMediumBudBlocks(material);
                 EERegistrar.registerLargeBudBlocks(material);
@@ -74,70 +76,38 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
                 EERegistrar.registerClusterShardBlocks(material);
                 EERegistrar.registerClusterShards(material);
             }
-            if (material.getProcessedTypes().contains("ingot")) {
-                EERegistrar.registerIngots(material);
-            }
-            if (material.getProcessedTypes().contains("nugget")) {
-                EERegistrar.registerNuggets(material);
-            }
-            if (material.getProcessedTypes().contains("gem")) {
-                EERegistrar.registerGems(material);
-            }
-            if (material.getProcessedTypes().contains("dust")) {
-                EERegistrar.registerDusts(material);
-            }
-            if (material.getProcessedTypes().contains("plate")) {
-                EERegistrar.registerPlates(material);
-            }
-            if (material.getProcessedTypes().contains("gear")) {
-                EERegistrar.registerGears(material);
-            }
-            if (material.getProcessedTypes().contains("rod")) {
-                EERegistrar.registerRods(material);
-            }
-            if (material.getProcessedTypes().contains("sword")) {
-                EERegistrar.registerSwords(material);
-            }
-            if (material.getProcessedTypes().contains("pickaxe")) {
-                EERegistrar.registerPickaxes(material);
-            }
-            if (material.getProcessedTypes().contains("axe")) {
-                EERegistrar.registerAxes(material);
-            }
-            if (material.getProcessedTypes().contains("shovel")) {
-                EERegistrar.registerShovels(material);
-            }
-            if (material.getProcessedTypes().contains("hoe")) {
-                EERegistrar.registerHoes(material);
-            }
-            if (material.getProcessedTypes().contains("paxel")) {
-                EERegistrar.registerPaxels(material);
-            }
+
+            @Deprecated(forRemoval = true)
             boolean registerArmorMaterial = false;
-            if (material.getProcessedTypes().contains("helmet")) {
+            if (types.contains("helmet")) {
                 EERegistrar.registerHelmets(material);
                 registerArmorMaterial = true;
             }
-            if (material.getProcessedTypes().contains("chestplate")) {
+            if (types.contains("chestplate")) {
                 EERegistrar.registerChestplates(material);
                 registerArmorMaterial = true;
             }
-            if (material.getProcessedTypes().contains("leggings")) {
+            if (types.contains("leggings")) {
                 EERegistrar.registerLeggings(material);
                 registerArmorMaterial = true;
             }
-            if (material.getProcessedTypes().contains("boots")) {
+            if (types.contains("boots")) {
                 EERegistrar.registerBoots(material);
                 registerArmorMaterial = true;
             }
-            if (registerArmorMaterial) {
-                EERegistrar.registerArmorMaterial(material);
-            }
-            if (material.getProcessedTypes().contains("shield")) {
-                EERegistrar.registerShields(material);
-            }
-            if (material.getProcessedTypes().contains("fluid")) {
-                EERegistrar.registerFluids(material);
+            if (registerArmorMaterial) EERegistrar.registerArmorMaterial(material);
+
+            for (StrataModel strata : strataModels) {
+                if (types.contains("ore")) {
+                    if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) EERegistrar.registerOre(strata, material);
+
+                    //TODO: Rework Sample System.
+//                    if (types.contains("sample")) {
+//                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
+//                            EERegistrar.registerSample(strata, material);
+//                        }
+//                    }
+                }
             }
         }
     }

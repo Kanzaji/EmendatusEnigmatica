@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//TODO: Also Changed functionality. Possible full re-write.
 package com.ridanisaurus.emendatusenigmatica.datagen.gen;
 
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;

@@ -26,9 +26,6 @@ import java.util.concurrent.CompletableFuture;
 //This plugin will be always first
 @EmendatusPluginReference(modid = Reference.MOD_ID, name = "config")
 public class DefaultConfigPlugin implements IEmendatusPlugin {
-    //    Not used anywhere, commented to reduce memory usage a bit.
-//    public static final List<MaterialModel> MATERIALS = new ArrayList<>();
-//    public static final List<StrataModel> STRATA = new ArrayList<>();
 
     /**
      * Used to trigger loading of config directory.

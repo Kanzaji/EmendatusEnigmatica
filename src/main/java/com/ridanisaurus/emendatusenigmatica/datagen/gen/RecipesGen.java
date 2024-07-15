@@ -28,7 +28,6 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
@@ -69,7 +68,7 @@ public class RecipesGen extends RecipeProvider {
 				.define('N', EETags.MATERIAL_NUGGET.apply("iron"))
 				.define('S', EETags.MATERIAL_ROD.apply("wooden"))
 				.group(Reference.MOD_ID)
-				.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+				.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 				.save(out);
 
 		for(MaterialModel material : registry.getMaterials()) {
@@ -80,7 +79,7 @@ public class RecipesGen extends RecipeProvider {
 						// Ingot from Block
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.ingotMap.getValue(material), 9)
 								.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_block/" + material.getId()));
 
@@ -90,7 +89,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("###")
 								.pattern("###")
 								.pattern("###")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_ingot/" + material.getId()));
 
@@ -99,28 +98,28 @@ public class RecipesGen extends RecipeProvider {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.getValue(material))
 									.requires(EERegistrar.storageBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/" + material.getId() + "_block"));
 
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.getValue(material))
 									.requires(EERegistrar.exposedBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/exposed_" + material.getId()));
 
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.getValue(material))
 									.requires(EERegistrar.weatheredBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/weathered_" + material.getId()));
 
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.getValue(material))
 									.requires(EERegistrar.oxidizedBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/oxidized_" + material.getId()));
 						}
@@ -133,14 +132,14 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("###")
 								.pattern("###")
 								.pattern("###")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_nugget/" + material.getId()));
 
 						// Nugget from Ingot
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.nuggetMap.getValue(material), 9)
 								.requires(EETags.MATERIAL_INGOT.apply(material.getId()))
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "nugget/from_ingot/" + material.getId()));
 					}
@@ -150,13 +149,13 @@ public class RecipesGen extends RecipeProvider {
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 0.5F, 200)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/smelting/" + material.getId()));
 
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_DUST.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 0.5F, 100)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + material.getId()));
 					}
 
@@ -165,7 +164,7 @@ public class RecipesGen extends RecipeProvider {
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(material), 1)
 								.requires(EETags.MATERIAL_INGOT.apply(material.getId()))
 								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_ingot/" + material.getId()));
 					}
@@ -178,7 +177,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern(" I ")
 								.pattern("INI")
 								.pattern(" I ")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_ingot/" + material.getId()));
 					}
@@ -189,7 +188,7 @@ public class RecipesGen extends RecipeProvider {
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("I")
 								.pattern("I")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_ingot/" + material.getId()));
 					}
@@ -199,13 +198,13 @@ public class RecipesGen extends RecipeProvider {
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 1.0F, 200)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/smelting/" + material.getId()));
 						// Ingot from Blasting Ore
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 1.0F, 100)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + material.getId()));
 					}
 
@@ -214,13 +213,13 @@ public class RecipesGen extends RecipeProvider {
 						SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_RAW.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 1.0F, 200)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_raw/smelting/" + material.getId()));
 						// Ingot from Blasting Raw Material
 						SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_RAW.apply(material.getId())),
 										RecipeCategory.MISC,
 										EERegistrar.ingotMap.getValue(material), 1.0F, 100)
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_raw/blasting/" + material.getId()));
 					}
 
@@ -230,7 +229,7 @@ public class RecipesGen extends RecipeProvider {
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("III")
 								.pattern("I I")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + material.getId()));
 					}
@@ -242,7 +241,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("I I")
 								.pattern("III")
 								.pattern("III")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + material.getId()));
 					}
@@ -254,7 +253,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("III")
 								.pattern("I I")
 								.pattern("I I")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + material.getId()));
 					}
@@ -265,7 +264,7 @@ public class RecipesGen extends RecipeProvider {
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
 								.pattern("I I")
 								.pattern("I I")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_ingot/" + material.getId()));
 					}
@@ -277,7 +276,7 @@ public class RecipesGen extends RecipeProvider {
 										Ingredient.of(Items.SHIELD),
 										Ingredient.of(EETags.MATERIAL_INGOT.apply(material.getId())),
 										EERegistrar.shieldMap.get(material))
-								.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlocks("cobblestone", has(Blocks.COBBLESTONE))
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_ingot/" + material.getId()));
 					}
 					 */
@@ -290,7 +289,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("I")
 								.pattern("I")
 								.pattern("#")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_ingot/" + material.getId()));
 					}
@@ -303,7 +302,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("III")
 								.pattern(" # ")
 								.pattern(" # ")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_ingot/" + material.getId()));
 					}
@@ -316,7 +315,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("II")
 								.pattern("I#")
 								.pattern(" #")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_ingot/" + material.getId()));
 					}
@@ -329,7 +328,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("I")
 								.pattern("#")
 								.pattern("#")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_ingot/" + material.getId()));
 					}
@@ -342,7 +341,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("II")
 								.pattern(" #")
 								.pattern(" #")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_ingot/" + material.getId()));
 					}
@@ -357,7 +356,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("PAS")
 								.pattern(" # ")
 								.pattern(" # ")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_ingot/" + material.getId()));
 					}
@@ -372,14 +371,14 @@ public class RecipesGen extends RecipeProvider {
 									.define('#', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("##")
 									.pattern("##")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_gem/" + material.getId()));
 
 							//Gem from Block x4
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.getValue(material), 4)
 									.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_block/" + material.getId()));
 						}
@@ -391,14 +390,14 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("###")
 									.pattern("###")
 									.pattern("###")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_gem/" + material.getId()));
 
 							// Gem from Block x9
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.gemMap.getValue(material), 9)
 									.requires(EETags.MATERIAL_STORAGE_BLOCK.apply(material.getId()))
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_block/" + material.getId()));
 						}
@@ -408,25 +407,25 @@ public class RecipesGen extends RecipeProvider {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedStorageBlockItemMap.getValue(material))
 									.requires(EERegistrar.storageBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/" + material.getId() + "_block"));
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedExposedBlockItemMap.getValue(material))
 									.requires(EERegistrar.exposedBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/exposed_" + material.getId()));
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedWeatheredBlockItemMap.getValue(material))
 									.requires(EERegistrar.weatheredBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/weathered_" + material.getId()));
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, EERegistrar.waxedOxidizedBlockItemMap.getValue(material))
 									.requires(EERegistrar.oxidizedBlockItemMap.getValue(material))
 									.requires(Items.HONEYCOMB)
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed/from_block/oxidized_" + material.getId()));
 						}
@@ -436,7 +435,7 @@ public class RecipesGen extends RecipeProvider {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(material), 1)
 									.requires(EETags.MATERIAL_GEM.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_gem/" + material.getId()));
 						}
@@ -449,7 +448,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern(" G ")
 									.pattern("GNG")
 									.pattern(" G ")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_gem/" + material.getId()));
 						}
@@ -460,7 +459,7 @@ public class RecipesGen extends RecipeProvider {
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("G")
 									.pattern("G")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_gem/" + material.getId()));
 						}
@@ -471,7 +470,7 @@ public class RecipesGen extends RecipeProvider {
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("GGG")
 									.pattern("G G")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + material.getId()));
 						}
@@ -483,7 +482,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("G G")
 									.pattern("GGG")
 									.pattern("GGG")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + material.getId()));
 						}
@@ -495,7 +494,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("GGG")
 									.pattern("G G")
 									.pattern("G G")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + material.getId()));
 						}
@@ -506,7 +505,7 @@ public class RecipesGen extends RecipeProvider {
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
 									.pattern("G G")
 									.pattern("G G")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_gem/" + material.getId()));
 						}
@@ -519,7 +518,7 @@ public class RecipesGen extends RecipeProvider {
 											Ingredient.of(Items.SHIELD),
 											Ingredient.of(EETags.MATERIAL_GEM.apply(material.getId())),
 											EERegistrar.shieldMap.get(material))
-									.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlocks("cobblestone", has(Blocks.COBBLESTONE))
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_gem/" + material.getId()));
 
 						}
@@ -533,7 +532,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("G")
 									.pattern("G")
 									.pattern("#")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_gem/" + material.getId()));
 						}
@@ -546,7 +545,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("GGG")
 									.pattern(" # ")
 									.pattern(" # ")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_gem/" + material.getId()));
 						}
@@ -559,7 +558,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("GG")
 									.pattern("G#")
 									.pattern(" #")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_gem/" + material.getId()));
 						}
@@ -572,7 +571,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("G")
 									.pattern("#")
 									.pattern("#")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_gem/" + material.getId()));
 						}
@@ -585,7 +584,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("GG")
 									.pattern(" #")
 									.pattern(" #")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_gem/" + material.getId()));
 						}
@@ -600,7 +599,7 @@ public class RecipesGen extends RecipeProvider {
 									.pattern("PAS")
 									.pattern(" # ")
 									.pattern(" # ")
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_gem/" + material.getId()));
 						}
@@ -613,14 +612,14 @@ public class RecipesGen extends RecipeProvider {
 								.pattern("###")
 								.pattern("###")
 								.pattern("###")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "raw/block/from_material/" + material.getId()));
 
 						// Raw Material from Raw Block
 						ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.rawMap.getValue(material), 9)
 								.requires(EETags.MATERIAL_RAW_STORAGE_BLOCK.apply(material.getId()))
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "raw/material/from_block/" + material.getId()));
 					}
@@ -631,7 +630,7 @@ public class RecipesGen extends RecipeProvider {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(material), 1)
 									.requires(EETags.MATERIAL_ORE.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + material.getId()));
 						}
@@ -641,7 +640,7 @@ public class RecipesGen extends RecipeProvider {
 							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(material), 1)
 									.requires(EETags.MATERIAL_RAW.apply(material.getId()))
 									.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-									.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_raw/" + material.getId()));
 						}
@@ -655,7 +654,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern(" # ")
 								.pattern(" X ")
 								.pattern(" X ")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "spyglass/from_shard/" + material.getId()));
 						// Tinted Glass
@@ -665,7 +664,7 @@ public class RecipesGen extends RecipeProvider {
 								.pattern(" S ")
 								.pattern("SGS")
 								.pattern(" S ")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "tinted_glass/from_shard/" + material.getId()));
 						// Cluster Shard Block
@@ -673,7 +672,7 @@ public class RecipesGen extends RecipeProvider {
 								.define('S', EERegistrar.clusterShardMap.getValue(material))
 								.pattern("SS")
 								.pattern("SS")
-								.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_shard/" + material.getId()));
 					}
@@ -697,7 +696,7 @@ public class RecipesGen extends RecipeProvider {
 								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
 										.requires(mat.getValue())
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_gem/" + mat.getKey()));
 							}
@@ -710,7 +709,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern(" G ")
 										.pattern("GNG")
 										.pattern(" G ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_gem/" + mat.getKey()));
 							}
@@ -721,7 +720,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('G', mat.getValue())
 										.pattern("G")
 										.pattern("G")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_gem/" + mat.getKey()));
 							}
@@ -731,7 +730,7 @@ public class RecipesGen extends RecipeProvider {
 								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
 							}
@@ -741,14 +740,14 @@ public class RecipesGen extends RecipeProvider {
 								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.1F, 200)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/smelting/" + mat.getKey()));
 
 								// Ore Blasting
 								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.1F, 100)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/blasting/" + mat.getKey()));
 							}
 
@@ -758,7 +757,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('G', mat.getValue())
 										.pattern("GGG")
 										.pattern("G G")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + mat.getKey()));
 							}
@@ -770,7 +769,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("G G")
 										.pattern("GGG")
 										.pattern("GGG")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + mat.getKey()));
 							}
@@ -782,7 +781,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("GGG")
 										.pattern("G G")
 										.pattern("G G")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + mat.getKey()));
 							}
@@ -793,7 +792,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('G', mat.getValue())
 										.pattern("G G")
 										.pattern("G G")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_gem/" + mat.getKey()));
 							}
@@ -805,7 +804,7 @@ public class RecipesGen extends RecipeProvider {
 												Ingredient.of(Items.SHIELD),
 												Ingredient.of(mat.getValue()),
 												EERegistrar.shieldMap.get(mat.getKey()))
-										.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlocks("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_gem/" + mat.getKey()));
 							}
 							 */
@@ -818,7 +817,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("G")
 										.pattern("G")
 										.pattern("#")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_gem/" + mat.getKey()));
 							}
@@ -831,7 +830,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("GGG")
 										.pattern(" # ")
 										.pattern(" # ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_gem/" + mat.getKey()));
 							}
@@ -844,7 +843,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("GG")
 										.pattern("G#")
 										.pattern(" #")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_gem/" + mat.getKey()));
 							}
@@ -857,7 +856,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("G")
 										.pattern("#")
 										.pattern("#")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_gem/" + mat.getKey()));
 							}
@@ -870,7 +869,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("GG")
 										.pattern(" #")
 										.pattern(" #")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_gem/" + mat.getKey()));
 							}
@@ -885,7 +884,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("PAS")
 										.pattern(" # ")
 										.pattern(" # ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_gem/" + mat.getKey()));
 							}
@@ -907,7 +906,7 @@ public class RecipesGen extends RecipeProvider {
 								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
 										.requires(mat.getValue())
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_ingot/" + mat.getKey()));
 							}
@@ -920,7 +919,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern(" I ")
 										.pattern("INI")
 										.pattern(" I ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_ingot/" + mat.getKey()));
 							}
@@ -931,7 +930,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('I', mat.getValue())
 										.pattern("I")
 										.pattern("I")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_ingot/" + mat.getKey()));
 							}
@@ -941,7 +940,7 @@ public class RecipesGen extends RecipeProvider {
 								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
 
@@ -949,7 +948,7 @@ public class RecipesGen extends RecipeProvider {
 								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
 										.requires(EETags.MATERIAL_RAW.apply(mat.getKey()))
 										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_raw/" + mat.getKey()));
 
@@ -957,14 +956,14 @@ public class RecipesGen extends RecipeProvider {
 								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.7F, 200)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/smelting/" + mat.getKey()));
 
 								// Dust Blasting
 								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.7F, 100)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + mat.getKey()));
 							}
 
@@ -973,14 +972,14 @@ public class RecipesGen extends RecipeProvider {
 								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.1F, 200)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/smelting/" + mat.getKey()));
 
 								// Ore Blasting
 								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
 												RecipeCategory.MISC,
 												mat.getValue(), 0.1F, 100)
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + mat.getKey()));
 							}
 
@@ -990,7 +989,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('I', mat.getValue())
 										.pattern("III")
 										.pattern("I I")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + mat.getKey()));
 							}
@@ -1002,7 +1001,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("I I")
 										.pattern("III")
 										.pattern("III")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + mat.getKey()));
 							}
@@ -1014,7 +1013,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("III")
 										.pattern("I I")
 										.pattern("I I")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + mat.getKey()));
 							}
@@ -1025,7 +1024,7 @@ public class RecipesGen extends RecipeProvider {
 										.define('I', mat.getValue())
 										.pattern("I I")
 										.pattern("I I")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_ingot/" + mat.getKey()));
 							}
@@ -1037,7 +1036,7 @@ public class RecipesGen extends RecipeProvider {
 												Ingredient.of(Items.SHIELD),
 												Ingredient.of(mat.getValue()),
 												EERegistrar.shieldMap.get(mat.getKey()))
-										.unlocks("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlocks("cobblestone", has(Blocks.COBBLESTONE))
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shield/from_ingot/" + mat.getKey()));
 							}
 							 */
@@ -1050,7 +1049,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("I")
 										.pattern("I")
 										.pattern("#")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_ingot/" + mat.getKey()));
 							}
@@ -1063,7 +1062,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("III")
 										.pattern(" # ")
 										.pattern(" # ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_ingot/" + mat.getKey()));
 							}
@@ -1076,7 +1075,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("II")
 										.pattern("I#")
 										.pattern(" #")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_ingot/" + mat.getKey()));
 							}
@@ -1089,7 +1088,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("I")
 										.pattern("#")
 										.pattern("#")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_ingot/" + mat.getKey()));
 							}
@@ -1102,7 +1101,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("II")
 										.pattern(" #")
 										.pattern(" #")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_ingot/" + mat.getKey()));
 							}
@@ -1117,7 +1116,7 @@ public class RecipesGen extends RecipeProvider {
 										.pattern("PAS")
 										.pattern(" # ")
 										.pattern(" # ")
-										.unlockedBy("cobblestone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
+										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_ingot/" + mat.getKey()));
 							}

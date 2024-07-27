@@ -11,14 +11,18 @@ import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidTagsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemTagsGen;
-import com.ridanisaurus.emendatusenigmatica.datagen.provider.EELootProvider;
+import com.ridanisaurus.emendatusenigmatica.datagen.gen.LootGen;
+import com.ridanisaurus.emendatusenigmatica.datagen.gen.world.NeoFeatureGen;
+import com.ridanisaurus.emendatusenigmatica.datagen.gen.world.OreFeatureGen;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.*;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -38,7 +42,6 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
 
     @Override
     public void registerMinecraft(List<MaterialModel> materialModels, List<StrataModel> strataModels) {
-    //FIXME: Rework this method when Data generation and EERegistrar is ported.
         for (MaterialModel material : materialModels) {
             List<String> types = material.getProcessedTypes();
             if (types.contains("storage_block")) EERegistrar.registerStorageBlocks(material);
@@ -52,12 +55,12 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
             if (types.contains("sword"))    EERegistrar.registerSwords(material);
             if (types.contains("pickaxe"))  EERegistrar.registerPickaxes(material);
             if (types.contains("axe"))      EERegistrar.registerAxes(material);
-            if (types.contains("shovel")) EERegistrar.registerShovels(material);
-            if (types.contains("hoe")) EERegistrar.registerHoes(material);
-            if (types.contains("paxel")) EERegistrar.registerPaxels(material);
-//            if (types.contains("armor")) EERegistrar.registerArmor(material); //TODO: Uncomment when armor processed type is impl.
-            if (types.contains("shield")) EERegistrar.registerShields(material);
-            if (types.contains("fluid")) EERegistrar.registerFluids(material);
+            if (types.contains("shovel"))   EERegistrar.registerShovels(material);
+            if (types.contains("hoe"))      EERegistrar.registerHoes(material);
+            if (types.contains("paxel"))    EERegistrar.registerPaxels(material);
+//            if (types.contains("armor"))    EERegistrar.registerArmor(material); //TODO: Uncomment when armor processed type is impl.
+            if (types.contains("shield"))   EERegistrar.registerShields(material);
+            if (types.contains("fluid"))    EERegistrar.registerFluids(material);
 
             if (types.contains("raw")) {
                 EERegistrar.registerRaw(material);
@@ -122,8 +125,9 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
         generator.addProvider(true, new FluidTagsGen(generator, registry));
         generator.addProvider(true, new LangGen(generator, registry));
         generator.addProvider(true, new RecipesGen(generator, registry, providers));
-        generator.addProvider(true, new EELootProvider(generator, registry, providers));
-//        generator.addProvider(true, new OreFeatureDataGen(generator, registry));
+        generator.addProvider(true, new LootGen(generator, registry, providers));
+        generator.addProvider(true, new NeoFeatureGen(generator, registry));
+        generator.addProvider(true, new OreFeatureGen(generator, providers));
     }
 
     @Override

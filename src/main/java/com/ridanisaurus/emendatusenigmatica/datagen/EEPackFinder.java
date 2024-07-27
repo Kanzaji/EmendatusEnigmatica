@@ -71,7 +71,9 @@ public class EEPackFinder implements RepositorySource {
 				}
 			},
 			new Pack.Metadata(
-				Component.translatable("resourcepack.emendatusenigmatica.desc"),
+				(type == PackType.CLIENT_RESOURCES)?
+					Component.translatable("resourcepack.emendatusenigmatica.client.desc"):
+					Component.translatable("resourcepack.emendatusenigmatica.server.desc"),
 				PackCompatibility.COMPATIBLE,
 				FeatureFlagSet.of(),
 				List.of(),

@@ -41,6 +41,7 @@ import com.ridanisaurus.emendatusenigmatica.registries.data.EEItemMap;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
+import com.ridanisaurus.emendatusenigmatica.world.gen.feature.VanillaOreFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -51,6 +52,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -77,10 +79,18 @@ public class EERegistrar
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Reference.MOD_ID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, Reference.MOD_ID);
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, Reference.MOD_ID);
+    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, Reference.MOD_ID);
 
     // Existing items.
     public static final DeferredItem<Item> ENIGMATIC_HAMMER = ITEMS.register("enigmatic_hammer", HammerItem::new);
     public static final DeferredItem<Item> FELINIUM_JAMINITE = ITEMS.register("felinium_jaminite_ingot", FeliniumJaminiteIngot::new);
+
+    // Features
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> VANILLA_ORE_FEATURE = FEATURES.register("vanilla_feature", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> GEODE_ORE_FEATURE = FEATURES.register("vanilla_feature2", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DIKE_ORE_FEATURE = FEATURES.register("vanilla_feature3", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DENSE_ORE_FEATURE = FEATURES.register("vanilla_feature4", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> IDK_ORE_FEATURE = FEATURES.register("vanilla_feature5", VanillaOreFeature::new);
 
     // Ore Blocks
     // QoL changes for tables are not possible without AT or custom table impl - Thanks google!
@@ -175,6 +185,7 @@ public class EERegistrar
         FLUID_TYPES.register(eventBus);
         FLUIDS.register(eventBus);
         ARMOR_MATERIALS.register(eventBus);
+        FEATURES.register(eventBus);
     }
 
     public static void registerToCreativeTabs(BuildCreativeModeTabContentsEvent event) {

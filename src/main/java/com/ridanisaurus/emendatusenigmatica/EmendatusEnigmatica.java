@@ -1,12 +1,14 @@
 package com.ridanisaurus.emendatusenigmatica;
 
 import com.mojang.logging.LogUtils;
+import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.config.ConfigMenu;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.EEDeposits;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.tabs.EECreativeTab;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -88,6 +90,10 @@ public class EmendatusEnigmatica {
 
     public EELoader getLoader() {
         return loader;
+    }
+
+    public EmendatusDataRegistry getDataRegistry() {
+        return loader.getDataRegistry();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

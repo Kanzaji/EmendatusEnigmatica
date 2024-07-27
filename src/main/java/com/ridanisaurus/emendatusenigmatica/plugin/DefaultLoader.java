@@ -57,7 +57,7 @@ public class DefaultLoader {
         registerStrata(validator, LOGGER, strataDir, registry);
         registerMaterials(validator, LOGGER, materialDir, registry);
         registerCompat(validator, LOGGER, compatDir, registry);
-        registerDeposits(validator, LOGGER, compatDir, registry);
+        registerDeposits(validator, LOGGER, depositDir, registry);
 
         LOGGER.restartSpacer();
         LOGGER.info("Finished validation and registration of data files!");
@@ -148,13 +148,13 @@ public class DefaultLoader {
         LOGGER.info("Validating and registering data for: Deposits");
         depositJsonDefinitionsMap.forEach((path, element) -> {
             LOGGER.restartSpacer();
-            if (!validator.validateObject(element, path, DepositValidators.get(element.get(validator.getName())))) {
+            if (!validator.validateObject(element, path, DepositValidators.get(element.get("type")))) {
                 LOGGER.printSpacer(2);
                 LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
                 return;
             }
 
-            ACTIVE_PROCESSORS.add(DEPOSIT_PROCESSORS.get(element.get(validator.getName()).getAsString()).apply(element));
+            ACTIVE_PROCESSORS.add(DEPOSIT_PROCESSORS.get(element.get("type").getAsString()).apply(element));
             DEPOSIT_IDS.add(element.get("registryName").getAsString());
         });
 

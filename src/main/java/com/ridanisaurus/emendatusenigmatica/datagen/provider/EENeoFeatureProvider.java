@@ -25,25 +25,13 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.provider;
 
 import com.google.common.collect.Sets;
-import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingOutputStream;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +39,10 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public abstract class EEFeatureProvider implements DataProvider {
+public abstract class EENeoFeatureProvider implements DataProvider {
 	protected final DataGenerator generator;
 
-	public EEFeatureProvider(DataGenerator gen) {
+	public EENeoFeatureProvider(DataGenerator gen) {
 		this.generator = gen;
 	}
 
@@ -63,13 +51,13 @@ public abstract class EEFeatureProvider implements DataProvider {
 		Path path = this.generator.getPackOutput().getOutputFolder();
 		Set<ResourceLocation> set = Sets.newHashSet();
 		List<CompletableFuture<?>> cs = new ArrayList<>();
+
 		buildFeatures((consumer) -> {
 			if (!set.add(consumer.getId())) throw new IllegalStateException("Duplicate JSON " + consumer.getId());
 			cs.add(DataProvider.saveStable(
 				directoryCache,
 				consumer.serializeJSON(),
-				//TODO: Possibly required change for biome-Modifiers, most likely they are now under neoforge namespace or replaced
-				path.resolve("data/" + consumer.getId().getNamespace() + "/forge/biome_modifier/" + consumer.getId().getPath() + ".json")
+				path.resolve("data/" + consumer.getId().getNamespace() + "/neoforge/biome_modifier/" + consumer.getId().getPath() + ".json")
 			));
 		});
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));

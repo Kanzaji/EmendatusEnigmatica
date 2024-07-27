@@ -55,12 +55,21 @@ public class EEVirtualPackHandler implements PackResources {
 
     public EEVirtualPackHandler(Path path, PackType type) {
         this.path = path;
-        this.locationInfo = new PackLocationInfo(
-            "EE Virtual " + ((type == PackType.CLIENT_RESOURCES)? "Resource Pack": "Data Pack"),
-            Component.translatable("resourcepack.emendatusenigmatica.title"),
-            PackSource.DEFAULT,
-            Optional.empty()
-        );
+        if (type == PackType.CLIENT_RESOURCES) {
+            this.locationInfo = new PackLocationInfo(
+                "EE Virtual Resource Pack",
+                Component.translatable("resourcepack.emendatusenigmatica.client.title"),
+                PackSource.DEFAULT,
+                Optional.empty()
+            );
+        } else {
+            this.locationInfo = new PackLocationInfo(
+                "EE Virtual Data Pack",
+                Component.translatable("resourcepack.emendatusenigmatica.server.title"),
+                PackSource.DEFAULT,
+                Optional.empty()
+            );
+        }
         this.logger = LoggerFactory.getLogger(locationInfo.id() + " Handler");
     }
 
@@ -72,12 +81,16 @@ public class EEVirtualPackHandler implements PackResources {
     public IoSupplier<InputStream> getRootResource(String @NotNull ... fileName) {
         //FIXME No idea how this is supposed to work? For some reason now it accepts multiple inputs but single output? Just ignore all except first element?
         if (fileName.length == 0) return null;
-        return IoSupplier.create(path.resolve(fileName[0]));
+        Path file = path.resolve(fileName[0]);
+        if (Files.notExists(file)) return null;
+        return IoSupplier.create(file);
     }
 
     @Override
     public IoSupplier<InputStream> getResource(@NotNull PackType type, @NotNull ResourceLocation location) {
-        return IoSupplier.create(path.resolve(getFullPath(type, location)));
+        Path file = path.resolve(getFullPath(type, location));
+        if (Files.notExists(file)) return null;
+        return IoSupplier.create(file);
     }
 
     @Override

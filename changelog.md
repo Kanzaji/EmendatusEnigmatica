@@ -1,7 +1,17 @@
 # Emendatus Enigmatica
-#### MC 1.19.2 | Version 2.1.6
+#### MC 1.21 | Version 2.2.0
 
-* Fixed a bug causing fluids not to appear in JEI and Modded Tanks.
-* Fixed a bug where Fortune was not affecting Ore Drops as expected.
-* Added support for Uniformed Count drop (similar to Vanilla Redstone).
-* Fixed couple unclosed streams causing log spam. (Credit: Kanzaji)
+### New Features
+* Ported to Minecraft 1.21 - NeoForge 21.0.129!
+* Added Json Validation System.
+* Added "Virtual Resource Pack" which allows for adding textures in the configuration directory.
+* Added Simple Configuration Screen!
+* Added `armor` processed type, which replaces `helmet`, `chestplate`, `leggings`, `boots` processed types.
+* Added Trim Support to custom armor!
+* Native EMI Support
+
+### Fixes
+* Fixed EE Data Generation being reported as a cause when the other mod caused a crash on startup.
+
+
+Changelog is WIP. (Yes I need to find everything that was fixed / changed!)

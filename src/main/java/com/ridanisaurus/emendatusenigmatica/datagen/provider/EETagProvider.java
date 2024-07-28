@@ -25,25 +25,13 @@
 package com.ridanisaurus.emendatusenigmatica.datagen.provider;
 
 import com.google.common.collect.Sets;
-import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingOutputStream;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

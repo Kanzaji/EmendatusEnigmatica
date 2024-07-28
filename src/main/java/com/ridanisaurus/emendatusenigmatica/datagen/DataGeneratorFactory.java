@@ -25,7 +25,6 @@
 package com.ridanisaurus.emendatusenigmatica.datagen;
 
 import net.minecraft.SharedConstants;
-import net.minecraft.data.DataGenerator;
 import net.neoforged.fml.loading.FMLPaths;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

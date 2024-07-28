@@ -17,7 +17,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -388,8 +387,7 @@ public class TestOreFeature extends Feature<TestOreFeatureConfig> {
             }
         } catch (Exception e) {
             JsonElement modelJson = JsonOps.INSTANCE.withEncoder(TestDepositModel.CODEC).apply(model).result().get();
-            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson));
-            e.printStackTrace();
+            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson), e);
         }
     }
 }

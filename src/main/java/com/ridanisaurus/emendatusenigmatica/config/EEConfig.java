@@ -27,7 +27,6 @@ package com.ridanisaurus.emendatusenigmatica.config;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;

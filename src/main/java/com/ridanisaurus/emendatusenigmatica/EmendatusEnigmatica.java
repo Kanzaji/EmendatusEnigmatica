@@ -8,7 +8,6 @@ import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
-import com.ridanisaurus.emendatusenigmatica.plugin.deposit.EEDeposits;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.tabs.EECreativeTab;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -57,7 +56,7 @@ public class EmendatusEnigmatica {
             .displayItems((parameters, output) -> output.accept(EERegistrar.FELINIUM_JAMINITE))
     ));
 
-    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) throws IOException {
+    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) {
         instance = this;
         EEConfig.registerClient(modContainer);
         EEConfig.setupStartup(modContainer);

@@ -98,7 +98,7 @@ public class FeatureBuilder {
 			}
 
 			if (this.features.size() == 1) {
-				recipeJson.addProperty("features", this.features.get(0));
+				recipeJson.addProperty("features", this.features.getFirst());
 			}
 
 			if (this.biomes.size() > 1) {
@@ -110,7 +110,7 @@ public class FeatureBuilder {
 			}
 
 			if (this.biomes.size() == 1) {
-				recipeJson.addProperty("biomes", this.biomes.get(0));
+				recipeJson.addProperty("biomes", this.biomes.getFirst());
 			}
 
 			if (!this.step.isEmpty()) {

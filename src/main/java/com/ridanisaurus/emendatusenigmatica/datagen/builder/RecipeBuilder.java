@@ -29,7 +29,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericRecipe;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatIOModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -288,7 +287,7 @@ public class RecipeBuilder {
 				outputs.forEach(array::add);
 				return array;
 			}
-			return outputs.get(0);
+			return outputs.getFirst();
 		}
 
 		public void setForceArray(boolean forceArray) {

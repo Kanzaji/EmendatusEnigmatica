@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen.builder;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;

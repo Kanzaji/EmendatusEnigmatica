@@ -355,7 +355,7 @@ public class BlockModelBuilder {
 
 		final int rotation;
 
-		private FaceRotation(int rotation) {
+		FaceRotation(int rotation) {
 			this.rotation = rotation;
 		}
 	}

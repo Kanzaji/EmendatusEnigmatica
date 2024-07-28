@@ -5,11 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dense.DenseDepositModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.vanilla.VanillaDepositModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
-import com.ridanisaurus.emendatusenigmatica.world.gen.feature.VanillaOreFeature;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -22,7 +20,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class VanillaOreFeatureConfig implements FeatureConfiguration {
     public static final Codec<VanillaOreFeatureConfig> CODEC = RecordCodecBuilder.create((x) -> x.group(

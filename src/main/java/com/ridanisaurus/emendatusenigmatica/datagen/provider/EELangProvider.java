@@ -24,8 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen.provider;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;

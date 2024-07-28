@@ -11,7 +11,6 @@ import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.fluid.FluidTagsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemModelsGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.item.ItemTagsGen;
-import com.ridanisaurus.emendatusenigmatica.datagen.gen.LootGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.world.NeoFeatureGen;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.world.OreFeatureGen;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
@@ -19,10 +18,8 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.gen.*;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;

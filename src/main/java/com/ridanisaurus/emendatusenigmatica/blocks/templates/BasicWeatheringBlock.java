@@ -205,6 +205,6 @@ public class BasicWeatheringBlock extends Block implements ChangeOverTimeBlock<B
 		UNAFFECTED,
 		EXPOSED,
 		WEATHERED,
-		OXIDIZED;
-	}
+		OXIDIZED
+    }
 }

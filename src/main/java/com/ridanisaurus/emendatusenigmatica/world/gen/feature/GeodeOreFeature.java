@@ -279,8 +279,7 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 			}
 		} catch (Exception e) {
 			JsonElement modelJson = JsonOps.INSTANCE.withEncoder(GeodeDepositModel.CODEC).apply(model).result().get();
-			EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson));
-			e.printStackTrace();
+			EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson), e);
 		}
 	}
 

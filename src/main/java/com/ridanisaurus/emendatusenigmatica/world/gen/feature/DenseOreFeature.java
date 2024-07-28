@@ -146,8 +146,7 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
             placed = true;
         } catch (Exception e) {
             JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(model).result().get();
-            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson));
-            e.printStackTrace();
+            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson), e);
         }
     }
 
@@ -170,8 +169,7 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
             }
         } catch (Exception e) {
             JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(model).result().get();
-            EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson));
-            e.printStackTrace();
+            EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson), e);
         }
     }
 

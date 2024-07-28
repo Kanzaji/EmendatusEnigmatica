@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader;
 
-import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.api.AnnotationUtil;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.api.IEmendatusPlugin;

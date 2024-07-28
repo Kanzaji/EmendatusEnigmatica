@@ -28,14 +28,14 @@ import java.util.TreeMap;
 
 // Credit: Ars Nouveau
 public class RomanNumberHelper {
-	private static final TreeMap<Integer, String> map = new TreeMap();
+	private static final TreeMap<Integer, String> map = new TreeMap<>();
 
 	public static String toRoman(int number) {
-		int l = (Integer)map.floorKey(number);
+		int l = map.floorKey(number);
 		if (number == l) {
-			return (String)map.get(number);
+			return map.get(number);
 		} else {
-			String var10000 = (String)map.get(l);
+			String var10000 = map.get(l);
 			return var10000 + toRoman(number - l);
 		}
 	}

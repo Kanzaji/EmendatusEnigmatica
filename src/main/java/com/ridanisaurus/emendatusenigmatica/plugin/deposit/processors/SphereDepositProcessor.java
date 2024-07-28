@@ -32,11 +32,7 @@ public class SphereDepositProcessor implements IDepositProcessor {
 		return model;
 	}
 
-//	public List<CommonBlockDefinitionModel> getBlocks() {
-//		return model.getBlocks();
-//	}
-
-	@Override
+    @Override
 	public String getType() {
 		return model.getType();
 	}

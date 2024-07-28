@@ -30,10 +30,8 @@ import com.ridanisaurus.emendatusenigmatica.datagen.provider.EETagProvider;
 import com.ridanisaurus.emendatusenigmatica.datagen.IFinishedGenericJSON;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
-import com.ridanisaurus.emendatusenigmatica.registries.EETags;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

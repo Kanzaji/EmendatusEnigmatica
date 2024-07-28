@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.ridanisaurus.emendatusenigmatica.util.Reference.COMMON;
 import static com.ridanisaurus.emendatusenigmatica.util.Reference.MINECRAFT;
 
 public class BlockHarvestLevelTagsGen extends EETagProvider {

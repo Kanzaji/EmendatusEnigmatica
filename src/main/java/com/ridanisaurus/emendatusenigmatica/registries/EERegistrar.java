@@ -87,10 +87,11 @@ public class EERegistrar
 
     // Features
     public static final DeferredHolder<Feature<?>, VanillaOreFeature> VANILLA_ORE_FEATURE = FEATURES.register("vanilla_feature", VanillaOreFeature::new);
-    public static final DeferredHolder<Feature<?>, VanillaOreFeature> GEODE_ORE_FEATURE = FEATURES.register("vanilla_feature2", VanillaOreFeature::new);
-    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DIKE_ORE_FEATURE = FEATURES.register("vanilla_feature3", VanillaOreFeature::new);
-    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DENSE_ORE_FEATURE = FEATURES.register("vanilla_feature4", VanillaOreFeature::new);
-    public static final DeferredHolder<Feature<?>, VanillaOreFeature> IDK_ORE_FEATURE = FEATURES.register("vanilla_feature5", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> GEODE_ORE_FEATURE =   FEATURES.register("geode_feature", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> SPHERE_ORE_FEATURE =  FEATURES.register("sphere_feature", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DIKE_ORE_FEATURE =    FEATURES.register("dike_feature", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> DENSE_ORE_FEATURE =   FEATURES.register("dense_feature", VanillaOreFeature::new);
+    public static final DeferredHolder<Feature<?>, VanillaOreFeature> TEST_ORE_FEATURE =     FEATURES.register("test_feature", VanillaOreFeature::new);
 
     // Ore Blocks
     // QoL changes for tables are not possible without AT or custom table impl - Thanks google!

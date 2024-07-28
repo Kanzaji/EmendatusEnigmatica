@@ -137,8 +137,7 @@ public class DikeOreFeature extends Feature<DikeOreFeatureConfig> {
             placed = true;
         } catch (Exception e) {
             JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DikeDepositModel.CODEC).apply(model).result().get();
-            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson));
-            e.printStackTrace();
+            EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson), e);
         }
     }
 
@@ -161,8 +160,7 @@ public class DikeOreFeature extends Feature<DikeOreFeatureConfig> {
             }
         } catch (Exception e) {
             JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DikeDepositModel.CODEC).apply(model).result().get();
-            EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson));
-            e.printStackTrace();
+            EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson), e);
         }
     }
 

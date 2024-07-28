@@ -167,6 +167,5 @@ public class DefaultLoader {
         DEPOSIT_PROCESSORS.put(DepositType.GEODE.getType(), GeodeDepositProcessor::new);
         DEPOSIT_PROCESSORS.put(DepositType.DIKE.getType(), DikeDepositProcessor::new);
         DEPOSIT_PROCESSORS.put(DepositType.DENSE.getType(), DenseDepositProcessor::new);
-        DEPOSIT_PROCESSORS.put(DepositType.TEST.getType(), TestDepositProcessor::new);
     }
 }

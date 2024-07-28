@@ -51,7 +51,6 @@ public class DepositValidators {
         validators.put(DepositType.GEODE.getType(),  new LinkedHashMap<>(Map.of("config", new Validator("config").getRequiredObjectValidation(GeodeDepositConfigModel.validators, false))));
         validators.put(DepositType.DENSE.getType(),  new LinkedHashMap<>(Map.of("config", new Validator("config").getRequiredObjectValidation(DenseDepositConfigModel.validators, false))));
         validators.put(DepositType.DIKE.getType(),   new LinkedHashMap<>(Map.of("config", new Validator("config").getRequiredObjectValidation(DikeDepositConfigModel.validators, false))));
-        validators.put(DepositType.TEST.getType(),   new LinkedHashMap<>(Map.of("config", new Validator("config").getRequiredObjectValidation(TestDepositConfigModel.validators, false))));
     }
 
     /**

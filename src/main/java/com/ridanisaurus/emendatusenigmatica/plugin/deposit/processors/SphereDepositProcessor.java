@@ -90,4 +90,9 @@ public class SphereDepositProcessor implements IDepositProcessor {
 	public String getRarity() {
 		return model.getRarity();
 	}
+
+	@Override
+	public String getName() {
+		return model.getName();
+	}
 }

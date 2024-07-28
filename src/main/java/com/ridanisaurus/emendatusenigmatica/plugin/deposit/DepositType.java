@@ -7,8 +7,7 @@ public enum DepositType {
     SPHERE  ("emendatusenigmatica:sphere_deposit"),
     GEODE   ("emendatusenigmatica:geode_deposit"),
     DIKE    ("emendatusenigmatica:dike_deposit"),
-    DENSE   ("emendatusenigmatica:dense_deposit"),
-    TEST    ("emendatusenigmatica:test_deposit");
+    DENSE   ("emendatusenigmatica:dense_deposit");
 
     private final String type;
 

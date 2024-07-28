@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.IDepositProcessor;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.vanilla.VanillaDepositModel;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import com.ridanisaurus.emendatusenigmatica.util.WorldGenHelper;
@@ -48,101 +49,21 @@ public class OreFeatureGen implements DataProvider {
         // Rework The type to be enum, or something possible to use in a switch statement. (Maybe Enum to string would work?)
         // Test this a bit more.
         builder.add(Registries.CONFIGURED_FEATURE, bt -> {
-            for (IDepositProcessor activeProcessor : ACTIVE_PROCESSORS) { switch (DepositType.typeOf(activeProcessor.getType())) {
-                case VANILLA -> {
-                    var model = ((VanillaDepositProcessor) activeProcessor).getVanillaModel();
+            for (IDepositProcessor activeProcessor : ACTIVE_PROCESSORS) {
+                // If Type is not recognized - Skip. It's from an addon.
+                if (DepositType.typeOf(activeProcessor.getType()) == null) continue;
 
-                    var configuredFeature = bt.register(ResourceKey.create(
-                            Registries.CONFIGURED_FEATURE,
-                            ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new ConfiguredFeature<>(EERegistrar.VANILLA_ORE_FEATURE.get(), new VanillaOreFeatureConfig(model))
-                    );
+                var configuredFeature = bt.register(ResourceKey.create(
+                        Registries.CONFIGURED_FEATURE,
+                        ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, activeProcessor.getName())),
+                    getConfiguredFeature(activeProcessor)
+                );
 
-                    PLACED_FEATURES.add(new Pair<>(
-                        ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new PlacedFeature(
-                            configuredFeature,
-                            WorldGenHelper.getOrePlacement(model.getRarity(), model.getPlacementChance(),
-                                WorldGenHelper.getPlacementModifier(model.getPlacement(), model.getMinYLevel(), model.getMaxYLevel())
-                            ))
-                    ));
-                }
-                case SPHERE -> {
-                    var model = ((SphereDepositProcessor) activeProcessor).getSphereModel();
-
-                    var configuredFeature = bt.register(ResourceKey.create(
-                            Registries.CONFIGURED_FEATURE,
-                            ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new ConfiguredFeature<>(EERegistrar.SPHERE_ORE_FEATURE.get(), new VanillaOreFeatureConfig(model))
-                    );
-
-                    PLACED_FEATURES.add(new Pair<>(
-                        ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new PlacedFeature(
-                            configuredFeature,
-                            WorldGenHelper.getOrePlacement(model.getRarity(), model.getPlacementChance(),
-                                WorldGenHelper.getPlacementModifier(model.getPlacement(), model.getMinYLevel(), model.getMaxYLevel())
-                            ))
-                    ));
-                }
-                case GEODE -> {
-                    var model = ((GeodeDepositProcessor) activeProcessor).getGeodeModel();
-
-                    var configuredFeature = bt.register(ResourceKey.create(
-                            Registries.CONFIGURED_FEATURE,
-                            ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new ConfiguredFeature<>(EERegistrar.GEODE_ORE_FEATURE.get(), new VanillaOreFeatureConfig(model))
-                    );
-
-                    PLACED_FEATURES.add(new Pair<>(
-                        ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new PlacedFeature(
-                            configuredFeature,
-                            WorldGenHelper.getOrePlacement(model.getRarity(), model.getPlacementChance(),
-                                WorldGenHelper.getPlacementModifier(model.getPlacement(), model.getMinYLevel(), model.getMaxYLevel())
-                            ))
-                    ));
-                }
-                case DIKE -> {
-                    var model = ((DikeDepositProcessor) activeProcessor).getDikeModel();
-
-                    var configuredFeature = bt.register(ResourceKey.create(
-                            Registries.CONFIGURED_FEATURE,
-                            ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new ConfiguredFeature<>(EERegistrar.DIKE_ORE_FEATURE.get(), new VanillaOreFeatureConfig(model))
-                    );
-
-                    PLACED_FEATURES.add(new Pair<>(
-                        ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new PlacedFeature(
-                            configuredFeature,
-                            WorldGenHelper.getOrePlacement(model.getRarity(), model.getPlacementChance(),
-                                WorldGenHelper.getPlacementModifier(model.getPlacement(), model.getMinYLevel(), model.getMaxYLevel())
-                            ))
-                    ));
-                }
-                case DENSE -> {
-                    var model = ((DenseDepositProcessor) activeProcessor).getDenseModel();
-
-                    var configuredFeature = bt.register(ResourceKey.create(
-                            Registries.CONFIGURED_FEATURE,
-                            ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new ConfiguredFeature<>(EERegistrar.DENSE_ORE_FEATURE.get(), new VanillaOreFeatureConfig(model))
-                    );
-
-                    PLACED_FEATURES.add(new Pair<>(
-                        ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, model.getName())),
-                        new PlacedFeature(
-                            configuredFeature,
-                            WorldGenHelper.getOrePlacement(model.getRarity(), model.getPlacementChance(),
-                                WorldGenHelper.getPlacementModifier(model.getPlacement(), model.getMinYLevel(), model.getMaxYLevel())
-                            ))
-                    ));
-                }
-                // Test does nothing - null means addon deposit type!
-                // Validation system wouldn't allow registration of an unknown type
-                case TEST, null -> {}
-            }}
+                PLACED_FEATURES.add(new Pair<>(
+                    ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, activeProcessor.getName())),
+                    new PlacedFeature(configuredFeature, WorldGenHelper.getFullOrePlacement(activeProcessor)
+                )));
+            }
         });
 
         builder.add(Registries.PLACED_FEATURE, bt -> PLACED_FEATURES.forEach(pair -> bt.register(pair.getFirst(), pair.getSecond())));
@@ -153,5 +74,16 @@ public class OreFeatureGen implements DataProvider {
     @Override
     public @NotNull String getName() {
         return "Emendatus Enigmatica: World Gen Features";
+    }
+
+    private static ConfiguredFeature<?, ?> getConfiguredFeature(IDepositProcessor processor) {
+        return switch (DepositType.typeOf(processor.getType())) {
+            case VANILLA -> new ConfiguredFeature<>(EERegistrar.VANILLA_ORE_FEATURE.get(), new VanillaOreFeatureConfig(((VanillaDepositProcessor) processor).getVanillaModel()));
+            case SPHERE ->  new ConfiguredFeature<>(EERegistrar.SPHERE_ORE_FEATURE.get(),  new SphereOreFeatureConfig(((SphereDepositProcessor) processor).getSphereModel()));
+            case GEODE ->   new ConfiguredFeature<>(EERegistrar.GEODE_ORE_FEATURE.get(),   new GeodeOreFeatureConfig(((GeodeDepositProcessor) processor).getGeodeModel()));
+            case DIKE ->    new ConfiguredFeature<>(EERegistrar.DIKE_ORE_FEATURE.get(),    new DikeOreFeatureConfig(((DikeDepositProcessor) processor).getDikeModel()));
+            case DENSE ->   new ConfiguredFeature<>(EERegistrar.DENSE_ORE_FEATURE.get(),   new DenseOreFeatureConfig(((DenseDepositProcessor) processor).getDenseModel()));
+            case null -> null;
+        };
     }
 }

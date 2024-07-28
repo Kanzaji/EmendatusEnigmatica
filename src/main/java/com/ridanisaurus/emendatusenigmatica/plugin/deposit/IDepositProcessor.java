@@ -21,4 +21,6 @@ public interface IDepositProcessor {
 	String getPlacement();
 
 	String getRarity();
+
+	String getName();
 }

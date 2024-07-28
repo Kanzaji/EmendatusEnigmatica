@@ -46,58 +46,20 @@ import java.util.function.Predicate;
 
 public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 	private static final Direction[] DIRECTIONS = Direction.values();
-	private final List<CommonBlockDefinitionModel> outerShellBlocks;
-	private final List<CommonBlockDefinitionModel> innerShellBlocks;
-	private final List<CommonBlockDefinitionModel> innerBlocks;
-	private final List<CommonBlockDefinitionModel> fillBlocks;
-	private final List<SampleBlockDefinitionModel> sampleBlocks;
-	private final List<BlockState> clusters;
-	private final GeodeDepositModel model;
 	private final EmendatusDataRegistry registry;
-	private boolean placed = false;
 
-	public GeodeOreFeature(Codec<GeodeOreFeatureConfig> codec, GeodeDepositModel model, EmendatusDataRegistry registry) {
-		super(codec);
-		this.model = model;
-		this.registry = registry;
-		outerShellBlocks = new ArrayList<>();
-		for (CommonBlockDefinitionModel outerShellBlock : model.getOuterShellBlocks()) {
-			NonNullList<CommonBlockDefinitionModel> filled = NonNullList.withSize(outerShellBlock.getWeight(), outerShellBlock);
-			outerShellBlocks.addAll(filled);
-		}
-		innerShellBlocks = new ArrayList<>();
-		for (CommonBlockDefinitionModel innerShellBlock : model.getInnerShellBlocks()) {
-			NonNullList<CommonBlockDefinitionModel> filled = NonNullList.withSize(innerShellBlock.getWeight(), innerShellBlock);
-			innerShellBlocks.addAll(filled);
-		}
-		innerBlocks = new ArrayList<>();
-		for (CommonBlockDefinitionModel innerBlock : model.getInnerBlocks()) {
-			NonNullList<CommonBlockDefinitionModel> filled = NonNullList.withSize(innerBlock.getWeight(), innerBlock);
-			innerBlocks.addAll(filled);
-		}
-		fillBlocks = new ArrayList<>();
-		for (CommonBlockDefinitionModel fillBlock : model.getFillBlocks()) {
-			NonNullList<CommonBlockDefinitionModel> filled = NonNullList.withSize(fillBlock.getWeight(), fillBlock);
-			fillBlocks.addAll(filled);
-		}
-		clusters = new ArrayList<>();
-		for (String cluster : model.getClusters()) {
-			BlockState clusterBlockstate = Objects.requireNonNull(BuiltInRegistries.BLOCK.get(ResourceLocation.parse(cluster))).defaultBlockState();
-			NonNullList<BlockState> filled = NonNullList.withSize(1, clusterBlockstate);
-			clusters.addAll(filled);
-		}
-		sampleBlocks = new ArrayList<>();
-		for (SampleBlockDefinitionModel sampleBlock : model.getSampleBlocks()) {
-			NonNullList<SampleBlockDefinitionModel> filled = NonNullList.withSize(sampleBlock.getWeight(), sampleBlock);
-			sampleBlocks.addAll(filled);
-		}
+	public GeodeOreFeature() {
+		super(GeodeOreFeatureConfig.CODEC);
+		this.registry = EmendatusEnigmatica.getInstance().getDataRegistry();
 	}
 
 	@Override
-	public boolean place(FeaturePlaceContext<GeodeOreFeatureConfig> config) {
-		RandomSource rand = config.random();
-		BlockPos pos = config.origin();
-		WorldGenLevel level = config.level();
+	public boolean place(FeaturePlaceContext<GeodeOreFeatureConfig> context) {
+		RandomSource rand = context.random();
+		BlockPos pos = context.origin();
+		WorldGenLevel level = context.level();
+		var config = context.config();
+		var model = config.model;
 
 		UniformInt outerWallDistance = UniformInt.of(4, 6);
 		UniformInt distributionPoint = UniformInt.of(3, 4);
@@ -186,24 +148,24 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 						}
 					}
 				} else if (d6 >= d1) {
-					placeBlock(level, rand, blockpos3, fillBlocks, predicate, config);
+					placeBlock(level, rand, blockpos3, config.fillBlocks, predicate, config);
 				} else if (d6 >= d2) {
-					placeBlock(level, rand, blockpos3, innerBlocks, predicate, config);
+					placeBlock(level, rand, blockpos3, config.innerBlocks, predicate, config);
 					if ((double) rand.nextFloat() < 0.35D) { // Potential Placement Chance
 						list2.add(blockpos3.immutable());
 					}
 				} else if (d6 >= d3) {
-					placeBlock(level, rand, blockpos3, innerShellBlocks, predicate, config);
+					placeBlock(level, rand, blockpos3, config.innerShellBlocks, predicate, config);
 				} else if (d6 >= d4) {
-					placeBlock(level, rand, blockpos3, outerShellBlocks, predicate, config);
+					placeBlock(level, rand, blockpos3, config.outerShellBlocks, predicate, config);
 				}
 			}
 		}
 
-		if (!clusters.isEmpty()) {
+		if (!config.clusters.isEmpty()) {
 			for(BlockPos blockpos4 : list2) {
-				int index = rand.nextInt(clusters.size());
-				BlockState blockstate1 = clusters.get(index);
+				int index = rand.nextInt(config.clusters.size());
+				BlockState blockstate1 = config.clusters.get(index);
 
 				for(Direction direction : DIRECTIONS) {
 					if (blockstate1.hasProperty(BlockStateProperties.FACING)) {
@@ -223,17 +185,17 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 				}
 			}
 		}
-		if (rand.nextInt(100) < model.getChance() && !sampleBlocks.isEmpty()) {
-			placeSurfaceSample(rand, pos, level);
+		if (rand.nextInt(100) < model.getChance() && !config.sampleBlocks.isEmpty()) {
+			placeSurfaceSample(rand, pos, level, config);
 		}
 		return true;
 	}
 
-	private void placeBlock(WorldGenLevel level, RandomSource rand, BlockPos pos, List<CommonBlockDefinitionModel> blocks, Predicate<BlockState> predicate, FeaturePlaceContext<GeodeOreFeatureConfig> config) {
+	private void placeBlock(WorldGenLevel level, RandomSource rand, BlockPos pos, List<CommonBlockDefinitionModel> blocks, Predicate<BlockState> predicate, GeodeOreFeatureConfig config) {
 		if (!predicate.test(level.getBlockState(pos))) {
 			return;
 		}
-		if (!config.config().target.test(level.getBlockState(pos), rand)) {
+		if (!config.target.test(level.getBlockState(pos), rand)) {
 			return;
 		}
 
@@ -257,13 +219,13 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 				level.setBlock(pos, block.defaultBlockState(), 2);
 			}
 		}
-		placed = true;
+		config.placed = true;
 	}
 
-	private void placeSampleBlock(WorldGenLevel level, RandomSource rand, BlockPos samplePos) {
+	private void placeSampleBlock(WorldGenLevel level, RandomSource rand, BlockPos samplePos, GeodeOreFeatureConfig config) {
 		try {
-			int index = rand.nextInt(sampleBlocks.size());
-			SampleBlockDefinitionModel sampleBlockDefinitionModel = sampleBlocks.get(index);
+			int index = rand.nextInt(config.sampleBlocks.size());
+			SampleBlockDefinitionModel sampleBlockDefinitionModel = config.sampleBlocks.get(index);
 
 			if (sampleBlockDefinitionModel.getBlock() != null) {
 				Block sampleBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(sampleBlockDefinitionModel.getBlock()));
@@ -278,12 +240,12 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 				level.setBlock(samplePos, sampleBlock.defaultBlockState(), 2);
 			}
 		} catch (Exception e) {
-			JsonElement modelJson = JsonOps.INSTANCE.withEncoder(GeodeDepositModel.CODEC).apply(model).result().get();
+			JsonElement modelJson = JsonOps.INSTANCE.withEncoder(GeodeDepositModel.CODEC).apply(config.model).result().get();
 			EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson), e);
 		}
 	}
 
-	private void placeSurfaceSample(RandomSource rand, BlockPos pos, WorldGenLevel level) {
+	private void placeSurfaceSample(RandomSource rand, BlockPos pos, WorldGenLevel level, GeodeOreFeatureConfig config) {
 		// TODO: Refactor this to be used as a helper method, and add a check if true to generate
 		BlockPos sample = new BlockPos(pos.getX(), level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()), pos.getZ());
 		if (level.getBlockState(sample.below()).getBlock() == Blocks.WATER) {
@@ -297,14 +259,14 @@ public class GeodeOreFeature extends Feature<GeodeOreFeatureConfig> {
 				float f = (float)(i + j + k) * 0.333F + 0.5F;
 
 				for(BlockPos samplePos : BlockPos.betweenClosed(sample.offset(-i, -j, -k), sample.offset(i, j, k))) {
-					if (samplePos.distSqr(sample) <= (double)(f * f) && placed) {
-						placeSampleBlock(level, rand, samplePos);
+					if (samplePos.distSqr(sample) <= (double)(f * f) && config.placed) {
+						placeSampleBlock(level, rand, samplePos, config);
 					}
 				}
 				sample = sample.offset(-1 + rand.nextInt(2), -rand.nextInt(2), -1 + rand.nextInt(2));
 			}
 
 		}
-		placed = false;
+		config.placed = false;
 	}
 }

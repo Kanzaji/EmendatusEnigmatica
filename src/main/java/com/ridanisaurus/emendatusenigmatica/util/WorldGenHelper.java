@@ -1,5 +1,8 @@
 package com.ridanisaurus.emendatusenigmatica.util;
 
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.IDepositProcessor;
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
 import org.jetbrains.annotations.Contract;
@@ -34,5 +37,16 @@ public class WorldGenHelper {
 		return placement.equals("uniform") ?
 			HeightRangePlacement.uniform(VerticalAnchor.absolute(minY), VerticalAnchor.absolute(maxY)) :
 			HeightRangePlacement.triangle(VerticalAnchor.absolute(minY), VerticalAnchor.absolute(maxY));
+	}
+
+	public static List<PlacementModifier> getFullOrePlacement(@NotNull IDepositProcessor processor) {
+		return switch (processor) {
+			case VanillaDepositProcessor p -> 	getOrePlacement(p.getRarity(), p.getChance(), getPlacementModifier(p.getPlacement(), p.getMinY(), p.getMaxY()));
+			case DikeDepositProcessor p -> 		getOrePlacement(p.getRarity(), p.getChance(), getPlacementModifier(p.getPlacement(), p.getMinY(), p.getMaxY()));
+			case DenseDepositProcessor p -> 	getOrePlacement(p.getRarity(), p.getChance(), getPlacementModifier(p.getPlacement(), p.getMinY(), p.getMaxY()));
+			case GeodeDepositProcessor p -> 	getOrePlacement(p.getRarity(), p.getChance(), getPlacementModifier(p.getPlacement(), p.getMinY(), p.getMaxY()));
+			case SphereDepositProcessor p -> 	getOrePlacement(p.getRarity(), p.getChance(), getPlacementModifier(p.getPlacement(), p.getMinY(), p.getMaxY()));
+			default -> null;
+		};
 	}
 }

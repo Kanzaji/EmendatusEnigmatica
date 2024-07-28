@@ -33,33 +33,20 @@ import java.util.ArrayList;
 
 // Credit: Geolysis
 public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
-    private final DenseDepositModel model;
     private final EmendatusDataRegistry registry;
-    private final ArrayList<CommonBlockDefinitionModel> blocks;
-    private final ArrayList<SampleBlockDefinitionModel> sampleBlocks;
-    private boolean placed = false;
 
-    public DenseOreFeature(Codec<DenseOreFeatureConfig> codec, DenseDepositModel model, EmendatusDataRegistry registry) {
-        super(codec);
-        this.model = model;
-        this.registry = registry;
-        blocks = new ArrayList<>();
-        for (CommonBlockDefinitionModel block : model.getBlocks()) {
-            NonNullList<CommonBlockDefinitionModel> filled = NonNullList.withSize(block.getWeight(), block);
-            blocks.addAll(filled);
-        }
-        sampleBlocks = new ArrayList<>();
-        for (SampleBlockDefinitionModel sampleBlock : model.getSampleBlocks()) {
-            NonNullList<SampleBlockDefinitionModel> filled = NonNullList.withSize(sampleBlock.getWeight(), sampleBlock);
-            sampleBlocks.addAll(filled);
-        }
+    public DenseOreFeature() {
+        super(DenseOreFeatureConfig.CODEC);
+        this.registry = EmendatusEnigmatica.getInstance().getDataRegistry();
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<DenseOreFeatureConfig> config) {
-        RandomSource rand = config.random();
-        BlockPos pos = config.origin();
-        WorldGenLevel level = config.level();
+    public boolean place(FeaturePlaceContext<DenseOreFeatureConfig> context) {
+        RandomSource rand = context.random();
+        BlockPos pos = context.origin();
+        WorldGenLevel level = context.level();
+        var config = context.config();
+        var model = config.model;
 
         int yTop = model.getMaxYLevel();
         int yBottom = model.getMinYLevel();
@@ -111,20 +98,20 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
             }
 
         }
-        if (rand.nextInt(100) < model.getChance() && !sampleBlocks.isEmpty()) {
-            placeSurfaceSample(rand, pos, level);
+        if (rand.nextInt(100) < model.getChance() && !config.sampleBlocks.isEmpty()) {
+            placeSurfaceSample(rand, pos, level, config);
         }
         return true;
     }
 
-    private void placeBlock(WorldGenLevel reader, RandomSource rand, BlockPos pos, FeaturePlaceContext<DenseOreFeatureConfig> config) {
-        if (!config.config().target.test(reader.getBlockState(pos), rand)) {
+    private void placeBlock(WorldGenLevel reader, RandomSource rand, BlockPos pos, DenseOreFeatureConfig config) {
+        if (!config.target.test(reader.getBlockState(pos), rand)) {
             return;
         }
 
-        int index = rand.nextInt(blocks.size());
+        int index = rand.nextInt(config.blocks.size());
         try {
-            CommonBlockDefinitionModel commonBlockDefinitionModel = blocks.get(index);
+            CommonBlockDefinitionModel commonBlockDefinitionModel = config.blocks.get(index);
             if (commonBlockDefinitionModel.getBlock() != null) {
                 Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(commonBlockDefinitionModel.getBlock()));
                 reader.setBlock(pos, block.defaultBlockState(), 2);
@@ -143,17 +130,17 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
                     reader.setBlock(pos, block.defaultBlockState(), 2);
                 }
             }
-            placed = true;
+            config.placed = true;
         } catch (Exception e) {
-            JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(model).result().get();
+            JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(config.model).result().get();
             EmendatusEnigmatica.logger.error("index: " + index + ", model: " + new Gson().toJson(modelJson), e);
         }
     }
 
-    private void placeSampleBlock(WorldGenLevel level, RandomSource rand, BlockPos samplePos) {
+    private void placeSampleBlock(WorldGenLevel level, RandomSource rand, BlockPos samplePos, DenseOreFeatureConfig config) {
         try {
-            int index = rand.nextInt(sampleBlocks.size());
-            SampleBlockDefinitionModel sampleBlockDefinitionModel = sampleBlocks.get(index);
+            int index = rand.nextInt(config.sampleBlocks.size());
+            SampleBlockDefinitionModel sampleBlockDefinitionModel = config.sampleBlocks.get(index);
 
             if (sampleBlockDefinitionModel.getBlock() != null) {
                 Block sampleBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(sampleBlockDefinitionModel.getBlock()));
@@ -168,12 +155,12 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
                 level.setBlock(samplePos, sampleBlock.defaultBlockState(), 2);
             }
         } catch (Exception e) {
-            JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(model).result().get();
+            JsonElement modelJson = JsonOps.INSTANCE.withEncoder(DenseDepositModel.CODEC).apply(config.model).result().get();
             EmendatusEnigmatica.logger.error("model: " + new Gson().toJson(modelJson), e);
         }
     }
 
-    private void placeSurfaceSample(RandomSource rand, BlockPos pos, WorldGenLevel level) {
+    private void placeSurfaceSample(RandomSource rand, BlockPos pos, WorldGenLevel level, DenseOreFeatureConfig config) {
         BlockPos sample = new BlockPos(pos.getX(), level.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ()), pos.getZ());
         if (level.getBlockState(sample.below()).getBlock() == Blocks.WATER) {
             sample = new BlockPos(pos.getX(), level.getHeight(Heightmap.Types.OCEAN_FLOOR, pos.getX(), pos.getZ()), pos.getZ());
@@ -186,14 +173,14 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
                 float f = (float)(i + j + k) * 0.333F + 0.5F;
 
                 for(BlockPos samplePos : BlockPos.betweenClosed(sample.offset(-i, -j, -k), sample.offset(i, j, k))) {
-                    if (samplePos.distSqr(sample) <= (double)(f * f) && placed) {
-                        placeSampleBlock(level, rand, samplePos);
+                    if (samplePos.distSqr(sample) <= (double)(f * f) && config.placed) {
+                        placeSampleBlock(level, rand, samplePos, config);
                     }
                 }
                 sample = sample.offset(-1 + rand.nextInt(2), -rand.nextInt(2), -1 + rand.nextInt(2));
             }
 
         }
-        placed = false;
+        config.placed = false;
     }
 }

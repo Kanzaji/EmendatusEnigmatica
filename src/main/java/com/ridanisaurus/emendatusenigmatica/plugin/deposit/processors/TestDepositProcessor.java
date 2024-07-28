@@ -81,4 +81,9 @@ public class TestDepositProcessor implements IDepositProcessor {
 	public String getRarity() {
 		return "";
 	}
+
+	@Override
+	public String getName() {
+		return model.getName();
+	}
 }

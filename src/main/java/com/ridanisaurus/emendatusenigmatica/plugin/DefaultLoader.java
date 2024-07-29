@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
@@ -37,6 +38,7 @@ import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.ValidatorLogger;
@@ -57,8 +59,11 @@ public class DefaultLoader {
     public static final List<String> DEPOSIT_IDS = new ArrayList<>();
 
     protected static void load(EmendatusDataRegistry registry) {
+        // Analytics.
+        Stopwatch s = Stopwatch.createStarted();
+
         // Set the path to the defined folder
-        Path configDir = FMLPaths.CONFIGDIR.get().resolve("emendatusenigmatica/");
+        Path configDir = Analytics.CONFIG_DIR;
 
         // Check if the folder exists
         if (!configDir.toFile().exists() && configDir.toFile().mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/");
@@ -95,6 +100,7 @@ public class DefaultLoader {
         LOGGER.info("Validating and registering data for: Strata");
         strataDefinition.forEach((path, jsonObject) -> {
             LOGGER.restartSpacer();
+            StrataModel.VALIDATION_MANAGER.validate(jsonObject, path);
             if (!validator.validateObject(jsonObject, path, StrataModel.validators)) {
                 if (!LOGGER.shouldLog) return;
                 LOGGER.printSpacer(2);

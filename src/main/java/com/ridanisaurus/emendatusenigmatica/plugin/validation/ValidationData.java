@@ -47,6 +47,12 @@ public record ValidationData(JsonElement validationElement, JsonObject rootObjec
     @Contract("_, _ -> new")
     public static @NotNull ValidationData getWithField(@NotNull ValidationData data, String field) {
         if (!data.validationElement.isJsonObject()) throw new IllegalArgumentException("ValidationElement is not a json object! Requested field: " + field + " | Old Data: " + data);
-        return new ValidationData(data.validationElement.getAsJsonObject().get(field), data.rootObject, data.currentPath + "." + field, data.jsonFilePath, data.arrayPolicy);
+        return new ValidationData(
+            data.validationElement.getAsJsonObject().get(field),
+            data.rootObject,
+            data.currentPath + "." + field,
+            data.jsonFilePath,
+            data.arrayPolicy
+        );
     }
 }

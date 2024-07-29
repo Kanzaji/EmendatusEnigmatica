@@ -28,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.resources.ResourceLocation;
 
@@ -67,6 +68,7 @@ public class StrataModel {
 	 * Adding suffix _rg will request the original object instead of just the value of the field.
 	 */
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create();
 	private final String id;
 	private final ResourceLocation baseTexture;
 	private final String suffix;

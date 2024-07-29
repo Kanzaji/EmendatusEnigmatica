@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation.logger;
+package com.ridanisaurus.emendatusenigmatica.util;
 
 import java.util.List;
 

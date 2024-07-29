@@ -22,10 +22,27 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation;
+package com.ridanisaurus.emendatusenigmatica.plugin.validation.validators;
 
-public enum ArrayPolicy {
-    DISALLOWS_ARRAYS,
-    ALLOWS_ARRAYS,
-    REQUIRES_ARRAY;
+import com.ridanisaurus.emendatusenigmatica.plugin.validation.ValidationData;
+
+import java.util.function.Function;
+
+/**
+ * This validator accepts *any value* in *any format*. Essentially it just returns true.
+ * @see AbstractValidator
+ * @see AbstractBasicValidator
+ */
+public class AcceptsAllValidator implements Function<ValidationData, Boolean> {
+
+    /**
+     * Constructor of the AcceptsAllValidator.
+     * @see AcceptsAllValidator Validator Documentation.
+     */
+    public AcceptsAllValidator() {}
+
+    @Override
+    public Boolean apply(ValidationData validationData) {
+        return true;
+    }
 }

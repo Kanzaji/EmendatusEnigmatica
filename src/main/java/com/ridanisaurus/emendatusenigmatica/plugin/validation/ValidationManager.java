@@ -24,24 +24,23 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validation;
 
-import com.ridanisaurus.emendatusenigmatica.plugin.validation.logger.ValidationLoggerOld;
+import com.ridanisaurus.emendatusenigmatica.plugin.validation.validators.AbstractValidator;
+import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import com.google.gson.JsonObject;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class ValidationManager {
-    protected static final ValidationLoggerOld logger = new ValidationLoggerOld("Validation Manager");
     private final Map<String, ValidatorHolder> validators = new HashMap<>();
-    private final String phase;
-
-    public ValidationManager(String validationStep) {
-        this.phase = validationStep;
-    }
+    private final ObjectValidator rootValidator = new ObjectValidator(true, this);
+    private ValidationManager() {};
 
     /**
      * Used to start the validation of the JsonObject.
@@ -53,57 +52,26 @@ public class ValidationManager {
         var path = obfuscatePath(jsonPath);
 
         if (!object.isJsonObject()) {
-            logger.error("Expected Json Object while validating file \"%s\"!".formatted(path));
+            Analytics.error("Expected Json Object at root!", "Root of the file is required to be an object. Arrays are not supported.", "root", path);
             return false;
         }
 
         if (object.isEmpty()) {
-            logger.error("Object in file \"%s\" is empty!".formatted(path));
+            Analytics.error("Root object is empty!", "root", path);
             return false;
         }
 
         // Enters automatic validator execution. After this point, stack-traces are a mess!
-        return this.validate(new ValidationData(object, object, "root", path, ArrayPolicy.DISALLOWS_ARRAYS));
+        return this.rootValidator.apply(new ValidationData(object, object, "root", path, ArrayPolicy.DISALLOWS_ARRAYS));
     }
 
     /**
-     * Used to pass this ValidationManager as a sub-object validator.
-     * @param data DataHolder of the currently validated field.
-     * @return True if validation passes, false otherwise.
-     * @apiNote This is meant to be used as a method reference, when adding validators to a different ValidationManager!
+     * Used to get an ObjectValidator, wrapped around this ValidationManager.
+     * @param isRequired Determines if the field this validator checks is required.
+     * @return ObjectValidator wrapped around instance of this ValidationManager.
      */
-    public boolean validate(@NotNull ValidationData data) {
-        var element = data.validationElement();
-        var path = data.currentPath();
-        var jsonPath = data.jsonFilePath();
-        if (!element.isJsonObject()) {
-            logger.error("Expected Json Object at \"%s\" while validating file \"%s\"!".formatted(path, jsonPath));
-            return false;
-        }
-
-        JsonObject object = element.getAsJsonObject();
-        AtomicBoolean validation = new AtomicBoolean(true);
-
-        if (logger.enabled()) object.entrySet().forEach(entry -> {
-            if (!(validators.containsKey(entry.getKey()))) {
-                logger.warn("Unknown key (\"%s\") found in file \"%s\".".formatted(path + entry.getKey(), jsonPath));
-            }
-        });
-
-        validators.forEach((field, holder) -> {
-            if (!holder.validate(ValidationData.getWithField(data, field))) validation.set(false);
-        });
-
-        return validation.get();
-    }
-
-    public static boolean validateArray(@NotNull ValidationData data, Function<ValidationData, Boolean> validator) {
-        if (data.validationElement().isJsonArray()) {
-            if (data.arrayPolicy() == ArrayPolicy.DISALLOWS_ARRAYS) {
-                logger.error("Arrays are not allowed at \"%s\" in file \"%s\"");
-            }
-        }
-        return true;
+    public ObjectValidator getAsValidator(boolean isRequired) {
+        return new ObjectValidator(isRequired, this);
     }
 
     /**
@@ -120,6 +88,78 @@ public class ValidationManager {
      * @return String with an obfuscated path.
      */
     public static @NotNull String obfuscatePath(Path path) {;
-        return logger.getLogPath().getParent().relativize(path).toString();
+        return Analytics.CONFIG_DIR.relativize(path).toString();
     }
+
+    @Contract(" -> new")
+    public static @NotNull ValidationManager create() {
+        return new ValidationManager();
+    }
+
+    public void addValidator(@NotNull String field, @NotNull Function<ValidationData, Boolean> validator, @NotNull ArrayPolicy arrayPolicy) {
+        this.validators.put(
+            Objects.requireNonNull(field, "Field name can't be null!"),
+            new ValidatorHolder(
+                Objects.requireNonNull(validator, "Validator can't be null!"),
+                Objects.requireNonNull(arrayPolicy, "Array Policy can't be null!")
+            )
+        );
+    }
+
+    /**
+     * ObjectValidator validates JsonObject with use of the {@link ValidationManager} validators.
+     * <br><br>
+     * It's main purpose is to determine which fields are unknown,
+     * and to call all known validators,
+     * which are stored in the ValidationManager this validator is acquired from.
+     *
+     */
+    public static class ObjectValidator extends AbstractValidator {
+        private final ValidationManager vManager;
+
+        /**
+         * Constructs ObjectValidator.
+         *
+         * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
+         * @param objectVManager ValidationManager of the object stored in this field.
+         * @see ObjectValidator Documentation of the validator.
+         */
+        ObjectValidator(boolean isRequired, ValidationManager objectVManager) {
+            super(isRequired);
+            this.vManager = objectVManager;
+        }
+
+        /**
+         * Validate method, used to validate passed in object.
+         *
+         * @param data ValidationData record with necessary information to validate the element.
+         * @return True of the validation passes, false otherwise.
+         * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link ObjectValidator#apply(ValidationData)} instead!
+         */
+        @Override
+        public Boolean validate(@NotNull ValidationData data) {
+            var element = data.validationElement();
+            var path = data.currentPath();
+            var jsonPath = data.jsonFilePath();
+            if (!element.isJsonObject()) {
+                Analytics.error("Expected element to be a Json Object.", path, jsonPath);
+                return false;
+            }
+
+            JsonObject object = element.getAsJsonObject();
+            AtomicBoolean validation = new AtomicBoolean(true);
+
+            if (Analytics.isEnabled()) object.entrySet().forEach(entry -> {
+                if (!(vManager.validators.containsKey(entry.getKey())))
+                    Analytics.warn("Unknown key!", path + entry.getKey(), jsonPath);
+            });
+
+            vManager.validators.forEach((field, holder) -> {
+                if (!holder.validate(ValidationData.getWithField(data, field))) validation.set(false);
+            });
+
+            return validation.get();
+        }
+    }
+
 }

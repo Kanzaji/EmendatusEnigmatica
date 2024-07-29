@@ -24,11 +24,13 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader;
 
+import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.api.AnnotationUtil;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.api.IEmendatusPlugin;
 import com.ridanisaurus.emendatusenigmatica.api.annotation.EmendatusPluginReference;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultConfigPlugin;
+import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import net.minecraft.Util;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.registries.VanillaRegistries;
@@ -39,6 +41,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class EELoader {
     public static final Logger LOADER_LOGGER = LogManager.getLogger(EELoader.class);
@@ -58,6 +61,7 @@ public class EELoader {
      * If the class is {@link DefaultConfigPlugin} goes at the start of the list as it has priority.
      */
     private void scanForClasses(){
+        Stopwatch s = Stopwatch.createStarted();
         for (Class<?> annotatedClass : AnnotationUtil.getAnnotatedClasses(EmendatusPluginReference.class)) {
             if (IEmendatusPlugin.class.isAssignableFrom(annotatedClass)) {
                 var annotation = (EmendatusPluginReference) annotatedClass.getAnnotation(EmendatusPluginReference.class);
@@ -76,7 +80,9 @@ public class EELoader {
                 LOADER_LOGGER.error("{} has an annotation but it doesn't implement IEmendatusPlugin", annotatedClass.getName());
             }
         }
-        LOADER_LOGGER.info("Finished scanning for plugins");
+        s.stop();
+        LOADER_LOGGER.info("Finished scanning for plugins, took " + s.elapsed(TimeUnit.MILLISECONDS) + "ms.");
+        Analytics.addPerformanceAnalytic("Scanning and registration of addons", s);
     }
 
     public void load() {

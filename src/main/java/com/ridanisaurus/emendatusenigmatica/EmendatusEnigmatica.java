@@ -32,6 +32,7 @@ import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
+import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.tabs.EECreativeTab;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -51,13 +52,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Reference.MOD_ID)
 public class EmendatusEnigmatica {
     // Directly reference a slf4j logger
     public static final Logger logger = LogUtils.getLogger();
+    public static String VERSION = "0.0.0";
     private static EmendatusEnigmatica instance;
     private final EELoader loader;
     private final EEDataGenerator generator;
@@ -80,10 +80,12 @@ public class EmendatusEnigmatica {
             .displayItems((parameters, output) -> output.accept(EERegistrar.FELINIUM_JAMINITE))
     ));
 
-    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, ModContainer modContainer) {
+    public EmendatusEnigmatica(@NotNull IEventBus modEventBus, @NotNull ModContainer modContainer) {
         instance = this;
+        VERSION = modContainer.getModInfo().getVersion().toString();
         EEConfig.registerClient(modContainer);
         EEConfig.setupStartup(modContainer);
+        Analytics.setup();
 
         DataGeneratorFactory.init();
         this.generator = DataGeneratorFactory.createEEDataGenerator();
@@ -105,6 +107,8 @@ public class EmendatusEnigmatica {
         // Config screen
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, (client, last) -> new ConfigMenu(last));
         this.loader.finish();
+
+        Analytics.finalizeAnalytics();
     }
 
     public static EmendatusEnigmatica getInstance() {

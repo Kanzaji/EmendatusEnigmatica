@@ -42,7 +42,9 @@ import java.util.function.Consumer;
  * This class holds default validators for values from json configuration files.
  * @apiNote If not specified, the validator supports JsonArrays.
  */
+@Deprecated
 public class Validator {
+    @Deprecated
     public static final ValidatorLogger LOGGER = new ValidatorLogger(LoggerFactory.getLogger("EE Data Validation"));
     /**
      * All values are accepted. Simply returns true.

@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.google.gson.JsonElement;
-import com.ridanisaurus.emendatusenigmatica.plugin.validation.ArrayPolicy;
-import com.ridanisaurus.emendatusenigmatica.plugin.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,13 +66,13 @@ public abstract class AbstractValidator implements Function<ValidationData, Bool
         var element = data.validationElement();
         if (Objects.isNull(element)) {
             if (!isRequired) return true;
-            Analytics.error("This field is required!", data.currentPath(), data.jsonFilePath());
+            Analytics.error("This field is required!", data);
             return false;
         }
 
         if (element.isJsonArray()) {
             if (data.arrayPolicy() == ArrayPolicy.DISALLOWS_ARRAYS) {
-                Analytics.error("Arrays are not allowed for this field!", data.currentPath(), data.jsonFilePath());
+                Analytics.error("Arrays are not allowed for this field!", data);
                 return false;
             }
 
@@ -86,14 +86,14 @@ public abstract class AbstractValidator implements Function<ValidationData, Bool
         }
 
         if (data.arrayPolicy() == ArrayPolicy.REQUIRES_ARRAY) {
-            Analytics.error("This field requires an array!", data.currentPath(), data.jsonFilePath());
+            Analytics.error("This field requires an array!", data);
             return false;
         }
         return this.validate(data);
     }
 
     /**
-     * Abstract Validate method, used to validate passed in object.
+     * Validate method, used to validate passed in object.
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
      * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!

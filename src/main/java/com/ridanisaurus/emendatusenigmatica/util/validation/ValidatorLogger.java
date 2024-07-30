@@ -32,6 +32,7 @@ import java.util.Objects;
 /**
  * Simple class that wraps around the Logger returned by LoggerFactory. Only used to make errors and warnings more readable.
  */
+@Deprecated
 public class ValidatorLogger {
     private static final String spacer = "------------------------------------------------------------------------------------------------------------------------";
     private final Logger logger;
@@ -42,6 +43,7 @@ public class ValidatorLogger {
      * Creates instance of Validator Logger Wrapper.
      * @param logger Logger to use.
      */
+    @Deprecated
     public ValidatorLogger(Logger logger) {
         Objects.requireNonNull(logger, "Can't create logger wrapper from Null logger!");
         this.logger = logger;

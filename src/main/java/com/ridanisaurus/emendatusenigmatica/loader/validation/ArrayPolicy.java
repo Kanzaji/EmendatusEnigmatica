@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 public enum ArrayPolicy {
     DISALLOWS_ARRAYS,

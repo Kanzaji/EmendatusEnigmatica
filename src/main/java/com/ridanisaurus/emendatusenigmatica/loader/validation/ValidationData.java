@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,20 +39,19 @@ import org.jetbrains.annotations.NotNull;
 public record ValidationData(JsonElement validationElement, JsonObject rootObject, String currentPath, String jsonFilePath, ArrayPolicy arrayPolicy) {
     /**
      * Utility method to get ValidationData from previous data, but with updated information for another field of the object.
-     * @param data Previous Validation Data.
      * @param field Field name to base the information update on.
      * @return ValidationData with validationElement and currentPath updated.
      * @throws IllegalArgumentException when validationElement of previous data is not a JsonObject!
      */
     @Contract("_, _ -> new")
-    public static @NotNull ValidationData getWithField(@NotNull ValidationData data, String field) {
-        if (!data.validationElement.isJsonObject()) throw new IllegalArgumentException("ValidationElement is not a json object! Requested field: " + field + " | Old Data: " + data);
+    public @NotNull ValidationData getWithField(String field, ArrayPolicy arrayPolicy) {
+        if (!this.validationElement.isJsonObject()) throw new IllegalArgumentException("ValidationElement is not a json object! Requested field: " + field + " | Old Data: " + this);
         return new ValidationData(
-            data.validationElement.getAsJsonObject().get(field),
-            data.rootObject,
-            data.currentPath + "." + field,
-            data.jsonFilePath,
-            data.arrayPolicy
+            this.validationElement.getAsJsonObject().get(field),
+            this.rootObject,
+            this.currentPath + "." + field,
+            this.jsonFilePath,
+            arrayPolicy
         );
     }
 }

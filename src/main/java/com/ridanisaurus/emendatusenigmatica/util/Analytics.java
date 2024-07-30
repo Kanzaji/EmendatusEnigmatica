@@ -28,6 +28,7 @@ import com.google.common.base.Stopwatch;
 import com.mojang.authlib.Environment;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -125,6 +126,17 @@ public class Analytics {
     }
 
     /**
+     * Used to add warn messages for specified file.
+     * @param msg Message to add
+     * @param data ValidationData, from which all necessary information will be taken.
+     * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
+     * @see Analytics#isFinalized()
+     */
+    public static void warn(String msg, @NotNull ValidationData data) {
+        warn(msg, data.currentPath(), data.jsonFilePath());
+    }
+
+    /**
      * Used to add error messages for specified file.
      * @param msg Message to add.
      * @param additional Additional details to be printed after "cause". This gets written directly into the file!
@@ -142,6 +154,18 @@ public class Analytics {
     /**
      * Used to add error messages for specified file.
      * @param msg Message to add.
+     * @param additional Additional details to be printed after "cause". This gets written directly into the file!
+     * @param data ValidationData, from which all necessary information will be taken.
+     * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
+     * @see Analytics#isFinalized()
+     */
+    public static void error(String msg, @Nullable String additional, @NotNull ValidationData data) {
+        error(msg, additional, data.currentPath(), data.jsonFilePath());
+    }
+
+    /**
+     * Used to add error messages for specified file.
+     * @param msg Message to add.
      * @param elementPath Path to the element in question.
      * @param jsonPath Obfuscated path to the json file.
      * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
@@ -151,6 +175,17 @@ public class Analytics {
         if (finalized) throw new IllegalStateException("Analytics were already finalized!");
         messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
             .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).errors().add(new Messages.ErrorMessage(elementPath, msg, null));
+    }
+
+    /**
+     * Used to add error messages for specified file.
+     * @param msg Message to add.
+     * @param data ValidationData, from which all necessary information will be taken.
+     * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
+     * @see Analytics#isFinalized()
+     */
+    public static void error(String msg, @NotNull ValidationData data) {
+        error(msg, null, data.currentPath(), data.jsonFilePath());
     }
 
     /**

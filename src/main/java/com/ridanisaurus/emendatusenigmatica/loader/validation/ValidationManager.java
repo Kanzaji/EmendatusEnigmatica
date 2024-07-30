@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation;
+package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
-import com.ridanisaurus.emendatusenigmatica.plugin.validation.validators.AbstractValidator;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractValidator;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -39,8 +40,30 @@ import java.util.function.Function;
 
 public class ValidationManager {
     private final Map<String, ValidatorHolder> validators = new HashMap<>();
-    private final ObjectValidator rootValidator = new ObjectValidator(true, this);
+    private final ObjectValidator rootValidator = new ObjectValidator( this, true, true);
     private ValidationManager() {};
+
+    /**
+     * Used to cut off part of the path that is not in minecraft directory.<br>
+     * <h4>Input:</h4>
+     * <blockquote>
+     * C:/Minecraft/config/emendatusenigmatica/strata/stone.json
+     * </blockquote>
+     * <h4>Result:</h4>
+     * <blockquote>
+     * strata/stone.json
+     * </blockquote>
+     * @param path Path to obfuscate.
+     * @return String with an obfuscated path.
+     */
+    public static @NotNull String obfuscatePath(Path path) {;
+        return Analytics.CONFIG_DIR.relativize(path).toString();
+    }
+
+    @Contract(" -> new")
+    public static @NotNull ValidationManager create() {
+        return new ValidationManager();
+    }
 
     /**
      * Used to start the validation of the JsonObject.
@@ -71,32 +94,19 @@ public class ValidationManager {
      * @return ObjectValidator wrapped around instance of this ValidationManager.
      */
     public ObjectValidator getAsValidator(boolean isRequired) {
-        return new ObjectValidator(isRequired, this);
+        return new ObjectValidator( this, isRequired, false);
     }
 
     /**
-     * Used to cut off part of the path that is not in minecraft directory.<br>
-     * <h4>Input:</h4>
-     * <blockquote>
-     * C:/Minecraft/config/emendatusenigmatica/strata/stone.json
-     * </blockquote>
-     * <h4>Result:</h4>
-     * <blockquote>
-     * strata/stone.json
-     * </blockquote>
-     * @param path Path to obfuscate.
-     * @return String with an obfuscated path.
+     * Used to add validator to this ValidationManager,
+     * under specified field, with specified ArrayPolicy.
+     * @param field Field to add validator for.
+     * @param validator - Validation Function.
+     * @param arrayPolicy ArrayPolicy of this field.
+     * @return {@code this} instance of the {@link ValidationManager}
      */
-    public static @NotNull String obfuscatePath(Path path) {;
-        return Analytics.CONFIG_DIR.relativize(path).toString();
-    }
-
-    @Contract(" -> new")
-    public static @NotNull ValidationManager create() {
-        return new ValidationManager();
-    }
-
-    public void addValidator(@NotNull String field, @NotNull Function<ValidationData, Boolean> validator, @NotNull ArrayPolicy arrayPolicy) {
+    @CanIgnoreReturnValue
+    public ValidationManager addValidator(@NotNull String field, @NotNull Function<ValidationData, Boolean> validator, @NotNull ArrayPolicy arrayPolicy) {
         this.validators.put(
             Objects.requireNonNull(field, "Field name can't be null!"),
             new ValidatorHolder(
@@ -104,6 +114,19 @@ public class ValidationManager {
                 Objects.requireNonNull(arrayPolicy, "Array Policy can't be null!")
             )
         );
+        return this;
+    }
+
+    /**
+     * Used to add validator to this ValidationManager,
+     * under specified field, with default {@link ArrayPolicy#DISALLOWS_ARRAYS};
+     * @param field Field to add validator for.
+     * @param validator - Validation Function.
+     * @return {@code this} instance of the {@link ValidationManager}
+     */
+    @CanIgnoreReturnValue
+    public ValidationManager addValidator(@NotNull String field, @NotNull Function<ValidationData, Boolean> validator) {
+        return this.addValidator(field, validator, ArrayPolicy.DISALLOWS_ARRAYS);
     }
 
     /**
@@ -116,6 +139,7 @@ public class ValidationManager {
      */
     public static class ObjectValidator extends AbstractValidator {
         private final ValidationManager vManager;
+        private final boolean isRootValidator;
 
         /**
          * Constructs ObjectValidator.
@@ -124,9 +148,24 @@ public class ValidationManager {
          * @param objectVManager ValidationManager of the object stored in this field.
          * @see ObjectValidator Documentation of the validator.
          */
-        ObjectValidator(boolean isRequired, ValidationManager objectVManager) {
+        ObjectValidator(ValidationManager objectVManager, boolean isRequired, boolean isRoot) {
             super(isRequired);
             this.vManager = objectVManager;
+            this.isRootValidator = isRoot;
+        }
+
+        /**
+         * Entry point of the validator.
+         *
+         * @param data ValidationData record with necessary information to validate the element.
+         * @return True if the validation passes, false otherwise.
+         */
+        @Override
+        public Boolean apply(@NotNull ValidationData data) {
+            // If we validate the root element, null checks and array checks are not required,
+            // as those are handled by the manager.
+            if (isRootValidator) return validate(data);
+            return super.apply(data);
         }
 
         /**
@@ -142,7 +181,7 @@ public class ValidationManager {
             var path = data.currentPath();
             var jsonPath = data.jsonFilePath();
             if (!element.isJsonObject()) {
-                Analytics.error("Expected element to be a Json Object.", path, jsonPath);
+                Analytics.error("Expected element to be a Json Object.", data);
                 return false;
             }
 
@@ -151,11 +190,11 @@ public class ValidationManager {
 
             if (Analytics.isEnabled()) object.entrySet().forEach(entry -> {
                 if (!(vManager.validators.containsKey(entry.getKey())))
-                    Analytics.warn("Unknown key!", path + entry.getKey(), jsonPath);
+                    Analytics.warn("Unknown key!", path + "." + entry.getKey(), jsonPath);
             });
 
             vManager.validators.forEach((field, holder) -> {
-                if (!holder.validate(ValidationData.getWithField(data, field))) validation.set(false);
+                if (!holder.validate(data.getWithField(field, holder.arrayPolicy()))) validation.set(false);
             });
 
             return validation.get();

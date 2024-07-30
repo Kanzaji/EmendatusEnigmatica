@@ -22,27 +22,22 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
-import com.ridanisaurus.emendatusenigmatica.plugin.validation.ValidationData;
+public enum Types {
+    BOOLEAN("Boolean"),
+    INTEGER("Integer"),
+    FLOAT("Float"),
+    STRING("String"),
+    STRING_EMPTY("String");
 
-import java.util.function.Function;
-
-/**
- * This validator accepts *any value* in *any format*. Essentially it just returns true.
- * @see AbstractValidator
- * @see AbstractBasicValidator
- */
-public class AcceptsAllValidator implements Function<ValidationData, Boolean> {
-
-    /**
-     * Constructor of the AcceptsAllValidator.
-     * @see AcceptsAllValidator Validator Documentation.
-     */
-    public AcceptsAllValidator() {}
+    private final String name;
+    Types(String localizedName) {
+        this.name = localizedName;
+    }
 
     @Override
-    public Boolean apply(ValidationData validationData) {
-        return true;
+    public String toString() {
+        return name;
     }
 }

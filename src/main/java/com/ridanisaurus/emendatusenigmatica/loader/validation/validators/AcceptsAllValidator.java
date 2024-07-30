@@ -22,13 +22,27 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validation;
+package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
-import org.jetbrains.annotations.NotNull;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+
 import java.util.function.Function;
 
-public record ValidatorHolder(Function<ValidationData, Boolean> validator, ArrayPolicy arrayPolicy) {
-    public boolean validate(@NotNull ValidationData dataHolder) {
-        return this.validator.apply(dataHolder);
+/**
+ * This validator accepts *any value* in *any format*. Essentially it just returns true.
+ * @see AbstractValidator
+ * @see AbstractBasicValidator
+ */
+public class AcceptsAllValidator implements Function<ValidationData, Boolean> {
+
+    /**
+     * Constructor of the AcceptsAllValidator.
+     * @see AcceptsAllValidator Validator Documentation.
+     */
+    public AcceptsAllValidator() {}
+
+    @Override
+    public Boolean apply(ValidationData validationData) {
+        return true;
     }
 }

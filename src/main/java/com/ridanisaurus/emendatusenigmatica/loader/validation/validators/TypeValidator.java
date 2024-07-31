@@ -26,6 +26,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.google.gson.JsonPrimitive;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +56,7 @@ public class TypeValidator extends AbstractValidator {
      *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link TypeValidator#apply(ValidationData)} instead!
      */
     @Override
     public Boolean validate(@NotNull ValidationData data) {
@@ -83,7 +84,7 @@ public class TypeValidator extends AbstractValidator {
                     yield false;
                 }
 
-                if (type == Types.STRING && primitive.getAsString().isEmpty()) {
+                if (type == Types.STRING && primitive.getAsString().isBlank()) {
                     Analytics.error("String for this field can't be empty!", data);
                     yield false;
                 }

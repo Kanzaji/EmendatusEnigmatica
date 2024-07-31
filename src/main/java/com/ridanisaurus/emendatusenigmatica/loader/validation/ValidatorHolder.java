@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Function;
 

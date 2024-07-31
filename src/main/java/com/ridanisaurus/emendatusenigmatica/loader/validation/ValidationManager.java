@@ -25,6 +25,7 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractValidator;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.Contract;
@@ -38,6 +39,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+/**
+ * ValidationManager is a class that stores and manages Validation Functions - Validators for JSON files.
+ */
 public class ValidationManager {
     private final Map<String, ValidatorHolder> validators = new HashMap<>();
     private final ObjectValidator rootValidator = new ObjectValidator( this, true, true);
@@ -60,6 +64,12 @@ public class ValidationManager {
         return Analytics.CONFIG_DIR.relativize(path).toString();
     }
 
+    /**
+     * Used to create new instance of the ValidationManager.
+     * @return New instance of {@link ValidationManager}.
+     * @implNote ValidationManager doesn't contain its own builder,
+     * allowing addons to expand / override validators of the Manager after its creation.
+     */
     @Contract(" -> new")
     public static @NotNull ValidationManager create() {
         return new ValidationManager();

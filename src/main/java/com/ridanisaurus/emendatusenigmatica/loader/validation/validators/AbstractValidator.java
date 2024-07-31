@@ -25,7 +25,7 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.google.gson.JsonElement;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.NotNull;

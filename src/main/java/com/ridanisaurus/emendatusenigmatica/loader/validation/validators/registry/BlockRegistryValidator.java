@@ -22,22 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry;
 
-public enum Types {
-    BOOLEAN("Boolean"),
-    INTEGER("Integer"),
-    FLOAT("Float"),
-    STRING("String"),
-    STRING_EMPTY("String");
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
-    private final String name;
-    Types(String localizedName) {
-        this.name = localizedName;
+public class BlockRegistryValidator extends AbstractRegistryValidator {
+
+    public BlockRegistryValidator(String errorMessage) {
+        super(errorMessage);
     }
 
+    /**
+     * This method is used to check if the resource location is present in the specified registry.
+     *
+     * @param resourceLocation ResourceLocation to check.
+     * @return The result of the validation. See {@link Result} for more details.
+     * @apiNote At this stage, all registries were constructed,
+     */
     @Override
-    public String toString() {
-        return name;
+    public Result validate(ResourceLocation resourceLocation) {
+        var block = BuiltInRegistries.BLOCK.get(resourceLocation);
+        if (BuiltInRegistries.BLOCK.getDefaultKey().equals(BuiltInRegistries.BLOCK.getKey(block))) return Result.FATAL;
+        return Result.PASS;
     }
 }

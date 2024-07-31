@@ -27,13 +27,13 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.resources.ResourceLocation;
 
@@ -76,9 +76,9 @@ public class StrataModel {
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
 		.addValidator("id",				new RequiredValidator(true))
-		.addValidator("baseTexture",		new RequiredValidator(true))
+		.addValidator("baseTexture",		new ResourceLocationValidator(true))
 		.addValidator("suffix",			new TypeValidator(Types.STRING, true))
-		.addValidator("fillerType",		new RequiredValidator(true))
+		.addValidator("fillerType",		new ResourceLocationValidator(true))
 		.addValidator("localizedName",	new TypeValidator(Types.STRING, true))
 		.addValidator("hardness",			new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))
 		.addValidator("resistance",		new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))

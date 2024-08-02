@@ -39,9 +39,9 @@ import java.util.function.Function;
  * <br><br>
  * This validator handles the field requirement and checks the compliance with the ArrayPolicy,
  * and if the element passes, calls the abstract {@link AbstractValidator#validate(ValidationData)} method.
- * @apiNote Even tho this validator could be easily done to accept arrays of arrays... - the codecs are not created with such fields in mind!
+ * @implNote  Even tho this validator could be easily done to accept arrays of arrays... - the codecs are not created with such fields in mind!
  * Due to that limitation, this validator will issue errors if an array is found inside another array.<br>
- * @implNote This validator doesn't pass an entire array to the {@link AbstractValidator#validate(ValidationData)} method, only elements found inside it.
+ * @apiNote  This validator doesn't pass an entire array to the {@link AbstractValidator#validate(ValidationData)} method, only elements found inside it.
  * If your validator requires access to the entire array, use {@link AbstractBasicValidator} instead.
  */
 public abstract class AbstractValidator implements Function<ValidationData, Boolean> {
@@ -97,6 +97,7 @@ public abstract class AbstractValidator implements Function<ValidationData, Bool
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
      * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
+     * @implSpec Take a note that the {@link ValidationData#validationElement()} will never return null.
      */
     public abstract Boolean validate(@NotNull ValidationData data);
 }

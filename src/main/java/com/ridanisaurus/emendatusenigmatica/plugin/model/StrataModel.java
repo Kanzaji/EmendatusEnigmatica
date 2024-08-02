@@ -28,12 +28,10 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.*;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.resources.ResourceLocation;
 
@@ -74,33 +72,39 @@ public class StrataModel {
 	 */
 	@Deprecated(forRemoval = true)
 	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
-	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("id",				new RequiredValidator(true))
-		.addValidator("baseTexture",		new ResourceLocationValidator(true))
-		.addValidator("suffix",			new TypeValidator(Types.STRING, true))
-		.addValidator("fillerType",		new ResourceLocationValidator(true))
-		.addValidator("localizedName",	new TypeValidator(Types.STRING, true))
-		.addValidator("hardness",			new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))
-		.addValidator("resistance",		new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))
-		.addValidator("sampleStrata",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("harvestTool",		new RequiredValidator(false));
 
 	static {
-		validators.put("id", 			new Validator("id").getIDValidation(DefaultLoader.STRATA_IDS));
-		validators.put("baseTexture", 	new Validator("baseTexture").getRequiredResourceIDValidation(false));
-		validators.put("suffix", 		new Validator("suffix").getRequiredNonEmptyValidation(false));
-		validators.put("fillerType", 	new Validator("fillerType").getRequiredResourceIDValidation(false));
+		validators.put("id", 			new Validator("id")			.getIDValidation(DefaultLoader.STRATA_IDS));
+		validators.put("baseTexture", 	new Validator("baseTexture")	.getRequiredResourceIDValidation(false));
+		validators.put("fillerType", 	new Validator("fillerType")	.getRequiredResourceIDValidation(false));
+		validators.put("suffix", 		new Validator("suffix")		.getRequiredNonEmptyValidation(false));
 		validators.put("localizedName", new Validator("localizedName").getRequiredNonEmptyValidation(false));
-		validators.put("hardness", 		new Validator("hardness").getRange(0, Integer.MAX_VALUE, false));
-		validators.put("resistance", 	new Validator("resistance").getRange(0, Integer.MAX_VALUE, false));
-		validators.put("sampleStrata", 	new Validator("sampleStrata").REQUIRES_BOOLEAN);
-		validators.put("harvestTool", 	new Validator("harvestTool").getAcceptsOnlyValidation(List.of(
+		validators.put("sampleStrata", 	new Validator("sampleStrata")	.REQUIRES_BOOLEAN);
+		validators.put("hardness", 		new Validator("hardness")		.getRange(0, Integer.MAX_VALUE, false));
+		validators.put("resistance", 	new Validator("resistance")	.getRange(0, Integer.MAX_VALUE, false));
+		validators.put("harvestTool", 	new Validator("harvestTool")	.getAcceptsOnlyValidation(List.of(
 			"pickaxe",
 			"axe",
 			"hoe",
 			"shovel"
 		), false));
 	}
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("id",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.ALREADY_REGISTERED, true))
+		.addValidator("baseTexture",		new ResourceLocationValidator(true))
+		.addValidator("fillerType",		new ResourceLocationValidator(true))
+		.addValidator("suffix",			new TypeValidator(Types.STRING, true))
+		.addValidator("localizedName",	new TypeValidator(Types.STRING, true))
+		.addValidator("sampleStrata",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("hardness",			new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))
+		.addValidator("resistance",		new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false))
+		.addValidator("harvestTool",		new ValuesValidator(List.of(
+			"pickaxe",
+			"axe",
+			"hoe",
+			"shovel"
+		), ValuesValidator.WHITELIST, false));
 
 	private final String id;
 	private final ResourceLocation baseTexture;

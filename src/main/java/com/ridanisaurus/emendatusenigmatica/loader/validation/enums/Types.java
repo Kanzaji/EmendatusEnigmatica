@@ -29,6 +29,10 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeVal
 /**
  * Holds the JSON Types. Mostly used to determine the type of the field for Multi-Type Validators.
  * @see TypeValidator
+ * @see Types#BOOLEAN
+ * @see Types#INTEGER
+ * @see Types#FLOAT
+ * @see Types#STRING
  */
 public enum Types {
     /**
@@ -51,7 +55,6 @@ public enum Types {
      * Marks the field to require a string value.
      * @implNote Take a note that {@link TypeValidator} will additionally perform a check
      * if the string provided is not empty ({@link String#isBlank()}).<br>
-     * If the field accepts an empty string, use {@link Types#STRING_EMPTY} instead.
      * @see Types#STRING_EMPTY
      */
     STRING("String"),

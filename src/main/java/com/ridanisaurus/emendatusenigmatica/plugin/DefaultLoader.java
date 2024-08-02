@@ -80,10 +80,19 @@ public class DefaultLoader {
         File depositDir = configDir.resolve("deposit/").toFile();
         if (!depositDir.exists() && depositDir.mkdirs()) EmendatusEnigmatica.logger.info("Created /config/emendatusenigmatica/deposit/");
 
+        Map<Path, JsonObject> strataDefinition = FileHelper.loadJsonsWithPaths(strataDir.toPath());
+        Map<Path, JsonObject> materialDefinition = FileHelper.loadJsonsWithPaths(materialDir.toPath());
+        Map<Path, JsonObject> compatDefinition = FileHelper.loadJsonsWithPaths(compatDir.toPath());
+        Map<Path, JsonObject> depositJsonDefinitionsMap = FileHelper.loadJsonsWithPaths(depositDir.toPath());
+
+        Analytics.addPerformanceAnalytic("Loading and parsing JSON Files", s);
+
+        registerStrata(strataDefinition, registry);
+
         Validator validator = new Validator("Main Validator");
         ValidatorLogger LOGGER = Validator.LOGGER;
 
-        registerStrata(validator, LOGGER, strataDir, registry);
+//        registerStrata(validator, LOGGER, strataDir, registry);
         registerMaterials(validator, LOGGER, materialDir, registry);
         registerCompat(validator, LOGGER, compatDir, registry);
         registerDeposits(validator, LOGGER, depositDir, registry);
@@ -93,14 +102,29 @@ public class DefaultLoader {
         LOGGER.printSpacer(0);
     }
 
+    private static void registerStrata(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
+        Stopwatch s = Stopwatch.createStarted();
+        definitions.forEach((path, object) -> {
+            if (!StrataModel.VALIDATION_MANAGER.validate(object, path)) return;
+
+            Optional<Pair<StrataModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(StrataModel.CODEC).apply(object).result();
+            if (result.isEmpty()) return;
+
+            StrataModel strataModel = result.get().getFirst();
+            registry.registerStrata(strataModel);
+            STRATA_IDS.add(strataModel.getId());
+        });
+        Analytics.addPerformanceAnalytic("Validation: Strata", s);
+    }
+
     private static void registerStrata(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File strataDir, @NotNull EmendatusDataRegistry registry) {
         Map<Path, JsonObject> strataDefinition = FileHelper.loadJsonsWithPaths(strataDir.toPath());
 
+        Stopwatch s = Stopwatch.createStarted();
         LOGGER.restartSpacer();
         LOGGER.info("Validating and registering data for: Strata");
         strataDefinition.forEach((path, jsonObject) -> {
             LOGGER.restartSpacer();
-            StrataModel.VALIDATION_MANAGER.validate(jsonObject, path);
             if (!validator.validateObject(jsonObject, path, StrataModel.validators)) {
                 if (!LOGGER.shouldLog) return;
                 LOGGER.printSpacer(2);
@@ -116,6 +140,7 @@ public class DefaultLoader {
 //            STRATA.add(strataModel);
             STRATA_IDS.add(strataModel.getId());
         });
+        Analytics.addPerformanceAnalytic("Validation: Strata (Old)", s);
     }
 
     private static void registerMaterials(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File materialDir, @NotNull EmendatusDataRegistry registry) {

@@ -28,6 +28,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.EffectModel;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
@@ -167,14 +172,28 @@ public class MaterialArmorModel {
 		return shield;
 	}
 
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("setName",		new TypeValidator(Types.STRING, false))
+		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
+		.addValidator("toughness",	new TypeValidator(Types.FLOAT, false))
+		.addValidator("knockback",	new TypeValidator(Types.FLOAT, false))
+		.addValidator("enchantability", new TypeValidator(Types.INTEGER, false))
+		.addValidator("effects",		new RequiredValidator(true))
+		.addValidator("helmet",		new RequiredValidator(true))
+		.addValidator("chestplate",	new RequiredValidator(true))
+		.addValidator("leggings",		new RequiredValidator(true))
+		.addValidator("boots",		new RequiredValidator(true))
+		.addValidator("shield",		new RequiredValidator(true));
+
 	static {
-		validators.put("setArmor", new Validator("setArmor").REQUIRES_BOOLEAN);
-		validators.put("setName", new Validator("setName").getNonEmptyValidation(false));
-		validators.put("setDesc", new Validator("setDesc").getNonEmptyValidation(false));
-		validators.put("toughness", new Validator("toughness").REQUIRES_FLOAT);
-		validators.put("enchantability", new Validator("enchantability").REQUIRES_INT);
-		validators.put("knockback", new Validator("knockback").REQUIRES_FLOAT);
-		validators.put("effects", new Validator("effects").getObjectValidation(EffectModel.validators, true));
+		validators.put("setArmor",	new Validator("setArmor").REQUIRES_BOOLEAN);
+		validators.put("setName",	new Validator("setName").getNonEmptyValidation(false));
+		validators.put("setDesc",	new Validator("setDesc").getNonEmptyValidation(false));
+		validators.put("toughness",	new Validator("toughness").REQUIRES_FLOAT);
+		validators.put("enchantability",	new Validator("enchantability").REQUIRES_INT);
+		validators.put("knockback",	new Validator("knockback").REQUIRES_FLOAT);
+		validators.put("effects",	new Validator("effects").getObjectValidation(EffectModel.validators, true));
 
 		TriFunction<Validator, JsonElement, Path, Boolean> armorValidator = (validator, element, path) -> {
 			if (!validator.assertParentObject(element, path)) return false;

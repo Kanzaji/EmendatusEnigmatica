@@ -38,9 +38,9 @@ public class NumberRangeValidator extends TypeValidator {
     private final double min;
     private final double max;
     /**
-     * Constructs NumberRageValidator with the specified type and range.
+     * Constructs NumberRangeValidator with the specified type and range.
      *
-     * @param type       Determines which type this field should be.
+     * @param type Determines which type this field should be.
      * @param min The Lowest number this validator will accept.
      * @param max The Highest number this validator will accept.
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.

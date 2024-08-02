@@ -58,7 +58,7 @@ public class MultiValidator implements Function<ValidationData, Boolean> {
                 if (!c.get()) return false;
             }
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(validationData.toString(), e);
         }
         return true;
     }

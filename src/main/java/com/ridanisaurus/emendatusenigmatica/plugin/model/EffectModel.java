@@ -27,6 +27,11 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -52,6 +57,12 @@ public class EffectModel {
 			showIcon.orElse(true),
 			showParticles.orElse(true)
 	)));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("effect", new ResourceLocationValidator(true))
+		.addValidator("level", new NumberRangeValidator(Types.INTEGER, 1, Integer.MAX_VALUE, false))
+		.addValidator("level", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("level", new TypeValidator(Types.BOOLEAN, false));
 
 	private final String effect;
 	private final int level;

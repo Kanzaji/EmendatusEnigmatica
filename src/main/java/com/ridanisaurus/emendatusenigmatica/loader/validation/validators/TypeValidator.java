@@ -66,7 +66,7 @@ public class TypeValidator extends AbstractValidator {
         return switch (this.type) {
             case INTEGER, FLOAT -> {
                 if (Objects.isNull(primitive) || !primitive.isNumber()) {
-                    Analytics.error("Invalid type!", "Required type: %s, got: %s".formatted(type, element.toString()), data);
+                    Analytics.error("Invalid type!", "Required type: <code>%s</code>, got: <code>%s</code>".formatted(type, element.toString()), data);
                     yield false;
                 }
 
@@ -80,7 +80,7 @@ public class TypeValidator extends AbstractValidator {
             }
             case STRING, STRING_EMPTY -> {
                 if (Objects.isNull(primitive) || !primitive.isString()) {
-                    Analytics.error("Invalid type!", "Required type: %s, got: %s".formatted(type, element.toString()), data);
+                    Analytics.error("Invalid type!", "Required type: <code>%s</code>, got: <code>%s</code>".formatted(type, element.toString()), data);
                     yield false;
                 }
 
@@ -93,7 +93,7 @@ public class TypeValidator extends AbstractValidator {
             }
             case BOOLEAN -> {
                 if (Objects.isNull(primitive) || !primitive.isBoolean()) {
-                    Analytics.error("Invalid type!", "Required type: %s, got: %s".formatted(type, element.toString()), data);
+                    Analytics.error("Invalid type!", "Required type: <code>%s</code>, got: <code>%s</code>".formatted(type, element.toString()), data);
                     yield false;
                 }
                 yield true;

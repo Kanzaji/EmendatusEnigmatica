@@ -30,6 +30,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ColorValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
@@ -59,6 +62,16 @@ public class MaterialColorsModel {
 			materialColor.orElse(null),
 			oxidizationColor.orElse(null)
 	)));
+
+	//TODO: Move GasColor and ChemicalColor validators to the addon.
+	// Note: Warnings generated when those fields "should be / should not be" provided was moved to ProcessedTypes Validator!
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("fluidColor", new ColorValidator(false))
+		.addValidator("chemicalColor", new ColorValidator(false))
+		.addValidator("particlesColor", new ColorValidator(false))
+		.addValidator("materialColor", new ColorValidator(false))
+		.addValidator("oxidizationColor", new ColorValidator(false))
+		.addValidator("gasColor", new DeprecatedFieldValidator("chemicalColor"));
 
 	private final String fluidColor;
 	private final String gasColor;

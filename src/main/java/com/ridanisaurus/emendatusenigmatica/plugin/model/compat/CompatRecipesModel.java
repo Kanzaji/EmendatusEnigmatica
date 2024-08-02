@@ -30,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -44,6 +45,11 @@ public class CompatRecipesModel {
             Codec.STRING.fieldOf("machine").forGetter(i -> i.machine),
             Codec.list(CompatValuesModel.CODEC).fieldOf("values").forGetter(i -> i.values)
     ).apply(x, CompatRecipesModel::new));
+
+    public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+        .addValidator("mod", null)
+        .addValidator("machine", null)
+        .addValidator("values", null);
 
     private final String mod;
     private final String machine;

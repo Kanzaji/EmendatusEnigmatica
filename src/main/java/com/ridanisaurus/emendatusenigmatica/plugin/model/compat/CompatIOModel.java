@@ -27,6 +27,10 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model.compat;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -45,6 +49,11 @@ public class CompatIOModel {
             count.orElse(0),
             chance.orElse(0.0f)
     )));
+
+    public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+        .addValidator("item", new ResourceLocationValidator(false))
+        .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
+        .addValidator("chance", new NumberRangeValidator(Types.FLOAT, 0, 1, false));
 
     /**
      * Holds verifying functions for each field.

@@ -92,11 +92,11 @@ public class ResourceLocationValidator extends TypeValidator {
         String value = data.validationElement().getAsString();
         List<String> values = List.of(value.split(":"));
         if (values.size() != 2) {
-            Analytics.error("Provided Resource Location (ID) doesn't comply to the format!", "Expected: \"namespace:id\", got: \"%s\".".formatted(value), data);
+            Analytics.error("Provided Resource Location (ID) doesn't comply to the format!", "Expected: <code>namespace:id</code>, got: <code>%s</code>".formatted(value), data);
             return false;
         }
         if (!ResourceLocation.isValidNamespace(values.get(0)) || !ResourceLocation.isValidPath(values.get(1))) {
-            Analytics.error("Provided Resource Location (ID) contains non [a-z0-9/._-] character!", "Provided value: " + value, data);
+            Analytics.error("Provided Resource Location (ID) contains non [a-z0-9/._-] character!", "Provided value: <code>%s</code>".formatted(value), data);
             return false;
         }
         // Add ResourceLocation for Post-Registration check.
@@ -112,19 +112,19 @@ public class ResourceLocationValidator extends TypeValidator {
     @ApiStatus.Experimental
     public static boolean runRegistryValidation() {
         //TODO: Run in parallel.
-        AtomicBoolean fatal = new AtomicBoolean(false);
+        AtomicBoolean result = new AtomicBoolean(true);
         validators.forEach((validator, list) -> list.forEach((resourceLocation, data) -> {
             switch (validator.validate(resourceLocation)) {
                 case PASS -> {
                     // Nothing, it passed successfully.
                 }
-                case ERROR -> Analytics.error(validator.getErrorMessage(), "Missing location: " + data.validationElement().getAsString(), data);
+                case ERROR -> Analytics.error(validator.getErrorMessage(), "Missing location: <code>%s</code>".formatted(data.validationElement().getAsString()), data);
                 case FATAL -> {
-                    Analytics.error(validator.getErrorMessage(), "Missing location: " + data.validationElement().getAsString(), data);
-                    fatal.set(true);
+                    Analytics.error(validator.getErrorMessage(), "Missing location: <code>%s</code>".formatted(data.validationElement().getAsString()), data);
+                    result.set(false);
                 }
             }
         }));
-        return fatal.get();
+        return result.get();
     }
 }

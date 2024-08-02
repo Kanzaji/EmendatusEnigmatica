@@ -27,7 +27,10 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model.compat;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -39,6 +42,11 @@ public class CompatModel {
 			Codec.STRING.fieldOf("id").forGetter(i -> i.id),
 			Codec.list(CompatRecipesModel.CODEC).fieldOf("recipes").forGetter(i -> i.recipes)
 	).apply(x, CompatModel::new));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("id", new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REQUIRES_REGISTERED, "Material", true))
+		.addValidator("recipes", CompatRecipesModel.VALIDATION_MANAGER.getAsValidator(true), ArrayPolicy.REQUIRES_ARRAY);
+
 	private final String id;
 	private final List<CompatRecipesModel> recipes;
 

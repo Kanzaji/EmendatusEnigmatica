@@ -27,6 +27,9 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -43,6 +46,10 @@ public class ArmorModel {
 			protection.orElse(0),
 			durability.orElse(1)
 	)));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("protection", new TypeValidator(Types.INTEGER, false))
+		.addValidator("durability", new TypeValidator(Types.INTEGER, false));
 
 	private final int protection;
 	private final int durability;

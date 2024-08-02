@@ -27,6 +27,9 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model.material;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -51,6 +54,13 @@ public class MaterialCompatModel {
 			blood_magic.orElse(true),
 			occultism.orElse(true)
 	)));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("create", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("thermal", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("mekanism", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("ars_nouveau", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("occultism", new TypeValidator(Types.BOOLEAN, false));
 
 	private final boolean create;
 	private final boolean thermal;

@@ -27,6 +27,9 @@ package com.ridanisaurus.emendatusenigmatica.plugin.model;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -45,6 +48,11 @@ public class ToolModel {
 			speed.orElse(0.0f),
 			durability.orElse(1)
 	)));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("damage", new TypeValidator(Types.FLOAT, false))
+		.addValidator("speed", new TypeValidator(Types.FLOAT, false))
+		.addValidator("durability", new TypeValidator(Types.INTEGER, false));
 
 	private final float damage;
 	private final float speed;

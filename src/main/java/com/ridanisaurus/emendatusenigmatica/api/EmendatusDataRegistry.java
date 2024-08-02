@@ -25,6 +25,7 @@
 package com.ridanisaurus.emendatusenigmatica.api;
 
 import com.google.common.collect.ImmutableList;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
@@ -60,6 +61,7 @@ public class EmendatusDataRegistry {
      * @param defaultModel MaterialModel to register under that id.
      * @return MaterialModel passed to the argument or previous MaterialModel that was registered under that id.
      */
+    @CanIgnoreReturnValue
     public MaterialModel getMaterialOrRegister(String material, MaterialModel defaultModel){
         return this.materials.computeIfAbsent(material, s -> defaultModel);
     }

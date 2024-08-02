@@ -29,6 +29,10 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 
@@ -61,6 +65,16 @@ public class MaterialGasPropertiesModel {
 			conductivity.orElse(0.0D)
 	)));
 
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("isBurnable", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("burnTime", new TypeValidator(Types.INTEGER, false))
+		.addValidator("energyDensity", new TypeValidator(Types.INTEGER, false))
+		.addValidator("isRadioactive", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("radioactivity", new TypeValidator(Types.FLOAT, false))
+		.addValidator("isCoolant", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("coolantType", new ValuesValidator(List.of("cooled", "heated"), ValuesValidator.WHITELIST, false));
+	//TODO: Finish
+	
 	private final boolean isBurnable;
 	private final int burnTime;
 	private final long energyDensity;

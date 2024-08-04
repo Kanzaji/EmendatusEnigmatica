@@ -33,12 +33,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.OreDropValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -195,18 +199,33 @@ public class MaterialModel {
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
 		.addValidator("id",					new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REGISTRATION, true))
 		.addValidator("strata",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", false), ArrayPolicy.REQUIRES_ARRAY)
-		.addValidator("source",				new ValuesValidator(List.of("vanilla", "modded"), ValuesValidator.WHITELIST, true))
+		.addValidator("source",				new ValuesValidator(List.of("vanilla", "modded"), FilterMode.WHITELIST, true))
 		.addValidator("localizedName",		new TypeValidator(Types.STRING, true))
 		.addValidator("disableDefaultOre",	new TypeValidator(Types.BOOLEAN, false))
 		// Below are WIP validators
-		.addValidator("tools", 				MaterialToolsModel.VALIDATION_MANAGER.getAsValidator(true))
-		.addValidator("armor",				new RequiredValidator(false))
 		.addValidator("properties",			new RequiredValidator(false))
 		.addValidator("processedTypes",		new RequiredValidator(false))
 		.addValidator("colors",				new RequiredValidator(false))
-		.addValidator("compat",				new RequiredValidator(false))
 		.addValidator("gas",					new RequiredValidator(false))
-		.addValidator("oreDrop",				new RequiredValidator(false));
+		.addValidator("oreDrop",				new OreDropValidator())
+		.addValidator("compat",				CompatModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("tools", new ProcessedTypesContainValidator(List.of(
+			"sword",
+			"pickaxe",
+			"axe",
+			"shovel",
+			"hoe",
+			"paxel"
+		), MaterialToolsModel.VALIDATION_MANAGER.getAsValidator(false)))
+		//TODO: Replace with commented out line when armor piece values are deprecated.
+//		.addValidator("armor", new ProcessedTypesContainValidator(List.of("armor", "shield"), MaterialArmorModel.VALIDATION_MANAGER.getAsValidator(false)))
+		.addValidator("armor", new ProcessedTypesContainValidator(List.of(
+			"helmet",
+			"chestplate",
+			"leggings",
+			"boots",
+			"shield"
+		), MaterialArmorModel.VALIDATION_MANAGER.getAsValidator(false)));
 
 	static {
 		validators.put("id", 			new Validator("id")			.getIDValidation(DefaultLoader.MATERIAL_IDS));

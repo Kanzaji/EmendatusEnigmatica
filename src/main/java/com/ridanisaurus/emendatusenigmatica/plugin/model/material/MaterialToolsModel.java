@@ -32,7 +32,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ToolModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ToolValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.tools.ToolValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import org.apache.commons.lang3.function.TriFunction;
 

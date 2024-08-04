@@ -28,15 +28,16 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * @apiNote Name is a subject to change. Currently, this validator only supports {@link Types#STRING}.
+ * @apiNote Name is a subject to change. Currently, this validator only supports {@link Types#INTEGER}.
  */
-public class ValuesValidator extends TypeValidator {
-    private final List<String> values;
+public class NumberValuesValidator extends TypeValidator {
+    private final List<Integer> values;
     private final String valuesAsString;
     private final FilterMode mode;
 
@@ -45,13 +46,13 @@ public class ValuesValidator extends TypeValidator {
      * @param values Values to check for.
      * @param validatorMode Determines the mode of the operation.
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
-     * @see ValuesValidator Documentation of the validator
+     * @see NumberValuesValidator Documentation of the validator
      * @see FilterMode Available modes
      */
-    public ValuesValidator(@NotNull List<String> values, FilterMode validatorMode, boolean isRequired) {
-        super(Types.STRING, isRequired);
+    public NumberValuesValidator(@NotNull List<Integer> values, FilterMode validatorMode, boolean isRequired) {
+        super(Types.INTEGER, isRequired);
         this.values = values;
-        this.valuesAsString = String.join(", ", values);
+        this.valuesAsString = StringUtils.join(values, ", ");
         this.mode = validatorMode;
     }
 
@@ -60,21 +61,20 @@ public class ValuesValidator extends TypeValidator {
      *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link ValuesValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link NumberValuesValidator#apply(ValidationData)} instead!
      */
     @Override
     public Boolean validate(@NotNull ValidationData data) {
         if (!super.validate(data)) return false;
-        String value = data.validationElement().getAsString();
+        int value = data.validationElement().getAsInt();
         boolean contains = values.contains(value);
         if (mode == FilterMode.WHITELIST) {
             if (contains) return true;
-            Analytics.error("Field contains an illegal value!", "Provided: <code>%s</code> , Accepted values: <code>%s</code>".formatted(value, valuesAsString), data);
+            Analytics.error("Field contains an illegal value!", "Provided: <code>%d</code> , Accepted values: <code>%s</code>".formatted(value, valuesAsString), data);
             return false;
         }
         if (!contains) return true;
-        Analytics.error("Field contains one of the illegal values!", "Provided: <code>%s</code> , Illegal values: <code>%s</code>".formatted(value, valuesAsString), data);
+        Analytics.error("Field contains one of the illegal values!", "Provided: <code>%d</code> , Illegal values: <code>%s</code>".formatted(value, valuesAsString), data);
         return false;
     }
-
 }

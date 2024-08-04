@@ -30,9 +30,16 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.BurnTimeValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.gas.CoolantTypeValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.gas.CoolantValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.gas.RadioactivityValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 
@@ -66,14 +73,15 @@ public class MaterialGasPropertiesModel {
 	)));
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("isBurnable", new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("burnTime", new TypeValidator(Types.INTEGER, false))
-		.addValidator("energyDensity", new TypeValidator(Types.INTEGER, false))
-		.addValidator("isRadioactive", new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("radioactivity", new TypeValidator(Types.FLOAT, false))
-		.addValidator("isCoolant", new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("coolantType", new ValuesValidator(List.of("cooled", "heated"), ValuesValidator.WHITELIST, false));
-	//TODO: Finish
+		.addValidator("isBurnable",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isRadioactive",	new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isCoolant",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("energyDensity",	new TypeValidator(Types.INTEGER, false))
+		.addValidator("radioactivity",	new RadioactivityValidator())
+		.addValidator("coolantType",		new CoolantTypeValidator())
+		.addValidator("thermalEnthalpy",	new CoolantValidator())
+		.addValidator("conductivity",		new CoolantValidator())
+		.addValidator("burnTime",			new BurnTimeValidator());
 
 	private final boolean isBurnable;
 	private final int burnTime;

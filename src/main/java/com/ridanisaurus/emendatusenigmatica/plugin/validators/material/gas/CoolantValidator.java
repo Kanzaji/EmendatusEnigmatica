@@ -22,33 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material.gas;
 
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 
-/**
- * Wrapper of {@link ProcessedTypesContainValidator}, used for validating {@link ArmorModel}
- */
-public class ArmorValidator extends ProcessedTypesContainValidator {
-    private static final ValidationManager.ObjectValidator validator = ArmorModel.VALIDATION_MANAGER.getAsValidator(false);
+import java.util.List;
 
+public class CoolantValidator extends FieldTrueValidator {
+    private static final IValidationFunction validator = new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false);
     /**
-     * Constructs ArmorValidator, with specified processedType requirement.
+     * Constructs CoolantValidator.
      *
-     * @param processedType Processed Type required, for this validator to be marked as "Required"
-     * @see ArmorValidator Documentation of the validator.
+     * @see CoolantValidator Documentation of the validator.
      */
-    public ArmorValidator(String processedType) {
-        super(processedType, validator);
-    }
-
-    /**
-     * Constructs ArmorValidator, with default processedType of {@code armor}.
-     *
-     * @see ArmorValidator Documentation of the validator.
-     */
-    public ArmorValidator() {
-        super("armor", validator);
+    public CoolantValidator() {
+        super("isCoolant", validator);
     }
 }

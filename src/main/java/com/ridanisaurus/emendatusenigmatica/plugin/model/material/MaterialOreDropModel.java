@@ -31,10 +31,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.OreDropValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.oredrop.DropValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -64,9 +64,9 @@ public class MaterialOreDropModel {
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
 		.addValidator("uniformCount",	new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("drop",	new ResourceLocationValidator(false))
 		.addValidator("min",	new NumberRangeValidator(Types.INTEGER, 0, 64, false))
-		.addValidator("max",	new MaxValidator(Types.INTEGER, 0, 64, false));
+		.addValidator("max",	new MaxValidator(Types.INTEGER, 0, 64, false))
+		.addValidator("drop",	new DropValidator());
 
 	private final String drop;
 	private final int min;

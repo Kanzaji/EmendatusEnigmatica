@@ -79,13 +79,49 @@ public class ValidationHelper {
      * @param values Values to check the array for.
      * @return True if an array exists, and all values were found, otherwise false.
      */
-    public static boolean doesArrayContain(JsonObject rootElement, String path, List<String> values) {
+    public static boolean doesArrayContainAny(JsonObject rootElement, String path, @NotNull List<String> values) {
+        if (values.isEmpty()) return false;
+        var element = getElementFromPath(rootElement, path);
+        if (Objects.isNull(element) || !element.isJsonArray()) return false;
+        var array = element.getAsJsonArray();
+        for (String value : values)
+            if (array.contains(new JsonPrimitive(value))) return true;
+        return false;
+    }
+
+    /**
+     * Used to check if an array at specified path contains specified values.
+     * @param rootElement Root Element of the validated object.
+     * @param path Path to the array.
+     * @param values Values to check the array for.
+     * @return True if an array exists, and all values were found, otherwise false.
+     */
+    public static boolean doesArrayContain(JsonObject rootElement, String path, @NotNull List<String> values) {
+        if (values.isEmpty()) return false;
         var element = getElementFromPath(rootElement, path);
         if (Objects.isNull(element) || !element.isJsonArray()) return false;
         var array = element.getAsJsonArray();
         for (String value : values)
             if (!array.contains(new JsonPrimitive(value))) return false;
         return true;
+    }
+
+    /**
+     * Used to get elements found in an array at specified path.
+     * @param rootElement Root Element of the validated object.
+     * @param path Path to the array.
+     * @param values Values to check the array for.
+     * @return List of found elements. Will not contain more elements than the list provided.
+     */
+    public static @Nullable List<String> getContainedInArray(JsonObject rootElement, String path, @NotNull List<String> values) {
+        if (values.isEmpty()) return null;
+        var element = getElementFromPath(rootElement, path);
+        if (Objects.isNull(element) || !element.isJsonArray()) return null;
+        List<String> result = new ArrayList<>();
+        var array = element.getAsJsonArray();
+        for (String value : values)
+            if (array.contains(new JsonPrimitive(value))) result.add(value);
+        return result;
     }
 
     /**

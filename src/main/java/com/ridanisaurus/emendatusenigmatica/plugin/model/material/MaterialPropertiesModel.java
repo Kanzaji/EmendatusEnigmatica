@@ -30,6 +30,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.*;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.BurnTimeValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.properties.GemTextureValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -139,6 +147,21 @@ public class MaterialPropertiesModel {
 	public int getBurnTime() {
 		return burnTime;
 	}
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("materialType",		new ValuesValidator(List.of("metal", "gem", "alloy"), FilterMode.WHITELIST, true))
+		.addValidator("harvestLevel",		new NumberRangeValidator(Types.INTEGER, 0, 4, false))
+		.addValidator("hasParticles",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("hasOxidization",	new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isEmissive",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isBurnable",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("burnTime",			new BurnTimeValidator())
+		.addValidator("gemTexture",		new GemTextureValidator())
+		.addValidator("blockRecipeType",	new ProcessedTypesContainValidator(
+			List.of("gem", "storage_block"),
+			new NumberValuesValidator(List.of(4, 9), FilterMode.WHITELIST, false),
+			false
+		));
 
 	static {
 		validators.put("materialType", new Validator("materialType").getRequiredAcceptsOnlyValidation(List.of("metal", "gem", "alloy"), false));

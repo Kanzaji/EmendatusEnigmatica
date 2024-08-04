@@ -30,12 +30,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.EffectModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ArmorValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.armor.ArmorValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import org.apache.commons.lang3.function.TriFunction;
 

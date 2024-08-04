@@ -22,25 +22,21 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material.gas;
 
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialToolsModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.ToolModel;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 
-/**
- * Wrapper of {@link ProcessedTypesContainValidator}, used for validating {@link ToolModel} in {@link MaterialToolsModel}
- */
-public class ToolValidator extends ProcessedTypesContainValidator {
-    private static final ValidationManager.ObjectValidator validator = ToolModel.VALIDATION_MANAGER.getAsValidator(false);
-
+public class RadioactivityValidator extends FieldTrueValidator {
+    private static final IValidationFunction validator = new NumberRangeValidator(Types.FLOAT, 0, Float.MAX_VALUE, false);
     /**
-     * Constructs ToolValidator, with specified processedType requirement.
+     * Constructs RadioactivityValidator.
      *
-     * @param processedType Processed Type required, for this validator to be marked as "Required"
-     * @see ToolValidator Documentation of the validator.
+     * @see RadioactivityValidator Documentation of the validator.
      */
-    public ToolValidator(String processedType) {
-        super(processedType, validator);
+    public RadioactivityValidator() {
+        super("isRadioactive", validator);
     }
 }

@@ -37,6 +37,10 @@ import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * A static class, used to gather messages from the validation system and generate a summary.
+ * @implSpec Please try to not generate more than a single message for each field. Each message is its own paragraph, with the field path.
+ */
 public class Analytics {
     /**
      * Used to store messages and necessary data for each file.

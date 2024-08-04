@@ -74,7 +74,7 @@ public class MaterialGasPropertiesModel {
 		.addValidator("isCoolant", new TypeValidator(Types.BOOLEAN, false))
 		.addValidator("coolantType", new ValuesValidator(List.of("cooled", "heated"), ValuesValidator.WHITELIST, false));
 	//TODO: Finish
-	
+
 	private final boolean isBurnable;
 	private final int burnTime;
 	private final long energyDensity;

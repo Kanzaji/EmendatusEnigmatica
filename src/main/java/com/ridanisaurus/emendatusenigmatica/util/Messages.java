@@ -26,7 +26,6 @@ package com.ridanisaurus.emendatusenigmatica.util;
 
 import java.util.List;
 
-public record Messages(List<WarningMessage> warnings, List<ErrorMessage> errors) {
-    public record WarningMessage(String element, String message) {}
-    public record ErrorMessage(String element, String cause, String additionalInfo) {}
+public record Messages(List<Message> warnings, List<Message> errors) {
+    public record Message(String element, String message, String additionalInfo) {}
 }

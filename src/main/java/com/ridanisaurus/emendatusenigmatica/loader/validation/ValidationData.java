@@ -27,8 +27,11 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Used to hold all necessary information for the validator.
@@ -36,11 +39,13 @@ import org.jetbrains.annotations.NotNull;
  * @param rootObject Root Json Object (if other fields are necessary)
  * @param currentPath Current Path inside the JSON file.
  * @param jsonFilePath Path to the json file, obfuscated.
+ * @implSpec Please do not store any reference to this object outside the validation method.
  */
 public record ValidationData(JsonElement validationElement, JsonObject rootObject, String currentPath, String jsonFilePath, ArrayPolicy arrayPolicy) {
     /**
      * Utility method to get ValidationData from previous data, but with updated information for another field of the object.
      * @param field Field name to base the information update on.
+     * @param arrayPolicy ArrayPolicy of that field.
      * @return ValidationData with validationElement and currentPath updated.
      * @throws IllegalArgumentException when validationElement of previous data is not a JsonObject!
      */
@@ -54,5 +59,21 @@ public record ValidationData(JsonElement validationElement, JsonObject rootObjec
             this.jsonFilePath,
             arrayPolicy
         );
+    }
+
+    public @NotNull String getParentPath() {
+        return StringUtils.substringBeforeLast(this.currentPath, ".");
+    }
+
+    public @NotNull String getParentFieldPath(String fieldName) {
+        return getParentPath() + "." + fieldName;
+    }
+
+    public @Nullable JsonElement getParentField(String fieldName) {
+        return ValidationHelper.getElementFromPath(this.rootObject, getParentFieldPath(fieldName));
+    }
+
+    public @Nullable JsonElement getParentFieldAs(Types type, String fieldName) {
+        return ValidationHelper.getElementFromPathAs(this.rootObject, getParentFieldPath(fieldName), type);
     }
 }

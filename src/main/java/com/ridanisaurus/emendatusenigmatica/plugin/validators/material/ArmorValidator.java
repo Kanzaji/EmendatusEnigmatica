@@ -22,27 +22,33 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
 
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-
-import java.util.function.Function;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 
 /**
- * This validator accepts *any value* in *any format*. Essentially it just returns true.
- * @see AbstractValidator
- * @see AbstractBasicValidator
+ * Wrapper of {@link ProcessedTypesContainValidator}, used for validating {@link ArmorModel}
  */
-public class AcceptsAllValidator implements IValidationFunction {
+public class ArmorValidator extends ProcessedTypesContainValidator {
+    private static final ValidationManager.ObjectValidator validator = ArmorModel.VALIDATION_MANAGER.getAsValidator(false);
 
     /**
-     * Constructor of the AcceptsAllValidator.
-     * @see AcceptsAllValidator Validator Documentation.
+     * Constructs ArmorValidator, with specified processedType requirement.
+     *
+     * @param processedType Processed Type required, for this validator to be marked as "Required"
+     * @see ArmorValidator Documentation of the validator.
      */
-    public AcceptsAllValidator() {}
+    public ArmorValidator(String processedType) {
+        super(processedType, validator);
+    }
 
-    @Override
-    public Boolean apply(ValidationData validationData) {
-        return true;
+    /**
+     * Constructs ArmorValidator, with default processedType of {@code armor}.
+     *
+     * @see ArmorValidator Documentation of the validator.
+     */
+    public ArmorValidator() {
+        super("armor", validator);
     }
 }

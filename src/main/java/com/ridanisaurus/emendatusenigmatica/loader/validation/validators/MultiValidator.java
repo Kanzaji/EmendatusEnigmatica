@@ -36,7 +36,7 @@ import java.util.function.Function;
  * This validator takes in multiple validators, and validates all of them parallel for a single field.
  * @apiNote Take a note that, while handy, this should not be used whenever possible.
  */
-public class MultiValidator implements Function<ValidationData, Boolean> {
+public class MultiValidator implements IValidationFunction {
     private final List<Function<ValidationData, Boolean>> validators = new ArrayList<>();
 
     /**

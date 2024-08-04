@@ -35,6 +35,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeVal
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.EffectModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ArmorValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import org.apache.commons.lang3.function.TriFunction;
 
@@ -173,18 +174,19 @@ public class MaterialArmorModel {
 	}
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("setName",		new TypeValidator(Types.STRING, false))
-		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
+		.addValidator("enchantability", new TypeValidator(Types.INTEGER, false))
 		.addValidator("toughness",	new TypeValidator(Types.FLOAT, false))
 		.addValidator("knockback",	new TypeValidator(Types.FLOAT, false))
-		.addValidator("enchantability", new TypeValidator(Types.INTEGER, false))
-		.addValidator("effects",		new RequiredValidator(true))
-		.addValidator("helmet",		new RequiredValidator(true))
-		.addValidator("chestplate",	new RequiredValidator(true))
-		.addValidator("leggings",		new RequiredValidator(true))
-		.addValidator("boots",		new RequiredValidator(true))
-		.addValidator("shield",		new RequiredValidator(true));
+		.addValidator("setName",		new TypeValidator(Types.STRING, false))
+		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
+		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
+		//TODO: Replace with new ArmorValidator(), for default value `armor`
+		.addValidator("helmet",   	new ArmorValidator("helmet"))
+		.addValidator("chestplate", 	new ArmorValidator("chestplate"))
+		.addValidator("leggings",   	new ArmorValidator("leggings"))
+		.addValidator("boots",  		new ArmorValidator("boots"))
+		.addValidator("shield",     	new ArmorValidator("shield"))
+		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false));
 
 	static {
 		validators.put("setArmor",	new Validator("setArmor").REQUIRES_BOOLEAN);

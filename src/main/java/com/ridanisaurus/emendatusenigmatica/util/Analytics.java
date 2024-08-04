@@ -25,7 +25,6 @@
 package com.ridanisaurus.emendatusenigmatica.util;
 
 import com.google.common.base.Stopwatch;
-import com.mojang.authlib.Environment;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
@@ -114,41 +113,62 @@ public class Analytics {
     /**
      * Used to add warn messages for specified file.
      * @param msg Message to add
+     * @param data ValidationData, from which all necessary information will be taken.
+     * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
+     * @see Analytics#isFinalized()
+     */
+    public static void warn(String msg, @NotNull ValidationData data) {
+        warn(msg, null, data.currentPath(), data.jsonFilePath());
+    }
+
+    /**
+     * Used to add warn messages for specified file.
+     * @param msg Message to add
+     * @param additional Additional details to be printed after "message". This gets written directly into the file!
+     * @param data ValidationData, from which all necessary information will be taken.
+     * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
+     * @see Analytics#isFinalized()
+     */
+    public static void warn(String msg, String additional, @NotNull ValidationData data) {
+        warn(msg, additional, data.currentPath(), data.jsonFilePath());
+    }
+
+    /**
+     * Used to add warn messages for specified file.
+     * @param msg Message to add
      * @param elementPath Path to the element in question.
      * @param jsonPath Path to the json file.
      * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
      * @see Analytics#isFinalized()
      */
     public static void warn(String msg, String elementPath, String jsonPath) {
-        if (finalized) throw new IllegalStateException("Analytics were already finalized!");
-        messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
-            .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).warnings().add(new Messages.WarningMessage(elementPath, msg));
+        warn(msg, null, elementPath, jsonPath);
     }
 
     /**
      * Used to add warn messages for specified file.
      * @param msg Message to add
-     * @param data ValidationData, from which all necessary information will be taken.
+     * @param additional Additional details to be printed after "message". This gets written directly into the file!
+     * @param elementPath Path to the element in question.
+     * @param jsonPath Path to the json file.
      * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
      * @see Analytics#isFinalized()
      */
-    public static void warn(String msg, @NotNull ValidationData data) {
-        warn(msg, data.currentPath(), data.jsonFilePath());
+    public static void warn(String msg, String additional, String elementPath, String jsonPath) {
+        if (finalized) throw new IllegalStateException("Analytics were already finalized!");
+        messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
+            .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).warnings().add(new Messages.Message(elementPath, msg, additional));
     }
 
     /**
      * Used to add error messages for specified file.
      * @param msg Message to add.
-     * @param additional Additional details to be printed after "cause". This gets written directly into the file!
-     * @param elementPath Path to the element in question.
-     * @param jsonPath Obfuscated path to the json file.
+     * @param data ValidationData, from which all necessary information will be taken.
      * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
      * @see Analytics#isFinalized()
      */
-    public static void error(String msg, @Nullable String additional, String elementPath, String jsonPath) {
-        if (finalized) throw new IllegalStateException("Analytics were already finalized!");
-        messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
-            .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).errors().add(new Messages.ErrorMessage(elementPath, msg, additional));
+    public static void error(String msg, @NotNull ValidationData data) {
+        error(msg, null, data.currentPath(), data.jsonFilePath());
     }
 
     /**
@@ -172,20 +192,22 @@ public class Analytics {
      * @see Analytics#isFinalized()
      */
     public static void error(String msg, String elementPath, String jsonPath) {
-        if (finalized) throw new IllegalStateException("Analytics were already finalized!");
-        messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
-            .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).errors().add(new Messages.ErrorMessage(elementPath, msg, null));
+        error(msg, null, elementPath, jsonPath);
     }
 
     /**
      * Used to add error messages for specified file.
      * @param msg Message to add.
-     * @param data ValidationData, from which all necessary information will be taken.
+     * @param additional Additional details to be printed after "cause". This gets written directly into the file!
+     * @param elementPath Path to the element in question.
+     * @param jsonPath Obfuscated path to the json file.
      * @apiNote The types are determined based on the jsonPath, using format {@code type/folder_if_any/file.json}.
      * @see Analytics#isFinalized()
      */
-    public static void error(String msg, @NotNull ValidationData data) {
-        error(msg, null, data.currentPath(), data.jsonFilePath());
+    public static void error(String msg, @Nullable String additional, String elementPath, String jsonPath) {
+        if (finalized) throw new IllegalStateException("Analytics were already finalized!");
+        messages.computeIfAbsent(StringUtils.substringBefore(jsonPath, dirSeparator), it -> new HashMap<>())
+            .computeIfAbsent(jsonPath, it -> new Messages(new ArrayList<>(), new ArrayList<>())).errors().add(new Messages.Message(elementPath, msg, additional));
     }
 
     /**
@@ -279,6 +301,7 @@ public class Analytics {
                 messages.warnings().forEach(warning -> {
                     writeLine("- Element: <code>%s</code>".formatted(warning.element()));
                     writeLine("Message: " + warning.message());
+                    if (Objects.nonNull(warning.additionalInfo())) writeLine(warning.additionalInfo());
                     write("\n"); // Additional line to make "space" between list elements.
                 });
             }
@@ -287,7 +310,7 @@ public class Analytics {
                 writeLine("Errors:");
                 messages.errors().forEach(error -> {
                     writeLine("- Element: <code>%s</code>".formatted(error.element()));
-                    writeLine("Cause: " + error.cause());
+                    writeLine("Cause: " + error.message());
                     if (Objects.nonNull(error.additionalInfo())) writeLine(error.additionalInfo());
                     write("\n"); // Additional line to make "space" between list elements.
                 });

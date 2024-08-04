@@ -59,10 +59,10 @@ public class EffectModel {
 	)));
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("effect", new ResourceLocationValidator(true))
 		.addValidator("level", new NumberRangeValidator(Types.INTEGER, 1, Integer.MAX_VALUE, false))
-		.addValidator("level", new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("level", new TypeValidator(Types.BOOLEAN, false));
+		.addValidator("showParticles", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("showIcon", new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("effect", new ResourceLocationValidator(true));
 
 	private final String effect;
 	private final int level;

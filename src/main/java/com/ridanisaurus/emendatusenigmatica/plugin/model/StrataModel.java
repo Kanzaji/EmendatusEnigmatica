@@ -91,7 +91,7 @@ public class StrataModel {
 	}
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("id",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.ALREADY_REGISTERED, true))
+		.addValidator("id",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REGISTRATION, true))
 		.addValidator("baseTexture",		new ResourceLocationValidator(true))
 		.addValidator("fillerType",		new ResourceLocationValidator(true))
 		.addValidator("suffix",			new TypeValidator(Types.STRING, true))

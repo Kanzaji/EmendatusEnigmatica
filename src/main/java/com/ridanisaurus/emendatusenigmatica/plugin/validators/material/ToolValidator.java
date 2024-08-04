@@ -22,27 +22,25 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
 
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-
-import java.util.function.Function;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialToolsModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.ToolModel;
 
 /**
- * This validator accepts *any value* in *any format*. Essentially it just returns true.
- * @see AbstractValidator
- * @see AbstractBasicValidator
+ * Wrapper of {@link ProcessedTypesContainValidator}, used for validating {@link ToolModel} in {@link MaterialToolsModel}
  */
-public class AcceptsAllValidator implements IValidationFunction {
+public class ToolValidator extends ProcessedTypesContainValidator {
+    private static final ValidationManager.ObjectValidator validator = ToolModel.VALIDATION_MANAGER.getAsValidator(false);
 
     /**
-     * Constructor of the AcceptsAllValidator.
-     * @see AcceptsAllValidator Validator Documentation.
+     * Constructs ToolValidator, with specified processedType requirement.
+     *
+     * @param processedType Processed Type required, for this validator to be marked as "Required"
+     * @see ToolValidator Documentation of the validator.
      */
-    public AcceptsAllValidator() {}
-
-    @Override
-    public Boolean apply(ValidationData validationData) {
-        return true;
+    public ToolValidator(String processedType) {
+        super(processedType, validator);
     }
 }

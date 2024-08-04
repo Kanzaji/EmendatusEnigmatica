@@ -22,56 +22,36 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractBasicValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-import java.util.function.Function;
-
 /**
- * AbstractBasicValidator is a template class, which more advanced validators can extend,
- * to have the basic functions already implemented and ready-to-go.
- * <br><br>
- * This validator handles the field requirement and if the element passes, calls the abstract {@link AbstractBasicValidator#validate(ValidationData)} method.
- * @apiNote This validator doesn't handle ArrayPolicy, and implementation of the {@link AbstractBasicValidator#validate(ValidationData)}
- * method needs to handle it manually. If the element is an array, <i>the entire array</i> is passed to the method, instead of each entry individually.
- * If your use case doesn't require access to the entire array, use {@link AbstractValidator} instead.
+ * Custom validator used to validate Processed Types field in the {@link MaterialModel}.<br>
  */
-public abstract class AbstractBasicValidator implements IValidationFunction {
-    private final boolean isRequired;
-
+public class ProcessedTypesValidator extends AbstractBasicValidator {
     /**
      * Constructs AbstractBasicValidator, which requires implementation of {@link AbstractBasicValidator#validate(ValidationData)} method.
+     *
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
      * @see AbstractBasicValidator Documentation of the validator.
      */
-    public AbstractBasicValidator(boolean isRequired) {
-        this.isRequired = isRequired;
-    }
-
-    /**
-     * Entry point of the validator.
-     * @param data ValidationData record with necessary information to validate the element.
-     * @return True if the validation passes, false otherwise.
-     */
-    @Override
-    public Boolean apply(@NotNull ValidationData data) {
-        if (Objects.isNull(data.validationElement())) {
-            if (!isRequired) return true;
-            Analytics.error("This field is required!", data);
-            return false;
-        }
-        return this.validate(data);
+    public ProcessedTypesValidator(boolean isRequired) {
+        super(isRequired);
     }
 
     /**
      * Validate method, used to validate passed in object.
+     *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
      * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
      */
-    public abstract Boolean validate(@NotNull ValidationData data);
+    @Override
+    public Boolean validate(@NotNull ValidationData data) {
+        return false;
+    }
 }

@@ -88,12 +88,13 @@ public class DefaultLoader {
         Analytics.addPerformanceAnalytic("Loading and parsing JSON Files", s);
 
         registerStrata(strataDefinition, registry);
+        registerMaterials(materialDefinition, registry);
 
         Validator validator = new Validator("Main Validator");
         ValidatorLogger LOGGER = Validator.LOGGER;
 
 //        registerStrata(validator, LOGGER, strataDir, registry);
-        registerMaterials(validator, LOGGER, materialDir, registry);
+//        registerMaterials(validator, LOGGER, materialDir, registry);
         registerCompat(validator, LOGGER, compatDir, registry);
         registerDeposits(validator, LOGGER, depositDir, registry);
 
@@ -115,6 +116,21 @@ public class DefaultLoader {
             STRATA_IDS.add(strataModel.getId());
         });
         Analytics.addPerformanceAnalytic("Validation: Strata", s);
+    }
+
+    private static void registerMaterials(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
+        Stopwatch s = Stopwatch.createStarted();
+        definitions.forEach((path, object) -> {
+            if (!MaterialModel.VALIDATION_MANAGER.validate(object, path)) return;
+
+            Optional<Pair<MaterialModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(MaterialModel.CODEC).apply(object).result();
+            if (result.isEmpty()) return;
+
+            MaterialModel materialModel = result.get().getFirst();
+            registry.getMaterialOrRegister(materialModel.getId(), materialModel);
+            MATERIAL_IDS.add(materialModel.getId());
+        });
+        Analytics.addPerformanceAnalytic("Validation: Material", s);
     }
 
     private static void registerStrata(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File strataDir, @NotNull EmendatusDataRegistry registry) {

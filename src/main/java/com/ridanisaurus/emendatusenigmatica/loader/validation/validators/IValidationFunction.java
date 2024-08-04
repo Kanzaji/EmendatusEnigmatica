@@ -25,24 +25,14 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-
 import java.util.function.Function;
 
-/**
- * This validator accepts *any value* in *any format*. Essentially it just returns true.
- * @see AbstractValidator
- * @see AbstractBasicValidator
- */
-public class AcceptsAllValidator implements IValidationFunction {
-
+public interface IValidationFunction extends Function<ValidationData, Boolean> {
     /**
-     * Constructor of the AcceptsAllValidator.
-     * @see AcceptsAllValidator Validator Documentation.
+     * Entry point of the validator.
+     * @param data ValidationData record with necessary information to validate the element.
+     * @return True if the validation passes, false otherwise.
      */
-    public AcceptsAllValidator() {}
-
     @Override
-    public Boolean apply(ValidationData validationData) {
-        return true;
-    }
+    Boolean apply(ValidationData data);
 }

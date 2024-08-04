@@ -44,7 +44,7 @@ public class CompatModel {
 	).apply(x, CompatModel::new));
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("id", new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REQUIRES_REGISTERED, "Material", true))
+		.addValidator("id", new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REFERENCE, "Material", true))
 		.addValidator("recipes", CompatRecipesModel.VALIDATION_MANAGER.getAsValidator(true), ArrayPolicy.REQUIRES_ARRAY);
 
 	private final String id;

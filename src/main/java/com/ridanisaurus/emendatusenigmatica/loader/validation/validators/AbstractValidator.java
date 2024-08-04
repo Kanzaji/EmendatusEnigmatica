@@ -44,7 +44,7 @@ import java.util.function.Function;
  * @apiNote  This validator doesn't pass an entire array to the {@link AbstractValidator#validate(ValidationData)} method, only elements found inside it.
  * If your validator requires access to the entire array, use {@link AbstractBasicValidator} instead.
  */
-public abstract class AbstractValidator implements Function<ValidationData, Boolean> {
+public abstract class AbstractValidator implements IValidationFunction {
     private final boolean isRequired;
 
     /**

@@ -40,11 +40,11 @@ public class EERegistryValidator extends TypeValidator {
     /**
      * Will cause {@link EERegistryValidator} to check if ID isn't already registered in the specified list of ids.
      */
-    public static final Mode ALREADY_REGISTERED = Mode.ALREADY_REGISTERED;
+    public static final Mode REGISTRATION = Mode.REGISTRATION;
     /**
-     * Will cause {@link EERegistryValidator} to check if ID is registered in the specified list of ids.
+     * Will cause {@link EERegistryValidator} to check if ID is a valid reference to a value in the specified list.
      */
-    public static final Mode REQUIRES_REGISTERED = Mode.REQUIRES_REGISTERED;
+    public static final Mode REFERENCE = Mode.REFERENCE;
     private final List<String> values;
     private final Mode mode;
     private final String name;
@@ -70,7 +70,7 @@ public class EERegistryValidator extends TypeValidator {
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
      * @see EERegistryValidator Documentation of the validator
      * @see Mode Available modes
-     * @apiNote {@code registryName} is only used in {@link Mode#REQUIRES_REGISTERED} mode. Format: "{@code registryName} registry..."
+     * @apiNote {@code registryName} is only used in {@link Mode#REFERENCE} mode. Format: "{@code registryName} registry..."
      */
     public EERegistryValidator(List<String> ids, Mode mode, String registryName, boolean isRequired) {
         super(Types.STRING, isRequired);
@@ -91,7 +91,7 @@ public class EERegistryValidator extends TypeValidator {
         if (!super.validate(data)) return false;
         String value = data.validationElement().getAsString();
         boolean contains = values.contains(value);
-        if (mode == Mode.REQUIRES_REGISTERED) {
+        if (mode == Mode.REFERENCE) {
             if (contains) return true;
             Analytics.error("Specified ID is missing from the %s registry!".formatted(name), "ID: <code>%s</code>".formatted(value), data);
             return false;
@@ -103,17 +103,17 @@ public class EERegistryValidator extends TypeValidator {
 
     /**
      * Simple enum to determine the mode of the {@link EERegistryValidator}.
-     * @see Mode#ALREADY_REGISTERED
-     * @see Mode#REQUIRES_REGISTERED
+     * @see Mode#REGISTRATION
+     * @see Mode#REFERENCE
      */
     public enum Mode {
         /**
          * Will cause {@link EERegistryValidator} to check if ID isn't already registered in the specified list of ids.
          */
-        ALREADY_REGISTERED,
+        REGISTRATION,
         /**
-         * Will cause {@link EERegistryValidator} to check if ID is registered in the specified list of ids.
+         * Will cause {@link EERegistryValidator} to check if ID is a valid reference to a value in the specified list.
          */
-        REQUIRES_REGISTERED
+        REFERENCE
     }
 }

@@ -28,7 +28,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ToolModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ToolValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import org.apache.commons.lang3.function.TriFunction;
 
@@ -148,6 +152,18 @@ public class MaterialToolsModel {
 	public ToolModel getPaxel() {
 		return paxel;
 	}
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("enchantability", new NumberRangeValidator(Types.FLOAT, 0, Integer.MAX_VALUE, true))
+		.addValidator("attackDamage",	new NumberRangeValidator(Types.FLOAT, 0, Integer.MAX_VALUE, true))
+		.addValidator("level",		new NumberRangeValidator(Types.FLOAT, 0, Integer.MAX_VALUE, true))
+		.addValidator("efficiency",	new NumberRangeValidator(Types.FLOAT, 0, Integer.MAX_VALUE, true))
+		.addValidator("sword",		new ToolValidator("sword"))
+		.addValidator("pickaxe",		new ToolValidator("pickaxe"))
+		.addValidator("axe",			new ToolValidator("axe"))
+		.addValidator("shovel",		new ToolValidator("shovel"))
+		.addValidator("hoe",			new ToolValidator("hoe"))
+		.addValidator("paxel",		new ToolValidator("paxel"));
 
 	static {
 		validators.put("attackDamage", new Validator("attackDamage").getRequiredRange(0, Integer.MAX_VALUE, false));

@@ -41,11 +41,11 @@ import java.util.Objects;
  * <br><br>
  * Take a note that those methods <i>don't perform any logging</i> and will simply return null / false on errors.
  * @implSpec Checking if a field exists before trying to access is, while normally a good idea,
- * should not be performed by using {@link ValidatorHelpers#isOtherFieldPresent(JsonObject, String)}.<br>
- * Use {@link ValidatorHelpers#getElementFromPath(JsonObject, String)} directly, and check if returned value isn't null.<br>
+ * should not be performed by using {@link ValidationHelper#isOtherFieldPresent(JsonObject, String)}.<br>
+ * Use {@link ValidationHelper#getElementFromPath(JsonObject, String)} directly, and check if returned value isn't null.<br>
  * This is due to performance concerns, as the same path would need to be decomposed twice.
  */
-public class ValidatorHelpers {
+public class ValidationHelper {
     /**
      * Used to check if the other field is present.
      * @param rootElement Root Element of the validated object.
@@ -53,7 +53,7 @@ public class ValidatorHelpers {
      * @return True if field exists and contains some value, false if field was not found.
      * @apiNote This method should only be used in scenarios,
      * when the validator behavior is meant to change if another field is present.
-     * See the {@link ValidatorHelpers} Impl Spec for more details.
+     * See the {@link ValidationHelper} Impl Spec for more details.
      */
     public static boolean isOtherFieldPresent(JsonObject rootElement, String path) {
         return Objects.nonNull(getElementFromPath(rootElement, path));

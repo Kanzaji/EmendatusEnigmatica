@@ -104,7 +104,6 @@ public abstract class EELangProvider implements DataProvider {
 		add(key.get(), name);
 	}
 
-	//TODO: Test if new description getter works as intended.
 	public void add(@NotNull Enchantment key, String name) {
 		add(key.description().getString(), name);
 	}

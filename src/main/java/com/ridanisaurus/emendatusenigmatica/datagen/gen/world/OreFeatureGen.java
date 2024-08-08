@@ -70,7 +70,6 @@ public class OreFeatureGen implements DataProvider {
 
         //TODO:
         // Add rest of the generation types
-        // Rework The type to be enum, or something possible to use in a switch statement. (Maybe Enum to string would work?)
         // Test this a bit more.
         builder.add(Registries.CONFIGURED_FEATURE, bt -> {
             for (IDepositProcessor activeProcessor : ACTIVE_PROCESSORS) {

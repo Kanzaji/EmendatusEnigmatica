@@ -114,17 +114,12 @@ public class ItemTagsGen extends EETagProvider {
     }
 
     private void armorTags(@NotNull MaterialModel material, @NotNull List<String> types) {
-        //TODO: Replace this code with the one commented out, when types are replaced by `armor`
-//        if (types.contains("armor")) {
-//            addTag(MINECRAFT, "head_armor", EERegistrar.helmetMap.getIdAsString(material));
-//            addTag(MINECRAFT, "chest_armor", EERegistrar.chestplateMap.getIdAsString(material));
-//            addTag(MINECRAFT, "leg_armor", EERegistrar.leggingsMap.getIdAsString(material));
-//            addTag(MINECRAFT, "foot_armor", EERegistrar.bootsMap.getIdAsString(material));
-//        }
-        if (types.contains("helmet"))     addTag(MINECRAFT, "head_armor", EERegistrar.helmetMap.getIdAsString(material));
-        if (types.contains("chestplate")) addTag(MINECRAFT, "chest_armor", EERegistrar.chestplateMap.getIdAsString(material));
-        if (types.contains("leggings"))   addTag(MINECRAFT, "leg_armor", EERegistrar.leggingsMap.getIdAsString(material));
-        if (types.contains("boots"))      addTag(MINECRAFT, "foot_armor", EERegistrar.bootsMap.getIdAsString(material));
+        if (types.contains("armor")) {
+            addTag(MINECRAFT, "head_armor", EERegistrar.helmetMap.getIdAsString(material));
+            addTag(MINECRAFT, "chest_armor", EERegistrar.chestplateMap.getIdAsString(material));
+            addTag(MINECRAFT, "leg_armor", EERegistrar.leggingsMap.getIdAsString(material));
+            addTag(MINECRAFT, "foot_armor", EERegistrar.bootsMap.getIdAsString(material));
+        }
     }
 
     private void toolTags(@NotNull MaterialModel material, @NotNull List<String> types) {

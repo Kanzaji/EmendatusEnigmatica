@@ -178,21 +178,20 @@ public class MaterialArmorModel {
 		.addValidator("setName",		new TypeValidator(Types.STRING, false))
 		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
 		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
-		//TODO: Replace with new ArmorValidator(), for default value `armor`
-		.addValidator("helmet",   	new ArmorValidator("helmet"))
-		.addValidator("chestplate", 	new ArmorValidator("chestplate"))
-		.addValidator("leggings",   	new ArmorValidator("leggings"))
-		.addValidator("boots",  		new ArmorValidator("boots"))
+		.addValidator("helmet",   	new ArmorValidator())
+		.addValidator("chestplate", 	new ArmorValidator())
+		.addValidator("leggings",   	new ArmorValidator())
+		.addValidator("boots",  		new ArmorValidator())
 		.addValidator("shield",     	new ArmorValidator("shield"))
 		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false));
 
 	static {
 		validators.put("setArmor",	new Validator("setArmor").REQUIRES_BOOLEAN);
+		validators.put("toughness",	new Validator("toughness").REQUIRES_FLOAT);
+		validators.put("knockback",	new Validator("knockback").REQUIRES_FLOAT);
+		validators.put("enchantability", new Validator("enchantability").REQUIRES_INT);
 		validators.put("setName",	new Validator("setName").getNonEmptyValidation(false));
 		validators.put("setDesc",	new Validator("setDesc").getNonEmptyValidation(false));
-		validators.put("toughness",	new Validator("toughness").REQUIRES_FLOAT);
-		validators.put("enchantability",	new Validator("enchantability").REQUIRES_INT);
-		validators.put("knockback",	new Validator("knockback").REQUIRES_FLOAT);
 		validators.put("effects",	new Validator("effects").getObjectValidation(EffectModel.validators, true));
 
 		TriFunction<Validator, JsonElement, Path, Boolean> armorValidator = (validator, element, path) -> {

@@ -31,11 +31,8 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ColorValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ChemicalColorValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.OxidizationColorValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ParticlesColorValidator;
@@ -51,10 +48,9 @@ import java.util.function.BiFunction;
 import static com.ridanisaurus.emendatusenigmatica.util.validation.Validator.LOGGER;
 
 public class MaterialColorsModel {
-	// TODO 3.0: Change gasColor to chemicalColor
 	public static final Codec<MaterialColorsModel> CODEC = RecordCodecBuilder.create(x -> x.group(
 			Codec.STRING.optionalFieldOf("fluidColor").forGetter(i -> Optional.of(i.fluidColor)),
-			Codec.STRING.optionalFieldOf("gasColor").forGetter(i -> Optional.of(i.gasColor)),
+			Codec.STRING.optionalFieldOf("chemicalColor").forGetter(i -> Optional.of(i.chemicalColor)),
 			Codec.STRING.optionalFieldOf("particlesColor").forGetter(i -> Optional.of(i.particlesColor)),
 			Codec.STRING.optionalFieldOf("materialColor").forGetter(i -> Optional.of(i.materialColor)),
 			Codec.STRING.optionalFieldOf("oxidizationColor").forGetter(i -> Optional.of(i.oxidizationColor))
@@ -76,7 +72,7 @@ public class MaterialColorsModel {
 		.addValidator("gasColor", 		new DeprecatedFieldValidator("chemicalColor"));
 
 	private final String fluidColor;
-	private final String gasColor;
+	private final String chemicalColor;
 	private final String particlesColor;
 	private final String materialColor;
 	private final String oxidizationColor;
@@ -88,9 +84,9 @@ public class MaterialColorsModel {
 	 */
 	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
-	public MaterialColorsModel(@Nullable String fluidColor, @Nullable String gasColor, @Nullable String particlesColor, @Nullable String materialColor, @Nullable String oxidizationColor) {
+	public MaterialColorsModel(@Nullable String fluidColor, @Nullable String chemicalColor, @Nullable String particlesColor, @Nullable String materialColor, @Nullable String oxidizationColor) {
 		this.fluidColor = fluidColor;
-		this.gasColor = gasColor;
+		this.chemicalColor = chemicalColor;
 		this.particlesColor = particlesColor;
 		this.materialColor = materialColor;
 		this.oxidizationColor = oxidizationColor;
@@ -98,7 +94,7 @@ public class MaterialColorsModel {
 
 	public MaterialColorsModel() {
 		this.fluidColor = null;
-		this.gasColor = null;
+		this.chemicalColor = null;
 		this.particlesColor = null;
 		this.materialColor = null;
 		this.oxidizationColor = null;
@@ -124,8 +120,8 @@ public class MaterialColorsModel {
 		return hasFluidColor() ? ColorHelper.HEXtoDEC(fluidColor) : -1;
 	}
 
-	public int getGasColor() {
-		return hasGasColor() ? ColorHelper.HEXtoDEC(gasColor) : -1;
+	public int getChemicalColor() {
+		return hasGasColor() ? ColorHelper.HEXtoDEC(chemicalColor) : -1;
 	}
 
 	public int getParticlesColor() {
@@ -145,7 +141,7 @@ public class MaterialColorsModel {
 	}
 
 	public boolean hasGasColor() {
-		return gasColor != null;
+		return chemicalColor != null;
 	}
 
 	public boolean hasParticlesColor() {

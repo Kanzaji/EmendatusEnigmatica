@@ -41,8 +41,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesV
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.OreDropValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.*;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -197,45 +196,29 @@ public class MaterialModel {
 	}
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("id",					new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REGISTRATION, true))
 		.addValidator("strata",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", false), ArrayPolicy.REQUIRES_ARRAY)
+		.addValidator("id",					new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REGISTRATION, true))
 		.addValidator("source",				new ValuesValidator(List.of("vanilla", "modded"), FilterMode.WHITELIST, true))
-		.addValidator("localizedName",		new TypeValidator(Types.STRING, true))
 		.addValidator("disableDefaultOre",	new TypeValidator(Types.BOOLEAN, false))
-		// Below are WIP validators
-		.addValidator("properties",			new RequiredValidator(false))
-		.addValidator("processedTypes",		new RequiredValidator(false))
-		.addValidator("colors",				new RequiredValidator(false))
-		.addValidator("gas",					new RequiredValidator(false))
+		.addValidator("localizedName",		new TypeValidator(Types.STRING, true))
+		.addValidator("processedTypes",		new ProcessedTypesValidator(), ArrayPolicy.REQUIRES_ARRAY)
+		.addValidator("tools",				new ToolsFieldValidator())
+		.addValidator("armor",				new ArmorFieldValidator())
 		.addValidator("oreDrop",				new OreDropValidator())
-		.addValidator("compat",				CompatModel.VALIDATION_MANAGER.getAsValidator(false))
-		.addValidator("tools", new ProcessedTypesContainValidator(List.of(
-			"sword",
-			"pickaxe",
-			"axe",
-			"shovel",
-			"hoe",
-			"paxel"
-		), MaterialToolsModel.VALIDATION_MANAGER.getAsValidator(false)))
-		//TODO: Replace with commented out line when armor piece values are deprecated.
-//		.addValidator("armor", new ProcessedTypesContainValidator(List.of("armor", "shield"), MaterialArmorModel.VALIDATION_MANAGER.getAsValidator(false)))
-		.addValidator("armor", new ProcessedTypesContainValidator(List.of(
-			"helmet",
-			"chestplate",
-			"leggings",
-			"boots",
-			"shield"
-		), MaterialArmorModel.VALIDATION_MANAGER.getAsValidator(false)));
+		.addValidator("gas",					MaterialGasPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("properties",			MaterialPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("colors",				MaterialColorsModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("compat",				CompatModel.VALIDATION_MANAGER.getAsValidator(false));
 
 	static {
+		validators.put("strata", 		new Validator("strata")		.getRegisteredIDValidation(DefaultLoader.STRATA_IDS, "Strata Registry", true));
 		validators.put("id", 			new Validator("id")			.getIDValidation(DefaultLoader.MATERIAL_IDS));
 		validators.put("source",		new Validator("source")		.getRequiredAcceptsOnlyValidation(List.of("vanilla", "modded"), false));
+		validators.put("disableDefaultOre", new Validator("disableDefaultOre").REQUIRES_BOOLEAN);
 		validators.put("localizedName", new Validator("localizedName").getRequiredNonEmptyValidation(false));
 		validators.put("properties_rg", new Validator("properties")	.getPassParentToValidators(MaterialPropertiesModel.validators, false, false));
 		validators.put("colors_rg", 	new Validator("colors")		.getPassParentToValidators(MaterialColorsModel.validators, false, false));
 		validators.put("compat", 		new Validator("compat")		.getObjectValidation(MaterialCompatModel.validators, false));
-		validators.put("strata", 		new Validator("strata")		.getRegisteredIDValidation(DefaultLoader.STRATA_IDS, "Strata Registry", true));
-		validators.put("disableDefaultOre", new Validator("disableDefaultOre").REQUIRES_BOOLEAN);
 
 		Validator typesValidator = new Validator("processedTypes");
 		validators.put("processedTypes", (element, path) ->

@@ -75,6 +75,6 @@ public abstract class AbstractRegistryValidator {
          * @see Result#PASS
          * @see Result#ERROR
          * */
-        FATAL;
+        FATAL
     }
 }

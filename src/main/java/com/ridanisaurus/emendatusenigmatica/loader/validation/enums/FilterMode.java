@@ -40,5 +40,5 @@ public enum FilterMode {
     /**
      * Uses provided values as illegal values for this field.
      */
-    BLACKLIST;
+    BLACKLIST
 }

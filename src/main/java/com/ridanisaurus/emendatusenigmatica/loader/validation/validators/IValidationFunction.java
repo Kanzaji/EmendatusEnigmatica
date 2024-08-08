@@ -25,8 +25,11 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import org.jetbrains.annotations.ApiStatus;
+
 import java.util.function.Function;
 
+@ApiStatus.Experimental
 public interface IValidationFunction extends Function<ValidationData, Boolean> {
     /**
      * Entry point of the validator.

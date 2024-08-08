@@ -31,7 +31,6 @@ import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * AbstractValidator is a template class, which more advanced validators can extend,
@@ -63,10 +62,11 @@ public abstract class AbstractValidator implements IValidationFunction {
      */
     @Override
     public Boolean apply(@NotNull ValidationData data) {
+        boolean requirement = isRequired(data);
         var element = data.validationElement();
         if (Objects.isNull(element)) {
-            if (!isRequired) return true;
-            Analytics.error("This field is required!", data);
+            if (!requirement) return true;
+            Analytics.error("This field is required!", getAdditional(data), data);
             return false;
         }
 
@@ -93,10 +93,28 @@ public abstract class AbstractValidator implements IValidationFunction {
     }
 
     /**
+     * Method used to determine if the validator is required on runtime.
+     * @param data ValidationData record with necessary information to validate the element.
+     * @return True if current element is required, false if not.
+     * @implNote By default, returns the value specified in the constructor.
+     */
+    public boolean isRequired(@NotNull ValidationData data) {
+        return isRequired;
+    }
+
+    /**
+     * Method used to provide additional field for the "This field is required!" error.
+     * @return String with an additional message or null.
+     */
+    public String getAdditional(@NotNull ValidationData data) {
+        return null;
+    }
+
+    /**
      * Validate method, used to validate passed in object.
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractValidator#apply(ValidationData)} instead!
      * @implSpec Take a note that the {@link ValidationData#validationElement()} will never return null.
      */
     public abstract Boolean validate(@NotNull ValidationData data);

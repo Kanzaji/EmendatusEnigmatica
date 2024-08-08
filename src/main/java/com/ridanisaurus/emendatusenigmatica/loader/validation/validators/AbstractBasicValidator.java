@@ -59,12 +59,23 @@ public abstract class AbstractBasicValidator implements IValidationFunction {
      */
     @Override
     public Boolean apply(@NotNull ValidationData data) {
+        boolean requirement = isRequired(data);
         if (Objects.isNull(data.validationElement())) {
-            if (!isRequired) return true;
+            if (!requirement) return true;
             Analytics.error("This field is required!", data);
             return false;
         }
         return this.validate(data);
+    }
+
+    /**
+     * Method used to determine if the validator is required on runtime.
+     * @param data ValidationData record with necessary information to validate the element.
+     * @return True if current element is required, false if not.
+     * @implNote By default, returns the value specified in the constructor.
+     */
+    public boolean isRequired(@NotNull ValidationData data) {
+        return isRequired;
     }
 
     /**

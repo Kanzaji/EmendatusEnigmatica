@@ -32,9 +32,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.*;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.BurnTimeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.properties.GemTextureValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
@@ -160,7 +160,7 @@ public class MaterialPropertiesModel {
 		.addValidator("blockRecipeType",	new ProcessedTypesContainValidator(
 			List.of("gem", "storage_block"),
 			new NumberValuesValidator(List.of(4, 9), FilterMode.WHITELIST, false),
-			false
+			PTCMode.REQUIRED_ALL_VALUE
 		));
 
 	static {

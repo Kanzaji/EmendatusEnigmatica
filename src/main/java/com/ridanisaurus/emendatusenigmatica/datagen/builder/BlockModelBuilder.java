@@ -127,7 +127,7 @@ public class BlockModelBuilder {
 		return location;
 	}
 
-	private BlockModelBuilder self() { return (BlockModelBuilder) this; }
+	private BlockModelBuilder self() { return this; }
 
 	public class ElementBuilder {
 		private Vector3f from = new Vector3f();

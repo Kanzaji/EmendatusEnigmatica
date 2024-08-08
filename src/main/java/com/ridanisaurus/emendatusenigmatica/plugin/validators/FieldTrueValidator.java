@@ -34,17 +34,32 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class FieldTrueValidator implements IValidationFunction{
+public class FieldTrueValidator implements IValidationFunction {
     private final IValidationFunction validator;
     private final String field;
+    private final boolean optional;
     /**
      * Constructs FieldTrueValidator.
      *
+     * @param field Name of the field to check.
+     * @param validator Validator to run after check.
+     * @see TypeValidator Documentation of the validator.
+     */
+    public FieldTrueValidator(String field, IValidationFunction validator, boolean optional) {
+        this.validator = validator;
+        this.optional = optional;
+        this.field = field;
+    }
+
+    /**
+     * Constructs FieldTrueValidator.
+     *
+     * @param field Name of the field to check.
+     * @param validator Validator to run after check.
      * @see TypeValidator Documentation of the validator.
      */
     public FieldTrueValidator(String field, IValidationFunction validator) {
-        this.field = field;
-        this.validator = validator;
+        this(field, validator, false);
     }
 
     /**
@@ -60,7 +75,7 @@ public class FieldTrueValidator implements IValidationFunction{
         JsonElement element = data.validationElement();
 
         if (Objects.isNull(element)) {
-            if (Objects.nonNull(booleanField) && booleanField.getAsBoolean()) {
+            if (!optional && Objects.nonNull(booleanField) && booleanField.getAsBoolean()) {
                 Analytics.error(
                     "This field is required!",
                     "<code>%s</code> is set to <code>true</code>, which marks this field as required.".formatted(booleanFieldPath)

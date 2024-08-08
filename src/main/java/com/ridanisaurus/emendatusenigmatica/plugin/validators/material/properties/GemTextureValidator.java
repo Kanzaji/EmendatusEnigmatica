@@ -36,31 +36,30 @@ import java.util.Objects;
 public class GemTextureValidator extends NumberRangeValidator {
     private static final String value = "gem";
     private static final int min = 0;
-    private static final int max = 0;
+    private static final int max = 9;
     /**
      * Constructs GemTextureValidator.
      *
      * @see GemTextureValidator Documentation of the validator.
      */
     public GemTextureValidator() {
-        super(Types.INTEGER, 0, 9, false);
+        super(Types.INTEGER, min, max, false);
     }
 
     /**
-     * Entry point of the validator.
+     * Method used to determine if the validator is required on runtime.
      *
      * @param data ValidationData record with necessary information to validate the element.
-     * @return True if the validation passes, false otherwise.
+     * @return True if current element is required, false if not.
+     * @implNote By default, returns the value specified in the constructor.
      */
     @Override
-    public Boolean apply(@NotNull ValidationData data) {
-        if (Objects.isNull(data.validationElement())) return true;
-        if (!Analytics.isEnabled()) return super.apply(data);
+    public boolean isRequired(@NotNull ValidationData data) {
+        if (Objects.isNull(data.validationElement()) || !Analytics.isEnabled()) return false;
         boolean hasGem = ValidationHelper.doesArrayContain(data.rootObject(), "root.processedTypes", value);
         boolean isColorBased = ValidationHelper.isOtherFieldPresent(data.rootObject(), "root.colors.materialColor");
 
-        if (hasGem && isColorBased)
-            return super.apply(data);
+        if (hasGem && isColorBased) return false;
 
         if (!hasGem)
             Analytics.warn("This field is unnecessary when <code>gem</code> is missing from the <code>root.processedTypes</code>.", data);
@@ -68,6 +67,6 @@ public class GemTextureValidator extends NumberRangeValidator {
         if (!isColorBased)
             Analytics.warn("This field is unnecessary when the material isn't tint-based.", data);
 
-        return super.apply(data);
+        return false;
     }
 }

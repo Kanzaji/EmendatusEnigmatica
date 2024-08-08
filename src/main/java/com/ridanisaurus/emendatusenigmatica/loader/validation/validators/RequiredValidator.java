@@ -51,7 +51,8 @@ public class RequiredValidator extends AbstractBasicValidator {
      *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly!
+     * Call {@link RequiredValidator#apply(ValidationData)} instead!
      * @implNote This acts like {@link AcceptsAllValidator}, meaning it only returns {@code true}.
      */
     @Override

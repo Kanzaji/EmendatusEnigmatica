@@ -45,13 +45,14 @@ public class DropValidator extends ResourceLocationValidator {
     }
 
     /**
-     * Entry point of the validator.
+     * Method used to determine if the validator is required on runtime.
      *
      * @param data ValidationData record with necessary information to validate the element.
-     * @return True if the validation passes, false otherwise.
+     * @return True if current element is required, false if not.
+     * @implNote By default, returns the value specified in the constructor.
      */
     @Override
-    public Boolean apply(@NotNull ValidationData data) {
+    public boolean isRequired(@NotNull ValidationData data) {
         JsonElement types = ValidationHelper.getElementFromPath(data.rootObject(), "root.processedTypes");
         boolean hasOre = false;
         boolean hasGem = false;
@@ -64,15 +65,16 @@ public class DropValidator extends ResourceLocationValidator {
             hasRaw = array.contains(new JsonPrimitive("raw"));
         }
 
-        if (!hasVal && !hasGem && !hasRaw && hasOre) {
-            Analytics.error(
-                "This field is required!",
-                "<code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which marks this field as required.",
-                data
-            );
-            return false;
-        }
+        return !hasVal && !hasGem && !hasRaw && hasOre;
+    }
 
-        return super.apply(data);
+    /**
+     * Method used to provide additional field for the "This field is required!" error.
+     *
+     * @return String with an additional message or null.
+     */
+    @Override
+    public String getAdditional(@NotNull ValidationData data) {
+        return "<code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which marks this field as required.";
     }
 }

@@ -31,9 +31,14 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ColorValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedFieldValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ChemicalColorValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.OxidizationColorValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ParticlesColorValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
@@ -62,14 +67,13 @@ public class MaterialColorsModel {
 	)));
 
 	//TODO: Move GasColor and ChemicalColor validators to the addon.
-	// FINISH the validators
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
 		.addValidator("fluidColor",		new ColorValidator(false))
-		.addValidator("chemicalColor",	new ProcessedTypesContainValidator(List.of("infuse_type", "slurry", "gas"), new ColorValidator(false)))
-		.addValidator("particlesColor",	new ColorValidator(false))
 		.addValidator("materialColor",	new ColorValidator(false))
-		.addValidator("oxidizationColor",	new ColorValidator(false))
-		.addValidator("gasColor",			new DeprecatedFieldValidator("chemicalColor"));
+		.addValidator("particlesColor",	new ParticlesColorValidator())
+		.addValidator("oxidizationColor",	new OxidizationColorValidator())
+		.addValidator("chemicalColor",	new ChemicalColorValidator())
+		.addValidator("gasColor", 		new DeprecatedFieldValidator("chemicalColor"));
 
 	private final String fluidColor;
 	private final String gasColor;

@@ -49,7 +49,7 @@ public class MultiStrataRuleTest extends RuleTest {
 	}
 	public static RuleTestType<MultiStrataRuleTest> TYPE;
 	private final List<Block> blockFillerList = new ArrayList<>();
-	private List<String> fillerList;
+	private final List<String> fillerList;
 
 	public MultiStrataRuleTest(List<String> fillerList) {
 		this.fillerList = fillerList;

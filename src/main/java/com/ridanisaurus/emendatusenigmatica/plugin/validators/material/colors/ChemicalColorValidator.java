@@ -22,10 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.enums;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors;
 
-public enum ArrayPolicy {
-    DISALLOWS_ARRAYS,
-    ALLOWS_ARRAYS,
-    REQUIRES_ARRAY
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ColorValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.ProcessedTypesContainValidator;
+
+import java.util.List;
+
+//TODO: Move to mek addon.
+public class ChemicalColorValidator extends ProcessedTypesContainValidator {
+    private static final IValidationFunction validator = new ColorValidator(false);
+    public ChemicalColorValidator() {
+        super(List.of("infuse_type", "slurry", "gas"), validator, PTCMode.OPTIONAL_ONE_VALUE);
+    }
 }

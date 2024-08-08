@@ -45,7 +45,7 @@ import java.util.function.Function;
 public class ValidationManager {
     private final Map<String, ValidatorHolder> validators = new HashMap<>();
     private final ObjectValidator rootValidator = new ObjectValidator( this, true, true);
-    private ValidationManager() {};
+    private ValidationManager() {}
 
     /**
      * Used to cut off part of the path that is not in minecraft directory.<br>
@@ -60,7 +60,7 @@ public class ValidationManager {
      * @param path Path to obfuscate.
      * @return String with an obfuscated path.
      */
-    public static @NotNull String obfuscatePath(Path path) {;
+    public static @NotNull String obfuscatePath(Path path) {
         return Analytics.CONFIG_DIR.relativize(path).toString();
     }
 

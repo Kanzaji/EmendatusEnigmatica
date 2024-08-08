@@ -26,6 +26,7 @@ package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractBasicValidator;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
@@ -38,11 +39,12 @@ import java.util.Objects;
  * Custom Implementation of {@link AbstractBasicValidator},
  * used to check if ProcessedTypes in a material object contains specified value,
  * and determines if the field is required based on that.
+ * @see PTCMode
  */
 public class ProcessedTypesContainValidator implements IValidationFunction {
     private final IValidationFunction validator;
     private final List<String> values;
-    private final boolean optional;
+    private final PTCMode mode;
 
     /**
      * Constructs ProcessedTypesContainValidator, with specified processedType requirement and validator to run after.
@@ -53,7 +55,7 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
      * @apiNote Validator should be configured to be NOT required, as requirement errors are handled by this validator.
      */
     public ProcessedTypesContainValidator(String processedType, IValidationFunction validator) {
-        this(List.of(processedType), validator, false);
+        this(List.of(processedType), validator, PTCMode.REQUIRED_ALL_VALUE);
     }
 
     /**
@@ -65,7 +67,7 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
      * @apiNote Validator should be configured to be NOT required, as requirement errors are handled by this validator.
      */
     public ProcessedTypesContainValidator(@NotNull List<String> processedTypes, IValidationFunction validator) {
-        this(processedTypes, validator, true);
+        this(processedTypes, validator, PTCMode.OPTIONAL_ONE_VALUE);
     }
 
     /**
@@ -73,14 +75,14 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
      *
      * @param processedTypes List of Processed Types.
      * @param validator Validator to run.
-     * @param optional Determines if just a single type is required to mark the field as necessary.
+     * @param operationMode Determines the mode of operation for this validator.
      * @see ProcessedTypesContainValidator Documentation of the validator.
      * @implSpec  Validator should be configured to be NOT required, as requirement errors are handled by this validator.
      */
-    public ProcessedTypesContainValidator(@NotNull List<String> processedTypes, IValidationFunction validator, boolean optional) {
+    public ProcessedTypesContainValidator(@NotNull List<String> processedTypes, IValidationFunction validator, PTCMode operationMode) {
         this.validator = validator;
-        this.optional = optional;
         this.values = processedTypes;
+        this.mode = operationMode;
         if (processedTypes.isEmpty()) throw new IllegalArgumentException("processedTypes argument can't be empty!");
     }
 
@@ -96,7 +98,7 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
         var element = data.validationElement();
         boolean isRequired;
         List<String> foundElements;
-        if (optional) {
+        if (mode.requiresAllValues()) {
             foundElements = ValidationHelper.getContainedInArray(data.rootObject(), "root.processedTypes", values);
             isRequired = Objects.nonNull(foundElements) && !foundElements.isEmpty();
         } else {
@@ -105,7 +107,7 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
         }
 
         if (Objects.isNull(element)) {
-            if (!isRequired) return true;
+            if (mode.isOptional() || !isRequired) return true;
             Analytics.error(
                 "This field is required! <code>root.processedTypes</code> contains elements, which mark this field as required.",
                 "Required values: <code>%s</code><br>Found values: <code>%s</code>".formatted(String.join(", ", values), String.join(", ", foundElements)),
@@ -122,4 +124,5 @@ public class ProcessedTypesContainValidator implements IValidationFunction {
 
         return validator.apply(data);
     }
+
 }

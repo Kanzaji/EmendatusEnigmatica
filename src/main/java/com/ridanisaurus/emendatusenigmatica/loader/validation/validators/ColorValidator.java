@@ -24,10 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.apache.commons.lang3.StringUtils;

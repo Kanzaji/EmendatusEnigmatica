@@ -59,11 +59,11 @@ public class NumberRangeValidator extends TypeValidator {
      *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractBasicValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly!
+     * Call {@link NumberRangeValidator#apply(ValidationData)} instead!
      */
     @Override
     public Boolean validate(@NotNull ValidationData data) {
-        // Run the TypeValidator before checking the range.
         if (!super.validate(data)) return false;
         double number = data.validationElement().getAsDouble();
         if (number < min || number > max) {

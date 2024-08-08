@@ -22,10 +22,15 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.enums;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors;
 
-public enum ArrayPolicy {
-    DISALLOWS_ARRAYS,
-    ALLOWS_ARRAYS,
-    REQUIRES_ARRAY
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ColorValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
+
+public class OxidizationColorValidator extends FieldTrueValidator {
+    private static final IValidationFunction validator = new ColorValidator(false);
+    public OxidizationColorValidator() {
+        super("hasOxidization", validator, true);
+    }
 }

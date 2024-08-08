@@ -52,9 +52,9 @@ import java.util.ArrayList;
 
 // Credit: Geolysis
 public class TestOreFeature extends Feature<TestOreFeatureConfig> {
-    private TestDepositModel model;
+    private final TestDepositModel model;
     private final EmendatusDataRegistry registry;
-    private ArrayList<CommonBlockDefinitionModel> blocks;
+    private final ArrayList<CommonBlockDefinitionModel> blocks;
 
     public TestOreFeature(Codec<TestOreFeatureConfig> codec, TestDepositModel model, EmendatusDataRegistry registry) {
         super(codec);

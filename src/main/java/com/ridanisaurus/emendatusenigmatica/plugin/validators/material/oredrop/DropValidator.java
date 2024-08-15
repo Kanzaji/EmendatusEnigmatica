@@ -29,7 +29,6 @@ import com.google.gson.JsonPrimitive;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

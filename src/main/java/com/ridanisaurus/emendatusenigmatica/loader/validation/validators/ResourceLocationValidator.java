@@ -27,7 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.AbstractRegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

@@ -25,11 +25,10 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * AbstractBasicValidator is a template class, which more advanced validators can extend,

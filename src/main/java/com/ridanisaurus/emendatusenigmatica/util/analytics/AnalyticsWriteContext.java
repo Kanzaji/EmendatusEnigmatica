@@ -22,20 +22,42 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation;
+package com.ridanisaurus.emendatusenigmatica.util.analytics;
 
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
-import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 
-public class DeprecationAnalytics {
-    private static int deprecations = 0;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
-    protected static void increaseDeprecated() {
-        deprecations++;
+public class AnalyticsWriteContext {
+    /**
+     * Path to the file where all messages will be written to.
+     */
+    private final Path summaryFile;
+
+    protected AnalyticsWriteContext(Path file) {
+        this.summaryFile = file;
     }
 
-    public static void logDeprecationWarning() {
-        if (!Analytics.isEnabled() && deprecations > 0)
-            EmendatusEnigmatica.logger.error("Found deprecated entries (%d) while validating the json files. Enable Validation Summary generation for more details.".formatted(deprecations));
+    public void writeHeader(String msg, int lvl) {
+        if (lvl < 1 || lvl > 6) throw new IllegalArgumentException("Lvl out of range. Provided: %d, expected: [1-6]".formatted(lvl));
+        write("%s %s".formatted("#".repeat(lvl), msg));
+    }
+
+    public void writeSpacer() {
+        write("<hr>\n");
+    }
+
+    public void writeLine(String msg) {
+        write(msg + "<br>");
+    }
+
+    public void write(String msg) {
+        try {
+            Files.writeString(summaryFile, msg + "\n", StandardOpenOption.APPEND);
+        } catch (Exception e) {
+            EmendatusEnigmatica.logger.error("Exception caught while logging a message!", e);
+        }
     }
 }

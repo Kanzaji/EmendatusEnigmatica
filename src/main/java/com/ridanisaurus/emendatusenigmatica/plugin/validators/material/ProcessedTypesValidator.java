@@ -34,7 +34,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValida
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation.DeprecatedValueValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

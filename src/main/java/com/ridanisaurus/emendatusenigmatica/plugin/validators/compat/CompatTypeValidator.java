@@ -22,37 +22,24 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.compat;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.*;
 
-/**
- * @apiNote Name is a subject to change. Currently, this validator only supports {@link Types#STRING}.
- */
-public class ValuesValidator extends TypeValidator {
-    private final List<String> values;
-    private final String valuesAsString;
-    private final FilterMode mode;
+public class CompatTypeValidator extends TypeValidator {
+    private static final Map<String, String> valuesAsStringMap = new HashMap<>();
 
-    /**
-     * Constructs a ValuesValidator, with specified values and mode of the operation.
-     * @param values Values to check for.
-     * @param validatorMode Determines the mode of the operation.
-     * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
-     * @see ValuesValidator Documentation of the validator
-     * @see FilterMode Available modes
-     */
-    public ValuesValidator(@NotNull List<String> values, FilterMode validatorMode, boolean isRequired) {
-        super(Types.STRING, isRequired);
-        this.values = values;
-        this.valuesAsString = String.join(", ", values);
-        this.mode = validatorMode;
+    public CompatTypeValidator() {
+        super(Types.STRING, false);
     }
 
     /**
@@ -66,15 +53,26 @@ public class ValuesValidator extends TypeValidator {
     public Boolean validate(@NotNull ValidationData data) {
         if (!super.validate(data)) return false;
         String value = data.validationElement().getAsString();
-        boolean contains = values.contains(value);
-        if (mode == FilterMode.WHITELIST) {
-            if (contains) return true;
-            Analytics.error("Field contains an illegal value!", "Provided: <code>%s</code> , Accepted values: <code>%s</code>".formatted(value, valuesAsString), data);
-            return false;
+        // Mod determining part
+        var modPath = StringUtils.substringBeforeLast(data.getParentPath(), ".") + ".mod";
+        var modElement = ValidationHelper.getElementFromPathAs(data.rootObject(), modPath, Types.STRING);
+        List<String> values = new ArrayList<>();
+        String valuesAsString = "None, most likely invalid <code>%s</code> value.".formatted(modPath);
+
+        if (Objects.nonNull(modElement)) {
+            var mod = modElement.getAsString();
+            if (CompatModData.CompatTypeMap.containsKey(mod)) {
+                values = CompatModData.CompatTypeMap.get(mod);
+                List<String> finalValues = values;
+                valuesAsString = valuesAsStringMap.computeIfAbsent(mod, (it) -> String.join(", ", finalValues));
+            }
         }
-        if (!contains) return true;
-        Analytics.error("Field contains one of the illegal values!", "Provided: <code>%s</code> , Illegal values: <code>%s</code>".formatted(value, valuesAsString), data);
+
+        boolean contains = values.contains(value);
+        if (contains) return true;
+        Analytics.error(
+            "Field contains an illegal value!",
+            "Provided: <code>%s</code> , Accepted values: <code>%s</code>".formatted(value, valuesAsString), data);
         return false;
     }
-
 }

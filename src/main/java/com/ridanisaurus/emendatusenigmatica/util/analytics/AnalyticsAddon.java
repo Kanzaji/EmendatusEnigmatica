@@ -22,20 +22,19 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation;
+package com.ridanisaurus.emendatusenigmatica.util.analytics;
 
-import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
-import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+import java.util.function.Consumer;
 
-public class DeprecationAnalytics {
-    private static int deprecations = 0;
-
-    protected static void increaseDeprecated() {
-        deprecations++;
-    }
-
-    public static void logDeprecationWarning() {
-        if (!Analytics.isEnabled() && deprecations > 0)
-            EmendatusEnigmatica.logger.error("Found deprecated entries (%d) while validating the json files. Enable Validation Summary generation for more details.".formatted(deprecations));
-    }
+/**
+ * Utility interface for {@link Analytics} addons.
+ */
+public interface AnalyticsAddon extends Consumer<AnalyticsWriteContext> {
+    /**
+     * Method executed by the {@link Analytics} with write context provided.
+     *
+     * @param cx Write Context for the file.
+     */
+    @Override
+    void accept(AnalyticsWriteContext cx);
 }

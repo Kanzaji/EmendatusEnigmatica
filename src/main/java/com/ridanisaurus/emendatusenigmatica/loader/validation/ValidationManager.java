@@ -27,7 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractValidator;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import com.google.gson.JsonObject;

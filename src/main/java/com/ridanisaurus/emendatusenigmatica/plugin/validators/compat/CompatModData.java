@@ -22,20 +22,29 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprecation;
+package com.ridanisaurus.emendatusenigmatica.plugin.validators.compat;
 
-import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
-import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatValuesModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatRecipesModel;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class DeprecationAnalytics {
-    private static int deprecations = 0;
+public class CompatModData {
+    //TODO: Move addition of entries to addons.
+    /**
+     * This map holds possible values for {@link CompatValuesModel#type} based on the {@link CompatRecipesModel#mod} value.
+     */
+    public static final Map<String, List<String>> CompatTypeMap = new HashMap<>(Map.of(
+        "thermal", List.of("ore", "raw", "alloy"),
+        "create", List.of("ore", "crushed_ore")
+    ));
 
-    protected static void increaseDeprecated() {
-        deprecations++;
-    }
-
-    public static void logDeprecationWarning() {
-        if (!Analytics.isEnabled() && deprecations > 0)
-            EmendatusEnigmatica.logger.error("Found deprecated entries (%d) while validating the json files. Enable Validation Summary generation for more details.".formatted(deprecations));
-    }
+    /**
+     * This map holds possible values for {@link CompatRecipesModel#machine} based on the {@link CompatRecipesModel#mod} value.
+     */
+    public static final Map<String, List<String>> CompatMachineMap = new HashMap<>(Map.of(
+        "thermal", List.of("pulverizer", "induction_smelter"),
+        "create", List.of("crushing_wheels", "fan_washing")
+    ));
 }

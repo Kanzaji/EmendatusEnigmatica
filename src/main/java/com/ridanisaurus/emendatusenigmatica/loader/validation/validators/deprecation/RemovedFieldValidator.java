@@ -27,7 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.deprec
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractBasicValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AcceptsAllValidator;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

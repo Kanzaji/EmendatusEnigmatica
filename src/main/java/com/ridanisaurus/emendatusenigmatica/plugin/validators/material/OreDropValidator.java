@@ -31,7 +31,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialOreDropModel;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 
 import java.util.Objects;
 

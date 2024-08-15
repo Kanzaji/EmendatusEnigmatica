@@ -27,7 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 

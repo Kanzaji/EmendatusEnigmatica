@@ -28,6 +28,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatTypeValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatValueInputValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -42,6 +47,11 @@ public class CompatValuesModel {
             Codec.list(CompatIOModel.CODEC).fieldOf("input").orElse(List.of()).forGetter(i -> i.input),
             Codec.list(CompatIOModel.CODEC).fieldOf("output").orElse(List.of()).forGetter(i -> i.output)
     ).apply(x, CompatValuesModel::new));
+
+    public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+        .addValidator("type", new CompatTypeValidator())
+        .addValidator("input", new CompatValueInputValidator(), ArrayPolicy.REQUIRES_ARRAY)
+        .addValidator("output", CompatIOModel.VALIDATION_MANAGER.getAsValidator(false), ArrayPolicy.REQUIRES_ARRAY);
 
     private final String type;
     private final List<CompatIOModel> input;

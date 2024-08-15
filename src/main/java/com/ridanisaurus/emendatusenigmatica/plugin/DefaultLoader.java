@@ -38,11 +38,10 @@ import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.ValidatorLogger;
-import net.neoforged.fml.loading.FMLPaths;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -162,6 +161,7 @@ public class DefaultLoader {
     private static void registerMaterials(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File materialDir, @NotNull EmendatusDataRegistry registry) {
         Map<Path, JsonObject> materialDefinition = FileHelper.loadJsonsWithPaths(materialDir.toPath());
 
+        Stopwatch s = Stopwatch.createStarted();
         LOGGER.restartSpacer();
         LOGGER.info("Validating and registering data for: Material");
         materialDefinition.forEach((path, jsonObject) -> {
@@ -181,6 +181,7 @@ public class DefaultLoader {
 //            MATERIALS.add(materialModel);
             MATERIAL_IDS.add(materialModel.getId());
         });
+        Analytics.addPerformanceAnalytic("Validation: Material (Old)", s);
     }
 
     private static void registerCompat(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File compatDir, @NotNull EmendatusDataRegistry registry) {

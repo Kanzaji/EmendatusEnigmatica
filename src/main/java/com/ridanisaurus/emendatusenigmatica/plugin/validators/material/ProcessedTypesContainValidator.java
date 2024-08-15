@@ -29,7 +29,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractBasicValidator;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

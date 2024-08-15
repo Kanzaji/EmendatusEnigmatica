@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.util;
+package com.ridanisaurus.emendatusenigmatica.util.analytics;
 
+import com.google.common.base.Function;
 import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.util.Messages;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * A static class, used to gather messages from the validation system and generate a summary.
@@ -56,6 +59,8 @@ public class Analytics {
      * Used to store Performance Analytics, which will get printed at the end of the Validation Summary file into the table.
      */
     private static final Map<String, String> performanceMap = new LinkedHashMap<>();
+
+    private static final List<Consumer<AnalyticsWriteContext>> addons = new ArrayList<>();
 
     /**
      * Used to lock the analytics if they were already summarized on this launch of the game.
@@ -241,6 +246,10 @@ public class Analytics {
         addPerformanceAnalytic(category, "%d.%ss".formatted(time.getSeconds(), milis));
     }
 
+    public static void addAdditionalInformationAddon(Consumer<AnalyticsWriteContext> addon) {
+        addons.add(Objects.requireNonNull(addon, "Addon function can't be null!"));
+    }
+
     /**
      * Used to finalize the Validation Analytics and generate a summary file.<br>
      * This method will also lock the analytics instance, and block any further calls to its methods.
@@ -248,7 +257,9 @@ public class Analytics {
      */
     public static void finalizeAnalytics() {
         if (finalized) throw new IllegalStateException("Analytics were already finalized!");
+        AnalyticsWriteContext cx = new AnalyticsWriteContext(summaryFile);
         Stopwatch s = Stopwatch.createStarted();
+
         try {
             if (Files.exists(summaryFile)) {
                 Files.deleteIfExists(summaryFile);
@@ -257,11 +268,11 @@ public class Analytics {
             // If somehow the config directory doesn't exist.
             Files.createDirectories(summaryFile.getParent());
             Files.createFile(summaryFile);
-            writeSpacer();
-            writeHeader("Emendatus Enigmatica Validation Results", 1);
-            writeLine("Emendatus Enigmatica version: " + EmendatusEnigmatica.VERSION);
-            writeLine("File generated at: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").format(new Date()));
-            writeSpacer();
+            cx.writeSpacer();
+            cx.writeHeader("Emendatus Enigmatica Validation Results", 1);
+            cx.writeLine("Emendatus Enigmatica version: " + EmendatusEnigmatica.VERSION);
+            cx.writeLine("File generated at: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS").format(new Date()));
+            cx.writeSpacer();
 
             addNewCategory("Strata", "strata");
             addNewCategory("Materials", "material");
@@ -269,27 +280,28 @@ public class Analytics {
             addNewCategory("Deposits", "deposit");
 
             messageCategories.forEach((header, type) -> {
-                writeHeader(header, 2);
-                printMessages(type);
+                cx.writeHeader(header, 2);
+                printMessages(type, cx);
                 messages.remove(type);
             });
 
             // Print Messages from any custom directories, which don't have their own category, if any.
             if (!messages.isEmpty()) {
-                writeHeader("Custom Messages", 2);
+                cx.writeHeader("Custom Messages", 2);
                 // Clearing already-saved categories was meant to be handled by the printMessages;
                 // however, this was causing ConcurrentModificationExceptions
                 // when trying to print all messages.
                 var it = messages.keySet().iterator();
                 while (it.hasNext()) {
-                    printMessages(it.next());
+                    printMessages(it.next(), cx);
                     it.remove();
                 }
             }
 
+            executeAddons(cx);
             addPerformanceAnalytic("Generation of Analytics Summary", s);
-            printPerformance();
-            write("> You can disable the generation of this summary and speed up the validation in the configuration file!");
+            printPerformance(cx);
+            cx.write("> You can disable the generation of this summary and speed up the validation in the configuration file!");
 
             finalized = true;
         } catch (Exception e) {
@@ -297,36 +309,40 @@ public class Analytics {
         }
     }
 
-    private static void printMessages(@NotNull String key) {
+    private static void executeAddons(AnalyticsWriteContext cx) {
+        addons.forEach(it -> it.accept(cx));
+    }
+
+    private static void printMessages(@NotNull String key, AnalyticsWriteContext cx) {
         messages.computeIfAbsent(key, it -> new HashMap<>()).forEach((file, messages) -> {
-            writeHeader("File <code>%s</code>".formatted(file), 3);
+            cx.writeHeader("File <code>%s</code>".formatted(file), 3);
             if (!messages.warnings().isEmpty()) {
-                writeLine("Warnings:");
+                cx.writeLine("Warnings:");
                 messages.warnings().forEach(warning -> {
-                    writeLine("- Element: <code>%s</code>".formatted(warning.element()));
-                    writeLine("Message: " + warning.message());
-                    if (Objects.nonNull(warning.additionalInfo())) writeLine(warning.additionalInfo());
-                    write("\n"); // Additional line to make "space" between list elements.
+                    cx.writeLine("- Element: <code>%s</code>".formatted(warning.element()));
+                    cx.writeLine("Message: " + warning.message());
+                    if (Objects.nonNull(warning.additionalInfo())) cx.writeLine(warning.additionalInfo());
+                    cx.write("\n"); // Additional line to make "space" between list elements.
                 });
             }
 
             if (!messages.errors().isEmpty()) {
-                writeLine("Errors:");
+                cx.writeLine("Errors:");
                 messages.errors().forEach(error -> {
-                    writeLine("- Element: <code>%s</code>".formatted(error.element()));
-                    writeLine("Cause: " + error.message());
-                    if (Objects.nonNull(error.additionalInfo())) writeLine(error.additionalInfo());
-                    write("\n"); // Additional line to make "space" between list elements.
+                    cx.writeLine("- Element: <code>%s</code>".formatted(error.element()));
+                    cx.writeLine("Cause: " + error.message());
+                    if (Objects.nonNull(error.additionalInfo())) cx.writeLine(error.additionalInfo());
+                    cx.write("\n"); // Additional line to make "space" between list elements.
                 });
             }
         });
 
-        if (messages.get(key).isEmpty()) writeLine("All files were parsed and registered successfully!");
+        if (messages.get(key).isEmpty()) cx.writeLine("All files were parsed and registered successfully!");
     }
 
-    private static void printPerformance() {
-        writeHeader("Additional Information", 2);
-        writeHeader("Performance", 3);
+    private static void printPerformance(AnalyticsWriteContext cx) {
+        cx.writeHeader("Additional Information", 2);
+        cx.writeHeader("Performance", 3);
         StringBuilder table = new StringBuilder();
         table.append("<table>");
         performanceMap.forEach((category, time) -> table
@@ -339,28 +355,9 @@ public class Analytics {
             .append("</td>")
             .append("</tr>"));
         table.append("</table>");
-        write(table.toString());
-        write("\n");
+        cx.write(table.toString());
+        cx.write("\n");
     }
 
-    private static void writeHeader(String msg, int lvl) {
-        if (lvl < 1 || lvl > 6) throw new IllegalArgumentException("Lvl out of range. Provided: %d, expected: [1-6]".formatted(lvl));
-        write("%s %s".formatted("#".repeat(lvl), msg));
-    }
 
-    private static void writeSpacer() {
-        write("<hr>\n");
-    }
-
-    private static void writeLine(String msg) {
-        write(msg + "<br>");
-    }
-
-    private static void write(String msg) {
-        try {
-            Files.writeString(summaryFile, msg + "\n", StandardOpenOption.APPEND);
-        } catch (Exception e) {
-            EmendatusEnigmatica.logger.error("Exception caught while logging a message!", e);
-        }
-    }
 }

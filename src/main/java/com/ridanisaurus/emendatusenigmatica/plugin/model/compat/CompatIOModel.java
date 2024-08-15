@@ -51,9 +51,17 @@ public class CompatIOModel {
     )));
 
     public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-        .addValidator("item", new ResourceLocationValidator(false))
         .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
-        .addValidator("chance", new NumberRangeValidator(Types.FLOAT, 0, 1, false));
+        .addValidator("chance", new NumberRangeValidator(Types.FLOAT, 0, 1, false))
+        .addValidator("item", new ResourceLocationValidator(false));
+
+    /**
+     * Version of {@link CompatIOModel#VALIDATION_MANAGER} that doesn't include the chance field. <br>
+     * @see com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatValueInputValidator
+     */
+    public static final ValidationManager INPUT_VALIDATION_MANAGER = ValidationManager.create()
+        .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
+        .addValidator("item", new ResourceLocationValidator(false));
 
     /**
      * Holds verifying functions for each field.

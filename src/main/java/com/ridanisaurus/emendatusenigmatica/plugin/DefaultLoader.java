@@ -88,18 +88,21 @@ public class DefaultLoader {
 
         registerStrata(strataDefinition, registry);
         registerMaterials(materialDefinition, registry);
+        registerCompat(compatDefinition, registry);
+        registerDeposits(depositJsonDefinitionsMap, registry);
 
-        Validator validator = new Validator("Main Validator");
-        ValidatorLogger LOGGER = Validator.LOGGER;
+        // Old Validation System (Designated for removal)
+//        Validator validator = new Validator("Main Validator");
+//        ValidatorLogger LOGGER = Validator.LOGGER;
 
 //        registerStrata(validator, LOGGER, strataDir, registry);
 //        registerMaterials(validator, LOGGER, materialDir, registry);
-        registerCompat(validator, LOGGER, compatDir, registry);
-        registerDeposits(validator, LOGGER, depositDir, registry);
+//        registerCompat(validator, LOGGER, compatDir, registry);
+//        registerDeposits(validator, LOGGER, depositDir, registry);
 
-        LOGGER.restartSpacer();
-        LOGGER.info("Finished validation and registration of data files!");
-        LOGGER.printSpacer(0);
+//        LOGGER.restartSpacer();
+//        LOGGER.info("Finished validation and registration of data files!");
+//        LOGGER.printSpacer(0);
     }
 
     private static void registerStrata(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
@@ -130,6 +133,35 @@ public class DefaultLoader {
             MATERIAL_IDS.add(materialModel.getId());
         });
         Analytics.addPerformanceAnalytic("Validation: Material", s);
+    }
+
+    private static void registerCompat(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
+        Stopwatch s = Stopwatch.createStarted();
+        definitions.forEach((path, object) -> {
+            if (!CompatModel.VALIDATION_MANAGER.validate(object, path)) return;
+
+            Optional<Pair<CompatModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(CompatModel.CODEC).apply(object).result();
+            if (result.isEmpty()) return;
+
+            CompatModel compatModel = result.get().getFirst();
+            registry.registerCompat(compatModel);
+        });
+        Analytics.addPerformanceAnalytic("Validation: Compat", s);
+    }
+
+    private static void registerDeposits(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
+        Stopwatch s = Stopwatch.createStarted();
+//        definitions.forEach((path, object) -> {
+//            if (!MaterialModel.VALIDATION_MANAGER.validate(object, path)) return;
+//
+//            Optional<Pair<MaterialModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(MaterialModel.CODEC).apply(object).result();
+//            if (result.isEmpty()) return;
+//
+//            MaterialModel materialModel = result.get().getFirst();
+//            registry.getMaterialOrRegister(materialModel.getId(), materialModel);
+//            MATERIAL_IDS.add(materialModel.getId());
+//        });
+        Analytics.addPerformanceAnalytic("Validation: Deposits", s);
     }
 
     private static void registerStrata(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File strataDir, @NotNull EmendatusDataRegistry registry) {

@@ -296,6 +296,7 @@ public class Analytics {
                 }
             }
 
+            cx.writeHeader("Additional Information", 2);
             executeAddons(cx);
             addPerformanceAnalytic("Generation of Analytics Summary", s);
             printPerformance(cx);
@@ -339,7 +340,6 @@ public class Analytics {
     }
 
     private static void printPerformance(AnalyticsWriteContext cx) {
-        cx.writeHeader("Additional Information", 2);
         cx.writeHeader("Performance", 3);
         StringBuilder table = new StringBuilder();
         table.append("<table>");

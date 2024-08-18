@@ -42,7 +42,7 @@ public class RegistryValidationManager {
      * @return False if at least one fatal error is found, true otherwise.
      * @implNote This will clear references to the ValidationData objects after execution!
      */
-    public boolean validate() {
+    public static boolean validate() {
         //TODO: Run in parallel.
         AtomicBoolean result = new AtomicBoolean(true);
         validators.forEach((validator, list) -> list.forEach(registryData -> {

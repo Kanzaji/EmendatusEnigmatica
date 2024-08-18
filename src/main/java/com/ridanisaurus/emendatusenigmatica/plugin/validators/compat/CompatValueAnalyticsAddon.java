@@ -29,10 +29,13 @@ import com.ridanisaurus.emendatusenigmatica.util.analytics.AnalyticsAddon;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.AnalyticsWriteContext;
 
 public class CompatValueAnalyticsAddon implements AnalyticsAddon {
-    private static boolean shouldRun = true;
+    private static boolean shouldRun = false;
 
-    protected static void shouldRun() {
-        shouldRun = true;
+    public static void shouldRun() {
+        if (!shouldRun) {
+            shouldRun = true;
+            Analytics.addAdditionalInformationAddon(new CompatValueAnalyticsAddon());
+        }
     }
 
     /**
@@ -42,7 +45,6 @@ public class CompatValueAnalyticsAddon implements AnalyticsAddon {
      */
     @Override
     public void accept(AnalyticsWriteContext cx) {
-        if (!shouldRun) return;
         cx.writeLine("Array at <code>root.recipes[x].values[x].input</code> in <code>Compat</code> files is only required when at least one criteria is met from the table below. ");
         StringBuilder table = new StringBuilder();
         table.append("<table><tr><th>Mod</th><th>Machine</th><th>Type</th></tr>");
@@ -56,14 +58,14 @@ public class CompatValueAnalyticsAddon implements AnalyticsAddon {
             .append("</td></tr>"));
         table.append("</table>\n");
         cx.write(table.toString());
-        cx.writeHeader("""
-        Mod, Machine and Type specified in the table are the values of fields at:<br>
-        - <code>root.recipes[x].values[x].type</code> > Type
-        - <code>root.recipes[x].machine</code> > Machine
-        - <code>root.recipes[x].mod</code> > Mod
-        """, 6);
+//        cx.writeLine("""
+//        Mod, Machine and Type specified in the table are the values of fields at:
+//        - <code>root.recipes[x].values[x].type</code> > Type
+//        - <code>root.recipes[x].machine</code> > Machine
+//        - <code>root.recipes[x].mod</code> > Mod
+//        """);
         cx.writeComment("""
-        Mod, Machine and Type specified in the table are the values of fields at:<br>
+        Mod, Machine and Type specified in the table are the values of fields at:
         - <code>root.recipes[x].values[x].type</code> > Type
         - <code>root.recipes[x].machine</code> > Machine
         - <code>root.recipes[x].mod</code> > Mod

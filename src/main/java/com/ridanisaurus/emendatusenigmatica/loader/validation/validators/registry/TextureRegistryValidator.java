@@ -26,17 +26,26 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.regist
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import io.netty.util.internal.UnstableApi;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Texture Registry Validator is used to check if specified ResourceLocation points to a valid texture.
+ * This validator will not cause a crash if the resource location is invalid.
+ * @apiNote This is currently W.I.P and does nothing! There is no way to get textures the normal way on Common Setup.
+ */
+@UnstableApi
+@ApiStatus.Experimental
 public class TextureRegistryValidator extends AbstractRegistryValidator {
     private static Map<ResourceLocation, TextureAtlasSprite> textures = null;
     public TextureRegistryValidator() {
@@ -52,12 +61,13 @@ public class TextureRegistryValidator extends AbstractRegistryValidator {
      */
     @Override
     public Result validate(@NotNull RegistryValidationData data) {
-        // Can't validate Textures on dedicated servers, texture manager doesn't exist there!
-        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return Result.PASS;
-
-        if (Objects.isNull(textures)) textures = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getTextures();
-
-        if (textures.containsKey(data.location())) return Result.PASS;
-        return Result.ERROR;
+//        // Can't validate Textures on dedicated servers, texture manager doesn't exist there!
+//        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return Result.PASS;
+//
+//        if (Objects.isNull(textures)) textures = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getTextures();
+//
+//        if (textures.containsKey(data.location())) return Result.PASS;
+//        return Result.ERROR;
+        return Result.PASS;
     }
 }

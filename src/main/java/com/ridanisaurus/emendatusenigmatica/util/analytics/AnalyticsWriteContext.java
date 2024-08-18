@@ -53,7 +53,7 @@ public class AnalyticsWriteContext {
     }
 
     public void writeComment(@NotNull String msg) {
-        write(msg.lines().map(it -> "> " + it).collect(Collectors.joining()));
+        write(msg.lines().map(it -> "> " + it + "\n").collect(Collectors.joining()));
     }
 
     public void writeSpacer() {

@@ -104,7 +104,7 @@ def dependencyMap = [
         "curse.maven:geckolib-388172:${geckolib_version}",
         "curse.maven:modonomicon-538392:${modonomicon_version}",
         "curse.maven:smartbrainlib-661293:${smartbrainlib_version}",
-        "curse.maven:curious-1037991:${curious_version}"
+        "curse.maven:curios-1037991:${curios_version}"
     ],
     Thermal: [
         "curse.maven:thermal-expansion-69163:${thermal_expansion_version}",

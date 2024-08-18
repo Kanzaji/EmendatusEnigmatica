@@ -16,6 +16,8 @@
   "screen.emendatusenigmatica.config.client.glint.text": "Increase Armor Glint Strength",
   "screen.emendatusenigmatica.config.client.glint.tip": "When enabled, returns to the old strength of Glint on armor.",
   "screen.emendatusenigmatica.config.validation.title": "Validation Configuration",
-  "screen.emendatusenigmatica.config.validation.log_errors.text": "Log warnings and errors from Data Validation",
-  "screen.emendatusenigmatica.config.validation.log_errors.tip": "When enabled, logs warnings and errors returned from the data validation. Has only effect on boot."
+  "screen.emendatusenigmatica.config.validation.summary.text": "Generate config loading summary",
+  "screen.emendatusenigmatica.config.validation.summary.tip": "When enabled, will generate a MarkDown formatted document on boot, with the summary from the loading and validation stage of the configs.",
+  "screen.emendatusenigmatica.config.validation.empty_files.text": "Skip empty Json Files",
+  "screen.emendatusenigmatica.config.validation.empty_files.tip": "When enabled, will cause EE to silently skip empty JSON files on loading, removing errors generated in the summary."
 }

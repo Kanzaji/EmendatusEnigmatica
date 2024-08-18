@@ -56,13 +56,18 @@ public class EEConfig {
 	}
 
 	public static class StartupConfig {
-		public final ModConfigSpec.BooleanValue logConfigErrors;
+		public final ModConfigSpec.BooleanValue generateSummary;
+		public final ModConfigSpec.BooleanValue skipEmptyJsons;
 		StartupConfig(ModConfigSpec.@NotNull Builder builder) {
 			builder.push("Debug");
-			logConfigErrors = builder
-					.comment("Whether Emendatus Enigmatica should log warnings and errors generated on the configuration parsing.")
-					.translation(Reference.MOD_ID + ".config.startup.log_errors")
-					.define("logConfigErrors", true);
+			generateSummary = builder
+				.comment("Whether Emendatus Enigmatica should generate a Validation Summary in the configuration directory.")
+				.translation(Reference.MOD_ID + ".config.startup.generate_summary")
+				.define("generateSummary", true);
+			skipEmptyJsons = builder
+				.comment("Whether Emendatus Enigmatica should silently skip empty JSON files (Either 0 Bytes or empty root object) instead of including them on the summary.")
+				.translation(Reference.MOD_ID + ".config.stratup.skip_empty")
+				.define("skipEmptyJsons", false);
 			builder.pop();
 		}
 	}

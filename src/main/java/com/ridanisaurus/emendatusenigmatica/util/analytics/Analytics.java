@@ -24,12 +24,10 @@
 
 package com.ridanisaurus.emendatusenigmatica.util.analytics;
 
-import com.google.common.base.Function;
 import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.util.Messages;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -116,7 +114,7 @@ public class Analytics {
      * @apiNote This is mostly used to skip parts of the validation system, which are only meant to provide additional warnings for the end-user.
      */
     public static boolean isEnabled() {
-        return EEConfig.startup.logConfigErrors.get();
+        return EEConfig.startup.generateSummary.get();
     }
 
     /**

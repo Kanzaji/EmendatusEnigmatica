@@ -24,8 +24,16 @@
 
 package com.ridanisaurus.emendatusenigmatica.util;
 
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
-public record Messages(List<Message> warnings, List<Message> errors) {
-    public record Message(String element, String message, String additionalInfo) {}
+public class ExceptionHelper {
+    /**
+     * Implementation of {@link Throwable#toString()} that uses {@link Throwable#getMessage()} instead of {@link Throwable#getLocalizedMessage()}.
+     * @param ex Exception to get as String.
+     * @return String representation of the exception, without Stacktrace.
+     */
+    public static @NotNull String getAsString(@NotNull Throwable ex) {
+        String message = ex.getMessage();
+        return ex.getClass().getName() + (message == null? "": ": " + message);
+    }
 }

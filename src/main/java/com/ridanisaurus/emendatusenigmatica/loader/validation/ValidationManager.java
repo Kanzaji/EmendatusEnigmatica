@@ -25,6 +25,7 @@
 package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
@@ -48,23 +49,6 @@ public class ValidationManager {
     private ValidationManager() {}
 
     /**
-     * Used to cut off part of the path that is not in minecraft directory.<br>
-     * <h4>Input:</h4>
-     * <blockquote>
-     * C:/Minecraft/config/emendatusenigmatica/strata/stone.json
-     * </blockquote>
-     * <h4>Result:</h4>
-     * <blockquote>
-     * strata/stone.json
-     * </blockquote>
-     * @param path Path to obfuscate.
-     * @return String with an obfuscated path.
-     */
-    public static @NotNull String obfuscatePath(Path path) {
-        return Analytics.CONFIG_DIR.relativize(path).toString();
-    }
-
-    /**
      * Used to create new instance of the ValidationManager.
      * @return New instance of {@link ValidationManager}.
      * @implNote ValidationManager doesn't contain its own builder,
@@ -82,7 +66,7 @@ public class ValidationManager {
      * @return True if validation passes, false otherwise.
      */
     public boolean validate(@NotNull JsonObject object, Path jsonPath) {
-        var path = obfuscatePath(jsonPath);
+        var path = ValidationHelper.obfuscatePath(jsonPath);
 
         if (!object.isJsonObject()) {
             Analytics.error("Expected Json Object at root!", "Root of the file is required to be an object. Arrays are not supported.", "root", path);
@@ -90,7 +74,7 @@ public class ValidationManager {
         }
 
         if (object.isEmpty()) {
-            Analytics.error("Root object is empty!", "root", path);
+            if (!EEConfig.startup.skipEmptyJsons.get()) Analytics.error("Root object is empty!", "root", path);
             return false;
         }
 

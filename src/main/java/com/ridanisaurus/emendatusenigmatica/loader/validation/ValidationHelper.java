@@ -28,10 +28,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -188,5 +190,22 @@ public class ValidationHelper {
         var result = new ArrayList<>(List.of(path.split("\\.")));
         result.removeFirst(); // Should get rid of the root element.
         return result;
+    }
+
+    /**
+     * Used to cut off part of the path that is not in minecraft directory.<br>
+     * <h4>Input:</h4>
+     * <blockquote>
+     * C:/Minecraft/config/emendatusenigmatica/strata/stone.json
+     * </blockquote>
+     * <h4>Result:</h4>
+     * <blockquote>
+     * strata/stone.json
+     * </blockquote>
+     * @param path Path to obfuscate.
+     * @return String with an obfuscated path.
+     */
+    public static @NotNull String obfuscatePath(Path path) {
+        return Analytics.CONFIG_DIR.relativize(path).toString();
     }
 }

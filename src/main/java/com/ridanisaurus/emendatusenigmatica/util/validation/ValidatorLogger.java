@@ -47,7 +47,7 @@ public class ValidatorLogger {
     public ValidatorLogger(Logger logger) {
         Objects.requireNonNull(logger, "Can't create logger wrapper from Null logger!");
         this.logger = logger;
-        shouldLog = EEConfig.startup.logConfigErrors.get();
+        shouldLog = EEConfig.startup.generateSummary.get();
     }
 
     /**
@@ -84,7 +84,7 @@ public class ValidatorLogger {
 
     /**
      * Used to log the message at specified level.
-     * Levels 1 and 2 aren't printed when "logConfigErrors" is set to false.
+     * Levels 1 and 2 aren't printed when "generateSummary" is set to false.
      *<br>Levels:<br>
      * <ul>
      *     <li>-1 -> debug</li>
@@ -113,7 +113,7 @@ public class ValidatorLogger {
 
     /**
      * Used to print the spacer at specified level.
-     * Levels 1 and 2 aren't printed when "logConfigErrors" is set to false.
+     * Levels 1 and 2 aren't printed when "generateSummary" is set to false.
      *<br>Levels:<br>
      * <ul>
      *     <li>-1 -> debug</li>

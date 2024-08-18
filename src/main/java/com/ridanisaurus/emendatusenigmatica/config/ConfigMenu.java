@@ -51,8 +51,10 @@ public class ConfigMenu extends Screen {
     private static final Component PATREON_TIP  = Component.translatable("screen.emendatusenigmatica.config.client.patreon.tip");
     private static final Component GLINT        = Component.translatable("screen.emendatusenigmatica.config.client.glint.text");
     private static final Component GLINT_TIP    = Component.translatable("screen.emendatusenigmatica.config.client.glint.tip");
-    private static final Component LOG_ERR      = Component.translatable("screen.emendatusenigmatica.config.validation.log_errors.text");
-    private static final Component LOG_ERR_TIP  = Component.translatable("screen.emendatusenigmatica.config.validation.log_errors.tip");
+    private static final Component SUMMARY      = Component.translatable("screen.emendatusenigmatica.config.validation.summary.text");
+    private static final Component SUMMARY_TIP  = Component.translatable("screen.emendatusenigmatica.config.validation.summary.tip");
+    private static final Component SKIP         = Component.translatable("screen.emendatusenigmatica.config.validation.empty_files.text");
+    private static final Component SKIP_TIP     = Component.translatable("screen.emendatusenigmatica.config.validation.empty_files.tip");
     // Other
     private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this, 61, 33);
     private final Screen last;
@@ -80,7 +82,8 @@ public class ConfigMenu extends Screen {
         addButton(grid, PATREON, PATREON_TIP, EEConfig.client.showPatreonReward);
         addButton(grid, GLINT, GLINT_TIP, EEConfig.client.oldSchoolGlint);
         addTitle(grid, V_TITLE);
-        addButton(grid, LOG_ERR, LOG_ERR_TIP, EEConfig.startup.logConfigErrors);
+        addButton(grid, SUMMARY, SUMMARY_TIP, EEConfig.startup.generateSummary);
+        addButton(grid, SKIP, SKIP_TIP, EEConfig.startup.skipEmptyJsons);
 
         this.layout.addToContents(grid);
 

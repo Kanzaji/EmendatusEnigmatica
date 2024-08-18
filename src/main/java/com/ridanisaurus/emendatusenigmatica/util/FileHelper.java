@@ -27,6 +27,11 @@ package com.ridanisaurus.emendatusenigmatica.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
+import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -44,7 +49,8 @@ public class FileHelper {
 	 * @return ArrayList with JsonObjects parsed from found .json files.
 	 * @apiNote It is recommended to use {@link FileHelper#loadJsons(Path)} instead.
 	 */
-	public static ArrayList<JsonObject> loadFilesAsJsonObjects(File dir) {
+	@Contract("_ -> new")
+	public static @NotNull ArrayList<JsonObject> loadFilesAsJsonObjects(@NotNull File dir) {
 		return loadJsons(Path.of(dir.toURI()));
 	}
 
@@ -53,7 +59,8 @@ public class FileHelper {
 	 * @param dir Path to the directory to load. Subdirectories will also be loaded.
 	 * @return ArrayList with JsonObjects parsed from found .json files.
 	 */
-	public static ArrayList<JsonObject> loadJsons(Path dir) {
+	@Contract("_ -> new")
+	public static @NotNull ArrayList<JsonObject> loadJsons(Path dir) {
 		return new ArrayList<>(loadJsonsWithPaths(dir).values());
 	}
 
@@ -61,12 +68,18 @@ public class FileHelper {
 	 * Used to get a map of Paths and values from the files in the specified directory.
 	 * @param dir Path to the directory to load. Subdirectories will also be loaded.
 	 * @return Map with Path -> JsonObject from the provided path.
+	 * @apiNote Will generate errors to {@link Analytics} on exceptions.
 	 */
-	public static Map<Path, JsonObject> loadJsonsWithPaths(Path dir) {
+	public static @NotNull Map<Path, JsonObject> loadJsonsWithPaths(Path dir) {
 		Map<Path, JsonObject> results = new HashMap<>();
 		dir = dir.toAbsolutePath();
 		if (Files.notExists(dir) || !Files.isDirectory(dir)) {
-            EmendatusEnigmatica.logger.error("Provided path to load jsons from ({}) doesn't exist.", dir);
+			Analytics.error(
+				"Provided path doesn't exist!",
+				"Tried loading JSON files from non-existing directory. This is most likely a bug in the mod or one of the addons.",
+				"None",
+				ValidationHelper.obfuscatePath(dir)
+			);
 			return results;
 		}
 
@@ -77,13 +90,28 @@ public class FileHelper {
 						results.putAll(loadJsonsWithPaths(file));
 						return;
 					}
+					if (EEConfig.startup.skipEmptyJsons.get() && Files.size(file) == 0) return;
 					if (file.getFileName().toString().endsWith(".json")) results.put(file, JsonParser.parseReader(Files.newBufferedReader(file)).getAsJsonObject());
 				} catch (Exception e) {
-                    EmendatusEnigmatica.logger.error("Failed parsing json file at {}.", file.toAbsolutePath(), e);
+					Analytics.error(
+						"Failed parsing JSON file!",
+						ExceptionHelper.getAsString(e),
+						"None",
+						ValidationHelper.obfuscatePath(file)
+					);
+					// Log additionally full exception.
+					EmendatusEnigmatica.logger.error("Failed parsing json file at {}.", file.toAbsolutePath(), e);
 				}
 			});
 		} catch (Exception ex) {
-            EmendatusEnigmatica.logger.error("Failed opening provided path ({}) from which json files were meant to be loaded.", dir, ex);
+			Analytics.error(
+				"Failed reading directory, from which JSON files were meant to be loaded!",
+				ExceptionHelper.getAsString(ex),
+				"None",
+				ValidationHelper.obfuscatePath(dir)
+			);
+			// Log additionally full exception.
+			EmendatusEnigmatica.logger.error("Failed reading directory ({}), from which JSON files were meant to be loaded.", dir, ex);
 		}
 		return results;
 	}

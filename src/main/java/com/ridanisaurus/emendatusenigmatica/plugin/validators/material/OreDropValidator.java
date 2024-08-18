@@ -69,13 +69,13 @@ public class OreDropValidator implements IValidationFunction {
         if (hasVal) {
             if (!hasOre) Analytics.warn(
                 "This field is unnecessary.",
-                "<code>root.processedTypes</code> is missing an element <code>ore</code>, which is required for this field to have an effect.",
+                "Array <code>root.processedTypes</code> is missing an element <code>ore</code>, which is required for this field to have an effect.",
                 data
             );
         } else if (!hasGem && !hasRaw && hasOre) {
             Analytics.error(
                 "This field is required!",
-                "<code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which marks this field as required.",
+                "Array <code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which marks this field as required.",
                 data
             );
             return false;

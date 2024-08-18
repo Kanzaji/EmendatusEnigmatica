@@ -31,6 +31,8 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.*;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.BlockRegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.TextureRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
@@ -68,8 +70,8 @@ public class StrataModel {
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
 		.addValidator("id",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REGISTRATION, true))
-		.addValidator("baseTexture",		new ResourceLocationValidator(true))
-		.addValidator("fillerType",		new ResourceLocationValidator(true))
+		.addValidator("baseTexture",		new ResourceLocationValidator(true, new TextureRegistryValidator()))
+		.addValidator("fillerType",		new ResourceLocationValidator(true, new BlockRegistryValidator()))
 		.addValidator("suffix",			new TypeValidator(Types.STRING, true))
 		.addValidator("localizedName",	new TypeValidator(Types.STRING, true))
 		.addValidator("sampleStrata",		new TypeValidator(Types.BOOLEAN, false))

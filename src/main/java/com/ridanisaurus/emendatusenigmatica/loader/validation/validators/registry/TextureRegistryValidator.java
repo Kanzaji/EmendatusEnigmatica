@@ -26,9 +26,19 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.regist
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+import java.util.Objects;
+
 public class TextureRegistryValidator extends AbstractRegistryValidator {
+    private static Map<ResourceLocation, TextureAtlasSprite> textures = null;
     public TextureRegistryValidator() {
         super("Provided ResourceLocation points to a non-existing texture!");
     }
@@ -42,6 +52,12 @@ public class TextureRegistryValidator extends AbstractRegistryValidator {
      */
     @Override
     public Result validate(@NotNull RegistryValidationData data) {
-        return Result.PASS;
+        // Can't validate Textures on dedicated servers, texture manager doesn't exist there!
+        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return Result.PASS;
+
+        if (Objects.isNull(textures)) textures = Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getTextures();
+
+        if (textures.containsKey(data.location())) return Result.PASS;
+        return Result.ERROR;
     }
 }

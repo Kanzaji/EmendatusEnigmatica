@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class CompatValueInputValidator extends AbstractValidator {
-    private static final AbstractValidator VALIDATION_FUNCTION = CompatIOModel.VALIDATION_MANAGER.getAsValidator(false);
+    private static final AbstractValidator VALIDATION_FUNCTION = CompatIOModel.INPUT_VALIDATION_MANAGER.getAsValidator(false);
 
     /**
      * Constructs CompatValueInputValidator.

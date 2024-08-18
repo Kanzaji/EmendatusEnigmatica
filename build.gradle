@@ -103,7 +103,8 @@ def dependencyMap = [
         "curse.maven:occultism-361026:${occultism_version}",
         "curse.maven:geckolib-388172:${geckolib_version}",
         "curse.maven:modonomicon-538392:${modonomicon_version}",
-        "curse.maven:smartbrainlib-661293:${smartbrainlib_version}"
+        "curse.maven:smartbrainlib-661293:${smartbrainlib_version}",
+        "curse.maven:curious-1037991:${curious_version}"
     ],
     Thermal: [
         "curse.maven:thermal-expansion-69163:${thermal_expansion_version}",
@@ -152,11 +153,11 @@ dependencies {
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21"
 
     // Utilities and other mods
-    if (tool_kit_version != "null") runtimeOnly "curse.maven:tool-kit-324888:${tool_kit_version}"
-    if (world_stripper_version != "null") runtimeOnly "curse.maven:world-stripper-250603:${world_stripper_version}"
-    if (jade_version != "null") runtimeOnly "curse.maven:jade-324717:${jade_version}"
-    if (the_undergarden_version != "null") runtimeOnly "curse.maven:the-undergarden-379849:${the_undergarden_version}"
-    if (architectury_version != "null") runtimeOnly "curse.maven:architectury-api-419699:${architectury_version}"
+    if (jade_version != "null")             runtimeOnly "curse.maven:jade-324717:${jade_version}"
+    if (tool_kit_version != "null")         runtimeOnly "curse.maven:tool-kit-324888:${tool_kit_version}"
+    if (architectury_version != "null")     runtimeOnly "curse.maven:architectury-api-419699:${architectury_version}"
+    if (world_stripper_version != "null")   runtimeOnly "curse.maven:world-stripper-250603:${world_stripper_version}"
+    if (the_undergarden_version != "null")  runtimeOnly "curse.maven:the-undergarden-379849:${the_undergarden_version}"
     if (kubejs_version != "null" && rhino_version != "null") {
         runtimeOnly "curse.maven:kubejs-238086:${kubejs_version}"
         runtimeOnly "curse.maven:rhino-416294:${rhino_version}"

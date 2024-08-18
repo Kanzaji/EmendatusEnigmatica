@@ -31,6 +31,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.ItemRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -53,7 +54,7 @@ public class CompatIOModel {
     public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
         .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
         .addValidator("chance", new NumberRangeValidator(Types.FLOAT, 0, 1, false))
-        .addValidator("item", new ResourceLocationValidator(false));
+        .addValidator("item", new ResourceLocationValidator(false, new ItemRegistryValidator()));
 
     /**
      * Version of {@link CompatIOModel#VALIDATION_MANAGER} that doesn't include the chance field. <br>
@@ -61,7 +62,7 @@ public class CompatIOModel {
      */
     public static final ValidationManager INPUT_VALIDATION_MANAGER = ValidationManager.create()
         .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
-        .addValidator("item", new ResourceLocationValidator(false));
+        .addValidator("item", new ResourceLocationValidator(false, new ItemRegistryValidator()));
 
     /**
      * Holds verifying functions for each field.

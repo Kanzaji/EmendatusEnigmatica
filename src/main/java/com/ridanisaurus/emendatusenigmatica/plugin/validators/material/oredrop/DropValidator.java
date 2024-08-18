@@ -29,6 +29,7 @@ import com.google.gson.JsonPrimitive;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.ItemRegistryValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class DropValidator extends ResourceLocationValidator {
      * @see ResourceLocationValidator Documentation of the validator.
      */
     public DropValidator() {
-        super(false);
+        super(false, new ItemRegistryValidator());
     }
 
     /**
@@ -74,6 +75,6 @@ public class DropValidator extends ResourceLocationValidator {
      */
     @Override
     public String getAdditional(@NotNull ValidationData data) {
-        return "<code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which marks this field as required.";
+        return "Array <code>root.processedTypes</code> contains an element <code>ore</code> and misses <code>gem, raw</code>, which makes this field necessary.";
     }
 }

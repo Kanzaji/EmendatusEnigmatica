@@ -55,7 +55,7 @@ public class ResourceLocationValidator extends TypeValidator {
      * @see ResourceLocationValidator Documentation of the validator.
      * @implNote This validator accepts only {@link Types#STRING} values.
      */
-    public ResourceLocationValidator(@NotNull AbstractRegistryValidator validator, boolean isRequired) {
+    public ResourceLocationValidator(boolean isRequired, @NotNull AbstractRegistryValidator validator) {
         super(Types.STRING, isRequired);
         // Store the map reference, for faster access.
         resourceLocations = new ArrayList<>();
@@ -67,7 +67,7 @@ public class ResourceLocationValidator extends TypeValidator {
      *
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
      * @see ResourceLocationValidator Documentation of the validator.
-     * @see ResourceLocationValidator#ResourceLocationValidator(AbstractRegistryValidator, boolean)
+     * @see ResourceLocationValidator#ResourceLocationValidator(boolean, AbstractRegistryValidator)
      * @implNote This validator accepts only {@link Types#STRING} values.
      */
     public ResourceLocationValidator(boolean isRequired) {

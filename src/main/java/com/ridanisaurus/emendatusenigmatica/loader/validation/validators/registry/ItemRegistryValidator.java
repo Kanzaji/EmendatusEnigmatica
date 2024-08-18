@@ -24,8 +24,28 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry;
 
+import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import org.jetbrains.annotations.NotNull;
 
-public record RegistryValidationData(ResourceLocation location, ValidationData validationData) {
+public class ItemRegistryValidator extends AbstractRegistryValidator {
+
+    public ItemRegistryValidator() {
+        super("Provided ResourceLocation doesn't point to a valid item in the registry!");
+    }
+
+    /**
+     * This method is used to check if the resource location is present in the specified registry.
+     *
+     * @param data Record with ResourceLocation to validate and {@link ValidationData} object from the original json file.
+     * @return The result of the validation. See {@link Result} for more details.
+     * @apiNote At this stage, all registries were constructed,
+     */
+    @Override
+    public Result validate(@NotNull RegistryValidationData data) {
+        var item = BuiltInRegistries.ITEM.get(data.location());
+        if (BuiltInRegistries.ITEM.getDefaultKey().equals(BuiltInRegistries.ITEM.getKey(item))) return Result.ERROR;
+        return Result.PASS;
+    }
 }

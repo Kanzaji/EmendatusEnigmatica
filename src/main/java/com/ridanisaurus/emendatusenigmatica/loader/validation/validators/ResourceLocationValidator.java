@@ -24,13 +24,13 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
+import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.AbstractRegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.RegistryValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -45,7 +45,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * to try and prevent a disaster.
  */
 public class ResourceLocationValidator extends TypeValidator {
-    private static final Map<AbstractRegistryValidator, List<RegistryValidationData>> validators = new HashMap<>();
     private final List<RegistryValidationData> resourceLocations;
 
     /**
@@ -60,7 +59,7 @@ public class ResourceLocationValidator extends TypeValidator {
         super(Types.STRING, isRequired);
         // Store the map reference, for faster access.
         resourceLocations = new ArrayList<>();
-        validators.put(validator, resourceLocations);
+        RegistryValidationManager.addValidator(validator, resourceLocations);
     }
 
     /**
@@ -103,33 +102,5 @@ public class ResourceLocationValidator extends TypeValidator {
         // Add ResourceLocation for Post-Registration check.
         if (Objects.nonNull(resourceLocations)) resourceLocations.add(new RegistryValidationData(ResourceLocation.parse(value), data));
         return true;
-    }
-
-    /**
-     * Used to execute Post-Registration validation, checking if specified Resource Locations point to valid registry objects.
-     * @return False if at least one fatal error is found, true otherwise.
-     * @apiNote Currently marked as experimental, could change behavior / be replaced in the future.
-     * @implNote This will clear references to the ValidationData objects after execution!
-     */
-    @ApiStatus.Experimental
-    public static boolean runRegistryValidation() {
-        //TODO: Run in parallel.
-        AtomicBoolean result = new AtomicBoolean(true);
-        validators.forEach((validator, list) -> list.forEach(registryData -> {
-            var data = registryData.validationData();
-            switch (validator.validate(registryData)) {
-                case PASS -> {
-                    // Nothing, it passed successfully.
-                }
-                case ERROR -> Analytics.error(validator.getErrorMessage(), "Missing location: <code>%s</code>".formatted(data.validationElement().getAsString()), data);
-                case FATAL -> {
-                    Analytics.error(validator.getErrorMessage(), "Missing location: <code>%s</code>".formatted(data.validationElement().getAsString()), data);
-                    result.set(false);
-                }
-            }
-        }));
-        // Clearing validator's map, which holds references to the ValidationData objects.
-        validators.clear();
-        return result.get();
     }
 }

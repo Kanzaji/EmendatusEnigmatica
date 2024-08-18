@@ -28,13 +28,9 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidation
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
-public abstract class AbstractRegistryValidator {
-    private final String errorMessage;
-
-    public AbstractRegistryValidator(String errorMessage) {
-        this.errorMessage = Objects.requireNonNull(errorMessage, "Error Message can't be null!");
+public class TextureRegistryValidator extends AbstractRegistryValidator {
+    public TextureRegistryValidator() {
+        super("Provided ResourceLocation points to a non-existing texture!");
     }
 
     /**
@@ -44,44 +40,8 @@ public abstract class AbstractRegistryValidator {
      * @return The result of the validation. See {@link Result} for more details.
      * @apiNote At this stage, all registries were constructed,
      */
-    public abstract Result validate(@NotNull RegistryValidationData data);
-
-    public String getErrorMessage() {
-        return this.errorMessage;
-    }
-
-    /**
-     * Simple enum to represent the validation result.
-     *
-     * @see Result#PASS
-     * @see Result#ERROR
-     * @see Result#FATAL
-     */
-    public enum Result {
-        /**
-         * Registry Validation was successful!
-         *
-         * @see Result
-         * @see Result#ERROR
-         * @see Result#FATAL
-         */
-        PASS,
-        /**
-         * Registry Validation wasn't successful, but action to prevent issues was taken.
-         *
-         * @see Result
-         * @see Result#PASS
-         * @see Result#FATAL
-         */
-        ERROR,
-        /**
-         * Registry Validation wasn't successful, and this situation can't be recovered from.
-         *
-         * @apiNote Take a note that returning this status <i>will cause a game crash</i>!
-         * @see Result
-         * @see Result#PASS
-         * @see Result#ERROR
-         * */
-        FATAL
+    @Override
+    public Result validate(@NotNull RegistryValidationData data) {
+        return Result.PASS;
     }
 }

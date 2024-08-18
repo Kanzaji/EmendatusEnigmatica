@@ -301,7 +301,7 @@ public class Analytics {
             executeAddons(cx);
             addPerformanceAnalytic("Generation of Analytics Summary", s);
             printPerformance(cx);
-            cx.write("> You can disable the generation of this summary and speed up the validation in the configuration file!");
+            cx.writeComment("You can disable the generation of this summary and speed up the validation in the configuration file!");
 
             finalized = true;
         } catch (Exception e) {

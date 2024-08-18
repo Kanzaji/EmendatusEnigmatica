@@ -30,13 +30,14 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * @apiNote Name is a subject to change. Currently, this validator only supports {@link Types#STRING}.
  */
 public class ValuesValidator extends TypeValidator {
-    private final List<String> values;
+    private final Collection<String> values;
     private final String valuesAsString;
     private final FilterMode mode;
 
@@ -48,7 +49,7 @@ public class ValuesValidator extends TypeValidator {
      * @see ValuesValidator Documentation of the validator
      * @see FilterMode Available modes
      */
-    public ValuesValidator(@NotNull List<String> values, FilterMode validatorMode, boolean isRequired) {
+    public ValuesValidator(@NotNull Collection<String> values, FilterMode validatorMode, boolean isRequired) {
         super(Types.STRING, isRequired);
         this.values = values;
         this.valuesAsString = String.join(", ", values);
@@ -76,5 +77,4 @@ public class ValuesValidator extends TypeValidator {
         Analytics.error("Field contains one of the illegal values!", "Provided: <code>%s</code> , Illegal values: <code>%s</code>".formatted(value, valuesAsString), data);
         return false;
     }
-
 }

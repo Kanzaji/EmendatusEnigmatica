@@ -24,7 +24,9 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry;
 
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -37,11 +39,12 @@ public abstract class AbstractRegistryValidator {
 
     /**
      * This method is used to check if the resource location is present in the specified registry.
-     * @param resourceLocation ResourceLocation to check.
+     *
+     * @param data Record with ResourceLocation to validate and {@link ValidationData} object from the original json file.
      * @return The result of the validation. See {@link Result} for more details.
      * @apiNote At this stage, all registries were constructed,
      */
-    public abstract Result validate(ResourceLocation resourceLocation);
+    public abstract Result validate(@NotNull RegistryValidationData data);
 
     public String getErrorMessage() {
         return this.errorMessage;
@@ -49,6 +52,7 @@ public abstract class AbstractRegistryValidator {
 
     /**
      * Simple enum to represent the validation result.
+     *
      * @see Result#PASS
      * @see Result#ERROR
      * @see Result#FATAL
@@ -56,6 +60,7 @@ public abstract class AbstractRegistryValidator {
     public enum Result {
         /**
          * Registry Validation was successful!
+         *
          * @see Result
          * @see Result#ERROR
          * @see Result#FATAL
@@ -63,6 +68,7 @@ public abstract class AbstractRegistryValidator {
         PASS,
         /**
          * Registry Validation wasn't successful, but action to prevent issues was taken.
+         *
          * @see Result
          * @see Result#PASS
          * @see Result#FATAL
@@ -70,6 +76,7 @@ public abstract class AbstractRegistryValidator {
         ERROR,
         /**
          * Registry Validation wasn't successful, and this situation can't be recovered from.
+         *
          * @apiNote Take a note that returning this status <i>will cause a game crash</i>!
          * @see Result
          * @see Result#PASS

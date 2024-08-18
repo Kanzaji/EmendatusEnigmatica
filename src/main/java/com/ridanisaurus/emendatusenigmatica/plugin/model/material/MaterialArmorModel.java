@@ -29,6 +29,7 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
@@ -183,7 +184,7 @@ public class MaterialArmorModel {
 		.addValidator("leggings",   	new ArmorValidator())
 		.addValidator("boots",  		new ArmorValidator())
 		.addValidator("shield",     	new ArmorValidator("shield"))
-		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false));
+		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false), ArrayPolicy.REQUIRES_ARRAY);
 
 	static {
 		validators.put("setArmor",	new Validator("setArmor").REQUIRES_BOOLEAN);

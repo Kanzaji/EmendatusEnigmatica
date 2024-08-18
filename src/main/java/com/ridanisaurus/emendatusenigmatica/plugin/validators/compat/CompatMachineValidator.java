@@ -24,22 +24,28 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validators.compat;
 
+import com.google.gson.JsonElement;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-public class CompatTypeValidator extends TypeValidator {
-    private static final Map<String, String> valuesAsStringMap = new HashMap<>();
+public class CompatMachineValidator extends TypeValidator {
+    private static final Map<String, String> valuesAsString = new HashMap<>();
 
-    public CompatTypeValidator() {
-        super(Types.STRING, false);
+    /**
+     * Constructs a ValuesValidator, a modified version off the {@link ValuesValidator}.
+     * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
+     * @see CompatMachineValidator Documentation of the validator
+     */
+    public CompatMachineValidator(boolean isRequired) {
+        super(Types.STRING, isRequired);
     }
 
     /**
@@ -47,32 +53,24 @@ public class CompatTypeValidator extends TypeValidator {
      *
      * @param data ValidationData record with necessary information to validate the element.
      * @return True of the validation passes, false otherwise.
-     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link ValuesValidator#apply(ValidationData)} instead!
+     * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link CompatMachineValidator#apply(ValidationData)} instead!
      */
     @Override
     public Boolean validate(@NotNull ValidationData data) {
         if (!super.validate(data)) return false;
+        JsonElement machineElement = data.getParentFieldAs(Types.STRING, "machine");
+        String accepted = "None, most likely invalid <code>%s</code> value.".formatted(data.getParentFieldPath("machine"));
         String value = data.validationElement().getAsString();
-        // Mod determining part
-        var modPath = StringUtils.substringBeforeLast(data.getParentPath(), ".") + ".mod";
-        var modElement = ValidationHelper.getElementFromPathAs(data.rootObject(), modPath, Types.STRING);
-        List<String> values = new ArrayList<>();
-        String valuesAsString = "None, most likely invalid <code>%s</code> value.".formatted(modPath);
-
-        if (Objects.nonNull(modElement)) {
-            var mod = modElement.getAsString();
-            if (CompatModData.CompatTypeMap.containsKey(mod)) {
-                values = CompatModData.CompatTypeMap.get(mod);
-                List<String> finalValues = values;
-                valuesAsString = "<code>%s</code>".formatted(valuesAsStringMap.computeIfAbsent(mod, (it) -> String.join(", ", finalValues)));
+        boolean contains = false;
+        if (Objects.nonNull(machineElement)) {
+            var values = CompatModData.CompatMachineMap.get(machineElement.getAsString());
+            if (Objects.nonNull(values)) {
+                contains = values.contains(value);
+                accepted = valuesAsString.computeIfAbsent(machineElement.getAsString(), it -> "<code>%s</code>".formatted(String.join(", ", values)));
             }
         }
-
-        boolean contains = values.contains(value);
         if (contains) return true;
-        Analytics.error(
-            "Field contains an illegal value!",
-            "Provided: <code>%s</code> , Accepted values: %s".formatted(value, valuesAsString), data);
+        Analytics.error("Field contains an illegal value!", "Provided: <code>%s</code> , Accepted values: %s".formatted(value, accepted), data);
         return false;
     }
 }

@@ -78,7 +78,7 @@ public class FieldTrueValidator implements IValidationFunction {
             if (!optional && Objects.nonNull(booleanField) && booleanField.getAsBoolean()) {
                 Analytics.error(
                     "This field is required!",
-                    "<code>%s</code> is set to <code>true</code>, which marks this field as required.".formatted(booleanFieldPath)
+                    "Field <code>%s</code> is set to <code>true</code>, which makes this field necessary.".formatted(booleanFieldPath)
                     , data
                 );
                 return false;
@@ -87,9 +87,9 @@ public class FieldTrueValidator implements IValidationFunction {
         }
 
         if (Objects.isNull(booleanField))
-            Analytics.warn("This field is unnecessary!", "<code>%s</code> is required for this field to have any effect.".formatted(booleanFieldPath), data);
+            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be present and set to <code>true</code> for this field to have any effect.".formatted(booleanFieldPath), data);
         else if (!booleanField.getAsBoolean())
-            Analytics.warn("This field is unnecessary!", "<code>%s</code> needs to be set to <code>true</code> for this field to have any effect.".formatted(booleanFieldPath), data);
+            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be set to <code>true</code> for this field to have any effect.".formatted(booleanFieldPath), data);
 
         return validator.apply(data);
     }

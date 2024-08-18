@@ -81,6 +81,7 @@ public abstract class AbstractValidator implements IValidationFunction {
             for (JsonElement entry : element.getAsJsonArray()) {
                 if (!this.validate(new ValidationData(entry, data.rootObject(), "%s[%d]".formatted(data.currentPath(), index), data.jsonFilePath(), data.arrayPolicy())))
                     validation = false;
+                index++;
             }
             return validation;
         }

@@ -93,11 +93,11 @@ public class EERegistryValidator extends TypeValidator {
         boolean contains = values.contains(value);
         if (mode == Mode.REFERENCE) {
             if (contains) return true;
-            Analytics.error("Specified ID is missing from the %s registry!".formatted(name), "ID: <code>%s</code>".formatted(value), data);
+            Analytics.error("Specified ID <code>%s</code> is missing from the %s registry!".formatted(value, name), data);
             return false;
         }
         if (!contains) return true;
-        Analytics.error("Specified ID is already registered!", "ID: <code>%s</code>".formatted(value), data);
+        Analytics.error("Specified ID <code>%s</code> is already registered!".formatted(value), data);
         return false;
     }
 

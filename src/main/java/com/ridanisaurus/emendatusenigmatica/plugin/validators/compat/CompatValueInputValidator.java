@@ -24,9 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validators.compat;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.ImmutableTable;
-import com.google.common.collect.Table;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
@@ -40,9 +37,6 @@ import java.util.*;
 
 public class CompatValueInputValidator extends AbstractValidator {
     private static final AbstractValidator VALIDATION_FUNCTION = CompatIOModel.VALIDATION_MANAGER.getAsValidator(false);
-    public static final Table<String, String, String> VALUES = HashBasedTable.create(
-        ImmutableTable.of("thermal", "induction_smelter", "alloy")
-    );
 
     /**
      * Constructs CompatValueInputValidator.
@@ -76,22 +70,19 @@ public class CompatValueInputValidator extends AbstractValidator {
     @Override
     public boolean isRequired(@NotNull ValidationData data) {
         var mainPath = StringUtils.substringBeforeLast(data.getParentPath(), ".");
-        var modPath = mainPath + ".mod";
-        var machinePath = mainPath + ".machine";
-        var typePath = data.getParentFieldPath("type");
-        var modElement = ValidationHelper.getElementFromPathAs(data.rootObject(), modPath, Types.STRING);
-        var machineElement = ValidationHelper.getElementFromPathAs(data.rootObject(), machinePath, Types.STRING);
+        var modElement = ValidationHelper.getElementFromPathAs(data.rootObject(), mainPath + ".mod", Types.STRING);
+        var machineElement = ValidationHelper.getElementFromPathAs(data.rootObject(), mainPath + ".machine", Types.STRING);
         var typeElement = data.getParentFieldAs(Types.STRING, "type");
 
         if (Objects.nonNull(modElement) && Objects.nonNull(typeElement) && Objects.nonNull(machineElement)) {
-            var acceptedType = VALUES.get(modElement.getAsString(), machineElement.getAsString());
+            var acceptedType = CompatModData.VALUES.get(modElement.getAsString(), machineElement.getAsString());
             if (Objects.nonNull(acceptedType) && acceptedType.equals(machineElement.getAsString())) return true;
         }
 
-        CompatValueAnalyticsAddon.shouldRun = true;
+        CompatValueAnalyticsAddon.shouldRun();
         Analytics.warn(
             "This field is unnecessary!",
-            "Scenarios when this field is required can be found at the end of this file.",
+            "Scenarios when this field is required can be found in the <code>Additional Information</code> section.",
             data
         );
 

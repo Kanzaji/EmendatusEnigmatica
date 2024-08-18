@@ -24,6 +24,9 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validators.compat;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.ImmutableTable;
+import com.google.common.collect.Table;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatValuesModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatRecipesModel;
 import java.util.HashMap;
@@ -47,4 +50,15 @@ public class CompatModData {
         "thermal", List.of("pulverizer", "induction_smelter"),
         "create", List.of("crushing_wheels", "fan_washing")
     ));
+
+    /**
+     * This table holds possible combinations, to determine when {@link CompatValuesModel#input} is required.<br>
+     * Table Format:<br>
+     * - Row Key > {@link CompatRecipesModel#mod}
+     * - Column Key > {@link CompatRecipesModel#machine}
+     * - Value > {@link CompatValuesModel#type}
+     */
+    public static final Table<String, String, String> VALUES = HashBasedTable.create(
+        ImmutableTable.of("thermal", "induction_smelter", "alloy")
+    );
 }

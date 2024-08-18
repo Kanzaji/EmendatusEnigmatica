@@ -205,10 +205,10 @@ public class MaterialModel {
 		.addValidator("tools",				new ToolsFieldValidator())
 		.addValidator("armor",				new ArmorFieldValidator())
 		.addValidator("oreDrop",				new OreDropValidator())
-		.addValidator("gas",					MaterialGasPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("gas",					new ProcessedTypesContainValidator("gas", MaterialGasPropertiesModel.VALIDATION_MANAGER.getAsValidator(false)))
 		.addValidator("properties",			MaterialPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
 		.addValidator("colors",				MaterialColorsModel.VALIDATION_MANAGER.getAsValidator(false))
-		.addValidator("compat",				CompatModel.VALIDATION_MANAGER.getAsValidator(false));
+		.addValidator("compat",				MaterialCompatModel.VALIDATION_MANAGER.getAsValidator(false));
 
 	static {
 		validators.put("strata", 		new Validator("strata")		.getRegisteredIDValidation(DefaultLoader.STRATA_IDS, "Strata Registry", true));

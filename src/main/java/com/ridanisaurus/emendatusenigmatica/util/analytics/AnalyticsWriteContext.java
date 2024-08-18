@@ -25,10 +25,12 @@
 package com.ridanisaurus.emendatusenigmatica.util.analytics;
 
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.stream.Collectors;
 
 public class AnalyticsWriteContext {
     /**
@@ -40,9 +42,18 @@ public class AnalyticsWriteContext {
         this.summaryFile = file;
     }
 
+    /**
+     *
+     * @param msg Header to print
+     * @param lvl Header Level, in range [1,6].
+     */
     public void writeHeader(String msg, int lvl) {
         if (lvl < 1 || lvl > 6) throw new IllegalArgumentException("Lvl out of range. Provided: %d, expected: [1-6]".formatted(lvl));
         write("%s %s".formatted("#".repeat(lvl), msg));
+    }
+
+    public void writeComment(@NotNull String msg) {
+        write(msg.lines().map(it -> "> " + it).collect(Collectors.joining()));
     }
 
     public void writeSpacer() {

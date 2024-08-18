@@ -31,6 +31,11 @@ import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatMachineValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatModData;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
 import java.nio.file.Path;
@@ -47,9 +52,9 @@ public class CompatRecipesModel {
     ).apply(x, CompatRecipesModel::new));
 
     public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-        .addValidator("mod", null)
-        .addValidator("machine", null)
-        .addValidator("values", null);
+        .addValidator("mod",        new ValuesValidator(CompatModData.CompatMachineMap.keySet(), FilterMode.WHITELIST, true))
+        .addValidator("values",     CompatValuesModel.VALIDATION_MANAGER.getAsValidator(true))
+        .addValidator("machine",    new CompatMachineValidator(true));
 
     private final String mod;
     private final String machine;

@@ -27,6 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.AbstractRegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.ApiStatus;
@@ -44,8 +45,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * to try and prevent a disaster.
  */
 public class ResourceLocationValidator extends TypeValidator {
-    private static final Map<AbstractRegistryValidator, Map<ResourceLocation, ValidationData>> validators = new HashMap<>();
-    private final Map<ResourceLocation, ValidationData> resourceLocations;
+    private static final Map<AbstractRegistryValidator, List<RegistryValidationData>> validators = new HashMap<>();
+    private final List<RegistryValidationData> resourceLocations;
 
     /**
      * Constructs ResourceLocationValidator.
@@ -58,7 +59,7 @@ public class ResourceLocationValidator extends TypeValidator {
     public ResourceLocationValidator(@NotNull AbstractRegistryValidator validator, boolean isRequired) {
         super(Types.STRING, isRequired);
         // Store the map reference, for faster access.
-        resourceLocations = new HashMap<>();
+        resourceLocations = new ArrayList<>();
         validators.put(validator, resourceLocations);
     }
 
@@ -100,7 +101,7 @@ public class ResourceLocationValidator extends TypeValidator {
             return false;
         }
         // Add ResourceLocation for Post-Registration check.
-        if (Objects.nonNull(resourceLocations)) resourceLocations.put(ResourceLocation.parse(value), data);
+        if (Objects.nonNull(resourceLocations)) resourceLocations.add(new RegistryValidationData(ResourceLocation.parse(value), data));
         return true;
     }
 
@@ -108,13 +109,15 @@ public class ResourceLocationValidator extends TypeValidator {
      * Used to execute Post-Registration validation, checking if specified Resource Locations point to valid registry objects.
      * @return False if at least one fatal error is found, true otherwise.
      * @apiNote Currently marked as experimental, could change behavior / be replaced in the future.
+     * @implNote This will clear references to the ValidationData objects after execution!
      */
     @ApiStatus.Experimental
     public static boolean runRegistryValidation() {
         //TODO: Run in parallel.
         AtomicBoolean result = new AtomicBoolean(true);
-        validators.forEach((validator, list) -> list.forEach((resourceLocation, data) -> {
-            switch (validator.validate(resourceLocation)) {
+        validators.forEach((validator, list) -> list.forEach(registryData -> {
+            var data = registryData.validationData();
+            switch (validator.validate(registryData)) {
                 case PASS -> {
                     // Nothing, it passed successfully.
                 }
@@ -125,6 +128,8 @@ public class ResourceLocationValidator extends TypeValidator {
                 }
             }
         }));
+        // Clearing validator's map, which holds references to the ValidationData objects.
+        validators.clear();
         return result.get();
     }
 }

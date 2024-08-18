@@ -29,7 +29,11 @@ import com.ridanisaurus.emendatusenigmatica.util.analytics.AnalyticsAddon;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.AnalyticsWriteContext;
 
 public class CompatValueAnalyticsAddon implements AnalyticsAddon {
-    protected static boolean shouldRun = false;
+    private static boolean shouldRun = true;
+
+    protected static void shouldRun() {
+        shouldRun = true;
+    }
 
     /**
      * Method executed by the {@link Analytics} with write context provided.
@@ -39,21 +43,30 @@ public class CompatValueAnalyticsAddon implements AnalyticsAddon {
     @Override
     public void accept(AnalyticsWriteContext cx) {
         if (!shouldRun) return;
-        cx.writeLine("<code>root.recipes[x].values[x].input</code> in <code>compat</code> files is only required in scenarios specified in the table below!");
+        cx.writeLine("Array at <code>root.recipes[x].values[x].input</code> in <code>Compat</code> files is only required when at least one criteria is met from the table below. ");
         StringBuilder table = new StringBuilder();
         table.append("<table><tr><th>Mod</th><th>Machine</th><th>Type</th></tr>");
-        CompatValueInputValidator.VALUES.cellSet().forEach(cell -> {
-            table
-                .append("<tr><td>")
-                .append(cell.getRowKey())
-                .append("</td><td>")
-                .append(cell.getColumnKey())
-                .append("</td><td>")
-                .append(cell.getValue())
-                .append("</td></tr>");
-        });
-        table.append("</table>");
+        CompatModData.VALUES.cellSet().forEach(cell -> table
+            .append("<tr><td>")
+            .append(cell.getRowKey())
+            .append("</td><td>")
+            .append(cell.getColumnKey())
+            .append("</td><td>")
+            .append(cell.getValue())
+            .append("</td></tr>"));
+        table.append("</table>\n");
         cx.write(table.toString());
-        cx.write("\n");
+        cx.writeHeader("""
+        Mod, Machine and Type specified in the table are the values of fields at:<br>
+        - <code>root.recipes[x].values[x].type</code> > Type
+        - <code>root.recipes[x].machine</code> > Machine
+        - <code>root.recipes[x].mod</code> > Mod
+        """, 6);
+        cx.writeComment("""
+        Mod, Machine and Type specified in the table are the values of fields at:<br>
+        - <code>root.recipes[x].values[x].type</code> > Type
+        - <code>root.recipes[x].machine</code> > Machine
+        - <code>root.recipes[x].mod</code> > Mod
+        """);
     }
 }

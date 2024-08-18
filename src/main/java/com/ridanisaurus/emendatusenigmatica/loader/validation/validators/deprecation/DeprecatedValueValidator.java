@@ -88,9 +88,10 @@ public class DeprecatedValueValidator extends AbstractValidator {
         if (!element.isJsonPrimitive() || !element.getAsJsonPrimitive().isString()) return false;
         String value = data.validationElement().getAsString();
         String replacement = valuesMap.get(value);
-        String url = urlMap.get(value) == null? "": "<a href=\"%s\">Click this link for more details.</a>".formatted(urlMap.get(value));
         if (Objects.nonNull(replacement)) {
-            Analytics.error("Specified value was deprecated and is replaced by <code>%s</code>.".formatted(replacement), url, data);
+            String url = urlMap.get(value);
+            String additional = url == null? null: "<a href=\"%s\">Click this link for more details.</a>".formatted(url);
+            Analytics.error("Specified value <code>%s</code> was deprecated and is replaced by <code>%s</code>.".formatted(value, replacement), additional, data);
             DeprecationAnalytics.increaseDeprecated();
         }
         return true;

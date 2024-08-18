@@ -70,6 +70,21 @@ public class MaterialPropertiesModel {
 			burnTime.orElse(0)
 	)));
 
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("materialType",		new ValuesValidator(List.of("metal", "gem", "alloy"), FilterMode.WHITELIST, true))
+		.addValidator("harvestLevel",		new NumberRangeValidator(Types.INTEGER, 0, 4, false))
+		.addValidator("hasParticles",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("hasOxidization",	new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isEmissive",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("isBurnable",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("burnTime",			new BurnTimeValidator())
+		.addValidator("gemTexture",		new GemTextureValidator())
+		.addValidator("blockRecipeType",	new ProcessedTypesContainValidator(
+			List.of("gem", "storage_block"),
+			new NumberValuesValidator(List.of(4, 9), FilterMode.WHITELIST, false),
+			PTCMode.REQUIRED_ALL_VALUE
+		));
+
 	private final String materialType;
 	private final int harvestLevel;
 	private final boolean hasParticles;
@@ -147,21 +162,6 @@ public class MaterialPropertiesModel {
 	public int getBurnTime() {
 		return burnTime;
 	}
-
-	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("materialType",		new ValuesValidator(List.of("metal", "gem", "alloy"), FilterMode.WHITELIST, true))
-		.addValidator("harvestLevel",		new NumberRangeValidator(Types.INTEGER, 0, 4, false))
-		.addValidator("hasParticles",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("hasOxidization",	new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("isEmissive",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("isBurnable",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("burnTime",			new BurnTimeValidator())
-		.addValidator("gemTexture",		new GemTextureValidator())
-		.addValidator("blockRecipeType",	new ProcessedTypesContainValidator(
-			List.of("gem", "storage_block"),
-			new NumberValuesValidator(List.of(4, 9), FilterMode.WHITELIST, false),
-			PTCMode.REQUIRED_ALL_VALUE
-		));
 
 	static {
 		validators.put("materialType", new Validator("materialType").getRequiredAcceptsOnlyValidation(List.of("metal", "gem", "alloy"), false));

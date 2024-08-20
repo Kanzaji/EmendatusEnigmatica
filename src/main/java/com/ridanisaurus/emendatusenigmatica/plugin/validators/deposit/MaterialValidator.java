@@ -27,6 +27,7 @@ package com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit;
 import com.google.gson.JsonElement;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
@@ -36,6 +37,8 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -131,10 +134,34 @@ public class MaterialValidator implements IValidationFunction {
             if (materialValidator.apply(data)) {
                 String id = data.validationElement().getAsString();
                 MaterialModel model = Objects.requireNonNull(EmendatusEnigmatica.getInstance().getDataRegistry().getMaterial(id));
-                if (model.getProcessedTypes().contains("ore")) return true;
+                if (!model.getProcessedTypes().contains("ore")) {
+                    Analytics.error(
+                        "This material can't be used for ore generation!",
+                        "Material <code>%s</code> is missing an <code>ore</code> processed type, which is required for use in the deposits.".formatted(id),
+                        data
+                    );
+                    return false;
+                }
+                // If no strata are specified in the model,
+                // all strata are valid, no need to check if combos are valid.
+                if (model.getStrata().isEmpty()) return true;
+
+                var fillerTypes = ValidationHelper.getElementFromPath(data.rootObject(), "root.config.fillerTypes");
+                if (fillerTypes == null || !fillerTypes.isJsonArray()) return false;
+
+                List<String> missingStratas = new ArrayList<>();
+                for (JsonElement entry : fillerTypes.getAsJsonArray()) {
+                    if (!entry.isJsonPrimitive() || !entry.getAsJsonPrimitive().isString()) return false;
+                    String strata = entry.getAsString();
+                    if (!model.getStrata().contains(strata)) missingStratas.add(strata);
+                }
+                if (missingStratas.isEmpty()) return true;
                 Analytics.error(
-                    "This material can't be used for ore generation!",
-                    "Material <code>%s</code> is missing an <code>ore</code> processed type, which is required for use in the deposits.".formatted(id),
+                    "Missing Per-Material strata!",
+                    """
+                    Material <code>%s</code> is missing strata for ids: <code>%s</code>, which makes it illegal for this deposit.<br>
+                    Consider adding specified IDs to the <code>%s</code> material, or removing them from <code>root.config.fillerTypes</code> array.
+                    """.formatted(id, String.join(", ", missingStratas), id),
                     data
                 );
                 return false;

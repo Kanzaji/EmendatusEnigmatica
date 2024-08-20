@@ -131,7 +131,7 @@ public class ValidationManager {
      * which are stored in the ValidationManager this validator is acquired from.
      *
      */
-    public static class ObjectValidator extends AbstractValidator {
+    public static final class ObjectValidator extends AbstractValidator {
         private final ValidationManager vManager;
         private final boolean isRootValidator;
 

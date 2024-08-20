@@ -28,7 +28,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldPresentValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldSetValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit.MaterialValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import org.jetbrains.annotations.Nullable;
@@ -52,6 +63,17 @@ public class SampleBlockDefinitionModel {
 	private final String material;
 	protected final int weight;
 	private final String strata;
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("block",    new RequiredValidator(false))
+		.addValidator("tag",      new RequiredValidator(false))
+		.addValidator("material", new MaterialValidator())
+		.addValidator("weight",   new TypeValidator(Types.INTEGER, false))
+		.addValidator("strata",   new FieldPresentValidator(
+			"material",
+			new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", false))
+		);
+
 
 	/**
 	 * Holds verifying functions for each field.

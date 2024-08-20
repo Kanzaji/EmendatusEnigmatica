@@ -24,5 +24,132 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit;
 
-public class MaterialValidator {
+import com.google.gson.JsonElement;
+import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.BlockRegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+
+import java.util.Objects;
+
+/**
+ * MaterialValidator is a custom validator,
+ * that wraps around {@link ResourceLocationValidator} and {@link EERegistryValidator},
+ * and is used to validate <code>material</code>, <code>block</code> and <code>tag</code> fields in the Deposit files.
+ * @implSpec <code>block</code> and <code>tag</code> fields should be set to {@link RequiredValidator} as optional field!
+ */
+public class MaterialValidator implements IValidationFunction {
+    private static final IValidationFunction materialValidator = new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REFERENCE, "Material", false);
+    private static final IValidationFunction blockValidator = new ResourceLocationValidator(false, new BlockRegistryValidator());
+    private static final IValidationFunction tagValidator = new ResourceLocationValidator(false);
+    private final boolean includeTag;
+    private final boolean includeBlock;
+
+    /**
+     * Constructs MaterialValidator, with <code>tag</code> and <code>block</code> validation enabled.
+     *
+     * @see MaterialValidator Documentation of the validator.
+     */
+    public MaterialValidator() {
+        this(true, true);
+    }
+
+    /**
+     * Constructs MaterialValidator.
+     *
+     * @param includeTag Should <code>tag</code> field be validated of the parent object.
+     * @param includeBlock Should <code>block</code> field be validated of the parent object.
+     * @see MaterialValidator Documentation of the validator.
+     */
+    public MaterialValidator(boolean includeTag, boolean includeBlock) {
+        this.includeBlock = includeBlock;
+        this.includeTag = includeTag;
+    }
+
+    /**
+     * Entry point of the validator.
+     *
+     * @param data ValidationData record with necessary information to validate the element.
+     * @return True if the validation passes, false otherwise.
+     */
+    @Override
+    public Boolean apply(ValidationData data) {
+        JsonElement tagElement = data.getParentField("tag");
+        JsonElement blockElement = data.getParentField("block");
+        String tagPath = data.getParentFieldPath("tag");
+        String blockPath = data.getParentFieldPath("block");
+        boolean hasMaterial = data.validationElement() != null;
+        boolean hasTag = tagElement != null;
+        boolean hasBlock = blockElement != null;
+
+        // If we don't validate tag/block, then act as those are "Unknown keys" and ignore them.
+        if (!includeTag && hasTag) {
+            Analytics.warn("Unknown key!", tagPath, data.jsonFilePath());
+            hasTag = false;
+        }
+
+        if (!includeBlock && hasBlock) {
+            Analytics.warn("Unknown key!", blockPath, data.jsonFilePath());
+            hasBlock = false;
+        }
+
+        if (
+            (hasMaterial && hasTag) ||
+            (hasMaterial && hasBlock) ||
+            (hasTag && hasBlock)
+        ) {
+//            String msg = "Other field with the same purpose is already present!";
+//            String additional = """
+//                Only one of the fields below can be present at the same time!
+//                \t- <code>%s</code>
+//                \t- <code>%s</code>
+//                \t- <code>%s</code>""".formatted(data.currentPath(), tagPath, blockPath);
+//            if (hasMaterial) Analytics.error(msg, additional, data);
+//            if (hasTag) Analytics.error(msg, additional, tagPath, data.jsonFilePath());
+//            if (hasBlock) Analytics.error(msg, additional, blockPath, data.jsonFilePath());
+            Analytics.error(
+                "Multiple fields with the same effect found!",
+                """
+                    Only one of the fields below can be present at the same time!
+                    \t- <code>%s</code>%s%s"""
+                    .formatted(data.currentPath(), includeBlock? "\n\t- <code>%s</code>".formatted(blockPath): "", includeTag? "\n\t- <code>%s</code>".formatted(tagPath): ""),
+                data.getParentPath(), data.jsonFilePath()
+            );
+            return false;
+        }
+
+        if (hasBlock) return blockValidator.apply(new ValidationData(blockElement, data.rootObject(), blockPath, data.jsonFilePath(), data.arrayPolicy()));
+        if (hasTag) return tagValidator.apply(new ValidationData(tagElement, data.rootObject(), tagPath, data.jsonFilePath(), data.arrayPolicy()));
+
+        if (hasMaterial) {
+            if (materialValidator.apply(data)) {
+                String id = data.validationElement().getAsString();
+                MaterialModel model = Objects.requireNonNull(EmendatusEnigmatica.getInstance().getDataRegistry().getMaterial(id));
+                if (model.getProcessedTypes().contains("ore")) return true;
+                Analytics.error(
+                    "This material can't be used for ore generation!",
+                    "Material <code>%s</code> is missing an <code>ore</code> processed type, which is required for use in the deposits.".formatted(id),
+                    data
+                );
+                return false;
+            }
+        }
+
+        Analytics.error(
+            "Missing required fields!",
+            """
+                One of the fields below is required to be present in this object.
+                \t- <code>%s</code>
+                \t- <code>%s</code>
+                \t- <code>%s</code>""".formatted(data.currentPath(), tagPath, blockPath),
+            data.getParentPath(), data.jsonFilePath()
+        );
+        return false;
+    }
 }

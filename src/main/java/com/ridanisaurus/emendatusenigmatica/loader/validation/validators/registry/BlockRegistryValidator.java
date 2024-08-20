@@ -26,10 +26,15 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.regist
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import com.ridanisaurus.emendatusenigmatica.util.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class BlockRegistryValidator extends AbstractRegistryValidator {
+    private static final List<ResourceLocation> overrides = List.of(Reference.AIR_RS);
     public BlockRegistryValidator() {
         super("Provided ResourceLocation doesn't point to a valid block in the registry!");
     }
@@ -43,7 +48,7 @@ public class BlockRegistryValidator extends AbstractRegistryValidator {
      */
     @Override
     public Result validate(@NotNull RegistryValidationData data) {
-        if (BuiltInRegistries.BLOCK.containsKey(data.location())) return Result.PASS;
+        if (BuiltInRegistries.BLOCK.containsKey(data.location()) || overrides.contains(data.location())) return Result.PASS;
         return Result.FATAL;
     }
 }

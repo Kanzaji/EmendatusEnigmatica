@@ -30,6 +30,7 @@ import com.ridanisaurus.emendatusenigmatica.config.EEConfig;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -357,5 +358,13 @@ public class Analytics {
         cx.write("\n");
     }
 
-
+    /**
+     * Setup method that doesn't call NeoForge classes. Shouldn't be used outside of dev env in test classes.
+     */
+    @ApiStatus.Internal
+    public static void devSetup() {
+        CONFIG_DIR = Path.of("run/config").resolve("emendatusenigmatica/");
+        summaryFile = CONFIG_DIR.resolve("Validation Results.md");
+        dirSeparator = FileSystems.getDefault().getSeparator();
+    }
 }

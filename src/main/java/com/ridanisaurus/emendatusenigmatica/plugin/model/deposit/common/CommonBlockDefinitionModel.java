@@ -38,6 +38,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registr
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldSetValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit.MaterialValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import org.jetbrains.annotations.Nullable;
@@ -62,12 +63,12 @@ public class CommonBlockDefinitionModel {
 	).apply(x, (s, s2, s3, i, i2, i3) -> new CommonBlockDefinitionModel(s.orElse(null), s2.orElse(null), s3.orElse(null), i, i2, i3)));
 
 	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("block",	new ResourceLocationValidator(false, new BlockRegistryValidator()))
-		.addValidator("tag",		new ResourceLocationValidator(false))
-		.addValidator("weight",	new TypeValidator(Types.INTEGER, false))
-		.addValidator("material",	new RequiredValidator(false))
-		.addValidator("min",		new FieldSetValidator("root.type", DepositType.DIKE.getType(), new NumberRangeValidator(Types.INTEGER, -64, 320, false)))
-		.addValidator("max",		new FieldSetValidator("root.type", DepositType.DIKE.getType(), new MaxValidator(Types.INTEGER, -64, 320, false)));
+		.addValidator("block",    new RequiredValidator(false))
+		.addValidator("tag",      new RequiredValidator(false))
+		.addValidator("material", new MaterialValidator())
+		.addValidator("weight",   new TypeValidator(Types.INTEGER, false))
+		.addValidator("min",      new FieldSetValidator("root.type", DepositType.DIKE.getType(), new NumberRangeValidator(Types.INTEGER, -64, 320, false)))
+		.addValidator("max",      new FieldSetValidator("root.type", DepositType.DIKE.getType(), new MaxValidator(Types.INTEGER, -64, 320, false)));
 
 	private final String material;
 	protected final String block;

@@ -44,6 +44,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class VanillaOreFeatureConfig implements FeatureConfiguration {
     public static final Codec<VanillaOreFeatureConfig> CODEC = RecordCodecBuilder.create((x) -> x.group(
@@ -63,50 +64,47 @@ public class VanillaOreFeatureConfig implements FeatureConfiguration {
     private List<OreConfiguration.TargetBlockState> createTargetStateList() {
         List<OreConfiguration.TargetBlockState> states = new ArrayList<>();
 
-        //TODO: Find a good way of checking if the block was found in the registry. It now returns a default object instead of null.
         if (this.model.getBlock() != null) {
-            Block oreBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(model.getBlock()));
-            if (oreBlock == null) {
+            ResourceLocation oreBlockRS = ResourceLocation.parse(model.getBlock());
+            if (!BuiltInRegistries.BLOCK.containsKey(oreBlockRS)) {
                 EmendatusEnigmatica.logger.warn("Unable to find {} in the registries.", model.getBlock());
                 return states; // Empty, something went wrong
             }
 
+            Block oreBlock = BuiltInRegistries.BLOCK.get(oreBlockRS);
             for (StrataModel stratum : registry.getStrata()) {
                 if (model.getFillerTypes().contains(stratum.getId())) {
-                    Block stratumBlock = BuiltInRegistries.BLOCK.get(stratum.getFillerType());
-                    if (stratumBlock == null) {
+                    if (!BuiltInRegistries.BLOCK.containsKey(stratum.getFillerType())) {
                         EmendatusEnigmatica.logger.warn("Unable to find {} in the registries.", stratum.getFillerType());
                         continue;
                     }
 
-                    states.add(OreConfiguration.target(new BlockMatchTest(stratumBlock), oreBlock.defaultBlockState()));
+                    states.add(OreConfiguration.target(new BlockMatchTest(BuiltInRegistries.BLOCK.get(stratum.getFillerType())), oreBlock.defaultBlockState()));
                 }
             }
 
             return states;
         }
 
-        for (MaterialModel material : registry.getMaterials()) {
-            if (!material.getId().equals(model.getMaterial())) continue;
+        MaterialModel material = registry.getMaterial(model.getMaterial());
+        if (Objects.isNull(material)) throw new IllegalStateException("Material %s not registered! VanillaOreFeature: %s".formatted(model.getMaterial(), model.getName()));
+        for (StrataModel stratum : registry.getStrata()) {
+            if (!model.getFillerTypes().contains(stratum.getId())) continue;
 
-            for (StrataModel stratum : registry.getStrata()) {
-                if (!model.getFillerTypes().contains(stratum.getId())) continue;
-
-                Block stratumBlock = BuiltInRegistries.BLOCK.get(stratum.getFillerType());
-                if (stratumBlock == null) {
-                    EmendatusEnigmatica.logger.warn("Unable to find {} in forge registries", stratum.getFillerType());
-                    continue;
-                }
-
-                DeferredBlock<Block> blockRegistryObject = EERegistrar.oreBlockTable.get(stratum.getId(), material.getId());
-                if (blockRegistryObject == null) {
-                    EmendatusEnigmatica.logger.warn("Unable to find the combination of {} and {} in the ore block table", stratum.getId(), material.getId());
-                    continue;
-                }
-
-                BlockState oreBlockstate = blockRegistryObject.get().defaultBlockState();
-                states.add(OreConfiguration.target(new BlockMatchTest(stratumBlock), oreBlockstate));
+            Block stratumBlock = BuiltInRegistries.BLOCK.get(stratum.getFillerType());
+            if (!BuiltInRegistries.BLOCK.containsKey(stratum.getFillerType())) {
+                EmendatusEnigmatica.logger.warn("Unable to find {} in the registries.", stratum.getFillerType());
+                continue;
             }
+
+            DeferredBlock<Block> blockRegistryObject = EERegistrar.oreBlockTable.get(stratum.getId(), material.getId());
+            if (blockRegistryObject == null) {
+                EmendatusEnigmatica.logger.warn("Unable to find the combination of {} and {} in the ore block table", stratum.getId(), material.getId());
+                continue;
+            }
+
+            BlockState oreBlockstate = blockRegistryObject.get().defaultBlockState();
+            states.add(OreConfiguration.target(new BlockMatchTest(stratumBlock), oreBlockstate));
         }
 
         return states;

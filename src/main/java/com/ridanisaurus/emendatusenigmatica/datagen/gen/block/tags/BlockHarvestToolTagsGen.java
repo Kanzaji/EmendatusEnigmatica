@@ -85,19 +85,17 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
                 pickaxe.add(EERegistrar.clusterShardBlockMap.getIdAsString(material));
             }
 
-            for (StrataModel strata : registry.getStrata()) {
-                if (processedType.contains("ore")) {
-//						ResourceLocation ore = ResourceLocation.parse("minecraft:stone");
-                    if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-                        ResourceLocation ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
-                        switch (strata.getHarvestTool()) {
-                            case "shovel" -> shovel.add(ore.toString());
-                            case "hoe" -> hoe.add(ore.toString());
-                            case "axe" -> axe.add(ore.toString());
-                            case "pickaxe" -> pickaxe.add(ore.toString());
-                            default ->
-                                throw new IllegalStateException("Harvest tool " + strata.getHarvestTool() + " for " + strata.getId() + " is out of Vanilla tool system bounds, and the tag should be added manually");
-                        }
+            if (processedType.contains("ore")) {
+                for (StrataModel strata : registry.getStrata()) {
+                    if (!material.getStrata().isEmpty() &&! material.getStrata().contains(strata.getId())) continue;
+                    ResourceLocation ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
+                    switch (strata.getHarvestTool()) {
+                        case "shovel" -> shovel.add(ore.toString());
+                        case "hoe" -> hoe.add(ore.toString());
+                        case "axe" -> axe.add(ore.toString());
+                        case "pickaxe" -> pickaxe.add(ore.toString());
+                        default ->
+                            throw new IllegalStateException("Harvest tool " + strata.getHarvestTool() + " for " + strata.getId() + " is out of Vanilla tool system bounds, and the tag should be added manually");
                     }
 
                     //TODO: Rework Sample System.

@@ -29,38 +29,42 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class FieldTrueValidator implements IValidationFunction {
+public class FieldSetValidator implements IValidationFunction {
     private final IValidationFunction validator;
-    private final String field;
     private final boolean optional;
+    private final String field;
+    private final String value;
+
     /**
-     * Constructs FieldTrueValidator.
+     * Constructs FieldSetValidator.
      *
-     * @param field Name of the field to check.
+     * @param field     Name of the field to check.
+     * @param value     Value of the field.
      * @param validator Validator to run after check.
-     * @see FieldTrueValidator Documentation of the validator.
+     * @param optional  Should the validator only issue warnings about field being unnecessary, or mark the field as required?
+     * @see FieldSetValidator Documentation of the validator.
      */
-    public FieldTrueValidator(String field, IValidationFunction validator, boolean optional) {
+    public FieldSetValidator(String field, String value, IValidationFunction validator, boolean optional) {
         this.validator = validator;
         this.optional = optional;
         this.field = field;
+        this.value = value;
     }
 
     /**
-     * Constructs FieldTrueValidator.
+     * Constructs FieldSetValidator.
      *
-     * @param field Name of the field to check.
+     * @param field     Name of the field to check.
      * @param validator Validator to run after check.
-     * @see FieldTrueValidator Documentation of the validator.
+     * @see FieldSetValidator Documentation of the validator.
      */
-    public FieldTrueValidator(String field, IValidationFunction validator) {
-        this(field, validator, false);
+    public FieldSetValidator(String field, String value, IValidationFunction validator) {
+        this(field, value, validator, false);
     }
 
     /**
@@ -71,23 +75,23 @@ public class FieldTrueValidator implements IValidationFunction {
      */
     @Override
     public Boolean apply(@NotNull ValidationData data) {
-        JsonElement booleanField;
-        String booleanFieldPath;
+        JsonElement stringField;
+        String stringFieldPath;
         if (field.startsWith("root")) {
-            booleanField = ValidationHelper.getElementFromPathAs(data.rootObject(), field, Types.STRING);
-            booleanFieldPath = field;
+            stringField = ValidationHelper.getElementFromPathAs(data.rootObject(), field, Types.STRING);
+            stringFieldPath = field;
         } else {
-            booleanField = data.getParentFieldAs(Types.STRING, field);
-            booleanFieldPath = data.getParentFieldPath(field);
+            stringField = data.getParentFieldAs(Types.STRING, field);
+            stringFieldPath = data.getParentFieldPath(field);
         }
 
         JsonElement element = data.validationElement();
 
         if (Objects.isNull(element)) {
-            if (!optional && Objects.nonNull(booleanField) && booleanField.getAsBoolean()) {
+            if (!optional && Objects.nonNull(stringField) && stringField.getAsString().equals(value)) {
                 Analytics.error(
                     "This field is required!",
-                    "Field <code>%s</code> is set to <code>true</code>, which makes this field necessary.".formatted(booleanFieldPath)
+                    "Field <code>%s</code> is set to <code>%s</code>, which makes this field necessary.".formatted(stringFieldPath, value)
                     , data
                 );
                 return false;
@@ -95,10 +99,10 @@ public class FieldTrueValidator implements IValidationFunction {
             return true;
         }
 
-        if (Objects.isNull(booleanField))
-            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be present and set to <code>true</code> for this field to have any effect.".formatted(booleanFieldPath), data);
-        else if (!booleanField.getAsBoolean())
-            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be set to <code>true</code> for this field to have any effect.".formatted(booleanFieldPath), data);
+        if (Objects.isNull(stringField))
+            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be present and set to <code>%s</code> for this field to have any effect.".formatted(stringFieldPath, value), data);
+        else if (!stringField.getAsString().equals(value))
+            Analytics.warn("This field is unnecessary!", "Field <code>%s</code> needs to be set to <code>%s</code> for this field to have any effect.".formatted(stringFieldPath, value), data);
 
         return validator.apply(data);
     }

@@ -413,14 +413,16 @@ public class ItemModelsGen extends EEItemModelProvider {
 						.save(consumer, Reference.MOD_ID, material.getId() + "_bucket");
 			}
 			// Ores
-			for (StrataModel stratum : registry.getStrata()) {
-				if (processedType.contains("ore")) {
+			if (processedType.contains("ore")) {
+				for (StrataModel stratum : registry.getStrata()) {
+					if (!material.getStrata().isEmpty() && !material.getStrata().contains(stratum.getId())) continue;
 					new ItemModelBuilder(Reference.MOD_ID, "block/" + getOreModelName(stratum, material))
 						.save(consumer, Reference.MOD_ID, getOreModelName(stratum, material));
-					if (processedType.contains("sample")) {
-						new ItemModelBuilder(Reference.MOD_ID, "block/" + getSampleModelName(stratum, material))
-						.save(consumer, Reference.MOD_ID, getSampleModelName(stratum, material));
-					}
+					//TODO: Rework Sample System
+//					if (processedType.contains("sample")) {
+//						new ItemModelBuilder(Reference.MOD_ID, "block/" + getSampleModelName(stratum, material))
+//						.save(consumer, Reference.MOD_ID, getSampleModelName(stratum, material));
+//					}
 				}
 			}
 		}

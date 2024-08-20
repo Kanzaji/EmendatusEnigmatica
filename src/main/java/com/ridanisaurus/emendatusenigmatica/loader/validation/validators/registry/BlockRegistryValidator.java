@@ -43,8 +43,7 @@ public class BlockRegistryValidator extends AbstractRegistryValidator {
      */
     @Override
     public Result validate(@NotNull RegistryValidationData data) {
-        var block = BuiltInRegistries.BLOCK.get(data.location());
-        if (BuiltInRegistries.BLOCK.getDefaultKey().equals(BuiltInRegistries.BLOCK.getKey(block))) return Result.FATAL;
-        return Result.PASS;
+        if (BuiltInRegistries.BLOCK.containsKey(data.location())) return Result.PASS;
+        return Result.FATAL;
     }
 }

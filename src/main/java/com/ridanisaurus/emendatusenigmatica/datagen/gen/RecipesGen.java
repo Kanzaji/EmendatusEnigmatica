@@ -223,7 +223,7 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_raw/blasting/" + material.getId()));
 					}
 
-					if (processedType.contains("helmet")) {
+					if (processedType.contains("armor")) {
 						// Helmet from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -232,9 +232,6 @@ public class RecipesGen extends RecipeProvider {
 								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + material.getId()));
-					}
-
-					if (processedType.contains("chestplate")) {
 						// Chestplate from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -244,9 +241,6 @@ public class RecipesGen extends RecipeProvider {
 								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + material.getId()));
-					}
-
-					if (processedType.contains("leggings")) {
 						// Leggings from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))
@@ -256,9 +250,6 @@ public class RecipesGen extends RecipeProvider {
 								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 								.group(Reference.MOD_ID)
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + material.getId()));
-					}
-
-					if (processedType.contains("boots")) {
 						// Boots from Ingot
 						ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(material))
 								.define('I', EETags.MATERIAL_INGOT.apply(material.getId()))

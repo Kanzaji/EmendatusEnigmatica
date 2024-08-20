@@ -52,7 +52,7 @@ public class FieldPresentValidator implements IValidationFunction {
         boolean isRequired = ValidationHelper.isOtherFieldPresent(data.rootObject(), path);
         if (Objects.isNull(data.validationElement())) {
             if (!isRequired) return true;
-            Analytics.error("This field is required!", "Marked as required, because field at <code>%s</code> is present.".formatted(path), data);
+            Analytics.error("This field is required!", "Field <code>%s</code> is present, making this field necessary.".formatted(path), data);
             return false;
         }
         return validator.apply(data);

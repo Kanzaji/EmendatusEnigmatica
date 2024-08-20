@@ -29,10 +29,12 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemRegistryValidator extends AbstractRegistryValidator {
+import java.util.Objects;
 
-    public ItemRegistryValidator() {
-        super("Provided ResourceLocation doesn't point to a valid item in the registry!");
+public class EffectRegistryValidator extends AbstractRegistryValidator {
+
+    public EffectRegistryValidator() {
+        super("Provided ResourceLocation doesn't point to a valid effect in the registry!");
     }
 
     /**
@@ -44,7 +46,7 @@ public class ItemRegistryValidator extends AbstractRegistryValidator {
      */
     @Override
     public Result validate(@NotNull RegistryValidationData data) {
-        if (BuiltInRegistries.ITEM.containsKey(data.location())) return Result.PASS;
+        if (BuiltInRegistries.MOB_EFFECT.containsKey(data.location())) return Result.PASS;
         return Result.FATAL;
     }
 }

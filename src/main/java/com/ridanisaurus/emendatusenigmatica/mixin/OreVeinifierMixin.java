@@ -77,8 +77,8 @@ public class OreVeinifierMixin {
                             BlockState mixinOreBlock = oreveinifier$veintype.ore;
 
                             EmendatusDataRegistry registry = EmendatusEnigmatica.getInstance().getLoader().getDataRegistry();
-                            MaterialModel copper = registry.getMaterialByID("copper");
-                            MaterialModel iron = registry.getMaterialByID("iron");
+                            MaterialModel copper = registry.getMaterial("copper");
+                            MaterialModel iron = registry.getMaterial("iron");
 
                             if (oreveinifier$veintype == OreVeinifier.VeinType.COPPER && Objects.nonNull(copper) && copper.getDisableDefaultOre()) {
                                 mixinRawOreBlock = Blocks.STONE.defaultBlockState();

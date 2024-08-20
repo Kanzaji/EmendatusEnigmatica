@@ -32,7 +32,9 @@ import com.ridanisaurus.emendatusenigmatica.datagen.DataGeneratorFactory;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEDataGenerator;
 import com.ridanisaurus.emendatusenigmatica.datagen.EEPackFinder;
 import com.ridanisaurus.emendatusenigmatica.loader.EELoader;
-import com.ridanisaurus.emendatusenigmatica.util.Analytics;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationManager;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.compat.CompatValueAnalyticsAddon;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import com.ridanisaurus.emendatusenigmatica.registries.EERegistrar;
 import com.ridanisaurus.emendatusenigmatica.tabs.EECreativeTab;
 import com.ridanisaurus.emendatusenigmatica.util.Reference;
@@ -42,6 +44,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.fml.loading.progress.StartupNotificationManager;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -87,6 +90,7 @@ public class EmendatusEnigmatica {
         EEConfig.setupStartup(modContainer);
         Analytics.setup();
 
+        //TODO: Run in parallel
         DataGeneratorFactory.init();
         this.generator = DataGeneratorFactory.createEEDataGenerator();
 
@@ -97,6 +101,7 @@ public class EmendatusEnigmatica {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         this.loader.datagen(this.generator);
+        this.loader.finish();
 
         // Creative Tab Item Registration.
         modEventBus.addListener(this::addCreative);
@@ -104,11 +109,10 @@ public class EmendatusEnigmatica {
         modEventBus.addListener(this::addPackFinder);
         // Generator check, we can't launch the game if the generator wasn't executed!
         modEventBus.addListener(this::hasGenerated);
+        // Registry Validation
+        modEventBus.addListener(this::commonSetup);
         // Config screen
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, (client, last) -> new ConfigMenu(last));
-        this.loader.finish();
-
-        Analytics.finalizeAnalytics();
     }
 
     public static EmendatusEnigmatica getInstance() {
@@ -130,6 +134,14 @@ public class EmendatusEnigmatica {
     private void addPackFinder(@NotNull AddPackFindersEvent event) {
         event.addRepositorySource(new EEPackFinder(event.getPackType()));
         this.generator.run();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        boolean result = RegistryValidationManager.validate();
+        //TODO: Run in parallel
+        Analytics.finalizeAnalytics();
+        if (!result)
+            throw new IllegalStateException("Registry validation failed! %s Validation Summary for more details.".formatted(EEConfig.startup.generateSummary.get()? "Check the": "Enable"));
     }
 
     private void hasGenerated(FMLLoadCompleteEvent event) {

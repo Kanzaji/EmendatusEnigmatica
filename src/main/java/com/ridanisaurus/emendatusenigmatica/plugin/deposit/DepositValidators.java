@@ -33,7 +33,6 @@ import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dense.DenseDepo
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dike.DikeDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.geode.GeodeDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.sphere.SphereDepositConfigModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.test.TestDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.vanilla.VanillaDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
@@ -144,7 +143,7 @@ public class DepositValidators {
         return (element, path) -> {
             if (!validator.getRequiredNonEmptyValidation(false).apply(element, path)) return false;
             String materialID = element.getAsString();
-            MaterialModel material = registry.getMaterialByID(materialID);
+            MaterialModel material = registry.getMaterial(materialID);
             if (Objects.isNull(material)) {
                 LOGGER.error("\"material\" (%s) found in file \"%s\" isn't registered in \"Material Registry\"!".formatted(materialID, Validator.obfuscatePath(path)));
                 return false;

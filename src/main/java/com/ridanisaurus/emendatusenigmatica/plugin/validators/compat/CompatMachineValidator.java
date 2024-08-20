@@ -40,7 +40,7 @@ public class CompatMachineValidator extends TypeValidator {
     private static final Map<String, String> valuesAsString = new HashMap<>();
 
     /**
-     * Constructs a ValuesValidator, a modified version off the {@link ValuesValidator}.
+     * Constructs a CompatMachineValidator, a modified version off the {@link ValuesValidator}.
      * @param isRequired Determines if the field is required. If true, an error will be issued if the field is missing.
      * @see CompatMachineValidator Documentation of the validator
      */

@@ -49,296 +49,137 @@ public class LangGen extends EELangProvider {
 
         for (MaterialModel material : registry.getMaterials()) {
 			List<String> processedType = material.getProcessedTypes();
-			// Storage Blocks
-			if (processedType.contains("storage_block")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Block of ");
-				sb.append(material.getLocalizedName());
-				add(EERegistrar.storageBlockMap.getValue(material), sb.toString());
-				if (material.getProperties().hasOxidization()) {
-					StringBuilder sb2 = new StringBuilder();
-					sb2.append("Exposed ");
-					sb2.append(material.getLocalizedName());
-					add(EERegistrar.exposedBlockMap.getValue(material), sb2.toString());
-					StringBuilder sb3 = new StringBuilder();
-					sb3.append("Weathered ");
-					sb3.append(material.getLocalizedName());
-					add(EERegistrar.weatheredBlockMap.getValue(material), sb3.toString());
-					StringBuilder sb4 = new StringBuilder();
-					sb4.append("Oxidized ");
-					sb4.append(material.getLocalizedName());
-					add(EERegistrar.oxidizedBlockMap.getValue(material), sb4.toString());
-					StringBuilder sb5 = new StringBuilder();
-					sb5.append("Waxed Block of ");
-					sb5.append(material.getLocalizedName());
-					add(EERegistrar.waxedStorageBlockMap.getValue(material), sb5.toString());
-					StringBuilder sb6 = new StringBuilder();
-					sb6.append("Waxed Exposed ");
-					sb6.append(material.getLocalizedName());
-					add(EERegistrar.waxedExposedBlockMap.getValue(material), sb6.toString());
-					StringBuilder sb7 = new StringBuilder();
-					sb7.append("Waxed Weathered ");
-					sb7.append(material.getLocalizedName());
-					add(EERegistrar.waxedWeatheredBlockMap.getValue(material), sb7.toString());
-					StringBuilder sb8 = new StringBuilder();
-					sb8.append("Waxed Oxidized ");
-					sb8.append(material.getLocalizedName());
-					add(EERegistrar.waxedOxidizedBlockMap.getValue(material), sb8.toString());
-				}
-			}
-
 			// Ingots
-			if (processedType.contains("ingot")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Ingot");
-				add(EERegistrar.ingotMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("ingot"))
+				add(EERegistrar.ingotMap.getValue(material), material.getLocalizedName() + " Ingot");
 
 			// Gems
-			if (processedType.contains("gem")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Gem");
-				add(EERegistrar.gemMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("gem"))
+				add(EERegistrar.gemMap.getValue(material), material.getLocalizedName() + " Gem");
 
 			// Nuggets
-			if (processedType.contains("nugget")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Nugget");
-				add(EERegistrar.nuggetMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("nugget"))
+				add(EERegistrar.nuggetMap.getValue(material), material.getLocalizedName() + " Nugget");
 
 			// Dusts
-			if (processedType.contains("dust")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Dust");
-				add(EERegistrar.dustMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("dust"))
+				add(EERegistrar.dustMap.getValue(material), material.getLocalizedName() + " Dust");
 
 			// Plates
-			if (processedType.contains("plate")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Plate");
-				add(EERegistrar.plateMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("plate"))
+				add(EERegistrar.plateMap.getValue(material), material.getLocalizedName() + " Plate");
 
 			// Gears
-			if (processedType.contains("gear")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Gear");
-				add(EERegistrar.gearMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("gear"))
+				add(EERegistrar.gearMap.getValue(material), material.getLocalizedName() + " Gear");
 
 			// Rods
-			if (processedType.contains("rod")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Rod");
-				add(EERegistrar.rodMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("rod"))
+				add(EERegistrar.rodMap.getValue(material), material.getLocalizedName() + " Rod");
 
 			// Swords
-			if (processedType.contains("sword")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Sword");
-				add(EERegistrar.swordMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("sword"))
+				add(EERegistrar.swordMap.getValue(material), material.getLocalizedName() + " Sword");
 
 			// Pickaxes
-			if (processedType.contains("pickaxe")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Pickaxe");
-				add(EERegistrar.pickaxeMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("pickaxe"))
+				add(EERegistrar.pickaxeMap.getValue(material), material.getLocalizedName() + " Pickaxe");
 
 			// Axes
-			if (processedType.contains("axe")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Axe");
-				add(EERegistrar.axeMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("axe"))
+				add(EERegistrar.axeMap.getValue(material), material.getLocalizedName() + " Axe");
 
 			// Shovels
-			if (processedType.contains("shovel")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Shovel");
-				add(EERegistrar.shovelMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("shovel"))
+				add(EERegistrar.shovelMap.getValue(material), material.getLocalizedName() + " Shovel");
 
 			// Hoes
-			if (processedType.contains("hoe")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Hoe");
-				add(EERegistrar.hoeMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("hoe"))
+				add(EERegistrar.hoeMap.getValue(material), material.getLocalizedName() + " Hoe");
 
 			// Paxels
-			if (processedType.contains("paxel")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Paxel");
-				add(EERegistrar.paxelMap.getValue(material), sb.toString());
-			}
-
-			// Helmet
-			if (processedType.contains("helmet")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Helmet");
-				add(EERegistrar.helmetMap.getValue(material), sb.toString());
-			}
-
-			// Chestplate
-			if (processedType.contains("chestplate")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Chestplate");
-				add(EERegistrar.chestplateMap.getValue(material), sb.toString());
-			}
-
-			// Leggings
-			if (processedType.contains("leggings")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Leggings");
-				add(EERegistrar.leggingsMap.getValue(material), sb.toString());
-			}
-
-			// Boots
-			if (processedType.contains("boots")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Boots");
-				add(EERegistrar.bootsMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("paxel"))
+				add(EERegistrar.paxelMap.getValue(material), material.getLocalizedName() + " Paxel");
 
 			// Shields
-			if (processedType.contains("shield")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Shield");
-				add(EERegistrar.shieldMap.getValue(material), sb.toString());
-			}
+			if (processedType.contains("shield"))
+				add(EERegistrar.shieldMap.getValue(material), material.getLocalizedName() + " Shield");
 
 			// Raw
 			if (processedType.contains("raw")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Raw ");
-				sb.append(material.getLocalizedName());
-				add(EERegistrar.rawMap.getValue(material), sb.toString());
-
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append("Block of Raw ");
-				sb2.append(material.getLocalizedName());
-				add(EERegistrar.rawBlockMap.getValue(material), sb2.toString());
-			}
-
-			// Cluster
-			if (processedType.contains("cluster")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				sb.append(" Cluster Shard");
-				add(EERegistrar.clusterShardMap.getValue(material), sb.toString());
-
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append("Budding ");
-				sb2.append(material.getLocalizedName());
-				add(EERegistrar.buddingBlockMap.getValue(material), sb2.toString());
-
-				StringBuilder sb3 = new StringBuilder();
-				sb3.append("Small ");
-				sb3.append(material.getLocalizedName());
-				sb3.append(" Bud");
-				add(EERegistrar.smallBudBlockMap.getValue(material), sb3.toString());
-
-				StringBuilder sb4 = new StringBuilder();
-				sb4.append("Medium ");
-				sb4.append(material.getLocalizedName());
-				sb4.append(" Bud");
-				add(EERegistrar.mediumBudBlockMap.getValue(material), sb4.toString());
-
-				StringBuilder sb5 = new StringBuilder();
-				sb5.append("Large ");
-				sb5.append(material.getLocalizedName());
-				sb5.append(" Bud");
-				add(EERegistrar.largeBudBlockMap.getValue(material), sb5.toString());
-
-				StringBuilder sb6 = new StringBuilder();
-				sb6.append(material.getLocalizedName());
-				sb6.append(" Cluster");
-				add(EERegistrar.clusterBlockMap.getValue(material), sb6.toString());
-
-				StringBuilder sb7 = new StringBuilder();
-				sb7.append("Block of ");
-				sb7.append(material.getLocalizedName());
-				sb7.append(" Cluster Shard");
-				add(EERegistrar.clusterShardBlockMap.getValue(material), sb7.toString());
+				add(EERegistrar.rawMap.getValue(material), "Raw " + material.getLocalizedName());
+				add(EERegistrar.rawBlockMap.getValue(material), "Block of Raw " + material.getLocalizedName());
 			}
 
 			// Fluids
 			if (processedType.contains("fluid")) {
-				StringBuilder sb = new StringBuilder();
-				sb.append(material.getLocalizedName());
-				add(EERegistrar.fluidTypeMap.getValue(material).getDescriptionId(), sb.toString());
-
-				StringBuilder sb2 = new StringBuilder();
-				sb2.append(material.getLocalizedName());
-				sb2.append(" Bucket");
-				add(EERegistrar.fluidBucketMap.getValue(material), sb2.toString());
+				add(EERegistrar.fluidTypeMap.getValue(material).getDescriptionId(), material.getLocalizedName());
+				add(EERegistrar.fluidBucketMap.getValue(material), material.getLocalizedName() + " Bucket");
 			}
 
-//			if (EmendatusEnigmatica.BLOODMAGIC_LOADED) {
-//				// Fragment
-//				if (processedType.contains("fragment")) {
-//					StringBuilder sb = new StringBuilder();
-//					sb.append(material.getLocalizedName());
-//					sb.append(" Fragment");
-//					add(EEBloodMagicRegistrar.fragmentMap.get(material, sb.toString());
-//				}
-//				// Gravel
-//				if (processedType.contains("gravel")) {
-//					StringBuilder sb = new StringBuilder();
-//					sb.append(material.getLocalizedName());
-//					sb.append(" Gravel");
-//					add(EEBloodMagicRegistrar.gravelMap.get(material, sb.toString());
-//				}
-//			}
+			// Armor
+			if (processedType.contains("armor")) {
+				// Helmet
+				add(EERegistrar.helmetMap.getValue(material), material.getLocalizedName() + " Helmet");
+				// Chestplate
+				add(EERegistrar.chestplateMap.getValue(material), material.getLocalizedName() + " Chestplate");
+				// Leggings
+				add(EERegistrar.leggingsMap.getValue(material), material.getLocalizedName() + " Leggings");
+				// Boots
+				add(EERegistrar.bootsMap.getValue(material), material.getLocalizedName() + " Boots");
+			}
 
-			for (StrataModel strata : registry.getStrata()) {
-				if (processedType.contains("ore")) {
+			// Storage Blocks
+			if (processedType.contains("storage_block")) {
+				add(EERegistrar.storageBlockMap.getValue(material), "Block of " + material.getLocalizedName());
+				if (material.getProperties().hasOxidization()) {
+					add(EERegistrar.exposedBlockMap.getValue(material), "Exposed " + material.getLocalizedName());
+					add(EERegistrar.weatheredBlockMap.getValue(material), "Weathered " + material.getLocalizedName());
+					add(EERegistrar.oxidizedBlockMap.getValue(material), "Oxidized " + material.getLocalizedName());
+					add(EERegistrar.waxedStorageBlockMap.getValue(material), "Waxed Block of " + material.getLocalizedName());
+					add(EERegistrar.waxedExposedBlockMap.getValue(material), "Waxed Exposed " + material.getLocalizedName());
+					add(EERegistrar.waxedWeatheredBlockMap.getValue(material), "Waxed Weathered " + material.getLocalizedName());
+					add(EERegistrar.waxedOxidizedBlockMap.getValue(material), "Waxed Oxidized " + material.getLocalizedName());
+				}
+			}
+
+			// Cluster
+			if (processedType.contains("cluster")) {
+				add(EERegistrar.clusterShardBlockMap.getValue(material), "Block of " + material.getLocalizedName() + " Cluster Shard");
+				add(EERegistrar.buddingBlockMap.getValue(material), "Budding " + material.getLocalizedName());
+				add(EERegistrar.smallBudBlockMap.getValue(material), "Small " + material.getLocalizedName() + " Bud");
+				add(EERegistrar.mediumBudBlockMap.getValue(material), "Medium " + material.getLocalizedName() + " Bud");
+				add(EERegistrar.largeBudBlockMap.getValue(material), "Large " + material.getLocalizedName() + " Bud");
+				add(EERegistrar.clusterBlockMap.getValue(material), material.getLocalizedName() + " Cluster");
+				add(EERegistrar.clusterShardMap.getValue(material), material.getLocalizedName() + " Cluster Shard");
+			}
+
+			// Ores
+			if (processedType.contains("ore")) {
+				for (StrataModel strata : registry.getStrata()) {
+					if (!material.getStrata().isEmpty() && !material.getStrata().contains(strata.getId())) continue;
+
 					StringBuilder sb = new StringBuilder();
 					sb.append(material.getLocalizedName());
 					sb.append(" Ore");
 
-					if (!strata.getId().equals("minecraft_stone")) {
+					if (!strata.getId().equals("minecraft_stone") && material.getStrata().size() != 1) {
 						sb.append(" - ");
 						sb.append(strata.getLocalizedName());
 					}
 
-					if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-						add(EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).get(), sb.toString());
-					}
+					add(EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).get(), sb.toString());
 
-					if (processedType.contains("sample")) {
-						StringBuilder sb2 = new StringBuilder();
-						sb2.append(material.getLocalizedName());
-						sb2.append(" Rich ");
-						sb2.append(strata.getLocalizedName());
-						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
-							add(EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).get(), sb2.toString());
-						}
-					}
+					//TODO: Rework Sample System.
+//					if (processedType.contains("sample")) {
+//						StringBuilder sb2 = new StringBuilder();
+//						sb2.append(material.getLocalizedName());
+//						sb2.append(" Rich ");
+//						sb2.append(strata.getLocalizedName());
+//						if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId())) {
+//							add(EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).get(), sb2.toString());
+//						}
+//					}
 				}
 			}
 		}

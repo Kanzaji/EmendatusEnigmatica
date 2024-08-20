@@ -28,7 +28,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.BlockRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldSetValidator;
+import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import org.jetbrains.annotations.Nullable;
@@ -51,9 +60,18 @@ public class CommonBlockDefinitionModel {
 			Codec.INT.fieldOf("min").orElse(-500).forGetter(it -> it.min),
 			Codec.INT.fieldOf("max").orElse(500).forGetter(it -> it.max)
 	).apply(x, (s, s2, s3, i, i2, i3) -> new CommonBlockDefinitionModel(s.orElse(null), s2.orElse(null), s3.orElse(null), i, i2, i3)));
+
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("block",	new ResourceLocationValidator(false, new BlockRegistryValidator()))
+		.addValidator("tag",		new ResourceLocationValidator(false))
+		.addValidator("weight",	new TypeValidator(Types.INTEGER, false))
+		.addValidator("material",	new RequiredValidator(false))
+		.addValidator("min",		new FieldSetValidator("root.type", DepositType.DIKE.getType(), new NumberRangeValidator(Types.INTEGER, -64, 320, false)))
+		.addValidator("max",		new FieldSetValidator("root.type", DepositType.DIKE.getType(), new MaxValidator(Types.INTEGER, -64, 320, false)));
+
+	private final String material;
 	protected final String block;
 	protected final String tag;
-	private final String material;
 	protected final int weight;
 	protected final int min;
 	protected final int max;

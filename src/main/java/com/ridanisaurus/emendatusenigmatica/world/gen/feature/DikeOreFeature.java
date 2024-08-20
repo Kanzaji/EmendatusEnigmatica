@@ -136,12 +136,9 @@ public class DikeOreFeature extends Feature<DikeOreFeatureConfig> {
                     }
                 });
             } else if (commonBlockDefinitionModel.getMaterial() != null) {
-                BlockState currentFiller = level.getBlockState(pos);
-                String fillerId = BuiltInRegistries.BLOCK.getKey(currentFiller.getBlock()).toString();
-                Integer strataIndex = registry.getStrataByIndex().getOrDefault(fillerId, null);
-                if (strataIndex != null) {
-                    StrataModel stratum = registry.getStrata().get(strataIndex);
-                    Block block = EERegistrar.oreBlockTable.get(stratum.getId(), commonBlockDefinitionModel.getMaterial()).get();
+                StrataModel strata = registry.getStrataFromFiller(BuiltInRegistries.BLOCK.getKey(level.getBlockState(pos).getBlock()));
+                if (strata != null) {
+                    Block block = EERegistrar.oreBlockTable.get(strata.getId(), commonBlockDefinitionModel.getMaterial()).get();
                     if (pos.getY() >= commonBlockDefinitionModel.getMin() && pos.getY() <= commonBlockDefinitionModel.getMax() ) {
                         level.setBlock(pos, block.defaultBlockState(), 2);
                     }

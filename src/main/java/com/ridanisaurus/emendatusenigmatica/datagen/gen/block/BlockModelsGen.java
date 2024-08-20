@@ -301,8 +301,9 @@ public class BlockModelsGen extends EEBlockModelProvider {
 				}
 			}
 			// Ores
-			for (StrataModel stratum : registry.getStrata()) {
-				if (processedType.contains("ore")) {
+			if (processedType.contains("ore")) {
+				for (StrataModel stratum : registry.getStrata()) {
+					if (!material.getStrata().isEmpty() && !material.getStrata().contains(stratum.getId())) continue;
 					if (!material.getColors().hasMaterialColor()) {
 						if (material.getProperties().isEmissive()) {
 							oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId(), getOreModelName(stratum, material));
@@ -352,35 +353,36 @@ public class BlockModelsGen extends EEBlockModelProvider {
 							}
 						}
 					}
-					if (processedType.contains("sample")) {
-						if (!material.getColors().hasMaterialColor()) {
-							if (material.getProperties().isEmissive()) {
-								oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
-							} else {
-								oreBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
-							}
-						} else {
-							if (material.getProperties().isEmissive()) {
-								oreEmissiveTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"block/templates/sample/00",
-										"block/templates/sample/01",
-										"block/templates/sample/02",
-										"block/templates/sample//03",
-										"block/templates/sample/04",
-										"block/templates/sample/shadow_drop",
-										getSampleModelName(stratum, material));
-							} else {
-								oreTintBlock(consumer, stratum.getBaseTexture().toString(),
-										"block/templates/sample/00",
-										"block/templates/sample/01",
-										"block/templates/sample/02",
-										"block/templates/sample//03",
-										"block/templates/sample/04",
-										"block/templates/sample/shadow_drop",
-										getSampleModelName(stratum, material));
-							}
-						}
-					}
+					//TODO: Rework Sample System
+//					if (processedType.contains("sample")) {
+//						if (!material.getColors().hasMaterialColor()) {
+//							if (material.getProperties().isEmissive()) {
+//								oreEmissiveBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
+//							} else {
+//								oreBlock(consumer, stratum.getBaseTexture().toString(), "block/overlays/" + material.getId() + "_sample", getSampleModelName(stratum, material));
+//							}
+//						} else {
+//							if (material.getProperties().isEmissive()) {
+//								oreEmissiveTintBlock(consumer, stratum.getBaseTexture().toString(),
+//										"block/templates/sample/00",
+//										"block/templates/sample/01",
+//										"block/templates/sample/02",
+//										"block/templates/sample//03",
+//										"block/templates/sample/04",
+//										"block/templates/sample/shadow_drop",
+//										getSampleModelName(stratum, material));
+//							} else {
+//								oreTintBlock(consumer, stratum.getBaseTexture().toString(),
+//										"block/templates/sample/00",
+//										"block/templates/sample/01",
+//										"block/templates/sample/02",
+//										"block/templates/sample//03",
+//										"block/templates/sample/04",
+//										"block/templates/sample/shadow_drop",
+//										getSampleModelName(stratum, material));
+//							}
+//						}
+//					}
 				}
 			}
 		}

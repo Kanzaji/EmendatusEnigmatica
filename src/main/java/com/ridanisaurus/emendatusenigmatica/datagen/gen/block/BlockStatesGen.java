@@ -54,167 +54,169 @@ public class BlockStatesGen extends EEBlockStateProvider {
 			// Storage Blocks
 			if (processedType.contains("storage_block")) {
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_block").toString())
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_block"));
+					.variant(new BlockStateBuilder.VariantBuilder("")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_block").toString())
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_block"));
 				if (material.getProperties().hasOxidization()) {
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/exposed_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "exposed_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/exposed_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "exposed_" + material.getId()));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/weathered_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "weathered_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/weathered_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "weathered_" + material.getId()));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/oxidized_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "oxidized_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/oxidized_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "oxidized_" + material.getId()));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_" + material.getId() + "_block").toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_" + material.getId() + "_block"));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_" + material.getId() + "_block").toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_" + material.getId() + "_block"));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_exposed_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_exposed_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_exposed_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_exposed_" + material.getId()));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_weathered_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_weathered_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_weathered_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_weathered_" + material.getId()));
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_oxidized_" + material.getId()).toString())
-							)
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_oxidized_" + material.getId()));
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/waxed_oxidized_" + material.getId()).toString())
+						)
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "waxed_oxidized_" + material.getId()));
 				}
 			}
 			// Shard Blocks
 			if (processedType.contains("cluster")) {
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster_shard_block").toString())
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_cluster_shard_block"));
+					.variant(new BlockStateBuilder.VariantBuilder("")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster_shard_block").toString())
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_cluster_shard_block"));
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("facing=down")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=east")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=north")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=south")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=up")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString())
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=west")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(270)
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "small_" + material.getId() + "_bud"));
+					.variant(new BlockStateBuilder.VariantBuilder("facing=down")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=east")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=north")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=south")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=up")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString())
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=west")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/small_" + material.getId() + "_bud").toString()).setX(90).setY(270)
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "small_" + material.getId() + "_bud"));
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("facing=down")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=east")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=north")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=south")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=up")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString())
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=west")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(270)
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "medium_" + material.getId() + "_bud"));
+					.variant(new BlockStateBuilder.VariantBuilder("facing=down")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=east")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=north")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=south")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=up")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString())
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=west")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/medium_" + material.getId() + "_bud").toString()).setX(90).setY(270)
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "medium_" + material.getId() + "_bud"));
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("facing=down")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=east")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=north")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=south")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=up")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString())
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=west")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(270)
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "large_" + material.getId() + "_bud"));
+					.variant(new BlockStateBuilder.VariantBuilder("facing=down")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=east")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=north")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=south")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=up")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString())
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=west")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/large_" + material.getId() + "_bud").toString()).setX(90).setY(270)
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "large_" + material.getId() + "_bud"));
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("facing=down")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=east")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=north")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=south")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(180)
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=up")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString())
-						)
-						.variant(new BlockStateBuilder.VariantBuilder("facing=west")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(270)
-						)
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_cluster"));
+					.variant(new BlockStateBuilder.VariantBuilder("facing=down")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=east")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=north")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=south")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(180)
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=up")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString())
+					)
+					.variant(new BlockStateBuilder.VariantBuilder("facing=west")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId() + "_cluster").toString()).setX(90).setY(270)
+					)
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId() + "_cluster"));
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/budding_" + material.getId()).toString()))
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "budding_" + material.getId()));
+					.variant(new BlockStateBuilder.VariantBuilder("")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/budding_" + material.getId()).toString()))
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "budding_" + material.getId()));
 			}
 			// Raw Blocks
 			if (processedType.contains("raw")) {
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/raw_" + material.getId() + "_block").toString()))
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "raw_" + material.getId() + "_block"));
+					.variant(new BlockStateBuilder.VariantBuilder("")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/raw_" + material.getId() + "_block").toString()))
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "raw_" + material.getId() + "_block"));
 			}
 			// Fluids
 			if (processedType.contains("fluid")) {
 				new BlockStateBuilder()
-						.variant(new BlockStateBuilder.VariantBuilder("")
-								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId()).toString()))
-						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId()));
+					.variant(new BlockStateBuilder.VariantBuilder("")
+						.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + material.getId()).toString()))
+					.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, material.getId()));
 			}
 			// Ores
-			for (StrataModel stratum : registry.getStrata()) {
-				if (processedType.contains("ore")) {
+			if (processedType.contains("ore")) {
+				for (StrataModel stratum : registry.getStrata()) {
+					if (!material.getStrata().isEmpty() && !material.getStrata().contains(stratum.getId())) continue;
 					new BlockStateBuilder()
-							.variant(new BlockStateBuilder.VariantBuilder("")
-									.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + getOreModelName(stratum, material)).toString()))
-							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, getOreModelName(stratum, material)));
-					if (processedType.contains("sample")) {
-						new BlockStateBuilder()
-								.variant(new BlockStateBuilder.VariantBuilder("")
-										.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + getSampleModelName(stratum, material)).toString()))
-								.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, getSampleModelName(stratum, material)));
-					}
+						.variant(new BlockStateBuilder.VariantBuilder("")
+							.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + getOreModelName(stratum, material)).toString()))
+						.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, getOreModelName(stratum, material)));
+					//TODO: Rework Sample System.
+//					if (processedType.contains("sample")) {
+//						new BlockStateBuilder()
+//							.variant(new BlockStateBuilder.VariantBuilder("")
+//								.setModel(ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/" + getSampleModelName(stratum, material)).toString()))
+//							.save(consumer, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, getSampleModelName(stratum, material)));
+//					}
 				}
 			}
 		}

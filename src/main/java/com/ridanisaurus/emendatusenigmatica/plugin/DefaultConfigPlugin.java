@@ -79,7 +79,7 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
             if (types.contains("shovel"))   EERegistrar.registerShovels(material);
             if (types.contains("hoe"))      EERegistrar.registerHoes(material);
             if (types.contains("paxel"))    EERegistrar.registerPaxels(material);
-//            if (types.contains("armor"))    EERegistrar.registerArmor(material); //TODO: Uncomment when armor processed type is impl.
+            if (types.contains("armor"))    EERegistrar.registerArmor(material);
             if (types.contains("shield"))   EERegistrar.registerShields(material);
             if (types.contains("fluid"))    EERegistrar.registerFluids(material);
 
@@ -97,26 +97,6 @@ public class DefaultConfigPlugin implements IEmendatusPlugin {
                 EERegistrar.registerClusterShardBlocks(material);
                 EERegistrar.registerClusterShards(material);
             }
-
-            @Deprecated(forRemoval = true)
-            boolean registerArmorMaterial = false;
-            if (types.contains("helmet")) {
-                EERegistrar.registerHelmets(material);
-                registerArmorMaterial = true;
-            }
-            if (types.contains("chestplate")) {
-                EERegistrar.registerChestplates(material);
-                registerArmorMaterial = true;
-            }
-            if (types.contains("leggings")) {
-                EERegistrar.registerLeggings(material);
-                registerArmorMaterial = true;
-            }
-            if (types.contains("boots")) {
-                EERegistrar.registerBoots(material);
-                registerArmorMaterial = true;
-            }
-            if (registerArmorMaterial) EERegistrar.registerArmorMaterial(material);
 
             for (StrataModel strata : strataModels) {
                 if (types.contains("ore")) {

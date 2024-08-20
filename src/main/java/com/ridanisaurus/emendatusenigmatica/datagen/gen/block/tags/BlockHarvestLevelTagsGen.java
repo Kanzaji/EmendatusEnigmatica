@@ -42,7 +42,6 @@ import java.util.function.Consumer;
 import static com.ridanisaurus.emendatusenigmatica.util.Reference.MINECRAFT;
 
 public class BlockHarvestLevelTagsGen extends EETagProvider {
-    private static final ResourceLocation STONE = ResourceLocation.parse("minecraft:stone");
     private final EmendatusDataRegistry registry;
 
     public BlockHarvestLevelTagsGen(DataGenerator gen, EmendatusDataRegistry registry) {
@@ -86,21 +85,25 @@ public class BlockHarvestLevelTagsGen extends EETagProvider {
                 harvestLevelSwitch(material, EERegistrar.clusterShardBlockMap.getId(material));
             }
 
-            for (StrataModel strata : registry.getStrata()) {
-                if (processedType.contains("ore")) {
+            if (processedType.contains("ore")) {
+                for (StrataModel strata : registry.getStrata()) {
+                    if (!material.getStrata().isEmpty() && !material.getStrata().contains(strata.getId())) continue;
+                    harvestLevelSwitch(material, EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId());
 
-                    ResourceLocation ore = STONE;
-                    if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId()))
-                        ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
-                    harvestLevelSwitch(material, ore);
+                    // Why in case there is no strata specified, was this adding harvest levels to stone?
+                    // I know I (Kanzaji) wrote this code based on the old one, and I have no idea.
+//                    ResourceLocation ore = STONE;
+//                    if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId()))
+//                        ore = EERegistrar.oreBlockTable.get(strata.getId(), material.getId()).getId();
+//                    harvestLevelSwitch(material, ore);
 
                     //TODO: Rework Sample System.
-                    if (processedType.contains("sample")) {
-                        ResourceLocation sample = STONE;
-                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId()))
-                            sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
-                        harvestLevelSwitch(material, sample);
-                    }
+//                    if (processedType.contains("sample")) {
+//                        ResourceLocation sample = STONE;
+//                        if (material.getStrata().isEmpty() || material.getStrata().contains(strata.getId()))
+//                            sample = EERegistrar.oreSampleBlockTable.get(strata.getId(), material.getId()).getId();
+//                        harvestLevelSwitch(material, sample);
+//                    }
                 }
             }
         }

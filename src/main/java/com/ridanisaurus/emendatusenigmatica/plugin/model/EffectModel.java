@@ -32,6 +32,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.EffectRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -62,7 +63,7 @@ public class EffectModel {
 		.addValidator("level", new NumberRangeValidator(Types.INTEGER, 1, Integer.MAX_VALUE, false))
 		.addValidator("showParticles", new TypeValidator(Types.BOOLEAN, false))
 		.addValidator("showIcon", new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("effect", new ResourceLocationValidator(true));
+		.addValidator("effect", new ResourceLocationValidator(true, new EffectRegistryValidator()));
 
 	private final String effect;
 	private final int level;

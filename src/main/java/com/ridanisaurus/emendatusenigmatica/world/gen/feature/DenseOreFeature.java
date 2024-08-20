@@ -145,12 +145,9 @@ public class DenseOreFeature extends Feature<DenseOreFeatureConfig> {
                     reader.setBlock(pos, block.value().defaultBlockState(), 2);
                 });
             } else if (commonBlockDefinitionModel.getMaterial() != null) {
-                BlockState currentFiller = reader.getBlockState(pos);
-                String fillerId = BuiltInRegistries.BLOCK.getKey(currentFiller.getBlock()).toString();
-                Integer strataIndex = registry.getStrataByIndex().getOrDefault(fillerId, null);
-                if (strataIndex != null) {
-                    StrataModel stratum = registry.getStrata().get(strataIndex);
-                    Block block = EERegistrar.oreBlockTable.get(stratum.getId(), commonBlockDefinitionModel.getMaterial()).get();
+                StrataModel strata = registry.getStrataFromFiller(BuiltInRegistries.BLOCK.getKey(reader.getBlockState(pos).getBlock()));
+                if (strata != null) {
+                    Block block = EERegistrar.oreBlockTable.get(strata.getId(), commonBlockDefinitionModel.getMaterial()).get();
                     reader.setBlock(pos, block.defaultBlockState(), 2);
                 }
             }

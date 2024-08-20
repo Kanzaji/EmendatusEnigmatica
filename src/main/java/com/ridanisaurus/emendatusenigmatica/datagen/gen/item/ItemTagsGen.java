@@ -68,14 +68,14 @@ public class ItemTagsGen extends EETagProvider {
 
     private void resourceTags(@NotNull MaterialModel material, @NotNull List<String> types) {
         if (types.contains("storage_block")) addMaterialSpecificTag(COMMON, "storage_blocks", EERegistrar.storageBlockItemMap, material);
-        if (types.contains("ingots"))   addMaterialSpecificTag(COMMON, "ingots", EERegistrar.ingotMap, material);
-        if (types.contains("gem"))      addMaterialSpecificTag(COMMON, "gems", EERegistrar.gemMap, material);
-        if (types.contains("nugget"))   addMaterialSpecificTag(COMMON, "nuggets", EERegistrar.nuggetMap, material);
-        if (types.contains("dust"))     addMaterialSpecificTag(COMMON, "dusts", EERegistrar.dustMap, material);
-        if (types.contains("plate"))    addMaterialSpecificTag(COMMON, "plates", EERegistrar.plateMap, material);
-        if (types.contains("gear"))     addMaterialSpecificTag(COMMON, "gears", EERegistrar.gearMap, material);
-        if (types.contains("rod"))      addMaterialSpecificTag(COMMON, "rods", EERegistrar.rodMap, material);
-        if (types.contains("fluid"))    addMaterialSpecificTag(COMMON, "buckets", EERegistrar.fluidBucketMap, material);
+        if (types.contains("ingot"))         addMaterialSpecificTag(COMMON, "ingots", EERegistrar.ingotMap, material);
+        if (types.contains("gem"))           addMaterialSpecificTag(COMMON, "gems", EERegistrar.gemMap, material);
+        if (types.contains("nugget"))        addMaterialSpecificTag(COMMON, "nuggets", EERegistrar.nuggetMap, material);
+        if (types.contains("dust"))          addMaterialSpecificTag(COMMON, "dusts", EERegistrar.dustMap, material);
+        if (types.contains("plate"))         addMaterialSpecificTag(COMMON, "plates", EERegistrar.plateMap, material);
+        if (types.contains("gear"))          addMaterialSpecificTag(COMMON, "gears", EERegistrar.gearMap, material);
+        if (types.contains("rod"))           addMaterialSpecificTag(COMMON, "rods", EERegistrar.rodMap, material);
+        if (types.contains("fluid"))         addMaterialSpecificTag(COMMON, "buckets", EERegistrar.fluidBucketMap, material);
 
         if (types.contains("raw")) {
             addMaterialSpecificTag(COMMON, "raw_materials", EERegistrar.rawMap, material);

@@ -28,6 +28,7 @@ import com.google.gson.JsonElement;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -118,5 +119,6 @@ public abstract class AbstractValidator implements IValidationFunction {
      * @apiNote Even tho it's public, this method should <i>never</i> be called directly! Call {@link AbstractValidator#apply(ValidationData)} instead!
      * @implSpec Take a note that the {@link ValidationData#validationElement()} will never return null.
      */
+    @ApiStatus.Internal
     public abstract Boolean validate(@NotNull ValidationData data);
 }

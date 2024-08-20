@@ -49,7 +49,7 @@ public class FieldPresentValidator implements IValidationFunction {
      */
     @Override
     public Boolean apply(@NotNull ValidationData data) {
-        boolean isRequired = ValidationHelper.isOtherFieldPresent(data.rootObject(), path);
+        boolean isRequired = ValidationHelper.isOtherFieldPresent(data.rootObject(), path.startsWith("root")? path: data.getParentFieldPath(path));
         if (Objects.isNull(data.validationElement())) {
             if (!isRequired) return true;
             Analytics.error("This field is required!", "Field <code>%s</code> is present, making this field necessary.".formatted(path), data);

@@ -22,7 +22,28 @@
  * SOFTWARE.
  */
 
-package com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit;
+package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry;
 
-public class DepositValidationManager {
+import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
+import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+@ApiStatus.Experimental
+public class BiomeRegistryValidator extends AbstractRegistryValidator {
+    public BiomeRegistryValidator() {
+        super("Provided ResourceLocation doesn't point to a valid biome in the registry!");
+    }
+
+    /**
+     * This method is used to check if the resource location is present in the specified registry.
+     *
+     * @param data Record with ResourceLocation to validate and {@link ValidationData} object from the original json file.
+     * @return The result of the validation. See {@link Result} for more details.
+     * @apiNote At this stage, all registries were constructed,
+     */
+    @Override
+    public Result validate(@NotNull RegistryValidationData data) {
+        return Result.PASS;
+    }
 }

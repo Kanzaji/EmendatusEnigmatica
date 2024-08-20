@@ -66,7 +66,7 @@ public class DikeDepositConfigModel {
 		.addValidator("blocks",          CommonBlockDefinitionModel.VALIDATION_MANAGER.getAsValidator(true), ArrayPolicy.REQUIRES_ARRAY)
 		.addValidator("fillerTypes",     new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", true), ArrayPolicy.REQUIRES_ARRAY)
 		.addValidator("chance",          new NumberRangeValidator(Types.INTEGER, 1, 100, true))
-		.addValidator("size",            new NumberRangeValidator(Types.INTEGER, 1, 48, true))
+		.addValidator("size",            new NumberRangeValidator(Types.INTEGER, 1, 64, true))
 		.addValidator("minYLevel",       new NumberRangeValidator(Types.INTEGER, -64, 320, true))
 		.addValidator("maxYLevel",       new MaxValidator(Types.INTEGER, "minYLevel", -64, 320, true))
 		.addValidator("placement",       new ValuesValidator(List.of("uniform", "triangle"), FilterMode.WHITELIST, false))

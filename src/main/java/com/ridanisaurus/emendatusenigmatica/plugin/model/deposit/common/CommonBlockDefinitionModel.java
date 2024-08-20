@@ -67,8 +67,15 @@ public class CommonBlockDefinitionModel {
 		.addValidator("tag",      new RequiredValidator(false))
 		.addValidator("material", new MaterialValidator())
 		.addValidator("weight",   new TypeValidator(Types.INTEGER, false))
-		.addValidator("min",      new FieldSetValidator("root.type", DepositType.DIKE.getType(), new NumberRangeValidator(Types.INTEGER, -64, 320, false)))
-		.addValidator("max",      new FieldSetValidator("root.type", DepositType.DIKE.getType(), new MaxValidator(Types.INTEGER, -64, 320, false)));
+		.addValidator("min",      new FieldSetValidator(
+			"root.type",
+			DepositType.DIKE.getType(),
+			new NumberRangeValidator(Types.INTEGER, -64, 320, false), true)
+		).addValidator("max",      new FieldSetValidator(
+			"root.type",
+			DepositType.DIKE.getType(),
+			new MaxValidator(Types.INTEGER, -64, 320, false), true)
+		);
 
 	private final String material;
 	protected final String block;

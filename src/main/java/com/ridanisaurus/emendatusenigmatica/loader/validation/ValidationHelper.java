@@ -186,7 +186,7 @@ public class ValidationHelper {
     }
 
     private static @NotNull List<String> decomposePath(@NotNull String path) {
-        if (!path.startsWith("root")) throw new IllegalArgumentException("Invalid path! All paths should start with \"root\"");
+        if (!path.startsWith("root")) throw new IllegalArgumentException("Invalid path! All paths should start with \"root\". Path: " + path);
         var result = new ArrayList<>(List.of(path.split("\\.")));
         result.removeFirst(); // Should get rid of the root element.
         return result;

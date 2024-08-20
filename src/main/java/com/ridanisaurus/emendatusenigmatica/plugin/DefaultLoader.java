@@ -32,11 +32,13 @@ import com.mojang.serialization.JsonOps;
 import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
+import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidationManager;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.IDepositProcessor;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
+import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common.CommonDepositModelBase;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
@@ -151,16 +153,22 @@ public class DefaultLoader {
 
     private static void registerDeposits(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
         Stopwatch s = Stopwatch.createStarted();
-//        definitions.forEach((path, object) -> {
-//            if (!MaterialModel.VALIDATION_MANAGER.validate(object, path)) return;
-//
-//            Optional<Pair<MaterialModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(MaterialModel.CODEC).apply(object).result();
-//            if (result.isEmpty()) return;
-//
-//            MaterialModel materialModel = result.get().getFirst();
-//            registry.getMaterialOrRegister(materialModel.getId(), materialModel);
-//            MATERIAL_IDS.add(materialModel.getId());
-//        });
+
+        if (DEPOSIT_PROCESSORS.isEmpty()) initProcessors();
+        if (DEPOSIT_TYPES.size() != DEPOSIT_PROCESSORS.size()) {
+            DEPOSIT_TYPES.clear();
+            DEPOSIT_TYPES.addAll(DEPOSIT_PROCESSORS.keySet());
+        }
+
+        definitions.forEach((path, object) -> {
+            if (!DepositValidationManager.VALIDATION_MANAGER.validate(object, path)) return;
+
+            ACTIVE_PROCESSORS.add(DEPOSIT_PROCESSORS.get(object.get("type").getAsString()).apply(object));
+            DEPOSIT_IDS.add(object.get("registryName").getAsString());
+        });
+
+        ACTIVE_PROCESSORS.forEach(IDepositProcessor::load);
+
         Analytics.addPerformanceAnalytic("Validation: Deposits", s);
     }
 

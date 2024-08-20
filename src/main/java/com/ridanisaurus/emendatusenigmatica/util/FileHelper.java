@@ -100,7 +100,7 @@ public class FileHelper {
 						ValidationHelper.obfuscatePath(file)
 					);
 					// Log additionally full exception.
-					EmendatusEnigmatica.logger.error("Failed parsing json file at {}.", file.toAbsolutePath(), e);
+					EmendatusEnigmatica.logger.debug("Failed parsing json file at {}.", file.toAbsolutePath(), e);
 				}
 			});
 		} catch (Exception ex) {

@@ -121,8 +121,8 @@ subprojects {
 
     dependencies {
         // EMI for NeoForge
-        compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21:api"
-        runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21"
+        compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21.1:api"
+        runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21.1"
 
         dependencyMap[project.name.substring(0, project.name.indexOf(" "))].forEach {
             implementation it
@@ -149,8 +149,8 @@ subprojects {
 
 dependencies {
     // EMI for NeoForge
-    compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21"
+    compileOnly "dev.emi:emi-neoforge:${emi_version}+1.21.1:api"
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}+1.21.1"
 
     // Utilities and other mods
     if (jade_version != "null")             runtimeOnly "curse.maven:jade-324717:${jade_version}"

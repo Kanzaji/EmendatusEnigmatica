@@ -438,6 +438,6 @@ public class ItemModelsGen extends EEItemModelProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Item Models";
+		return "Emendatus Enigmatica: Item Models";
 	}
 }

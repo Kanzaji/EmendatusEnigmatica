@@ -715,6 +715,6 @@ public class BlockModelsGen extends EEBlockModelProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Block Models";
+		return "Emendatus Enigmatica: Block Models";
 	}
 }

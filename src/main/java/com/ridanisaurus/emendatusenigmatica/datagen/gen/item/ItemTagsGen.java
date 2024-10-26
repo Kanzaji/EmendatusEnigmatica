@@ -180,6 +180,6 @@ public class ItemTagsGen extends EETagProvider {
 
     @Override
     public @NotNull String getName() {
-        return "Emendatus Enigmatica Item Tags";
+        return "Emendatus Enigmatica: Item Tags";
     }
 }

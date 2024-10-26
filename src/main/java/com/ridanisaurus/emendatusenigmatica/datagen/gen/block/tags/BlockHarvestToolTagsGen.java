@@ -128,6 +128,6 @@ public class BlockHarvestToolTagsGen extends EETagProvider {
 
     @Override
     public @NotNull String getName() {
-        return "Emendatus Enigmatica Block Harvest Tool Tags";
+        return "Emendatus Enigmatica: Block Harvest Tool Tags";
     }
 }

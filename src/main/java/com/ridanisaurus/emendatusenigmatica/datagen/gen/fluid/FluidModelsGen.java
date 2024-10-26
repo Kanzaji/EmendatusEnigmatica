@@ -61,6 +61,6 @@ public class FluidModelsGen extends EEBlockModelProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Fluid Models";
+		return "Emendatus Enigmatica: Fluid Models";
 	}
 }

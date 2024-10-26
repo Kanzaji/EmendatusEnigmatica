@@ -62,9 +62,7 @@ public abstract class EEItemModelProvider implements DataProvider {
 		return CompletableFuture.allOf(cs.toArray(new CompletableFuture<?>[]{}));
 	}
 
-	protected void buildItemModels(Consumer<IFinishedGenericJSON> consumer) {
-		// It's called generic for a reason!
-	}
+	protected abstract void buildItemModels(Consumer<IFinishedGenericJSON> consumer);
 
 	@Override
 	public abstract @NotNull String getName();

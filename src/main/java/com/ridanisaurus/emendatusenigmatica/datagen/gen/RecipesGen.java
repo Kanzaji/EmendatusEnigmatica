@@ -55,7 +55,7 @@ public class RecipesGen extends RecipeProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Recipes";
+		return "Emendatus Enigmatica: Recipes";
 	}
 
 	@Override

@@ -119,6 +119,6 @@ public class BlockTagsGen extends EETagProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Block Tags";
+		return "Emendatus Enigmatica: Block Tags";
 	}
 }

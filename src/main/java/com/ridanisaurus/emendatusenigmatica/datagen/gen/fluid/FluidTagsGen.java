@@ -61,6 +61,6 @@ public class FluidTagsGen extends EETagProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Fluid Tags";
+		return "Emendatus Enigmatica: Fluid Tags";
 	}
 }

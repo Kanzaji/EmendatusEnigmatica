@@ -232,6 +232,6 @@ public class BlockStatesGen extends EEBlockStateProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Blockstates";
+		return "Emendatus Enigmatica: Blockstates";
 	}
 }

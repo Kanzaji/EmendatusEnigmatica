@@ -58,6 +58,6 @@ public class LootGen extends LootTableProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Loot Tables";
+		return "Emendatus Enigmatica: Loot Tables";
 	}
 }

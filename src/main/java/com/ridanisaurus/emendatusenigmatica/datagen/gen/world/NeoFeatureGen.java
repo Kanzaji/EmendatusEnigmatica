@@ -179,7 +179,7 @@ public class NeoFeatureGen extends EENeoFeatureProvider {
 
 	@Override
 	public @NotNull String getName() {
-		return "Emendatus Enigmatica Features";
+		return "Emendatus Enigmatica: Neo Features";
 	}
 
 	private String getModdedDim(String dim) {

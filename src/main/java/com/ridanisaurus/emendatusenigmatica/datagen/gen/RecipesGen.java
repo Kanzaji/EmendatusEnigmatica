@@ -659,116 +659,117 @@ public class RecipesGen extends RecipeProvider {
 								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "block/from_shard/" + material.getId()));
 					}
 				}
+			} /* Eventually: Maybe add commented code from original class. */
 
-				// Vanilla Compat
-				if (material.isVanilla()) {
-					if (material.getProperties().getMaterialType().equals("gem")) {
-						Map<String, Item> vanillaGems = new HashMap<>();
-						switch (material.getId()) {
-							case "coal" -> vanillaGems.put(material.getId(), Items.COAL);
-							case "diamond" -> vanillaGems.put(material.getId(), Items.DIAMOND);
-							case "lapis" -> vanillaGems.put(material.getId(), Items.LAPIS_LAZULI);
-							case "quartz" -> vanillaGems.put(material.getId(), Items.QUARTZ);
-							case "redstone" -> vanillaGems.put(material.getId(), Items.REDSTONE);
+			// Vanilla Compat
+			if (material.isVanilla()) {
+				if (material.getProperties().getMaterialType().equals("gem")) {
+					Map<String, Item> vanillaGems = new HashMap<>();
+					switch (material.getId()) {
+						case "coal" -> vanillaGems.put(material.getId(), Items.COAL);
+						case "diamond" -> vanillaGems.put(material.getId(), Items.DIAMOND);
+						case "lapis" -> vanillaGems.put(material.getId(), Items.LAPIS_LAZULI);
+						case "quartz" -> vanillaGems.put(material.getId(), Items.QUARTZ);
+						case "redstone" -> vanillaGems.put(material.getId(), Items.REDSTONE);
+					}
+
+					for (Map.Entry<String, Item> mat : vanillaGems.entrySet()) {
+						if (processedType.contains("plate")) {
+							// Plate
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
+								.requires(mat.getValue())
+								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_gem/" + mat.getKey()));
 						}
 
-						for (Map.Entry<String, Item> mat : vanillaGems.entrySet()) {
-							if (processedType.contains("plate")) {
-								// Plate
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
-										.requires(mat.getValue())
-										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("gear")) {
+							// Gear
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('N', Tags.Items.NUGGETS_IRON)
+								.pattern(" G ")
+								.pattern("GNG")
+								.pattern(" G ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("gear")) {
-								// Gear
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('N', Tags.Items.NUGGETS_IRON)
-										.pattern(" G ")
-										.pattern("GNG")
-										.pattern(" G ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("rod")) {
+							// Rod
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.pattern("G")
+								.pattern("G")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("rod")) {
-								// Rod
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.pattern("G")
-										.pattern("G")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("dust")) {
+							// Dust from Ore
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
+								.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
+								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
+						}
 
-							if (processedType.contains("dust")) {
-								// Dust from Ore
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
-										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
-										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
-							}
+						if (processedType.contains("ore")) {
+							// Ore Smelting
+							SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.1F, 200)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/smelting/" + mat.getKey()));
 
-							if (processedType.contains("ore")) {
-								// Ore Smelting
-								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.1F, 200)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/smelting/" + mat.getKey()));
+							// Ore Blasting
+							SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.1F, 100)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/blasting/" + mat.getKey()));
+						}
 
-								// Ore Blasting
-								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.1F, 100)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/blasting/" + mat.getKey()));
-							}
-
-							if (processedType.contains("armor")) {
-								// Helmet from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.pattern("GGG")
-										.pattern("G G")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + mat.getKey()));
-								// Chestplate from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.pattern("G G")
-										.pattern("GGG")
-										.pattern("GGG")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + mat.getKey()));
-								// Leggings from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.pattern("GGG")
-										.pattern("G G")
-										.pattern("G G")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + mat.getKey()));
-								// Boots from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.pattern("G G")
-										.pattern("G G")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("armor")) {
+							// Helmet from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.pattern("GGG")
+								.pattern("G G")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + mat.getKey()));
+							// Chestplate from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.pattern("G G")
+								.pattern("GGG")
+								.pattern("GGG")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + mat.getKey()));
+							// Leggings from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.pattern("GGG")
+								.pattern("G G")
+								.pattern("G G")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + mat.getKey()));
+							// Boots from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.pattern("G G")
+								.pattern("G G")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_gem/" + mat.getKey()));
+						}
 
 							/* FIXME: Smithing requires Smithing Template.
 							if (processedType.contains("shield")) {
@@ -782,216 +783,216 @@ public class RecipesGen extends RecipeProvider {
 							}
 							 */
 
-							if (processedType.contains("sword")) {
-								// Sword from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("G")
-										.pattern("G")
-										.pattern("#")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("sword")) {
+							// Sword from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("G")
+								.pattern("G")
+								.pattern("#")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("pickaxe")) {
-								// Pickaxe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("GGG")
-										.pattern(" # ")
-										.pattern(" # ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("pickaxe")) {
+							// Pickaxe from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("GGG")
+								.pattern(" # ")
+								.pattern(" # ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("axe")) {
-								// Axe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("GG")
-										.pattern("G#")
-										.pattern(" #")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("axe")) {
+							// Axe from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("GG")
+								.pattern("G#")
+								.pattern(" #")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("shovel")) {
-								// Shovel from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("G")
-										.pattern("#")
-										.pattern("#")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("shovel")) {
+							// Shovel from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("G")
+								.pattern("#")
+								.pattern("#")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("hoe")) {
-								// Hoe from Gem
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.getValue(mat.getKey()))
-										.define('G', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("GG")
-										.pattern(" #")
-										.pattern(" #")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("hoe")) {
+							// Hoe from Gem
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.getValue(mat.getKey()))
+								.define('G', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("GG")
+								.pattern(" #")
+								.pattern(" #")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_gem/" + mat.getKey()));
+						}
 
-							if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
-								// Paxel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.getValue(mat.getKey()))
-										.define('P', EERegistrar.pickaxeMap.getValue(mat.getKey()))
-										.define('A', EERegistrar.axeMap.getValue(mat.getKey()))
-										.define('S', EERegistrar.shovelMap.getValue(mat.getKey()))
-										.define('#', Items.STICK)
-										.pattern("PAS")
-										.pattern(" # ")
-										.pattern(" # ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_gem/" + mat.getKey()));
-							}
+						if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
+							// Paxel from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.getValue(mat.getKey()))
+								.define('P', EERegistrar.pickaxeMap.getValue(mat.getKey()))
+								.define('A', EERegistrar.axeMap.getValue(mat.getKey()))
+								.define('S', EERegistrar.shovelMap.getValue(mat.getKey()))
+								.define('#', Items.STICK)
+								.pattern("PAS")
+								.pattern(" # ")
+								.pattern(" # ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_gem/" + mat.getKey()));
 						}
 					}
+				}
 
-					if (material.getProperties().getMaterialType().equals("metal")) {
-						Map<String, Item> vanillaMetals = new HashMap<>();
+				if (material.getProperties().getMaterialType().equals("metal")) {
+					Map<String, Item> vanillaMetals = new HashMap<>();
 
-						switch (material.getId()) {
-							case "copper" -> vanillaMetals.put(material.getId(), Items.COPPER_INGOT);
-							case "gold" -> vanillaMetals.put(material.getId(), Items.GOLD_INGOT);
-							case "iron" -> vanillaMetals.put(material.getId(), Items.IRON_INGOT);
+					switch (material.getId()) {
+						case "copper" -> vanillaMetals.put(material.getId(), Items.COPPER_INGOT);
+						case "gold" -> vanillaMetals.put(material.getId(), Items.GOLD_INGOT);
+						case "iron" -> vanillaMetals.put(material.getId(), Items.IRON_INGOT);
+					}
+
+					for (Map.Entry<String, Item> mat : vanillaMetals.entrySet()) {
+						if (processedType.contains("plate")) {
+							// Plate
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
+								.requires(mat.getValue())
+								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_ingot/" + mat.getKey()));
 						}
 
-						for (Map.Entry<String, Item> mat : vanillaMetals.entrySet()) {
-							if (processedType.contains("plate")) {
-								// Plate
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.plateMap.getValue(mat.getKey()), 1)
-										.requires(mat.getValue())
-										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "plate/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("gear")) {
+							// Gear
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('N', Tags.Items.NUGGETS_IRON)
+								.pattern(" I ")
+								.pattern("INI")
+								.pattern(" I ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("gear")) {
-								// Gear
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.gearMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('N', Tags.Items.NUGGETS_IRON)
-										.pattern(" I ")
-										.pattern("INI")
-										.pattern(" I ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gear/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("rod")) {
+							// Rod
+							ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.pattern("I")
+								.pattern("I")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("rod")) {
-								// Rod
-								ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EERegistrar.rodMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.pattern("I")
-										.pattern("I")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("dust")) {
+							// Dust from Ore
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
+								.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
+								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
 
-							if (processedType.contains("dust")) {
-								// Dust from Ore
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
-										.requires(EETags.MATERIAL_ORE.apply(mat.getKey()))
-										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_ore/" + mat.getKey()));
+							// Dust from Raw
+							ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
+								.requires(EETags.MATERIAL_RAW.apply(mat.getKey()))
+								.requires(EERegistrar.ENIGMATIC_HAMMER.get())
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_raw/" + mat.getKey()));
 
-								// Dust from Raw
-								ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EERegistrar.dustMap.getValue(mat.getKey()), 1)
-										.requires(EETags.MATERIAL_RAW.apply(mat.getKey()))
-										.requires(EERegistrar.ENIGMATIC_HAMMER.get())
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "dust/from_raw/" + mat.getKey()));
+							// Dust Smelting
+							SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.7F, 200)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/smelting/" + mat.getKey()));
 
-								// Dust Smelting
-								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.7F, 200)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/smelting/" + mat.getKey()));
+							// Dust Blasting
+							SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.7F, 100)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + mat.getKey()));
+						}
 
-								// Dust Blasting
-								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_DUST.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.7F, 100)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_dust/blasting/" + mat.getKey()));
-							}
+						if (processedType.contains("ore")) {
+							// Ore Smelting
+							SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.1F, 200)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/smelting/" + mat.getKey()));
 
-							if (processedType.contains("ore")) {
-								// Ore Smelting
-								SimpleCookingRecipeBuilder.smelting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.1F, 200)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/smelting/" + mat.getKey()));
+							// Ore Blasting
+							SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
+									RecipeCategory.MISC,
+									mat.getValue(), 0.1F, 100)
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + mat.getKey()));
+						}
 
-								// Ore Blasting
-								SimpleCookingRecipeBuilder.blasting(Ingredient.of(EETags.MATERIAL_ORE.apply(mat.getKey())),
-												RecipeCategory.MISC,
-												mat.getValue(), 0.1F, 100)
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + mat.getKey()));
-							}
-
-							if (processedType.contains("armor")) {
-								// Helmet from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.pattern("III")
-										.pattern("I I")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + mat.getKey()));
-								// Chestplate from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.pattern("I I")
-										.pattern("III")
-										.pattern("III")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + mat.getKey()));
-								// Leggings from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.pattern("III")
-										.pattern("I I")
-										.pattern("I I")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + mat.getKey()));
-								// Boots from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.pattern("I I")
-										.pattern("I I")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("armor")) {
+							// Helmet from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.pattern("III")
+								.pattern("I I")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + mat.getKey()));
+							// Chestplate from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.pattern("I I")
+								.pattern("III")
+								.pattern("III")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + mat.getKey()));
+							// Leggings from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.pattern("III")
+								.pattern("I I")
+								.pattern("I I")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + mat.getKey()));
+							// Boots from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.pattern("I I")
+								.pattern("I I")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "boots/from_ingot/" + mat.getKey()));
+						}
 
 							/* FIXME: Smithing recipes need Smithing Templates.
 							if (processedType.contains("shield")) {
@@ -1005,89 +1006,88 @@ public class RecipesGen extends RecipeProvider {
 							}
 							 */
 
-							if (processedType.contains("sword")) {
-								// Sword from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("I")
-										.pattern("I")
-										.pattern("#")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("sword")) {
+							// Sword from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.swordMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("I")
+								.pattern("I")
+								.pattern("#")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "sword/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("pickaxe")) {
-								// Pickaxe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("III")
-										.pattern(" # ")
-										.pattern(" # ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("pickaxe")) {
+							// Pickaxe from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.pickaxeMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("III")
+								.pattern(" # ")
+								.pattern(" # ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "pickaxe/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("axe")) {
-								// Axe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("II")
-										.pattern("I#")
-										.pattern(" #")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("axe")) {
+							// Axe from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.axeMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("II")
+								.pattern("I#")
+								.pattern(" #")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "axe/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("shovel")) {
-								// Shovel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("I")
-										.pattern("#")
-										.pattern("#")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("shovel")) {
+							// Shovel from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.shovelMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("I")
+								.pattern("#")
+								.pattern("#")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "shovel/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("hoe")) {
-								// Hoe from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.getValue(mat.getKey()))
-										.define('I', mat.getValue())
-										.define('#', Items.STICK)
-										.pattern("II")
-										.pattern(" #")
-										.pattern(" #")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("hoe")) {
+							// Hoe from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.hoeMap.getValue(mat.getKey()))
+								.define('I', mat.getValue())
+								.define('#', Items.STICK)
+								.pattern("II")
+								.pattern(" #")
+								.pattern(" #")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "hoe/from_ingot/" + mat.getKey()));
+						}
 
-							if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
-								// Paxel from Ingot
-								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.getValue(mat.getKey()))
-										.define('P', EERegistrar.pickaxeMap.getValue(mat.getKey()))
-										.define('A', EERegistrar.axeMap.getValue(mat.getKey()))
-										.define('S', EERegistrar.shovelMap.getValue(mat.getKey()))
-										.define('#', Items.STICK)
-										.pattern("PAS")
-										.pattern(" # ")
-										.pattern(" # ")
-										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
-										.group(Reference.MOD_ID)
-										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_ingot/" + mat.getKey()));
-							}
+						if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
+							// Paxel from Ingot
+							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.getValue(mat.getKey()))
+								.define('P', EERegistrar.pickaxeMap.getValue(mat.getKey()))
+								.define('A', EERegistrar.axeMap.getValue(mat.getKey()))
+								.define('S', EERegistrar.shovelMap.getValue(mat.getKey()))
+								.define('#', Items.STICK)
+								.pattern("PAS")
+								.pattern(" # ")
+								.pattern(" # ")
+								.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
+								.group(Reference.MOD_ID)
+								.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "paxel/from_ingot/" + mat.getKey()));
 						}
 					}
 				}
-			} /* Eventually: Maybe add commented code from original class. */
+			}
 		}
 	}
 }

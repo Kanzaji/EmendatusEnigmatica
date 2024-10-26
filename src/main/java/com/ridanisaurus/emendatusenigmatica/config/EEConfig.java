@@ -66,7 +66,7 @@ public class EEConfig {
 				.define("generateSummary", true);
 			skipEmptyJsons = builder
 				.comment("Whether Emendatus Enigmatica should silently skip empty JSON files (Either 0 Bytes or empty root object) instead of including them on the summary.")
-				.translation(Reference.MOD_ID + ".config.stratup.skip_empty")
+				.translation(Reference.MOD_ID + ".config.startup.skip_empty")
 				.define("skipEmptyJsons", false);
 			builder.pop();
 		}

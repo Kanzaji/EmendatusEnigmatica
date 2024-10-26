@@ -572,7 +572,7 @@ public class RecipesGen extends RecipeProvider {
 						}
 
 						if (processedType.contains("paxel") && processedType.contains("pickaxe") && processedType.contains("axe") && processedType.contains("shovel")) {
-							// Paxel from Ingot
+							// Paxel from Gem
 							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.paxelMap.getValue(material))
 									.define('P', EERegistrar.pickaxeMap.getValue(material))
 									.define('A', EERegistrar.axeMap.getValue(material))

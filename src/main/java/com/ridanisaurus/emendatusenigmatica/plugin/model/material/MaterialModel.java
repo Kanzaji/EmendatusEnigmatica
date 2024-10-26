@@ -86,6 +86,21 @@ public class MaterialModel {
 	private final MaterialToolsModel tools;
 	private final MaterialArmorModel armor;
 
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("strata",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", false), ArrayPolicy.REQUIRES_ARRAY)
+		.addValidator("id",					new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REGISTRATION, true))
+		.addValidator("source",				new ValuesValidator(List.of("vanilla", "modded"), FilterMode.WHITELIST, true))
+		.addValidator("disableDefaultOre",	new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("localizedName",		new TypeValidator(Types.STRING, true))
+		.addValidator("processedTypes",		new ProcessedTypesValidator(), ArrayPolicy.REQUIRES_ARRAY)
+		.addValidator("tools",				new ToolsFieldValidator())
+		.addValidator("armor",				new ArmorFieldValidator())
+		.addValidator("oreDrop",				new OreDropValidator())
+		.addValidator("gas",					new ProcessedTypesContainValidator("gas", MaterialGasPropertiesModel.VALIDATION_MANAGER.getAsValidator(false)))
+		.addValidator("properties",			MaterialPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("colors",				MaterialColorsModel.VALIDATION_MANAGER.getAsValidator(false))
+		.addValidator("compat",				MaterialCompatModel.VALIDATION_MANAGER.getAsValidator(false));
+
 	public MaterialModel(String id, String source, String localizedName, boolean disableDefaultOre, List<String> processedTypes, List<String> strata,
 	                     MaterialPropertiesModel properties, MaterialGasPropertiesModel gas, MaterialOreDropModel oreDrop, MaterialCompatModel compat, MaterialColorsModel colors, MaterialToolsModel tools, MaterialArmorModel armor) {
 		this.id = id;
@@ -174,19 +189,4 @@ public class MaterialModel {
 			return BuiltInRegistries.ITEM.get(Reference.AIR_RS);
 		}
 	}
-
-	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("strata",				new EERegistryValidator(DefaultLoader.STRATA_IDS, EERegistryValidator.REFERENCE, "Strata", false), ArrayPolicy.REQUIRES_ARRAY)
-		.addValidator("id",					new EERegistryValidator(DefaultLoader.MATERIAL_IDS, EERegistryValidator.REGISTRATION, true))
-		.addValidator("source",				new ValuesValidator(List.of("vanilla", "modded"), FilterMode.WHITELIST, true))
-		.addValidator("disableDefaultOre",	new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("localizedName",		new TypeValidator(Types.STRING, true))
-		.addValidator("processedTypes",		new ProcessedTypesValidator(), ArrayPolicy.REQUIRES_ARRAY)
-		.addValidator("tools",				new ToolsFieldValidator())
-		.addValidator("armor",				new ArmorFieldValidator())
-		.addValidator("oreDrop",				new OreDropValidator())
-		.addValidator("gas",					new ProcessedTypesContainValidator("gas", MaterialGasPropertiesModel.VALIDATION_MANAGER.getAsValidator(false)))
-		.addValidator("properties",			MaterialPropertiesModel.VALIDATION_MANAGER.getAsValidator(false))
-		.addValidator("colors",				MaterialColorsModel.VALIDATION_MANAGER.getAsValidator(false))
-		.addValidator("compat",				MaterialCompatModel.VALIDATION_MANAGER.getAsValidator(false));
 }

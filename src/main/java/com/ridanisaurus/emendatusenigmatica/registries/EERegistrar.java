@@ -541,11 +541,12 @@ public class EERegistrar
 
     // Utility
     private static TagKey<Item> getRepairItem(MaterialModel material) {
-        if (material.getProperties().getMaterialType().equals("metal")) {
-            return EETags.MATERIAL_INGOT.apply(material.getId());
-        } else {
+        // For people that have a gem processedType, yet use metal material type.
+        // Gem and Ingot are exclusive, so only one of each can be present at the same time.
+        // TODO: Think to limit processedType ingot/gem to the proper type.
+        if (material.getProcessedTypes().contains("gem"))
             return EETags.MATERIAL_GEM.apply(material.getId());
-        }
+        return EETags.MATERIAL_INGOT.apply(material.getId());
     }
 
     private static int getBurnTime(MaterialModel model, Function<Integer, Integer> modifier) {

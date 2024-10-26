@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.util;
 
-import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.IDepositProcessor;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import net.minecraft.world.level.levelgen.VerticalAnchor;

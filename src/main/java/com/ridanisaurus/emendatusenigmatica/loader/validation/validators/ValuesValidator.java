@@ -31,7 +31,6 @@ import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @apiNote Name is a subject to change. Currently, this validator only supports {@link Types#STRING}.
@@ -70,7 +69,7 @@ public class ValuesValidator extends TypeValidator {
         boolean contains = values.contains(value);
         if (mode == FilterMode.WHITELIST) {
             if (contains) return true;
-            Analytics.error("Field contains an illegal value!", "Provided: <code>%s</code> , Accepted values: <code>%s</code>".formatted(value, valuesAsString), data);
+            Analytics.error("Field contains an illegal value <code>%s</code>!".formatted(value), "Accepted values: <code>%s</code>".formatted(valuesAsString), data);
             return false;
         }
         if (!contains) return true;

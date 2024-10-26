@@ -33,17 +33,13 @@ import com.ridanisaurus.emendatusenigmatica.EmendatusEnigmatica;
 import com.ridanisaurus.emendatusenigmatica.api.EmendatusDataRegistry;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidationManager;
-import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.IDepositProcessor;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.processors.*;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.StrataModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.compat.CompatModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common.CommonDepositModelBase;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.material.MaterialModel;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import com.ridanisaurus.emendatusenigmatica.util.FileHelper;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.ValidatorLogger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -92,19 +88,6 @@ public class DefaultLoader {
         registerMaterials(materialDefinition, registry);
         registerCompat(compatDefinition, registry);
         registerDeposits(depositJsonDefinitionsMap, registry);
-
-        // Old Validation System (Designated for removal)
-//        Validator validator = new Validator("Main Validator");
-//        ValidatorLogger LOGGER = Validator.LOGGER;
-
-//        registerStrata(validator, LOGGER, strataDir, registry);
-//        registerMaterials(validator, LOGGER, materialDir, registry);
-//        registerCompat(validator, LOGGER, compatDir, registry);
-//        registerDeposits(validator, LOGGER, depositDir, registry);
-
-//        LOGGER.restartSpacer();
-//        LOGGER.info("Finished validation and registration of data files!");
-//        LOGGER.printSpacer(0);
     }
 
     private static void registerStrata(@NotNull Map<Path, JsonObject> definitions, EmendatusDataRegistry registry) {
@@ -170,107 +153,6 @@ public class DefaultLoader {
         ACTIVE_PROCESSORS.forEach(IDepositProcessor::load);
 
         Analytics.addPerformanceAnalytic("Validation: Deposits", s);
-    }
-
-    private static void registerStrata(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File strataDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> strataDefinition = FileHelper.loadJsonsWithPaths(strataDir.toPath());
-
-        Stopwatch s = Stopwatch.createStarted();
-        LOGGER.restartSpacer();
-        LOGGER.info("Validating and registering data for: Strata");
-        strataDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, StrataModel.validators)) {
-                if (!LOGGER.shouldLog) return;
-                LOGGER.printSpacer(2);
-                LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                return;
-            }
-
-            Optional<Pair<StrataModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(StrataModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            StrataModel strataModel = result.get().getFirst();
-            registry.registerStrata(strataModel);
-//            STRATA.add(strataModel);
-            STRATA_IDS.add(strataModel.getId());
-        });
-        Analytics.addPerformanceAnalytic("Validation: Strata (Old)", s);
-    }
-
-    private static void registerMaterials(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File materialDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> materialDefinition = FileHelper.loadJsonsWithPaths(materialDir.toPath());
-
-        Stopwatch s = Stopwatch.createStarted();
-        LOGGER.restartSpacer();
-        LOGGER.info("Validating and registering data for: Material");
-        materialDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, MaterialModel.validators)) {
-                if (!LOGGER.shouldLog) return;
-                LOGGER.printSpacer(2);
-                LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                return;
-            }
-
-            Optional<Pair<MaterialModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(MaterialModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            MaterialModel materialModel = result.get().getFirst();
-            registry.getMaterialOrRegister(materialModel.getId(), materialModel);
-//            MATERIALS.add(materialModel);
-            MATERIAL_IDS.add(materialModel.getId());
-        });
-        Analytics.addPerformanceAnalytic("Validation: Material (Old)", s);
-    }
-
-    private static void registerCompat(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File compatDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> compatDefinition = FileHelper.loadJsonsWithPaths(compatDir.toPath());
-
-        LOGGER.restartSpacer();
-        LOGGER.info("Validating and registering data for: Compatibility");
-        compatDefinition.forEach((path, jsonObject) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(jsonObject, path, CompatModel.validators)) {
-                if (LOGGER.shouldLog) {
-                    LOGGER.printSpacer(2);
-                    LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                }
-                return;
-            }
-
-            Optional<Pair<CompatModel, JsonElement>> result = JsonOps.INSTANCE.withDecoder(CompatModel.CODEC).apply(jsonObject).result();
-            if (result.isEmpty()) return;
-
-            CompatModel compatModel = result.get().getFirst();
-            registry.registerCompat(compatModel);
-        });
-    }
-
-    private static void registerDeposits(@NotNull Validator validator, @NotNull ValidatorLogger LOGGER, @NotNull File depositDir, @NotNull EmendatusDataRegistry registry) {
-        Map<Path, JsonObject> depositJsonDefinitionsMap = FileHelper.loadJsonsWithPaths(depositDir.toPath());
-
-        if (DEPOSIT_PROCESSORS.isEmpty()) initProcessors();
-        if (DEPOSIT_TYPES.size() != DEPOSIT_PROCESSORS.size()) {
-            DEPOSIT_TYPES.clear();
-            DEPOSIT_TYPES.addAll(DEPOSIT_PROCESSORS.keySet());
-        }
-
-        LOGGER.restartSpacer();
-        LOGGER.info("Validating and registering data for: Deposits");
-        depositJsonDefinitionsMap.forEach((path, element) -> {
-            LOGGER.restartSpacer();
-            if (!validator.validateObject(element, path, DepositValidators.get(element.get("type")))) {
-                LOGGER.printSpacer(2);
-                LOGGER.error("File \"%s\" is not going to be registered due to errors in it's validation.".formatted(path));
-                return;
-            }
-
-            ACTIVE_PROCESSORS.add(DEPOSIT_PROCESSORS.get(element.get("type").getAsString()).apply(element));
-            DEPOSIT_IDS.add(element.get("registryName").getAsString());
-        });
-
-        ACTIVE_PROCESSORS.forEach(IDepositProcessor::load);
     }
 
     private static void initProcessors() {

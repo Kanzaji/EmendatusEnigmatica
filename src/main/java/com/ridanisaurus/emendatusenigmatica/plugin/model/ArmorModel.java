@@ -24,19 +24,13 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 public class ArmorModel {
 	public static final Codec<ArmorModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -54,13 +48,6 @@ public class ArmorModel {
 	private final int protection;
 	private final int durability;
 
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
-
 	public ArmorModel(int protection, int durability) {
 		this.protection = protection;
 		this.durability = durability;
@@ -77,10 +64,5 @@ public class ArmorModel {
 
 	public int getDurability() {
 		return durability;
-	}
-
-	static {
-		validators.put("protection", new Validator("protection").REQUIRES_INT);
-		validators.put("durability", new Validator("durability").REQUIRES_INT);
 	}
 }

@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.validators.material;
 
-import com.ibm.icu.impl.data.HolidayBundle_ja_JP;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.enums.PTCMode;
@@ -33,7 +32,6 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.Abstrac
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import net.neoforged.jarjar.nio.util.Lazy;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;

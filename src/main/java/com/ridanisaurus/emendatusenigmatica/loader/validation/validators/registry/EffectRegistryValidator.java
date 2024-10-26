@@ -29,8 +29,6 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class EffectRegistryValidator extends AbstractRegistryValidator {
 
     public EffectRegistryValidator() {

@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.compat;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
@@ -32,13 +31,7 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.ItemRegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
-
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 public class CompatIOModel {
     public static final Codec<CompatIOModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -64,13 +57,6 @@ public class CompatIOModel {
         .addValidator("count", new NumberRangeValidator(Types.INTEGER, 0, 64, false))
         .addValidator("item", new ResourceLocationValidator(false, new ItemRegistryValidator()));
 
-    /**
-     * Holds verifying functions for each field.
-     * Function returns true if verification was successful, false otherwise to stop registration of the json.
-     * Adding suffix _rg will request the original object instead of just the value of the field.
-     */
-    public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
-
     private final String item;
     private final int count;
     private final float chance;
@@ -91,11 +77,5 @@ public class CompatIOModel {
 
     public float getChance() {
         return chance;
-    }
-
-    static {
-        validators.put("item", new Validator("item").getResourceIDValidation(false));
-        validators.put("count", new Validator("count").getIntRange(0, 64, false));
-        validators.put("chance", new Validator("chance").getRange(0, 1, false));
     }
 }

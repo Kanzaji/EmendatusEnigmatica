@@ -27,17 +27,12 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators.regist
 import com.ridanisaurus.emendatusenigmatica.loader.validation.RegistryValidationData;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import io.netty.util.internal.UnstableApi;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Texture Registry Validator is used to check if specified ResourceLocation points to a valid texture.
@@ -47,7 +42,7 @@ import java.util.Objects;
 @UnstableApi
 @ApiStatus.Experimental
 public class TextureRegistryValidator extends AbstractRegistryValidator {
-    private static Map<ResourceLocation, TextureAtlasSprite> textures = null;
+    private static final Map<ResourceLocation, TextureAtlasSprite> textures = null;
     public TextureRegistryValidator() {
         super("Provided ResourceLocation points to a non-existing texture!");
     }

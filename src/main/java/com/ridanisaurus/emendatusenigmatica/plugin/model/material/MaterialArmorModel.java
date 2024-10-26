@@ -24,8 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.material;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
@@ -35,14 +33,8 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeVal
 import com.ridanisaurus.emendatusenigmatica.plugin.model.ArmorModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.EffectModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.armor.ArmorValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
-import org.apache.commons.lang3.function.TriFunction;
 
-import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiFunction;
-
-import static com.ridanisaurus.emendatusenigmatica.util.validation.Validator.LOGGER;
 
 public class MaterialArmorModel {
 	public static final Codec<MaterialArmorModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -86,12 +78,19 @@ public class MaterialArmorModel {
 	private final ArmorModel boots;
 	private final ArmorModel shield;
 
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
+	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
+		.addValidator("enchantability", new TypeValidator(Types.INTEGER, false))
+		.addValidator("toughness",	new TypeValidator(Types.FLOAT, false))
+		.addValidator("knockback",	new TypeValidator(Types.FLOAT, false))
+		.addValidator("setName",		new TypeValidator(Types.STRING, false))
+		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
+		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
+		.addValidator("helmet",   	new ArmorValidator())
+		.addValidator("chestplate", 	new ArmorValidator())
+		.addValidator("leggings",   	new ArmorValidator())
+		.addValidator("boots",  		new ArmorValidator())
+		.addValidator("shield",     	new ArmorValidator("shield"))
+		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false), ArrayPolicy.REQUIRES_ARRAY);
 
 	public MaterialArmorModel(boolean setArmor, List<EffectModel> effects, String setName, String setDesc,
 	                          float toughness, float knockback, int enchantability,
@@ -170,57 +169,5 @@ public class MaterialArmorModel {
 
 	public ArmorModel getShield() {
 		return shield;
-	}
-
-	public static final ValidationManager VALIDATION_MANAGER = ValidationManager.create()
-		.addValidator("enchantability", new TypeValidator(Types.INTEGER, false))
-		.addValidator("toughness",	new TypeValidator(Types.FLOAT, false))
-		.addValidator("knockback",	new TypeValidator(Types.FLOAT, false))
-		.addValidator("setName",		new TypeValidator(Types.STRING, false))
-		.addValidator("setDesc",		new TypeValidator(Types.STRING, false))
-		.addValidator("setArmor",		new TypeValidator(Types.BOOLEAN, false))
-		.addValidator("helmet",   	new ArmorValidator())
-		.addValidator("chestplate", 	new ArmorValidator())
-		.addValidator("leggings",   	new ArmorValidator())
-		.addValidator("boots",  		new ArmorValidator())
-		.addValidator("shield",     	new ArmorValidator("shield"))
-		.addValidator("effects",		EffectModel.VALIDATION_MANAGER.getAsValidator(false), ArrayPolicy.REQUIRES_ARRAY);
-
-	static {
-		validators.put("setArmor",	new Validator("setArmor").REQUIRES_BOOLEAN);
-		validators.put("toughness",	new Validator("toughness").REQUIRES_FLOAT);
-		validators.put("knockback",	new Validator("knockback").REQUIRES_FLOAT);
-		validators.put("enchantability", new Validator("enchantability").REQUIRES_INT);
-		validators.put("setName",	new Validator("setName").getNonEmptyValidation(false));
-		validators.put("setDesc",	new Validator("setDesc").getNonEmptyValidation(false));
-		validators.put("effects",	new Validator("effects").getObjectValidation(EffectModel.validators, true));
-
-		TriFunction<Validator, JsonElement, Path, Boolean> armorValidator = (validator, element, path) -> {
-			if (!validator.assertParentObject(element, path)) return false;
-			String armorPiece = validator.getName();
-			JsonObject obj = element.getAsJsonObject();
-			boolean required = false;
-
-			if (!Validator.checkForTEMP(obj, path, false)) {
-				LOGGER.error("Parent object is missing while validating \"%s\" in file \"%s\". Something is not right.".formatted(armorPiece, Validator.obfuscatePath(path)));
-			} else {
-				required = obj.get("TEMP").getAsJsonObject().get(armorPiece).getAsBoolean();
-			}
-
-			JsonElement valueJson = obj.get(armorPiece);
-
-			if (!required) {
-				if (Objects.isNull(valueJson)) return true;
-				LOGGER.warn("\"%s\" should not be present when it's missing from \"processedTypes\" in file \"%s\".".formatted(armorPiece, Validator.obfuscatePath(path)));
-			}
-
-			return validator.getRequiredObjectValidation(ArmorModel.validators, false).apply(valueJson, path);
-		};
-
-		validators.put("helmet_rg",   	(element, path) -> armorValidator.apply(new Validator("helmet"), element, path));
-		validators.put("chestplate_rg", (element, path) -> armorValidator.apply(new Validator("chestplate"), element, path));
-		validators.put("leggings_rg",   (element, path) -> armorValidator.apply(new Validator("leggings"), element, path));
-		validators.put("boots_rg",  	(element, path) -> armorValidator.apply(new Validator("boots"), element, path));
-		validators.put("shield_rg",     (element, path) -> armorValidator.apply(new Validator("shield"), element, path));
 	}
 }

@@ -24,33 +24,20 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.RequiredValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ResourceLocationValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.BlockRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldSetValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit.MaterialValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
-import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositValidators;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiFunction;
-
-import static com.ridanisaurus.emendatusenigmatica.util.validation.Validator.LOGGER;
 
 public class CommonBlockDefinitionModel {
 	public static final Codec<CommonBlockDefinitionModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -83,56 +70,6 @@ public class CommonBlockDefinitionModel {
 	protected final int weight;
 	protected final int min;
 	protected final int max;
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 * @implNote Validators of min/max are using simplified temp check for checking if the type is dike.<br>
-	 * If you need to pass parent to those validators for any other reason,
-	 * modify this implementation to check for specific field for those validators!.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
-
-	static {
-		validators.put("block", 	new Validator("block").getResourceIDValidation(false));
-		validators.put("tag", 		new Validator("tag").getResourceIDValidation(false));
-		validators.put("weight", 	new Validator("weight").REQUIRES_INT);
-		validators.put("material_rg", DepositValidators.getFullMaterialValidation(new Validator("material")));
-
-		Validator minValidator = new Validator("min");
-		Validator maxValidator = new Validator("max");
-		validators.put("min_rg", (element, path) -> {
-			if (!minValidator.assertParentObject(element, path)) return false;
-			JsonObject parent = element.getAsJsonObject();
-			JsonElement value = parent.get(minValidator.getName());
-
-			if (Objects.isNull(value)) return true;
-			if (!Validator.checkForTEMP(parent, path, false)) {
-				LOGGER.warn(
-					"\"%s\" should not be present in file \"%s\", as it doesn't take effect on types different than \"%s\"!"
-					.formatted(minValidator.getName(), Validator.obfuscatePath(path), DepositType.DIKE.getType())
-				);
-			}
-
-			return minValidator.REQUIRES_INT.apply(value, path);
-		});
-		validators.put("max_rg", (element, path) -> {
-			if (!maxValidator.assertParentObject(element, path)) return false;
-			JsonObject parent = element.getAsJsonObject();
-			JsonElement value = parent.get(minValidator.getName());
-
-			if (Objects.isNull(value)) return true;
-			if (!Validator.checkForTEMP(parent, path, false)) {
-				LOGGER.warn(
-					"\"%s\" should not be present in file \"%s\", as it doesn't take effect on types different than \"%s\"!"
-					.formatted(maxValidator.getName(), Validator.obfuscatePath(path), DepositType.DIKE.getType())
-				);
-			}
-
-			return maxValidator.getMaxYLevelValidation("min").apply(parent, path);
-		});
-	}
 
 	public CommonBlockDefinitionModel(@Nullable String block, @Nullable String tag, @Nullable String material, int weight, int min, int max) {
 		this.block = block;

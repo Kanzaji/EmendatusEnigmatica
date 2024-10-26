@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
@@ -35,15 +34,10 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registr
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.TextureRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import net.minecraft.resources.ResourceLocation;
 
-import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 public class StrataModel {
 	public static final Codec<StrataModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -83,31 +77,6 @@ public class StrataModel {
 			"hoe",
 			"shovel"
 		), FilterMode.WHITELIST, false));
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	@Deprecated(forRemoval = true)
-	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new HashMap<>();
-
-	static {
-		validators.put("id", 			new Validator("id")			.getIDValidation(DefaultLoader.STRATA_IDS));
-		validators.put("baseTexture", 	new Validator("baseTexture")	.getRequiredResourceIDValidation(false));
-		validators.put("fillerType", 	new Validator("fillerType")	.getRequiredResourceIDValidation(false));
-		validators.put("suffix", 		new Validator("suffix")		.getRequiredNonEmptyValidation(false));
-		validators.put("localizedName", new Validator("localizedName").getRequiredNonEmptyValidation(false));
-		validators.put("sampleStrata", 	new Validator("sampleStrata")	.REQUIRES_BOOLEAN);
-		validators.put("hardness", 		new Validator("hardness")		.getRange(0, Integer.MAX_VALUE, false));
-		validators.put("resistance", 	new Validator("resistance")	.getRange(0, Integer.MAX_VALUE, false));
-		validators.put("harvestTool", 	new Validator("harvestTool")	.getAcceptsOnlyValidation(List.of(
-			"pickaxe",
-			"axe",
-			"hoe",
-			"shovel"
-		), false));
-	}
 
 	private final String id;
 	private final ResourceLocation baseTexture;

@@ -34,7 +34,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This Validator is used to validate fields, that need to provide a {@link ResourceLocation}.<br><br>

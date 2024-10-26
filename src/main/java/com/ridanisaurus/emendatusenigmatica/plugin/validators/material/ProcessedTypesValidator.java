@@ -82,11 +82,14 @@ public class ProcessedTypesValidator extends ValuesValidator {
             "shovel",
             "hoe",
             "paxel",
+            "shield",
+            "armor",
+            //TODO: Remove next breaking update. Left here so errors are not generated for deprecated values
             "helmet",
             "chestplate",
             "leggings",
             "boots",
-            "shield",
+            //TODO: Move to the addons. Somehow
             "infuse_type",
             "gas",
             "slurry",

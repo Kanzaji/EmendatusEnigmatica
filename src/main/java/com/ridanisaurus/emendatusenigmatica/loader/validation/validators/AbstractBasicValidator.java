@@ -26,7 +26,6 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

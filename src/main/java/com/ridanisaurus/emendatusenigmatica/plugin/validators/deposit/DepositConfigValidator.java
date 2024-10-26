@@ -26,12 +26,8 @@ package com.ridanisaurus.emendatusenigmatica.plugin.validators.deposit;
 
 import com.google.gson.JsonElement;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationHelper;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractBasicValidator;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.AbstractValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.IValidationFunction;
 import com.ridanisaurus.emendatusenigmatica.plugin.deposit.DepositType;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dense.DenseDepositConfigModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dike.DikeDepositConfigModel;
@@ -42,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 public class DepositConfigValidator extends AbstractValidator {
     public static Map<String, AbstractValidator> DEPOSIT_VALIDATORS = new HashMap<>(Map.of(

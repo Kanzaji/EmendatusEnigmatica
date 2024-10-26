@@ -26,8 +26,6 @@ package com.ridanisaurus.emendatusenigmatica.loader.validation.validators;
 
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationData;
 
-import java.util.function.Function;
-
 /**
  * This validator accepts *any value* in *any format*. Essentially it just returns true.
  * @see AbstractValidator

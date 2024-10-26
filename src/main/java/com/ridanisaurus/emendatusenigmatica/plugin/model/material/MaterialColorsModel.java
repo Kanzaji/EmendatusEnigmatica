@@ -24,10 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.material;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
@@ -36,16 +32,10 @@ import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.depreca
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ChemicalColorValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.OxidizationColorValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.material.colors.ParticlesColorValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.util.ColorHelper;
-import net.minecraft.data.models.blockstates.PropertyDispatch;
 import org.jetbrains.annotations.Nullable;
 
-import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiFunction;
-
-import static com.ridanisaurus.emendatusenigmatica.util.validation.Validator.LOGGER;
 
 public class MaterialColorsModel {
 	public static final Codec<MaterialColorsModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -76,13 +66,6 @@ public class MaterialColorsModel {
 	private final String particlesColor;
 	private final String materialColor;
 	private final String oxidizationColor;
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
 	public MaterialColorsModel(@Nullable String fluidColor, @Nullable String chemicalColor, @Nullable String particlesColor, @Nullable String materialColor, @Nullable String oxidizationColor) {
 		this.fluidColor = fluidColor;
@@ -146,96 +129,5 @@ public class MaterialColorsModel {
 
 	public boolean hasParticlesColor() {
 		return particlesColor != null;
-	}
-
-	static {
-		validators.put("fluidColor", new Validator("fluidColor").getHexColorValidation(false));
-		validators.put("materialColor", new Validator("materialColor").getHexColorValidation(false));
-
-		Validator gasValidator = new Validator("gasColor");
-
-		validators.put("gasColor_rg", (element, path) -> {
-			if (!gasValidator.assertParentObject(element, path)) return false;
-			JsonObject obj = element.getAsJsonObject();
-			JsonElement valueJson = obj.get(gasValidator.getName());
-			Runnable warnValidation = () -> {
-				if (!Validator.checkForTEMP(obj, path, false)) {
-					LOGGER.warn(
-							"Parent data is missing while verifying \"%s\" in file \"%s\", something is not right."
-									.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
-					);
-					return;
-				}
-				JsonElement requiredJson = obj.get("TEMP").getAsJsonObject().get("processedTypes");
-				if (Objects.isNull(requiredJson)) {
-					LOGGER.warn("\"processedTypes\" are missing from file \"%s\". Can't accurately verify values of \"%s\".".formatted(Validator.obfuscatePath(path), gasValidator.getName()));
-					return;
-				}
-				if (!requiredJson.isJsonArray()) {
-					LOGGER.warn("Expected \"processedTypes\" to be an array! Can't accurately verify values of \"%s\" in file \"%s\".".formatted(gasValidator.getName(), Validator.obfuscatePath(path)));
-					return;
-				}
-				JsonArray types = requiredJson.getAsJsonArray();
-				boolean infuse = types.contains(new JsonPrimitive("infuse_type"));
-				boolean slurry = types.contains(new JsonPrimitive("slurry"));
-				boolean gas	   = types.contains(new JsonPrimitive("gas"));
-				if (!(infuse || slurry || gas) && Objects.nonNull(valueJson)) {
-					LOGGER.warn("\"%s\" should not be present when \"infuse_type\", \"slurry\" or \"gas\" are not present in \"processedTypes\" in file \"%s\"."
-							.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
-					);
-				} else if (Objects.isNull(valueJson)) {
-					LOGGER.warn("\"%s\" should be set when \"infuse_type\", \"slurry\" or \"gas\" are present in \"processedTypes\" in file \"%s\"."
-							.formatted(gasValidator.getName(), Validator.obfuscatePath(path))
-					);
-				}
-			};
-
-			if (LOGGER.shouldLog) warnValidation.run();
-
-			return gasValidator.getHexColorValidation(false).apply(obj.get(gasValidator.getName()), path);
-		});
-
-		PropertyDispatch.QuadFunction<Validator, String, JsonElement, Path, Boolean> validationFunction = (validator, fieldName, element, path) -> {
-			if (!validator.assertParentObject(element, path)) return false;
-			JsonObject obj = element.getAsJsonObject();
-			JsonElement valueJson = obj.get(validator.getName());
-			Runnable warnValidation = () -> {
-				if (!Validator.checkForTEMP(obj, path, false)) {
-					LOGGER.warn("Parent data is missing while verifying \"%s\" in file \"%s\", something is not right.".formatted(validator.getName(), Validator.obfuscatePath(path)));
-					return;
-				}
-
-				JsonElement requiredJson = obj.get("TEMP").getAsJsonObject().get("properties");
-				if (Objects.isNull(requiredJson)) return;
-				if (!requiredJson.isJsonObject()) {
-					LOGGER.warn("Expected \"properties\" to be an object! Can't accurately verify values of \"%s\" in file \"%s\".".formatted(validator.getName(), Validator.obfuscatePath(path)));
-					return;
-				}
-
-				JsonElement requiredValue = requiredJson.getAsJsonObject().get(fieldName);
-				boolean required = false;
-				if (Objects.nonNull(requiredValue)) {
-					try {
-						required = requiredValue.getAsBoolean();
-					} catch (Exception e) {
-						LOGGER.error("\"%s\" in Properties is not a boolean! Can't accurately verify values of \"%s\" in file \"%s\"."
-								.formatted(fieldName, validator.getName(), Validator.obfuscatePath(path))
-						);
-					}
-				}
-				if (Objects.nonNull(valueJson) && !required) {
-					LOGGER.warn("\"%s\" should not be present when \"%s\" is set to false in file \"%s\".".formatted(validator.getName(), fieldName, Validator.obfuscatePath(path)));
-				} else if (Objects.isNull(valueJson) && required) {
-					LOGGER.warn("\"%s\" should be set when \"%s\" is set to true in file \"%s\".".formatted(validator.getName(), fieldName, Validator.obfuscatePath(path)));
-				}
-			};
-
-			if (LOGGER.shouldLog) warnValidation.run();
-
-			return validator.getHexColorValidation(false).apply(obj.get(gasValidator.getName()), path);
-		};
-
-		validators.put("particlesColor_rg", (element, path) -> validationFunction.apply(new Validator("particlesColor"), "hasParticles", element, path));
-		validators.put("oxidizationColor_rg", (element, path) -> validationFunction.apply(new Validator("oxidizationColor"), "hasOxidization", element, path));
 	}
 }

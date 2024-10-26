@@ -28,7 +28,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common.CommonBlockDefinitionModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dense.DenseDepositModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dike.DikeDepositModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.sample.SampleBlockDefinitionModel;
 import com.ridanisaurus.emendatusenigmatica.world.gen.feature.rule.MultiStrataRuleTest;
 import net.minecraft.core.NonNullList;

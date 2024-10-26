@@ -24,7 +24,6 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.dike;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
@@ -38,15 +37,10 @@ import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common.CommonBlockDefinitionModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.sample.SampleBlockDefinitionModel;
 
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
 
 public class DikeDepositConfigModel {
 	public static final Codec<DikeDepositConfigModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -84,28 +78,6 @@ public class DikeDepositConfigModel {
 	public final String rarity;
 	public final boolean generateSamples;
 	public final List<SampleBlockDefinitionModel> sampleBlocks;
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
-
-	static {
-		validators.put("blocks_rg", 	new Validator("blocks").getPassParentToValidators(CommonBlockDefinitionModel.validators, true, true));
-		validators.put("fillerTypes", 	new Validator("fillerTypes").getRequiredRegisteredIDValidation(DefaultLoader.STRATA_IDS, "Strata Registry", true));
-		validators.put("chance", 		new Validator("chance").getRequiredIntRange(1, 100, false));
-		//TODO: Verify the real maximum size for dikes.
-		validators.put("size", 			new Validator("size").getRequiredIntRange(1, 64, false));
-		validators.put("minYLevel", 	new Validator("minYLevel").getRequiredIntRange(-64, 320, false));
-		validators.put("maxYLevel_rg", 	new Validator("maxYLevel").getMaxYLevelValidation("minYLevel"));
-		validators.put("placement", 	new Validator("placement").getAcceptsOnlyValidation(List.of("uniform", "triangle"), false));
-		validators.put("rarity", 		new Validator("rarity").getAcceptsOnlyValidation(List.of("common", "rare"), false));
-		validators.put("generateSamples",new Validator("generateSamples").REQUIRES_BOOLEAN);
-		Validator sampleValidator = new Validator("sampleBlocks");
-		validators.put("sampleBlocks_rg", sampleValidator.getIfOtherFieldSet("generateSamples", sampleValidator.getRequiredObjectValidation(SampleBlockDefinitionModel.validators, true)));
-	}
 
 	public DikeDepositConfigModel(List<CommonBlockDefinitionModel> blocks, List<String> fillerTypes, int chance, int size, int minYLevel, int maxYLevel, String placement, String rarity, boolean generateSamples, List<SampleBlockDefinitionModel> sampleBlocks) {
 		this.blocks = blocks;

@@ -24,29 +24,18 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.test;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.FilterMode;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.Types;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.NumberRangeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.TypeValidator;
-import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.ValuesValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.common.CommonBlockDefinitionModel;
-import com.ridanisaurus.emendatusenigmatica.plugin.model.deposit.sample.SampleBlockDefinitionModel;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.plugin.validators.FieldTrueValidator;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.MaxValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
 
-import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
 
 public class TestDepositConfigModel {
 	public static final Codec<TestDepositConfigModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -72,22 +61,6 @@ public class TestDepositConfigModel {
 	private final int size;
 	private final int minYLevel;
 	private final int maxYLevel;
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 * Adding suffix _rg will request the original object instead of just the value of the field.
-	 */
-	public static Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
-
-	static {
-		validators.put("blocks", 		new Validator("blocks").getRequiredObjectValidation(CommonBlockDefinitionModel.validators, true));
-		validators.put("fillerTypes", 	new Validator("fillerTypes").getRequiredRegisteredIDValidation(DefaultLoader.STRATA_IDS, "Strata Registry", true));
-		validators.put("chance", 		new Validator("chance").getRequiredIntRange(1, 100, false));
-		validators.put("size", 			new Validator("size").getRequiredIntRange(1, Integer.MAX_VALUE, false));
-		validators.put("minYLevel", 	new Validator("minYLevel").getRequiredIntRange(-64, 320, false));
-		validators.put("maxYLevel_rg", 	new Validator("maxYLevel").getMaxYLevelValidation("minYLevel"));
-	}
 
 	public TestDepositConfigModel(List<CommonBlockDefinitionModel> blocks, List<String> fillerTypes, int chance, int size, int minYLevel, int maxYLevel) {
 

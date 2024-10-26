@@ -24,18 +24,13 @@
 
 package com.ridanisaurus.emendatusenigmatica.plugin.model.compat;
 
-import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.ValidationManager;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.enums.ArrayPolicy;
 import com.ridanisaurus.emendatusenigmatica.plugin.DefaultLoader;
 import com.ridanisaurus.emendatusenigmatica.plugin.validators.EERegistryValidator;
-import com.ridanisaurus.emendatusenigmatica.util.validation.Validator;
-
-import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiFunction;
 
 public class CompatModel {
 	public static final Codec<CompatModel> CODEC = RecordCodecBuilder.create(x -> x.group(
@@ -49,12 +44,6 @@ public class CompatModel {
 
 	private final String id;
 	private final List<CompatRecipesModel> recipes;
-
-	/**
-	 * Holds verifying functions for each field.
-	 * Function returns true if verification was successful, false otherwise to stop registration of the json.
-	 */
-	public static final Map<String, BiFunction<JsonElement, Path, Boolean>> validators = new LinkedHashMap<>();
 
 	public CompatModel(String id, List<CompatRecipesModel> recipes) {
 		this.id = id;
@@ -72,10 +61,5 @@ public class CompatModel {
 
 	public final List<CompatRecipesModel> getRecipes() {
 		return recipes;
-	}
-
-	static {
-		validators.put("id", new Validator("id").getRequiredRegisteredIDValidation(DefaultLoader.MATERIAL_IDS, "Material Registry", false));
-		validators.put("recipes", new Validator("recipes").getRequiredObjectValidation(CompatRecipesModel.validators, true));
 	}
 }

@@ -51,6 +51,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 	protected void buildItemModels(Consumer<IFinishedGenericJSON> consumer) {
 		for (MaterialModel material : registry.getMaterials()) {
 			List<String> processedType = material.getProcessedTypes();
+
 			// Storage Blocks
 			if (processedType.contains("storage_block")) {
 				if (material.getProperties().hasOxidization()) {
@@ -72,6 +73,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				new ItemModelBuilder(Reference.MOD_ID, "block/" + material.getId() + "_block")
 						.save(consumer, Reference.MOD_ID, material.getId() + "_block");
 			}
+
 			// Shard Blocks
 			if (processedType.contains("cluster")) {
 				new ItemModelBuilder(Reference.MOD_ID, "block/" + material.getId() + "_cluster_shard_block")
@@ -134,6 +136,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				clusterShardBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_cluster_shard");
 			}
+
 			// Ingots
 			if (processedType.contains("ingot")) {
 				ItemModelBuilder ingotBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -148,6 +151,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				ingotBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_ingot");
 			}
+
 			// Nuggets
 			if (processedType.contains("nugget")) {
 				ItemModelBuilder nuggetBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -162,6 +166,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				nuggetBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_nugget");
 			}
+
 			// Gems
 			if (processedType.contains("gem")) {
 				ItemModelBuilder gemBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -176,6 +181,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				gemBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_gem");
 			}
+
 			// Dusts
 			if (processedType.contains("dust")) {
 				ItemModelBuilder dustBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -190,6 +196,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				dustBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_dust");
 			}
+
 			// Plates
 			if (processedType.contains("plate")) {
 				ItemModelBuilder plateBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -204,6 +211,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				plateBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_plate");
 			}
+
 			// Gears
 			if (processedType.contains("gear")) {
 				ItemModelBuilder gearBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -218,6 +226,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				gearBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_gear");
 			}
+
 			// Rods
 			if (processedType.contains("rod")) {
 				ItemModelBuilder rodBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -232,6 +241,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				rodBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_rod");
 			}
+
 			// Raw Materials
 			if (processedType.contains("raw")) {
 				ItemModelBuilder rawBuilder = new ItemModelBuilder("minecraft:item/generated");
@@ -249,6 +259,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				new ItemModelBuilder(Reference.MOD_ID, "block/raw_" + material.getId() + "_block")
 						.save(consumer, Reference.MOD_ID, "raw_" + material.getId() + "_block");
 			}
+
 			// Swords
 			if (processedType.contains("sword")) {
 				ItemModelBuilder swordBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -263,6 +274,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				swordBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_sword");
 			}
+
 			// Pickaxes
 			if (processedType.contains("pickaxe")) {
 				ItemModelBuilder pickaxeBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -277,6 +289,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				pickaxeBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_pickaxe");
 			}
+
 			// Axes
 			if (processedType.contains("axe")) {
 				ItemModelBuilder axeBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -292,6 +305,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				axeBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_axe");
 			}
+
 			// Shovels
 			if (processedType.contains("shovel")) {
 				ItemModelBuilder shovelBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -306,6 +320,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				shovelBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_shovel");
 			}
+
 			// Hoes
 			if (processedType.contains("hoe")) {
 				ItemModelBuilder hoeBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -320,6 +335,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				hoeBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_hoe");
 			}
+
 			// Paxels
 			if (processedType.contains("paxel")) {
 				ItemModelBuilder paxelBuilder = new ItemModelBuilder("minecraft:item/handheld");
@@ -334,62 +350,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 				}
 				paxelBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_paxel");
 			}
-			// Helmet
-			if (processedType.contains("helmet")) {
-				ItemModelBuilder helmetBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (!material.getColors().hasMaterialColor()) {
-					helmetBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_helmet");
-				} else {
-					helmetBuilder.texture("layer0", Reference.MOD_ID, "item/templates/helmet/00")
-							.texture("layer1", Reference.MOD_ID, "item/templates/helmet/01")
-							.texture("layer2", Reference.MOD_ID, "item/templates/helmet/02")
-							.texture("layer3", Reference.MOD_ID, "item/templates/helmet/03")
-							.texture("layer4", Reference.MOD_ID, "item/templates/helmet/04");
-				}
-				helmetBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_helmet");
-			}
-			// Chestplate
-			if (processedType.contains("chestplate")) {
-				ItemModelBuilder chestplateBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (!material.getColors().hasMaterialColor()) {
-					chestplateBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_chestplate");
-				} else {
-					chestplateBuilder.texture("layer0", Reference.MOD_ID, "item/templates/chestplate/00")
-							.texture("layer1", Reference.MOD_ID, "item/templates/chestplate/01")
-							.texture("layer2", Reference.MOD_ID, "item/templates/chestplate/02")
-							.texture("layer3", Reference.MOD_ID, "item/templates/chestplate/03")
-							.texture("layer4", Reference.MOD_ID, "item/templates/chestplate/04");
-				}
-				chestplateBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_chestplate");
-			}
-			// Leggings
-			if (processedType.contains("leggings")) {
-				ItemModelBuilder leggingsBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (!material.getColors().hasMaterialColor()) {
-					leggingsBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_leggings");
-				} else {
-					leggingsBuilder.texture("layer0", Reference.MOD_ID, "item/templates/leggings/00")
-							.texture("layer1", Reference.MOD_ID, "item/templates/leggings/01")
-							.texture("layer2", Reference.MOD_ID, "item/templates/leggings/02")
-							.texture("layer3", Reference.MOD_ID, "item/templates/leggings/03")
-							.texture("layer4", Reference.MOD_ID, "item/templates/leggings/04");
-				}
-				leggingsBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_leggings");
-			}
-			// Boots
-			if (processedType.contains("boots")) {
-				ItemModelBuilder bootsBuilder = new ItemModelBuilder("minecraft:item/generated");
-				if (!material.getColors().hasMaterialColor()) {
-					bootsBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_boots");
-				} else {
-					bootsBuilder.texture("layer0", Reference.MOD_ID, "item/templates/boots/00")
-							.texture("layer1", Reference.MOD_ID, "item/templates/boots/01")
-							.texture("layer2", Reference.MOD_ID, "item/templates/boots/02")
-							.texture("layer3", Reference.MOD_ID, "item/templates/boots/03")
-							.texture("layer4", Reference.MOD_ID, "item/templates/boots/04");
-				}
-				bootsBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_boots");
-			}
+
 			// Shields
 			if (processedType.contains("shield")) {
 				ItemModelBuilder shieldBlockingBuilder = new ItemModelBuilder("minecraft:item/shield_blocking")
@@ -404,6 +365,7 @@ public class ItemModelsGen extends EEItemModelProvider {
 						.end();
 				shieldBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_shield");
 			}
+
 			// Fluid Buckets
 			if (processedType.contains("fluid")) {
 				new ItemModelBuilder("neoforge:item/bucket_drip")
@@ -412,6 +374,48 @@ public class ItemModelsGen extends EEItemModelProvider {
 						.loader("neoforge:fluid_container")
 						.save(consumer, Reference.MOD_ID, material.getId() + "_bucket");
 			}
+
+			// Armor
+			if (processedType.contains("armor")) {
+				ItemModelBuilder helmetBuilder = new ItemModelBuilder("minecraft:item/generated");
+				ItemModelBuilder chestplateBuilder = new ItemModelBuilder("minecraft:item/generated");
+				ItemModelBuilder leggingsBuilder = new ItemModelBuilder("minecraft:item/generated");
+				ItemModelBuilder bootsBuilder = new ItemModelBuilder("minecraft:item/generated");
+
+				if (!material.getColors().hasMaterialColor()) {
+					helmetBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_helmet");
+					chestplateBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_chestplate");
+					leggingsBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_leggings");
+					bootsBuilder.texture("layer0", Reference.MOD_ID, "item/" + material.getId() + "_boots");
+				} else {
+					helmetBuilder.texture("layer0", Reference.MOD_ID, "item/templates/helmet/00")
+						.texture("layer1", Reference.MOD_ID, "item/templates/helmet/01")
+						.texture("layer2", Reference.MOD_ID, "item/templates/helmet/02")
+						.texture("layer3", Reference.MOD_ID, "item/templates/helmet/03")
+						.texture("layer4", Reference.MOD_ID, "item/templates/helmet/04");
+					chestplateBuilder.texture("layer0", Reference.MOD_ID, "item/templates/chestplate/00")
+						.texture("layer1", Reference.MOD_ID, "item/templates/chestplate/01")
+						.texture("layer2", Reference.MOD_ID, "item/templates/chestplate/02")
+						.texture("layer3", Reference.MOD_ID, "item/templates/chestplate/03")
+						.texture("layer4", Reference.MOD_ID, "item/templates/chestplate/04");
+					leggingsBuilder.texture("layer0", Reference.MOD_ID, "item/templates/leggings/00")
+						.texture("layer1", Reference.MOD_ID, "item/templates/leggings/01")
+						.texture("layer2", Reference.MOD_ID, "item/templates/leggings/02")
+						.texture("layer3", Reference.MOD_ID, "item/templates/leggings/03")
+						.texture("layer4", Reference.MOD_ID, "item/templates/leggings/04");
+					bootsBuilder.texture("layer0", Reference.MOD_ID, "item/templates/boots/00")
+						.texture("layer1", Reference.MOD_ID, "item/templates/boots/01")
+						.texture("layer2", Reference.MOD_ID, "item/templates/boots/02")
+						.texture("layer3", Reference.MOD_ID, "item/templates/boots/03")
+						.texture("layer4", Reference.MOD_ID, "item/templates/boots/04");
+				}
+
+				helmetBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_helmet");
+				chestplateBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_chestplate");
+				leggingsBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_leggings");
+				bootsBuilder.save(consumer, Reference.MOD_ID, material.getId() + "_boots");
+			}
+
 			// Ores
 			if (processedType.contains("ore")) {
 				for (StrataModel stratum : registry.getStrata()) {

@@ -455,7 +455,7 @@ public class RecipesGen extends RecipeProvider {
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "rod/from_gem/" + material.getId()));
 						}
 
-						if (processedType.contains("helmet")) {
+						if (processedType.contains("armor")) {
 							// Helmet from Gem
 							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -464,9 +464,6 @@ public class RecipesGen extends RecipeProvider {
 									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + material.getId()));
-						}
-
-						if (processedType.contains("chestplate")) {
 							// Chestplate from Gem
 							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -476,9 +473,6 @@ public class RecipesGen extends RecipeProvider {
 									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + material.getId()));
-						}
-
-						if (processedType.contains("leggings")) {
 							// Leggings from Gem
 							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -488,9 +482,6 @@ public class RecipesGen extends RecipeProvider {
 									.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 									.group(Reference.MOD_ID)
 									.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + material.getId()));
-						}
-
-						if (processedType.contains("boots")) {
 							// Boots from Gem
 							ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(material))
 									.define('G', EETags.MATERIAL_GEM.apply(material.getId()))
@@ -742,7 +733,7 @@ public class RecipesGen extends RecipeProvider {
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "gem/from_ore/blasting/" + mat.getKey()));
 							}
 
-							if (processedType.contains("helmet")) {
+							if (processedType.contains("armor")) {
 								// Helmet from Gem
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
 										.define('G', mat.getValue())
@@ -751,9 +742,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_gem/" + mat.getKey()));
-							}
-
-							if (processedType.contains("chestplate")) {
 								// Chestplate from Gem
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
 										.define('G', mat.getValue())
@@ -763,9 +751,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_gem/" + mat.getKey()));
-							}
-
-							if (processedType.contains("leggings")) {
 								// Leggings from Gem
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
 										.define('G', mat.getValue())
@@ -775,9 +760,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_gem/" + mat.getKey()));
-							}
-
-							if (processedType.contains("boots")) {
 								// Boots from Gem
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
 										.define('G', mat.getValue())
@@ -974,7 +956,7 @@ public class RecipesGen extends RecipeProvider {
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "ingot/from_ore/blasting/" + mat.getKey()));
 							}
 
-							if (processedType.contains("helmet")) {
+							if (processedType.contains("armor")) {
 								// Helmet from Ingot
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.helmetMap.getValue(mat.getKey()))
 										.define('I', mat.getValue())
@@ -983,9 +965,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "helmet/from_ingot/" + mat.getKey()));
-							}
-
-							if (processedType.contains("chestplate")) {
 								// Chestplate from Ingot
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.chestplateMap.getValue(mat.getKey()))
 										.define('I', mat.getValue())
@@ -995,9 +974,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "chestplate/from_ingot/" + mat.getKey()));
-							}
-
-							if (processedType.contains("leggings")) {
 								// Leggings from Ingot
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.leggingsMap.getValue(mat.getKey()))
 										.define('I', mat.getValue())
@@ -1007,9 +983,6 @@ public class RecipesGen extends RecipeProvider {
 										.unlockedBy("cobblestone", has(Blocks.COBBLESTONE))
 										.group(Reference.MOD_ID)
 										.save(out, ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "leggings/from_ingot/" + mat.getKey()));
-							}
-
-							if (processedType.contains("boots")) {
 								// Boots from Ingot
 								ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EERegistrar.bootsMap.getValue(mat.getKey()))
 										.define('I', mat.getValue())

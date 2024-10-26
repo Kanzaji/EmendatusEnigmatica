@@ -63,17 +63,6 @@ public class BasicShieldItem extends ShieldItem {
         this.material = material;
     }
 
-    @Override
-    public void initializeClient(@NotNull Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new IClientItemExtensions()
-        {
-            @Override
-            public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return ShieldTextureRenderer.RENDERER;
-            }
-        });
-    }
-
     public Ingredient getRepairMaterial() {
         return Ingredient.of(repairItem);
     }

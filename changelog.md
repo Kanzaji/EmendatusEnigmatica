@@ -17,5 +17,6 @@ Take a note that this is an alpha build of the port to 1.21.1. There is still a 
 - Some Fields, which get validated, have no use (Addon related stuff)
 - JEI/EMI Support is not included in this version.
 - Addon system is designated for a rework.
+- Deprecation warnings are missing proper links to the wiki (Wiki is WIP)
 
 Addons will be ported when the base mod is fully functional.

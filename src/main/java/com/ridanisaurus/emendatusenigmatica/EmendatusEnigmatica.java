@@ -132,12 +132,13 @@ public class EmendatusEnigmatica {
 
     private void addPackFinder(@NotNull AddPackFindersEvent event) {
         event.addRepositorySource(new EEPackFinder(event.getPackType()));
+        //TODO: Find more suitable place for running Data Generation.
+        //NOTE: CommonSetup is too late.
         this.generator.run();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         boolean result = RegistryValidationManager.validate();
-        //TODO: Run in parallel
         Analytics.finalizeAnalytics();
         if (!result)
             throw new IllegalStateException("Registry validation failed! %s Validation Summary for more details.".formatted(EEConfig.startup.generateSummary.get()? "Check the": "Enable"));

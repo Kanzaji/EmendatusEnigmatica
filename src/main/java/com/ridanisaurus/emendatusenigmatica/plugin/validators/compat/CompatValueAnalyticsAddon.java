@@ -34,7 +34,7 @@ public class CompatValueAnalyticsAddon implements AnalyticsAddon {
     public static void shouldRun() {
         if (!shouldRun) {
             shouldRun = true;
-            Analytics.addAdditionalInformationAddon(new CompatValueAnalyticsAddon());
+            Analytics.registerAddon(new CompatValueAnalyticsAddon());
         }
     }
 

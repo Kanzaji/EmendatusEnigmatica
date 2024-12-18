@@ -24,18 +24,24 @@
 
 package com.ridanisaurus.emendatusenigmatica.datagen;
 
+import com.google.common.base.Stopwatch;
 import com.mojang.logging.LogUtils;
+import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 import net.minecraft.WorldVersion;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.HashCache;
 import net.neoforged.fml.ModLoader;
+import net.neoforged.fml.loading.progress.StartupNotificationManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 
 public class EEDataGenerator extends DataGenerator {
     private static final Logger logger = LogUtils.getLogger();
     private boolean alreadyExecuted = false;
     private boolean crashed = false;
+
     public EEDataGenerator(Path rootOutputFolder, WorldVersion version, boolean alwaysGenerate) {
         super(rootOutputFolder, version, alwaysGenerate);
     }
@@ -46,7 +52,26 @@ public class EEDataGenerator extends DataGenerator {
         if (alreadyExecuted) return;
         alreadyExecuted = true;
         try {
-            super.run();
+            // Re-implementing the run logic here, to add our own analytics support.
+            HashCache cache = new HashCache(this.rootOutputFolder, this.allProviderIds, this.version);
+            Stopwatch sMain = Stopwatch.createStarted();
+            Stopwatch sPerTask = Stopwatch.createUnstarted();
+            //TODO: As this is executed on a main thread, it will hang the Early Window, so the progress bar is not visible in the end :/
+            var bar = StartupNotificationManager.addProgressBar("Emendatus Enigmatica: Data Generation", this.providersToRun.size());
+            this.providersToRun.forEach((name, provider) -> {
+                logger.info("Starting provider: {}", name);
+                sPerTask.start();
+                cache.applyUpdate(cache.generateUpdate(name, provider::run).join());
+                sPerTask.stop();
+                logger.info("{} finished after {} ms", name, sPerTask.elapsed(TimeUnit.MILLISECONDS));
+                sPerTask.reset();
+            });
+            cache.purgeStaleAndWrite();
+            bar.complete();
+            String msg = "EE Data Generation finished after %s ms.".formatted(sMain.elapsed(TimeUnit.MILLISECONDS));
+            StartupNotificationManager.addModMessage(msg);
+            logger.info(msg);
+            Analytics.addPerformanceAnalytic("Data Generation", sMain);
         } catch (Exception e) {
             if (ModLoader.hasErrors()) {
                 // If somehow there are errors, but minecraft will load, EE will crash on later stage.

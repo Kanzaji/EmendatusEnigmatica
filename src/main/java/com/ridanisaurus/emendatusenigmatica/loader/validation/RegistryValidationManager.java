@@ -24,6 +24,7 @@
 
 package com.ridanisaurus.emendatusenigmatica.loader.validation;
 
+import com.google.common.base.Stopwatch;
 import com.ridanisaurus.emendatusenigmatica.loader.validation.validators.registry.AbstractRegistryValidator;
 import com.ridanisaurus.emendatusenigmatica.util.analytics.Analytics;
 
@@ -44,6 +45,7 @@ public class RegistryValidationManager {
      */
     public static boolean validate() {
         //TODO: Run in parallel.
+        Stopwatch s = Stopwatch.createStarted();
         AtomicBoolean result = new AtomicBoolean(true);
         validators.forEach((validator, list) -> list.forEach(registryData -> {
             var data = registryData.validationData();
@@ -60,6 +62,7 @@ public class RegistryValidationManager {
         }));
         // Clearing validator's map, which holds references to the ValidationData objects.
         validators.clear();
+        Analytics.addPerformanceAnalytic("Validation: Registry", s);
         return result.get();
     }
 

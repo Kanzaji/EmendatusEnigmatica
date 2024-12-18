@@ -245,7 +245,7 @@ public class Analytics {
         addPerformanceAnalytic(category, "%d.%ss".formatted(time.getSeconds(), milis));
     }
 
-    public static void addAdditionalInformationAddon(Consumer<AnalyticsWriteContext> addon) {
+    public static void registerAddon(Consumer<AnalyticsWriteContext> addon) {
         addons.add(Objects.requireNonNull(addon, "Addon function can't be null!"));
     }
 
@@ -340,7 +340,7 @@ public class Analytics {
         if (messages.get(key).isEmpty()) cx.writeLine("All files were parsed and registered successfully!");
     }
 
-    private static void printPerformance(AnalyticsWriteContext cx) {
+    private static void printPerformance(@NotNull AnalyticsWriteContext cx) {
         cx.writeHeader("Performance", 3);
         StringBuilder table = new StringBuilder();
         table.append("<table>");

@@ -73,9 +73,7 @@ public class ValidationManager {
             return false;
         }
 
-        //TODO: Replace with JsonObject#isEmpty() when NeoForge fixes the GSON dependency. See https://github.com/neoforged/NeoForge/issues/1380
-//        if (object.isEmpty()) {
-        if (object.size() == 0) {
+        if (object.isEmpty()) {
             if (!EEConfig.startup.skipEmptyJsons.get()) Analytics.error("Root object is empty!", "root", path);
             return false;
         }

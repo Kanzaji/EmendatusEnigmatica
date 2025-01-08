@@ -44,9 +44,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class EELoader {
-    public static final Logger LOADER_LOGGER = LogManager.getLogger(EELoader.class);
+    public static final Logger logger = LogManager.getLogger(EELoader.class);
     private final EmendatusDataRegistry dataRegistry;
     private final List<IEmendatusPlugin> plugins;
+    private boolean finished = false;
 
     public EELoader() {
         this.dataRegistry = new EmendatusDataRegistry();
@@ -65,7 +66,7 @@ public class EELoader {
         for (Class<?> annotatedClass : AnnotationUtil.getAnnotatedClasses(EmendatusPluginReference.class)) {
             if (IEmendatusPlugin.class.isAssignableFrom(annotatedClass)) {
                 var annotation = (EmendatusPluginReference) annotatedClass.getAnnotation(EmendatusPluginReference.class);
-                LOADER_LOGGER.info("Registered plugin {}:{}", annotation.modid(), annotation.name());
+                logger.info("Registered plugin {}:{}", annotation.modid(), annotation.name());
                 try {
                     if (annotatedClass.equals(DefaultConfigPlugin.class)) {
                         this.plugins.addFirst((IEmendatusPlugin) annotatedClass.getDeclaredConstructor().newInstance());
@@ -74,24 +75,24 @@ public class EELoader {
                     }
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException e) {
-                    LOADER_LOGGER.error(e);
+                    logger.error(e);
                 }
             } else {
-                LOADER_LOGGER.error("{} has an annotation but it doesn't implement IEmendatusPlugin", annotatedClass.getName());
+                logger.error("{} has an annotation but it doesn't implement IEmendatusPlugin", annotatedClass.getName());
             }
         }
         s.stop();
-        LOADER_LOGGER.info("Finished scanning for plugins, took " + s.elapsed(TimeUnit.MILLISECONDS) + "ms.");
+        logger.info("Finished scanning for plugins, took " + s.elapsed(TimeUnit.MILLISECONDS) + "ms.");
         Analytics.addPerformanceAnalytic("Scanning and registration of addons", s);
     }
 
-    public void load() {
+    public void loadData() {
 		this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.load(this.dataRegistry));
 
 		this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.registerMinecraft(this.dataRegistry.getMaterials(), this.dataRegistry.getStrata()));
     }
 
-    public void datagen(DataGenerator dataGenerator) {
+    public void registerDatagen(DataGenerator dataGenerator) {
         this.plugins.forEach(iEmendatusPlugin ->
             iEmendatusPlugin.registerDynamicDataGen(dataGenerator, this.dataRegistry, CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor()))
         );
@@ -99,9 +100,14 @@ public class EELoader {
 
     public void finish() {
         this.plugins.forEach(iEmendatusPlugin -> iEmendatusPlugin.finish(this.dataRegistry));
+        this.finished = true;
     }
 
     public EmendatusDataRegistry getDataRegistry() {
         return dataRegistry;
+    }
+
+    public boolean isFinished() {
+        return this.finished;
     }
 }

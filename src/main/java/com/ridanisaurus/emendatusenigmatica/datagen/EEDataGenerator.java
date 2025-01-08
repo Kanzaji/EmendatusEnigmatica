@@ -31,15 +31,16 @@ import net.minecraft.WorldVersion;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
 import net.neoforged.fml.ModLoader;
+import net.neoforged.fml.loading.ImmediateWindowHandler;
 import net.neoforged.fml.loading.progress.StartupNotificationManager;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class EEDataGenerator extends DataGenerator {
     private static final Logger logger = LogUtils.getLogger();
-    private boolean alreadyExecuted = false;
+    private boolean executed = false;
     private boolean crashed = false;
 
     public EEDataGenerator(Path rootOutputFolder, WorldVersion version, boolean alwaysGenerate) {
@@ -49,14 +50,37 @@ public class EEDataGenerator extends DataGenerator {
     @Override
     public void run() {
         //TODO: Add own caching logic. Currently entire DataGen has to be executed to even know what to cache.
-        if (alreadyExecuted) return;
-        alreadyExecuted = true;
+        if (executed) return;
+        executed = true;
+
+        ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
+            final Thread thread = Executors.defaultThreadFactory().newThread(r);
+            thread.setDaemon(true);
+            thread.setName("EmendatusEnigmatica-Data-Generation");
+            return thread;
+        });
+
+        try (executor) {
+            executor.submit(this::execute);
+            executor.shutdown();
+            do {
+                ImmediateWindowHandler.renderTick();
+            } while (!executor.awaitTermination(50, TimeUnit.MILLISECONDS));
+        } catch (Exception ex) {
+            throw new RuntimeException("EE Data Generation was interrupted!", ex);
+        }
+    }
+
+    public boolean hasExecuted() {
+        return executed && !crashed;
+    }
+
+    private void execute() {
         try {
-            // Re-implementing the run logic here, to add our own analytics support.
+            // Run-Login reimplemented to add Custom Progress bar and own Analytics.
             HashCache cache = new HashCache(this.rootOutputFolder, this.allProviderIds, this.version);
             Stopwatch sMain = Stopwatch.createStarted();
             Stopwatch sPerTask = Stopwatch.createUnstarted();
-            //TODO: As this is executed on a main thread, it will hang the Early Window, so the progress bar is not visible in the end :/
             var bar = StartupNotificationManager.addProgressBar("Emendatus Enigmatica: Data Generation", this.providersToRun.size());
             this.providersToRun.forEach((name, provider) -> {
                 logger.info("Starting provider: {}", name);
@@ -65,6 +89,7 @@ public class EEDataGenerator extends DataGenerator {
                 sPerTask.stop();
                 logger.info("{} finished after {} ms", name, sPerTask.elapsed(TimeUnit.MILLISECONDS));
                 sPerTask.reset();
+                bar.increment();
             });
             cache.purgeStaleAndWrite();
             bar.complete();
@@ -82,9 +107,5 @@ public class EEDataGenerator extends DataGenerator {
             }
             throw new RuntimeException("Caught exception while running EE Data Generation!", e);
         }
-    }
-
-    public boolean hasExecuted() {
-        return alreadyExecuted && !crashed;
     }
 }

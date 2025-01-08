@@ -122,8 +122,13 @@ public class EEVirtualPackHandler implements PackResources {
     @Override
     public @NotNull Set<String> getNamespaces(@NotNull PackType type) {
         Set<String> result = new HashSet<>();
-        try (Stream<Path> list = Files.list(path.resolve(type.getDirectory()))) {
-            for (Path resultingPath : list.toList()) result.add(resultingPath.getFileName().toString());
+        Path dir = path.resolve(type.getDirectory());
+        try {
+            if (Files.notExists(dir)) Files.createDirectories(dir);
+            
+            try (Stream<Path> list = Files.list(dir)) {
+                for (Path resultingPath : list.toList()) result.add(resultingPath.getFileName().toString());
+            }
         } catch (IOException e) {
             logger.error("Exception caught while iterating generated resource folder!", e);
         }

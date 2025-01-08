@@ -49,15 +49,12 @@ import net.neoforged.fml.loading.progress.StartupNotificationManager;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.*;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(Reference.MOD_ID)
 public class EmendatusEnigmatica {
-    // Directly reference a slf4j logger
     public static final Logger logger = LogUtils.getLogger();
     public static String VERSION = "0.0.0";
     private static EmendatusEnigmatica instance;
@@ -89,25 +86,24 @@ public class EmendatusEnigmatica {
         EEConfig.setupStartup(modContainer);
         Analytics.setup();
 
-        //TODO: Run in parallel
         DataGeneratorFactory.init();
         this.generator = DataGeneratorFactory.createEEDataGenerator();
 
         this.loader = new EELoader();
-        this.loader.load();
+        this.loader.loadData();
 
         EERegistrar.finalize(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
-        this.loader.datagen(this.generator);
+        this.loader.registerDatagen(this.generator);
         this.loader.finish();
 
         // Creative Tab Item Registration.
-        modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::populateCreativeTab);
         // Virtual ResourcePack
         modEventBus.addListener(this::addPackFinder);
         // Generator check, we can't launch the game if the generator wasn't executed!
-        modEventBus.addListener(this::hasGenerated);
+        modEventBus.addListener(this::dataGenCheck);
         // Registry Validation
         modEventBus.addListener(this::commonSetup);
         // Config screen
@@ -126,15 +122,17 @@ public class EmendatusEnigmatica {
         return loader.getDataRegistry();
     }
 
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+    private void populateCreativeTab(BuildCreativeModeTabContentsEvent event) {
         EERegistrar.registerToCreativeTabs(event);
     }
 
     private void addPackFinder(@NotNull AddPackFindersEvent event) {
         event.addRepositorySource(new EEPackFinder(event.getPackType()));
-        //TODO: Find more suitable place for running Data Generation.
-        //NOTE: CommonSetup is too late.
-        this.generator.run();
+        if (!loader.isFinished()) {
+            logger.error("Something is populating Pack Repository too early! Skipping running Data Generation.");
+            return;
+        }
+        generator.run();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -144,7 +142,7 @@ public class EmendatusEnigmatica {
             throw new IllegalStateException("Registry validation failed! %s Validation Summary for more details.".formatted(EEConfig.startup.generateSummary.get()? "Check the": "Enable"));
     }
 
-    private void hasGenerated(FMLLoadCompleteEvent event) {
+    private void dataGenCheck(FMLLoadCompleteEvent event) {
         if (this.generator.hasExecuted()) return;
         StartupNotificationManager.addModMessage("Emendatus Enigmatica - Missing Data Generation!");
         throw new IllegalStateException("Mod loading finished, but Data Generation wasn't executed!");
